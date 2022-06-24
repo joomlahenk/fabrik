@@ -6,6 +6,7 @@
 *.txt
 *.jpg
 .htaccess
+.gitigore
 php.ini
 configuration.php
 index.php
