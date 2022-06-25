@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
 use Fabrik\Helpers\Googlemap;
 use Fabrik\Helpers\Lizt;
 use Joomla\Utilities\ArrayHelper;
@@ -212,7 +215,7 @@ class FabrikModelGooglemap extends FabrikFEModelVisualization
 		$opts->radius_defaults      = (array) $params->get('fb_gm_radius_default');
 		$opts->radius_fill_colors   = (array) $params->get('fb_gm_radius_fill_color');
 		$opts->styles               = Googlemap::styleJs($params);
-		$config                     = JComponentHelper::getParams('com_fabrik');
+		$config                     = ComponentHelper::getParams('com_fabrik');
 		$apiKey                     = trim($config->get('google_api_key', ''));
 		$opts->key                  = empty($apiKey) ? false : $apiKey;
 		$opts->language             = trim(strtolower($config->get('google_api_language', '')));
@@ -570,7 +573,7 @@ class FabrikModelGooglemap extends FabrikFEModelVisualization
 									break;
 							}
 
-							if (strstr($iconImg, 'http://') || strstr($iconImg, 'https://') || JFile::exists(JPATH_BASE . $iconImg))
+							if (strstr($iconImg, 'http://') || strstr($iconImg, 'https://') || File::exists(JPATH_BASE . $iconImg))
 							{
 								$customImageFound = true;
 							}
@@ -636,7 +639,7 @@ class FabrikModelGooglemap extends FabrikFEModelVisualization
 						// Default icon - lets see if we need to use a letter icon instead
 						if (FArrayHelper::getValue($letters, $c, '') != '')
 						{
-							$iconImg = $uri->getScheme() . '://www.google.com/mapfiles/marker' . JString::strtoupper($letters[$c]) . '.png';
+							$iconImg = $uri->getScheme() . '://www.google.com/mapfiles/marker' . StringHelper::strtoupper($letters[$c]) . '.png';
 						}
 
 						$icons[$v[0] . $v[1]] = array($v[0], $v[1], $html, $iconImg, $width, $height, 'groupkey' => $groupKey, 'listid' => $listId,
@@ -850,7 +853,7 @@ class FabrikModelGooglemap extends FabrikFEModelVisualization
 		$uri = JURI::getInstance();
 		$src = $uri->getScheme() . "://maps.google.com/staticmap?center=$lat,$lon&zoom={$z}&size={$w}x{$h}&maptype=mobile$iconStr";
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$apiKey = trim($config->get('google_api_key', ''));
 		$client = $config->get('google_buisness_client_id', '');
 		$signature = $config->get('google_buisness_signature', '');

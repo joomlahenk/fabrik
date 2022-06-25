@@ -11,10 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 ?>
 <form method="post" action="<?php echo $this->action?>" class="advancedSearch_<?php echo $this->listref?>">

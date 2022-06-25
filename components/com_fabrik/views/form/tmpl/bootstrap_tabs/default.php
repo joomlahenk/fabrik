@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 $form = $this->form;
 $model = $this->getModel();
 $groupTmpl = $model->editable ? 'group' : 'group_details';
@@ -19,7 +21,7 @@ $active = ($form->error != '') ? '' : ' fabrikHide';
 
 if ($model->isMultiPage() && FabrikHelperHTML::isDebug())
 {
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$app->enqueueMessage(FText::_('COM_FABRIK_ERR_TAB_FORM_TEMPLATE_INCOMPATIBLE_WITH_MULTIPAGE_FORMS'), 'error');
 }
 

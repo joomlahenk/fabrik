@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\User\User;
+use Joomla\CMS\Factory;
+
 /*
  * In the PayPal form plugin settings, you can select a PHP script to use for custom IPN processing.
  * You should copy this file, and use it as your starting point.  You must not change the class name.
@@ -55,8 +58,8 @@ class fabrikPayPalIPN
 
 	/**
 	 *
-	 * In this example, we are assuming you have a form with a JUser and a PayPal plugin on it.,
-	 * where you want people to pay for signing up.  Because the JUser plugin creates the user BEFORE
+	 * In this example, we are assuming you have a form with a User and a PayPal plugin on it.,
+	 * where you want people to pay for signing up.  Because the User plugin creates the user BEFORE
 	 * the PayPal plugin runs, we don't know if the user ever hit "Pay" in PayPal.  So, we initially set
 	 * the user to be blocked (inactive, see Juser plugin settings).  We then use this IPN 'completed' method
 	 * to unblock the user when the payment confirmation IPN response arrive from PayPal.
@@ -111,7 +114,7 @@ class fabrikPayPalIPN
 	 */
 	function payment_status_Pending($listModel, $request, &$set_list, &$err_msg)
 	{
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$MailFrom = $config->get('mailfrom');
 		$FromName = $config->get('fromname');
 		$SiteName = $config->get('sitename');
@@ -126,13 +129,13 @@ class fabrikPayPalIPN
 		$msgbuyer = 'Your payment on %s is pending. (Paypal transaction ID: %s)<br /><br />%s';
 		$msgbuyer = sprintf($msgbuyer, $SiteName, $txn_id, $SiteName);
 		$msgbuyer = html_entity_decode($msgbuyer, ENT_QUOTES);
-		$mail = JFactory::getMailer();
+		$mail = Factory::getMailer();
 		$res = $mail->sendMail($MailFrom, $FromName, $payer_email, $subject, $msgbuyer, true);
 
 		$msgseller = 'Payment pending on %s. (Paypal transaction ID: %s)<br /><br />%s';
 		$msgseller = sprintf($msgseller, $SiteName, $txn_id, $SiteName);
 		$msgseller = html_entity_decode($msgseller, ENT_QUOTES);
-		$mail = JFactory::getMailer();
+		$mail = Factory::getMailer();
 		$res = $mail->sendMail($MailFrom, $FromName, $payer_email, $subject, $msgseller, true);
 		return 'ok';
 	}

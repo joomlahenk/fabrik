@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -36,12 +40,12 @@ class FabrikViewCron extends FabrikView
 		$input = $this->app->input;
 		FabrikHelperHTML::script($srcs);
 		$model       = $this->getModel();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model->setId($input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0))));
 		$visualization = $model->getVisualization();
 		$pluginParams  = $model->getPluginParams();
 
-		$pluginManager = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikModel');
+		$pluginManager = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikModel');
 		$plugin        = $pluginManager->getPlugIn($visualization->plugin, 'visualization');
 		$plugin->_row  = $visualization;
 
@@ -65,7 +69,7 @@ class FabrikViewCron extends FabrikView
 		$this->addTemplatePath($root . '/templates/' . $this->app->getTemplate() . '/html/com_fabrik/visualization/' . $plugin->_name . '/' . $tmpl);
 		$ab_css_file = JPATH_SITE . '/plugins/fabrik_visualization/' . $plugin->_name . '/tmpl/' . $tmpl . '/template.css';
 
-		if (JFile::exists($ab_css_file))
+		if (File::exists($ab_css_file))
 		{
 			JHTML::stylesheet('template.css', 'plugins/fabrik_visualization/' . $plugin->_name . '/tmpl/' . $tmpl . '/', true);
 		}

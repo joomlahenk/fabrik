@@ -11,7 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('list');
 
 /**
  * Renders a list of Bootstrap field class sizes

@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
 
@@ -107,7 +110,7 @@ class FabrikFEModelListfilter extends FabModel
 			return $this->request;
 		}
 
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		$filters = array();
 
 		// $$$ rob clears all list filters, and does NOT apply any
@@ -906,7 +909,7 @@ class FabrikFEModelListfilter extends FabModel
 
 			if ($fromFormId != $formModel->get('id'))
 			{
-				$fromForm = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+				$fromForm = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 				$fromForm->setId($fromFormId);
 				//$fromFormParams = $fromForm->getParams();
 				/**
@@ -1042,7 +1045,7 @@ class FabrikFEModelListfilter extends FabModel
 	private function getQuerystringFilters(&$filters)
 	{
 		//$item = $this->listModel->getTable();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$request = $filter->clean($_GET, 'array');
 		$formModel = $this->listModel->getFormModel();
 		$filterKeys = array_keys($filters);
@@ -1211,7 +1214,7 @@ class FabrikFEModelListfilter extends FabModel
 		if (!isset($this->request))
 		{
 			//$item = $this->listModel->getTable();
-			$filter = JFilterInput::getInstance();
+			$filter = InputFilter::getInstance();
 			$request = $filter->clean($_POST, 'array');
 			/**
 			 * Use request ONLY if you want to test an ajax post with params in url
@@ -1485,7 +1488,7 @@ class FabrikFEModelListfilter extends FabModel
 	 */
 	private function getSessionFilters(&$filters)
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		$elements = $this->listModel->getElements('id');
 		$identifier = $this->app->input->get('listref', $this->listModel->getRenderContext());
 		$key = 'com_' . $this->package . '.list' . $identifier . '.filter';

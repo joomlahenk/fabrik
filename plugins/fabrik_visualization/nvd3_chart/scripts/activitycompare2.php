@@ -1,6 +1,9 @@
 <?php
 
-$db = JFactory::getDbo();
+use Joomla\CMS\Factory;
+
+
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 
 $query->select('SUM(electronisch_dance * relevantie_live_dance) AS dance, SUM(electronisch_underground * relevantie_live_dance) AS underground, SUM(live_pop * relevantie_live_dance) AS pop');

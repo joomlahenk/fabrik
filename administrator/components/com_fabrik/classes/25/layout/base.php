@@ -9,20 +9,24 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Layout\BaseLayout;
+use Joomla\CMS\Layout\LayoutInterface;
+
 /**
  * Base class for rendering a display layout
  *
  * @package     Joomla.Libraries
  * @subpackage  Layout
- * @see         http://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
+ * @see         http://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_LayoutInterface
  * @since       3.0
  */
-class JLayoutBase implements JLayout
+class BaseLayout implements LayoutInterface
 {
 	/**
 	 * Options object
 	 *
-	 * @var    JRegistry
+	 * @var    Registry
 	 * @since  3.2
 	 */
 	protected $options = null;
@@ -38,27 +42,27 @@ class JLayoutBase implements JLayout
 	/**
 	 * Set the options
 	 *
-	 * @param   mixed  $options  Array / JRegistry object with the options to load
+	 * @param   mixed  $options  Array / Registry object with the options to load
 	 *
-	 * @return  JLayoutBase  Instance of $this to allow chaining.
+	 * @return  BaseLayout  Instance of $this to allow chaining.
 	 *
 	 * @since   3.2
 	 */
 	public function setOptions($options = null)
 	{
-		// Received JRegistry
-		if ($options instanceof JRegistry)
+		// Received Registry
+		if ($options instanceof Registry)
 		{
 			$this->options = $options;
 		}
 		// Received array
 		elseif (is_array($options))
 		{
-			$this->options = new JRegistry($options);
+			$this->options = new Registry($options);
 		}
 		else
 		{
-			$this->options = new JRegistry;
+			$this->options = new Registry;
 		}
 
 		return $this;
@@ -67,14 +71,14 @@ class JLayoutBase implements JLayout
 	/**
 	 * Get the options
 	 *
-	 * @return  JRegistry  Object with the options
+	 * @return  Registry  Object with the options
 	 *
 	 * @since   3.2
 	 */
 	public function getOptions()
 	{
-		// Always return a JRegistry instance
-		if (!($this->options instanceof JRegistry))
+		// Always return a Registry instance
+		if (!($this->options instanceof Registry))
 		{
 			$this->resetOptions();
 		}
@@ -85,7 +89,7 @@ class JLayoutBase implements JLayout
 	/**
 	 * Function to empty all the options
 	 *
-	 * @return  JLayoutBase  Instance of $this to allow chaining.
+	 * @return  BaseLayout  Instance of $this to allow chaining.
 	 *
 	 * @since   3.2
 	 */

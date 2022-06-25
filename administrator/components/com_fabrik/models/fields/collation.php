@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
 
 /**
@@ -21,10 +25,10 @@ require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
  * @since       3.0.7
  */
 
-class JFormFieldCollation extends JFormFieldList
+class FormFieldCollation extends FormFieldList
 {
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
 	 * @param   object  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
 	 * @param   mixed   $value    The form field value to validate.
@@ -53,7 +57,7 @@ class JFormFieldCollation extends JFormFieldList
 
 		if ($this->value == '' && $return && $defaultToTableValue)
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			/*
 			 * Attempt to get the real Db collation (tmp fix before this makes it into J itself
@@ -86,7 +90,7 @@ class JFormFieldCollation extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery('SHOW COLLATION WHERE ' . $db->quoteName('Compiled') . ' = ' . $db->quote('Yes'));
 		$rows = $db->loadObjectList();
 		sort($rows);
@@ -94,7 +98,7 @@ class JFormFieldCollation extends JFormFieldList
 
 		if ($this->element->attributes()->show_none && (bool) $this->element->attributes()->show_none[0])
 		{
-			$opts[] = JHTML::_('select.option', '', JText::_('COM_FABRIK_NONE'));
+			$opts[] = JHTML::_('select.option', '', Text::_('COM_FABRIK_NONE'));
 		}
 
 		foreach ($rows as $row)

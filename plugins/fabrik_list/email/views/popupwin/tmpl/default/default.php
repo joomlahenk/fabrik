@@ -10,12 +10,16 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 $params = $this->params;
 
 ?>
-<form method="post" enctype="multipart/form-data" action="<?php echo JUri::base(); ?>index.php" name="emailtable" id="emailtable">
+<form method="post" enctype="multipart/form-data" action="<?php echo Uri::base(); ?>index.php" name="emailtable" id="emailtable">
 	<div class="alert alert-info">
-		<?php echo FabrikHelperHTML::icon('icon-envelope'); ?><?php echo JText::plural('PLG_LIST_EMAIL_N_RECORDS', $this->recordcount) ?>
+		<?php echo FabrikHelperHTML::icon('icon-envelope'); ?><?php echo Text::plural('PLG_LIST_EMAIL_N_RECORDS', $this->recordcount) ?>
 	</div>
 	<div class="row-fluid">
 
@@ -67,14 +71,14 @@ $params = $this->params;
 				{ ?>
 					<div class="span12">
 						<div class="span6">
-							<?php echo JHtml::_('select.genericlist', $this->addressBook, 'email_to_selectfrom[]', $attribs, 'email', 'name', '', 'email_to_selectfrom'); ?>
+							<?php echo HTMLHelper::_('select.genericlist', $this->addressBook, 'email_to_selectfrom[]', $attribs, 'email', 'name', '', 'email_to_selectfrom'); ?>
 
 							<br /><a href="#" class="btn btn-small" id="email_add"><?php echo FabrikHelperHTML::icon('icon-plus'); ?>
 								<?php echo FText::_('COM_FABRIK_ADD'); ?> &gt;&gt;
 							</a>
 						</div>
 						<div class="span6">
-							<?php echo JHtml::_('select.genericlist', $empty, 'list_email_to[]', $attribs, 'email', 'name', '', 'list_email_to'); ?>
+							<?php echo HTMLHelper::_('select.genericlist', $empty, 'list_email_to[]', $attribs, 'email', 'name', '', 'list_email_to'); ?>
 							<br /><a href="#" class="btn btn-small" id="email_remove">&lt;&lt;
 								<?php echo FText::_('COM_FABRIK_DELETE'); ?> <?php echo FabrikHelperHTML::icon('icon-delete'); ?></a>
 						</div>
@@ -83,7 +87,7 @@ $params = $this->params;
 				}
 				else
 				{
-					echo JHtml::_('select.genericlist', $results, 'list_email_to[]', 'class="fabrikinput inputbox input-large" multiple="multiple" size="5"', 'email', 'name', '', 'list_email_to');
+					echo HTMLHelper::_('select.genericlist', $results, 'list_email_to[]', 'class="fabrikinput inputbox input-large" multiple="multiple" size="5"', 'email', 'name', '', 'list_email_to');
 				}
 			}
 		}

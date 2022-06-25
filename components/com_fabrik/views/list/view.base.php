@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Filesystem\File;
 use Joomla\Registry\Registry;
 
 jimport('joomla.application.component.view');
@@ -58,7 +63,7 @@ class FabrikViewListBase extends FabrikView
 		}
 
 		$exportUrl .= '&format=csv';
-		$csvOpts->exportLink   = JRoute::_($exportUrl, false);
+		$csvOpts->exportLink   = Route::_($exportUrl, false);
 
 		$w->replaceRequest($csvOpts->custom_qs);
 		$csvOpts->incfilters   = (int) $params->get('incfilters');
@@ -81,7 +86,7 @@ class FabrikViewListBase extends FabrikView
 			$layoutData          = (object) array(
 				'name' => 'submit',
 				'class' => 'exportCSVButton btn-primary',
-				'label' => JText::_('COM_FABRIK_EXPORT')
+				'label' => Text::_('COM_FABRIK_EXPORT')
 			);
 
 			$modalOpts['footer'] = $layout->render($layoutData);
@@ -123,7 +128,7 @@ class FabrikViewListBase extends FabrikView
 			$modalOpts = array(
 				'content' => '',
 				'id' => 'ajax_links',
-				'title' => JText::_($modalTitle),
+				'title' => Text::_($modalTitle),
 				'modal' => false,
 				'expandable' => true
 			);
@@ -137,7 +142,7 @@ class FabrikViewListBase extends FabrikView
 			$modalOpts = array(
 				'content' => '',
 				'id' => 'advanced-filter',
-				'title' => JText::_('COM_FABRIK_FIELD_ADVANCED_SEARCH_LABEL'),
+				'title' => Text::_('COM_FABRIK_FIELD_ADVANCED_SEARCH_LABEL'),
 				'modal' => false,
 				'expandable' => true
 			);
@@ -190,7 +195,7 @@ class FabrikViewListBase extends FabrikView
 		// Check for a custom js file and include it if it exists
 		$aJsPath = JPATH_SITE . '/components/com_fabrik/views/list/tmpl/' . $tmpl . '/javascript.js';
 
-		if (JFile::exists($aJsPath))
+		if (File::exists($aJsPath))
 		{
 			$src['CustomJs'] = 'components/com_fabrik/views/list/tmpl/' . $tmpl . '/javascript.js';
 		}
@@ -228,7 +233,7 @@ class FabrikViewListBase extends FabrikView
 		$opts->formid         = $model->getFormModel()->getId();
 		$opts->canEdit        = $model->canEdit() ? '1' : '0';
 		$opts->canView        = $model->canView() ? '1' : '0';
-		$opts->page           = JRoute::_('index.php');
+		$opts->page           = Route::_('index.php');
 		$opts->isGrouped      = $this->isGrouped;
 		$opts->toggleCols     = $toggleCols;
 //		$opts->j3             = FabrikWorker::j3();
@@ -301,7 +306,7 @@ class FabrikViewListBase extends FabrikView
 		$this->_row->class = 'fabrik_row';
 
 		// nasty hack for div templates
-		if (JFile::exists(JPATH_ROOT . '/components/com_fabrik/views/list/tmpl/' . $tmpl . '/default_empty_row.php'))
+		if (File::exists(JPATH_ROOT . '/components/com_fabrik/views/list/tmpl/' . $tmpl . '/default_empty_row.php'))
 		{
 			echo $this->loadTemplate('empty_row');
 		}
@@ -352,41 +357,41 @@ class FabrikViewListBase extends FabrikView
 
 	private function jsText()
 	{
-		JText::script('COM_FABRIK_PREV');
-		JText::script('COM_FABRIK_SELECT_ROWS_FOR_DELETION');
-		JText::script('JYES');
-		JText::script('JNO');
-		JText::script('COM_FABRIK_SELECT_COLUMNS_TO_EXPORT');
-		JText::script('COM_FABRIK_INCLUDE_FILTERS');
-		JText::script('COM_FABRIK_INCLUDE_DATA');
-		JText::script('COM_FABRIK_INCLUDE_RAW_DATA');
-		JText::script('COM_FABRIK_INCLUDE_CALCULATIONS');
-		JText::script('COM_FABRIK_EXPORT');
-		JText::script('COM_FABRIK_START');
-		JText::script('COM_FABRIK_NEXT');
-		JText::script('COM_FABRIK_END');
-		JText::script('COM_FABRIK_PAGE');
-		JText::script('COM_FABRIK_OF');
-		JText::script('COM_FABRIK_LOADING');
-		JText::script('COM_FABRIK_RECORDS');
-		JText::script('COM_FABRIK_SAVING_TO');
-		JText::script('COM_FABRIK_CONFIRM_DROP');
-		JText::script('COM_FABRIK_CONFIRM_DELETE_1');
-		JText::script('COM_FABRIK_NO_RECORDS');
-		JText::script('COM_FABRIK_CSV_COMPLETE');
-		JText::script('COM_FABRIK_CSV_DOWNLOAD_HERE');
-		JText::script('COM_FABRIK_CONFIRM_DELETE');
-		JText::script('COM_FABRIK_CSV_DOWNLOADING');
-		JText::script('COM_FABRIK_FILE_TYPE');
-		JText::script('COM_FABRIK_ADVANCED_SEARCH');
-		JText::script('COM_FABRIK_FORM_FIELDS');
-		JText::script('COM_FABRIK_VIEW');
+		Text::script('COM_FABRIK_PREV');
+		Text::script('COM_FABRIK_SELECT_ROWS_FOR_DELETION');
+		Text::script('JYES');
+		Text::script('JNO');
+		Text::script('COM_FABRIK_SELECT_COLUMNS_TO_EXPORT');
+		Text::script('COM_FABRIK_INCLUDE_FILTERS');
+		Text::script('COM_FABRIK_INCLUDE_DATA');
+		Text::script('COM_FABRIK_INCLUDE_RAW_DATA');
+		Text::script('COM_FABRIK_INCLUDE_CALCULATIONS');
+		Text::script('COM_FABRIK_EXPORT');
+		Text::script('COM_FABRIK_START');
+		Text::script('COM_FABRIK_NEXT');
+		Text::script('COM_FABRIK_END');
+		Text::script('COM_FABRIK_PAGE');
+		Text::script('COM_FABRIK_OF');
+		Text::script('COM_FABRIK_LOADING');
+		Text::script('COM_FABRIK_RECORDS');
+		Text::script('COM_FABRIK_SAVING_TO');
+		Text::script('COM_FABRIK_CONFIRM_DROP');
+		Text::script('COM_FABRIK_CONFIRM_DELETE_1');
+		Text::script('COM_FABRIK_NO_RECORDS');
+		Text::script('COM_FABRIK_CSV_COMPLETE');
+		Text::script('COM_FABRIK_CSV_DOWNLOAD_HERE');
+		Text::script('COM_FABRIK_CONFIRM_DELETE');
+		Text::script('COM_FABRIK_CSV_DOWNLOADING');
+		Text::script('COM_FABRIK_FILE_TYPE');
+		Text::script('COM_FABRIK_ADVANCED_SEARCH');
+		Text::script('COM_FABRIK_FORM_FIELDS');
+		Text::script('COM_FABRIK_VIEW');
 
 		// Keyboard short cuts
-		JText::script('COM_FABRIK_LIST_SHORTCUTS_ADD');
-		JText::script('COM_FABRIK_LIST_SHORTCUTS_EDIT');
-		JText::script('COM_FABRIK_LIST_SHORTCUTS_DELETE');
-		JText::script('COM_FABRIK_LIST_SHORTCUTS_FILTER');
+		Text::script('COM_FABRIK_LIST_SHORTCUTS_ADD');
+		Text::script('COM_FABRIK_LIST_SHORTCUTS_EDIT');
+		Text::script('COM_FABRIK_LIST_SHORTCUTS_DELETE');
+		Text::script('COM_FABRIK_LIST_SHORTCUTS_FILTER');
 	}
 
 	/**
@@ -405,8 +410,8 @@ class FabrikViewListBase extends FabrikView
 			return;
 		}
 
-		$fbConfig = JComponentHelper::getParams('com_fabrik');
-		$profiler = JProfiler::getInstance('Application');
+		$fbConfig = ComponentHelper::getParams('com_fabrik');
+		$profiler = Profiler::getInstance('Application');
 		$input    = $this->app->input;
 		$itemId   = FabrikWorker::itemId();
 
@@ -536,7 +541,7 @@ class FabrikViewListBase extends FabrikView
 		{
 			$this->csvImportLink = 'index.php?option=com_' . $this->package . '&view=import&filetype=csv&listid=' . $item->id;
 			$this->csvImportLink .= empty($itemId) ? '' : '&Itemid=' . $itemId;
-			$this->csvImportLink = JRoute::_($this->csvImportLink);
+			$this->csvImportLink = Route::_($this->csvImportLink);
 		}
 		else
 		{
@@ -575,7 +580,7 @@ class FabrikViewListBase extends FabrikView
 		if ($this->app->isClient('administrator'))
 		{
 			// Admin always uses com_fabrik option
-			$this->pdfLink = JRoute::_('index.php?option=com_fabrik&task=list.view&listid=' . $item->id . '&format=pdf&tmpl=component');
+			$this->pdfLink = Route::_('index.php?option=com_fabrik&task=list.view&listid=' . $item->id . '&format=pdf&tmpl=component');
 		}
 		else
 		{
@@ -594,7 +599,7 @@ class FabrikViewListBase extends FabrikView
 
             // Add the listref so we get the right filters if doing PDF from a module or content plugin
             $pdfLink .= '&setListRefFromRequest=1&listref=' . $model->getRenderContext();
-			$this->pdfLink = JRoute::_($pdfLink);
+			$this->pdfLink = Route::_($pdfLink);
 		}
 
 		list($this->headings, $groupHeadings, $this->headingClass, $this->cellClass) = $model->getHeadings();
@@ -718,7 +723,7 @@ class FabrikViewListBase extends FabrikView
 	 */
 	protected function output()
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		$text     = $this->loadTemplate();
 		JDEBUG ? $profiler->mark('template loaded') : null;
 		$model  = $this->getModel();
@@ -1052,7 +1057,7 @@ class FabrikViewListBase extends FabrikView
 		{
 			$model = $this->getModel();
 			$id    = $model->getId();
-			$url   = JRoute::_('index.php?option=com_' . $this->package . '&view=list&listid=' . $id);
+			$url   = Route::_('index.php?option=com_' . $this->package . '&view=list&listid=' . $id);
 		}
 
 		return $url;

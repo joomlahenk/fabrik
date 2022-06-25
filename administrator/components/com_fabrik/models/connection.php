@@ -12,6 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormRule;
 use Joomla\Utilities\ArrayHelper;
 
 require_once 'fabmodeladmin.php';
@@ -39,12 +43,12 @@ class FabrikAdminModelConnection extends FabModelAdmin
 	 * @param   string  $prefix  A prefix for the table class name. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  JTable  A database object
+	 * @return  Table  A database object
 	 */
 	public function getTable($type = 'Connection', $prefix = 'FabrikTable', $config = array())
 	{
 		/**
-		 * not sure if we should be loading JTable or FabTable here
+		 * not sure if we should be loading Table or FabTable here
 		 * issue with using Fabtable is that it will always load the cached version of the cnn
 		 * which might cause issues when migrating from test to live sites???
 		 */
@@ -59,7 +63,7 @@ class FabrikAdminModelConnection extends FabModelAdmin
 	 * @param   array  $data      Data for the form.
 	 * @param   bool   $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed	A JForm object on success, false on failure
+	 * @return  mixed	A Form object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -166,7 +170,7 @@ class FabrikAdminModelConnection extends FabModelAdmin
 	 */
 	public function save($data)
 	{
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 		$model->setId($data['id']);
 		$crypt = FabrikWorker::getCrypt();
 
@@ -199,12 +203,12 @@ class FabrikAdminModelConnection extends FabModelAdmin
 	/**
 	 * Method to validate the form data.
 	 *
-	 * @param   JForm   $form   The form to validate against.
+	 * @param   Form   $form   The form to validate against.
 	 * @param   array   $data   The data to validate.
 	 * @param   string  $group  The name of the field group to validate.
 	 *
-	 * @see     JFormRule
-	 * @see     JFilterInput
+	 * @see     FormRule
+	 * @see     InputFilter
 	 *
 	 * @return  mixed  Array of filtered data if valid, false otherwise.
 	 */

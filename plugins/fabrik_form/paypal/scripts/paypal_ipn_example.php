@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /*
  * In the PayPal form plugin settings, you can select a PHP script to use for custom IPN processing.
  * You should copy this file, and use it as your starting point.  You must not change the class name.
@@ -71,7 +73,7 @@ class fabrikPayPalIPN {
 	}
 
 	function payment_status_Pending($listModel, $request, &$set_list, &$err_msg) {
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
         $MailFrom = $config->get('mailfrom');
         $FromName = $config->get('fromname');
         $SiteName = $config->get('sitename');
@@ -87,13 +89,13 @@ class fabrikPayPalIPN {
         $msgbuyer = sprintf($msgbuyer, $SiteName, $txn_id, $SiteName);
         $msgbuyer = html_entity_decode($msgbuyer, ENT_QUOTES);
 
-        $mail = JFactory::getMailer();
+        $mail = Factory::getMailer();
         $res = $mail->sendMail($MailFrom, $FromName, $payer_email, $subject, $msgbuyer, true);
 
         $msgseller = 'Payment pending on %s. (Paypal transaction ID: %s)<br /><br />%s';
         $msgseller = sprintf($msgseller, $SiteName, $txn_id, $SiteName);
         $msgseller = html_entity_decode($msgseller, ENT_QUOTES);
-        $mail = JFactory::getMailer();
+        $mail = Factory::getMailer();
         $res = $mail->sendMail($MailFrom, $FromName, $payer_email, $subject, $msgseller, true);
 		return 'ok';
 	}

@@ -1,8 +1,10 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Filesystem\File;
+
 $d   = $displayData;
-$ext = JFile::getExt($d->filename);
+$ext = File::getExt($d->filename);
 ?>
 
 <a class="download-archive fabrik-filetype-<?php echo $ext; ?>" title="<?php echo $d->filename; ?>"

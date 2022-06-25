@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\StringHelper;
 
@@ -147,10 +151,10 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 	public function save()
 	{
-		$user   = JFactory::getUser();
-		$app    = JFactory::getApplication();
+		$user   = Factory::getUser();
+		$app    = Factory::getApplication();
 		$input  = $app->input;
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$post   = $filter->clean($_POST, 'array');
 
 		if (!$this->bind($post))
@@ -213,7 +217,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 			for ($i = 0; $i < count($tables); $i++)
 			{
-				$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+				$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 
 				if ($tables[$i] != 'undefined')
 				{
@@ -319,9 +323,9 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 	public function setRequestFilters()
 	{
 		$this->setupEvents();
-		$filter    = JFilterInput::getInstance();
+		$filter    = InputFilter::getInstance();
 		$request   = $filter->clean($_REQUEST, 'array');
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 
 		foreach ($this->events as $listid => $record)
 		{
@@ -358,7 +362,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 			foreach ($lists as $id)
 			{
-				$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+				$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 				$listModel->setId($id);
 
 				if ($listModel->canAdd())
@@ -385,7 +389,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 		foreach ($lists as $id)
 		{
-			$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$listModel->setId($id);
 
 			if ($listModel->canDelete())
@@ -408,10 +412,10 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 	public function getEvents($listid = '', $eventListKey = '')
 	{
 		$params = $this->getParams();
-		$app      = JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$package  = $app->getUserState('com_fabrik.package', 'fabrik');
 		$Itemid   = FabrikWorker::itemId();
-		$config   = JFactory::getConfig();
+		$config   = Factory::getConfig();
 		$tzoffset = $config->get('offset');
 		$tz       = new DateTimeZone($tzoffset);
 		$w        = new FabrikWorker;
@@ -433,7 +437,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 			//$this_where = FArrayHelper::getValue($where, $this_listid, '');
 			//$this_where = html_entity_decode($this_where, ENT_QUOTES);
-			$listModel  = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$listModel  = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$listModel->setId($this_listid);
 
 			if (!$listModel->canView())
@@ -570,7 +574,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 							$row->allday     = is_string($row->allday) ? filter_var($row->allday, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) : (bool) $row->allday;
 
 							//Format local dates
-							$date           = JFactory::getDate($row->startdate);
+							$date           = Factory::getDate($row->startdate);
 							$row->startdate = $date->format('Y-m-d H:i:s', true);
 
 							if (!$startLocal)
@@ -579,7 +583,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 								$row->startdate = $date->format('Y-m-d H:i:s', true);
 							}
 
-							$date = JFactory::getDate($row->enddate);
+							$date = Factory::getDate($row->enddate);
 							// Full Calendar allDay end date is now exclusive, need to add a day
 							if ($row->allday)
 							{
@@ -643,7 +647,7 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 		foreach ($this->events as $listid => $record)
 		{
-			$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$listModel->setId($listid);
 			$table = $listModel->getTable();
 
@@ -698,14 +702,14 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 	public function deleteEvent()
 	{
-		$app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 		$input  = $app->input;
 		$id     = $input->getInt('id');
 		$listid = $input->getInt('listid');
 		if (!empty($id) && !empty($listid))
 		{
 			$ids       = array($id);
-			$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$listModel->setId($listid);
 			$ok = $listModel->deleteRows($ids);
 		}
@@ -723,8 +727,8 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 		$min    = $params->get('limit_min', '');
 		$max    = $params->get('limit_max', '');
 		/**@@@trob: seems Firefox needs this date format in calendar.js (limits not working with toSQL */
-		$limits->min = ($min === '') ? '' : JFactory::getDate($min)->toISO8601();
-		$limits->max = ($max === '') ? '' : JFactory::getDate($max)->toISO8601();
+		$limits->min = ($min === '') ? '' : Factory::getDate($min)->toISO8601();
+		$limits->max = ($max === '') ? '' : Factory::getDate($max)->toISO8601();
 
 		return $limits;
 	}
@@ -744,19 +748,19 @@ class FabrikModelFullcalendar extends FabrikFEModelVisualization
 
 		if ($min !== '' && $max === '')
 		{
-			$msg = '<br />' . JText::sprintf('PLG_VISUALIZATION_FULLCALENDAR_LIMIT_AFTER', JFactory::getDate($min)->format($f));
+			$msg = '<br />' . Text::sprintf('PLG_VISUALIZATION_FULLCALENDAR_LIMIT_AFTER', Factory::getDate($min)->format($f));
 		}
 
 		if ($min === '' && $max !== '')
 		{
-			$msg = '<br />' . JText::sprintf('PLG_VISUALIZATION_FULLCALENDAR_LIMIT_BEFORE', JFactory::getDate($max)->format($f));
+			$msg = '<br />' . Text::sprintf('PLG_VISUALIZATION_FULLCALENDAR_LIMIT_BEFORE', Factory::getDate($max)->format($f));
 		}
 
 		if ($min !== '' && $max !== '')
 		{
-			$min = JFactory::getDate($min)->format($f);
-			$max = JFactory::getDate($max)->format($f);
-			$msg = '<br />' . JText::sprintf('PLG_VISUALIZATION_FULLCALENDAR_LIMIT_RANGE', $min, $max);
+			$min = Factory::getDate($min)->format($f);
+			$max = Factory::getDate($max)->format($f);
+			$msg = '<br />' . Text::sprintf('PLG_VISUALIZATION_FULLCALENDAR_LIMIT_RANGE', $min, $max);
 		}
 
 		return $msg;

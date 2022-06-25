@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Mail\MailHelper;
 use Fabrik\Helpers\Pdf;
 use Fabrik\Helpers\Worker;
 use Joomla\Utilities\ArrayHelper;
@@ -325,11 +328,11 @@ class PlgFabrik_ListUpdate_col extends PlgFabrik_List
 
 		if (empty($this->msg))
 		{
-			$this->msg = JText::sprintf('PLG_LIST_UPDATE_COL_UPDATE_MESSAGE', $this->row_count, $this->sent);
+			$this->msg = Text::sprintf('PLG_LIST_UPDATE_COL_UPDATE_MESSAGE', $this->row_count, $this->sent);
 		}
 		else
 		{
-			$this->msg = JText::sprintf($this->msg, $this->row_count, $this->sent);
+			$this->msg = Text::sprintf($this->msg, $this->row_count, $this->sent);
 		}
 
 		if (!empty($postEval))
@@ -345,7 +348,7 @@ class PlgFabrik_ListUpdate_col extends PlgFabrik_List
 		}
 
 		// Clean the cache.
-		$cache = JFactory::getCache($input->get('option'));
+		$cache = Factory::getCache($input->get('option'));
 		$cache->clean();
 
 		return true;
@@ -398,7 +401,7 @@ class PlgFabrik_ListUpdate_col extends PlgFabrik_List
 				{
 					$email = trim($email);
 
-					if (!(JMailHelper::cleanAddress($email) && Worker::isEmail($email)))
+					if (!(MailHelper::cleanAddress($email) && Worker::isEmail($email)))
 					{
 						$cleanTo = false;
 					}
@@ -635,7 +638,7 @@ class PlgFabrik_ListUpdate_col extends PlgFabrik_List
 
 		/** @var FabrikFEModelList $model */
 		$model = $this->getModel();
-		JText::script('PLG_LIST_UPDATE_COL_UPDATE');
+		Text::script('PLG_LIST_UPDATE_COL_UPDATE');
 		$options[] = '<option value="">' . FText::_('COM_FABRIK_PLEASE_SELECT') . '</option>';
 		$elementModels = $model->getElements(0, false, true);
 

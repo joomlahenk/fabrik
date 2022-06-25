@@ -12,10 +12,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Version;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+
 jimport('joomla.filesystem.folder');
 
 // Could be that the sys plugin is installed but fabrik not
-if (!JFolder::exists(JPATH_SITE . '/components/com_fabrik/'))
+if (!Folder::exists(JPATH_SITE . '/components/com_fabrik/'))
 {
 	return;
 }
@@ -38,12 +44,12 @@ define("COM_FABRIK_EXCEL_CSV_DELIMITER", ";");
 /** @var string separator used in repeat elements/groups IS USED IN F3 */
 define("GROUPSPLITTER", "//..*..//");
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
 // Override JHTML -needed for framework override
 // Henk: Only applied for 2.5, removed /jhelpers
-//$version = new JVersion;
+//$version = new Version;
 //JHTML::addIncludePath(JPATH_SITE . '/components/com_fabrik/jhelpers/' . $version->getShortVersion() . '/');
 
 // Register the element class with the loader
@@ -56,7 +62,7 @@ JLoader::register('JElement', JPATH_SITE . '/administrator/components/com_fabrik
 // JLoader::import('components.com_fabrik.classes.form', JPATH_SITE . '/administrator', 'administrator.');
 
 // Avoid errors during update, if plugin has been updated but component hasn't, use old helpers
-if (JFile::exists(COM_FABRIK_FRONTEND . '/helpers/legacy/aliases.php'))
+if (File::exists(COM_FABRIK_FRONTEND . '/helpers/legacy/aliases.php'))
 {
 	if (!($app->input->get('option', '') === 'com_installer' && $app->input->get('task', '') === 'update.update'))
 	{
@@ -65,7 +71,7 @@ if (JFile::exists(COM_FABRIK_FRONTEND . '/helpers/legacy/aliases.php'))
 }
 else
 {
-	$helpers = JFolder::files(COM_FABRIK_FRONTEND . '/helpers/', '.php');
+	$helpers = Folder::files(COM_FABRIK_FRONTEND . '/helpers/', '.php');
 	foreach ($helpers as $helper)
 	{
 		require_once(COM_FABRIK_FRONTEND . '/helpers/' . $helper);
@@ -85,8 +91,8 @@ if ($app->isClient('administrator'))
 	// Load in front end model path
 	if ($input->get('option') !== 'com_acymailing')
 	{
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 	}
-	JModelLegacy::addIncludePath(COM_FABRIK_BACKEND . '/models', 'FabrikAdminModel');
+	BaseDatabaseModel::addIncludePath(COM_FABRIK_BACKEND . '/models', 'FabrikAdminModel');
 	require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/fabrik.php';
 }

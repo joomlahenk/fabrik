@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/visualization.php';
@@ -34,7 +38,7 @@ class FabrikModelCoverflow extends FabrikFEModelVisualization
 	public function render()
 	{
 		$params = $this->getParams();
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript("http://api.simile-widgets.org/runway/1.0/runway-api.js");
 		$c = 0;
 		$images = (array) $params->get('coverflow_image');
@@ -46,7 +50,7 @@ class FabrikModelCoverflow extends FabrikFEModelVisualization
 
 		foreach ($listIds as $listId)
 		{
-			$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 			$listModel->setId($listId);
 			$list = $listModel->getTable();
 			$listModel->getPagination(0, 0, 0);
@@ -74,8 +78,8 @@ class FabrikModelCoverflow extends FabrikFEModelVisualization
 								{
 									case 'FabrikModelFabrikImage':
 										$rootFolder = $imageElement->getParams()->get('selectImage_root_folder');
-										$rootFolder = JString::ltrim($rootFolder, '/');
-										$rootFolder = JString::rtrim($rootFolder, '/');
+										$rootFolder = StringHelper::ltrim($rootFolder, '/');
+										$rootFolder = StringHelper::rtrim($rootFolder, '/');
 										$event->image = COM_FABRIK_LIVESITE . 'images/stories/' . $rootFolder . '/' . $row->{$image . '_raw'};
 										break;
 									default:

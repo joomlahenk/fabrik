@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -122,7 +124,7 @@ class PlgFabrik_FormUpsert extends PlgFabrik_Form
 		{
 			$params = $this->getParams();
 			$cid = $params->get('connection_id');
-			$connectionModel = JModelLegacy::getInstance('connection', 'FabrikFEModel');
+			$connectionModel = BaseDatabaseModel::getInstance('connection', 'FabrikFEModel');
 			$connectionModel->setId($cid);
 			$this->upsert_db = $connectionModel->getDb();
 		}
@@ -243,7 +245,7 @@ class PlgFabrik_FormUpsert extends PlgFabrik_Form
 	{
 		$params = $this->getParams();
 		$listId = $params->get('table');
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($listId);
 
 		return $listModel->getTable()->db_table_name;
@@ -261,7 +263,7 @@ class PlgFabrik_FormUpsert extends PlgFabrik_Form
 	{
 		$params = $this->getParams();
 		$cid = $params->get('connection_id');
-		$connectionModel = JModelLegacy::getInstance('connection', 'FabrikFEModel');
+		$connectionModel = BaseDatabaseModel::getInstance('connection', 'FabrikFEModel');
 		$connectionModel->setId($cid);
 		$db = $connectionModel->getDb();
 		$query = $db->getQuery(true);

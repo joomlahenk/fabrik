@@ -11,9 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
-class FabrikAdminViewList extends JViewLegacy
+class FabrikAdminViewList extends HtmlView
 {
 	/**
 	 * Display the list
@@ -25,11 +28,11 @@ class FabrikAdminViewList extends JViewLegacy
 
 	public function display($tpl = null)
 	{
-		$session = JFactory::getSession();
-		$app = JFactory::getApplication();
+		$session = Factory::getSession();
+		$app = Factory::getApplication();
 		$input = $app->input;
-		$exporter = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Csvexport', 'FabrikFEModel');
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$exporter = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Csvexport', 'FabrikFEModel');
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$model->setId($input->getInt('listid'));
 		$model->setOutPutFormat('csv');
 		$exporter->model =& $model;

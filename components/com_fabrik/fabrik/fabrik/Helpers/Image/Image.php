@@ -10,11 +10,14 @@ namespace Fabrik\Helpers\Image;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Fabrik\Helpers\ArrayHelper;
 use Fabrik\Helpers\StringHelper;
-use \JFactory;
-use \JFile;
-use \JFolder;
+use \Factory;
+use \File;
+use \Folder;
 
 /**
  * Base image manipulation class
@@ -120,7 +123,7 @@ class Image
 		 * to use for this, as it requires allow_url_fopen to be enabled in PHP to fetch a URL,
 		 * which a lot of shared hosts don't allow.
 		 *
-		 * -Rob - well JFile::read is deprecated and in the code it says to use file_get_contents
+		 * -Rob - well File::read is deprecated and in the code it says to use file_get_contents
 		 * The Joomla updater won't work with out file_get_contents so I think we should make it a requirement
 		 * Wiki updated here - http://fabrikar.com/forums/index.php?wiki/prerequisites/
 		 *
@@ -157,9 +160,9 @@ class Image
 		// For SSL a user agent may need to be set.
 		ini_set('user_agent', 'Mozilla/4.0 (compatible; MSIE 6.0)');
 
-		if (!JFolder::exists($folder))
+		if (!Folder::exists($folder))
 		{
-			JFolder::create($folder);
+			Folder::create($folder);
 		}
 
 		// make sure we have one, and only one, / on the end of folder.  Really should add a helper for this which looks for legacy \ as well!
@@ -170,18 +173,18 @@ class Image
 		$res = false;
 
 		// Check for cached version
-		if (JFile::exists($cacheFile))
+		if (File::exists($cacheFile))
 		{
 			// Check its age- Google T&C allow you to store for no more than 30 days.
-			$createDate = JFactory::getDate(filemtime($cacheFile));
-			$now        = JFactory::getDate();
+			$createDate = Factory::getDate(filemtime($cacheFile));
+			$now        = Factory::getDate();
 			$interval   = $now->diff($createDate);
 			$daysOld    = (float) $interval->format('%R%a');
 
 			if ($daysOld < -$lifeTime)
 			{
 				// Remove out of date
-				JFile::delete($cacheFile);
+				File::delete($cacheFile);
 
 				// Grab image from Google and store
 				$res = file_put_contents($cacheFile, file_get_contents($src));

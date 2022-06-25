@@ -12,6 +12,17 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Extension;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Version;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\Worker;
 
@@ -25,7 +36,7 @@ jimport('joomla.filesystem.file');
  * @subpackage  System
  * @since       3.0
  */
-class PlgSystemFabrik extends JPlugin
+class PlgSystemFabrik extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -38,24 +49,24 @@ class PlgSystemFabrik extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		// Could be component was uninstalled but not the plugin
-		if (!JFile::exists(JPATH_SITE . '/components/com_fabrik/fabrik.php'))
+		if (!File::exists(JPATH_SITE . '/components/com_fabrik/fabrik.php'))
 		{
 			return;
 		}
 
 		/**
 		 * Moved these from defines.php to here, to fix an issue with Kunena.  Kunena imports the J!
-		 * JForm class in their system plugin, in the class constructor  So if we wait till onAfterInitialize
+		 * Form class in their system plugin, in the class constructor  So if we wait till onAfterInitialize
 		 * to do this, we blow up.  So, import them here, and make sure the Fabrik plugin has a lower ordering
 		 * than Kunena's.  We might want to set our default to -1.
 		 *
 		 * Henk: do we realy need to do this here ? would expect this in the installer
 		 * not sure if this is till true for Kunena >= version 6.0 for J!4
 		 */
-		$app     = JFactory::getApplication();
-//		$version = new JVersion;
+		$app     = Factory::getApplication();
+//		$version = new Version;
 		/*
-		 * J!4.x: JVersion no longer supports constants; use getShortVersion() or JVERSION constant instead which gives RELEASE.DEV_LEVEL
+		 * J!4.x: Version no longer supports constants; use getShortVersion() or JVERSION constant instead which gives RELEASE.DEV_LEVEL
 		 */
 //		$base    = 'components.com_fabrik.classes.' . str_replace('.', '', $version->RELEASE);
 		$base    = 'components.com_fabrik.classes';
@@ -126,10 +137,10 @@ class PlgSystemFabrik extends JPlugin
 		 * managed to creep in to a release ZIP at some point, so some people unknowingly have one, which started causing
 		 * issues after we added some more includes to defines.php.
 		 */
-		$fbConfig         = JComponentHelper::getParams('com_fabrik');
+		$fbConfig         = ComponentHelper::getParams('com_fabrik');
 		$allowUserDefines = $fbConfig->get('allow_user_defines', '0') === '1';
 		$p                = JPATH_SITE . '/plugins/system/fabrik/';
-		$defines          = $allowUserDefines && JFile::exists($p . 'user_defines.php') ? $p . 'user_defines.php' : $p . 'defines.php';
+		$defines          = $allowUserDefines && File::exists($p . 'user_defines.php') ? $p . 'user_defines.php' : $p . 'defines.php';
 		require_once $defines;
 
 		$this->setBigSelects();
@@ -147,10 +158,10 @@ class PlgSystemFabrik extends JPlugin
 		 * out the system cache, so loading a cached page will not have requirejs on the end.
 		 */
 
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = Factory::getConfig();
+		$app = Factory::getApplication();
 		$script = '';
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 
 		/**
 		 * Whenever we cache a view, we add the cache ID to this session variable, by calling
@@ -208,7 +219,7 @@ class PlgSystemFabrik extends JPlugin
 	 */
 	public static function clearJs()
 	{
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->clear('fabrik.js.scripts');
 		$session->clear('fabrik.js.cacheids');
 		$session->clear('fabrik.js.head.scripts');
@@ -225,9 +236,9 @@ class PlgSystemFabrik extends JPlugin
 	 */
 	public static function storeHeadJs()
 	{
-		$session = JFactory::getSession();
-		$doc = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$session = Factory::getSession();
+		$doc = Factory::getDocument();
+		$app = Factory::getApplication();
 		$key = md5($app->input->server->get('REQUEST_URI', '', 'string'));
 
 		if (!empty($key))
@@ -266,7 +277,7 @@ class PlgSystemFabrik extends JPlugin
 	 */
 	public static function buildJs()
 	{
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$config  = (array) $session->get('fabrik.js.config', array());
 		$config  = implode("\n", $config);
 
@@ -327,7 +338,7 @@ class PlgSystemFabrik extends JPlugin
 			'partial'
 		);
 
-		$app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 
 		/*
 		if (!in_array($app->input->get('format', 'html'), $formats))
@@ -340,7 +351,7 @@ class PlgSystemFabrik extends JPlugin
 		//self::clearJs();
 		self::storeHeadJs();
 
-//		$version           = new JVersion;
+//		$version           = new Version;
 //		$lessThanThreeFour = version_compare($version->RELEASE, '3.4', '<');
 //		$content           = $lessThanThreeFour ? JResponse::getBody() : $app->getBody();
 		$content           = $app->getBody();
@@ -376,10 +387,10 @@ class PlgSystemFabrik extends JPlugin
 		 * issues after we added some more includes to defines.php.
 		 */
 		/*
-		$fbConfig         = JComponentHelper::getParams('com_fabrik');
+		$fbConfig         = ComponentHelper::getParams('com_fabrik');
 		$allowUserDefines = $fbConfig->get('allow_user_defines', '0') === '1';
 		$p                = JPATH_SITE . '/plugins/system/fabrik/';
-		$defines          = $allowUserDefines && JFile::exists($p . 'user_defines.php') ? $p . 'user_defines.php' : $p . 'defines.php';
+		$defines          = $allowUserDefines && File::exists($p . 'user_defines.php') ? $p . 'user_defines.php' : $p . 'defines.php';
 		require_once $defines;
 
 		$this->setBigSelects();
@@ -411,7 +422,7 @@ class PlgSystemFabrik extends JPlugin
 	{
 		if (class_exists('FabrikWorker'))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			FabrikWorker::bigSelects($db);
 		}
 	}
@@ -424,7 +435,7 @@ class PlgSystemFabrik extends JPlugin
 	 * browsernav
 	 *
 	 * @param   string    $text     Target search string
-	 * @param   JRegistry $params   Search plugin params
+	 * @param   Registry $params   Search plugin params
 	 * @param   string    $phrase   Matching option, exact|any|all
 	 * @param   string    $ordering Option, newest|oldest|popular|alpha|category
 	 *
@@ -432,9 +443,9 @@ class PlgSystemFabrik extends JPlugin
 	 */
 	public static function onDoContentSearch($text, $params, $phrase = '', $ordering = '')
 	{
-		$app      = JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$package  = $app->getUserState('com_fabrik.package', 'fabrik');
-		$fbConfig = JComponentHelper::getParams('com_fabrik');
+		$fbConfig = ComponentHelper::getParams('com_fabrik');
 
 		if (defined('COM_FABRIK_SEARCH_RUN'))
 		{
@@ -443,7 +454,7 @@ class PlgSystemFabrik extends JPlugin
 
 		$input = $app->input;
 		define('COM_FABRIK_SEARCH_RUN', true);
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 
 		$db = FabrikWorker::getDbo(true);
 
@@ -505,13 +516,13 @@ class PlgSystemFabrik extends JPlugin
 		$usage     = array();
 		$memSafety = 0;
 
-		$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
-		$app       = JFactory::getApplication();
+		$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$app       = Factory::getApplication();
 
 		foreach ($ids as $id)
 		{
 			// Re-ini the list model (was using reset() but that was flaky)
-			$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+			$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 
 			// $$$ geros - http://fabrikar.com/forums/showthread.php?t=21134&page=2
 			$key = 'com_' . $package . '.list' . $id . '.filter.searchall';
@@ -587,7 +598,7 @@ class PlgSystemFabrik extends JPlugin
 
 			/**
 			 * $$$ hugh - added date element ... always use raw, as anything that isn't in
-			 * standard MySQL format will cause a fatal error in J!'s search code when it does the JDate create
+			 * standard MySQL format will cause a fatal error in J!'s search code when it does the Date create
 			 */
 			$elementModel = $listModel->getFormModel()->getElement($params->get('search_date', 0), true);
 			$dateElement  = is_object($elementModel) ? $elementModel->getFullName() : '';
@@ -680,7 +691,7 @@ class PlgSystemFabrik extends JPlugin
 		}
 		if ($limit < 0)
 		{
-			$language = JFactory::getLanguage();
+			$language = Factory::getLanguage();
 			$language->load('plg_system_fabrik', JPATH_SITE . '/plugins/system/fabrik');
 			$msg = FText::_('PLG_FABRIK_SYSTEM_SEARCH_LIMIT');
 			$app->enqueueMessage($msg);
@@ -696,9 +707,9 @@ class PlgSystemFabrik extends JPlugin
 	 */
 	public function onAfterDispatch()
 	{
-		$doc     = JFactory::getDocument();
-		$session = JFactory::getSession();
-		$package = JFactory::getApplication()->getUserState('com_fabrik.package', 'fabrik');
+		$doc     = Factory::getDocument();
+		$session = Factory::getSession();
+		$package = Factory::getApplication()->getUserState('com_fabrik.package', 'fabrik');
 
 		if (isset($doc->_links) && $session->get('fabrik.clearCanonical'))
 		{
@@ -721,7 +732,7 @@ class PlgSystemFabrik extends JPlugin
 	 * Update server XML manifest generated from update/premium.php
 	 *
 	 * @param string          $option
-	 * @param JTableExtension $data
+	 * @param Extension $data
 	 */
 	function onExtensionAfterSave($option, $data)
 	{
@@ -736,7 +747,7 @@ class PlgSystemFabrik extends JPlugin
 		}
 
 		$props      = $data->getProperties();
-		$params     = new JRegistry($props['params']);
+		$params     = new Registry($props['params']);
 		$productKey = $params->get('fabrik_product_key', '');
 
 		if ($productKey === '')
@@ -744,7 +755,7 @@ class PlgSystemFabrik extends JPlugin
 			return;
 		}
 
-		$table = JTable::getInstance('Updatesite');
+		$table = Table::getInstance('Updatesite');
 		$table->load(array('name' => 'Fabrik - Premium'));
 		$table->save(array(
 			'type' => 'collection',

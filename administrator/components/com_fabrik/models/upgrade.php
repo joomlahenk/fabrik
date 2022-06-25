@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 require_once 'fabmodeladmin.php';
 
 /**
@@ -51,14 +53,14 @@ class FabrikModelUpgrade extends FabModelAdmin
 
 	protected function backUp()
 	{
-		$db    = JFactory::getDbo(true);
-		$app   = JFactory::getApplication();
+		$db    = Factory::getDbo(true);
+		$app   = Factory::getApplication();
 		$query = $db->getQuery(true);
 		$query->select('db_table_name, connection_id')->from('#__fabrik_tables');
 		$db->setQuery($query);
 		$tables    = $db->loadObjectList('db_table_name') + $this->getFabrikTables();
-		$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
-		$connModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
+		$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$connModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 		$cnnTables = array();
 
 		foreach ($tables as $dbName => $item)
@@ -105,7 +107,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 	{
 		if (!$this->shouldUpgrade())
 		{
-			JFactory::getApplication()->enqueueMessage('Already updated');
+			Factory::getApplication()->enqueueMessage('Already updated');
 
 			return;
 		}
@@ -115,7 +117,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 			return;
 		}
 
-		$db      = JFactory::getDbo(true);
+		$db      = Factory::getDbo(true);
 		$updates = array('#__fabrik_elements', '#__fabrik_cron', '#__fabrik_forms', '#__fabrik_groups', '#__fabrik_joins', '#__fabrik_jsactions',
 			'#__fabrik_tables', '#__fabrik_visualizations');
 
@@ -179,7 +181,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 		}
 		// Get the upgrade script
 		$sql    = file_get_contents(JPATH_SITE . '/administrator/components/com_fabrik/sql/2.x-3.0.sql');
-		$prefix = JFactory::getApplication()->getCfg('dbprefix');
+		$prefix = Factory::getApplication()->getCfg('dbprefix');
 		$sql    = str_replace('#__', $prefix, $sql);
 		$sql    = explode("\n", $sql);
 
@@ -194,7 +196,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 		}
 
 		// Run fabrik ratings outside mysql script as it may not exist and error
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		// Check if #__fabrik_ratings table exists
 		$fabrate = "SHOW TABLES LIKE '" . $prefix . "fabrik_ratings'";
@@ -207,7 +209,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 			$db->execute();
 		}
 
-		JFactory::getApplication()->enqueueMessage('Upgraded OK!');
+		Factory::getApplication()->enqueueMessage('Upgraded OK!');
 
 	}
 
@@ -219,7 +221,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 
 	protected function fundleMenus()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery('select extension_id FROM 	#__extensions WHERE type = "component" and element = "com_fabrik"');
 		$cid = (int) $db->loadResult();
 		$db->setQuery('UPDATE #__menu SET component_id = ' . $cid . ' WHERE link LIKE \'%com_fabrik%\'');
@@ -307,7 +309,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 
 	protected function getFabrikTables()
 	{
-		$db = JFactory::getDbo(true);
+		$db = Factory::getDbo(true);
 		$r  = array();
 		$db->setQuery("SHOW TABLES");
 		$rows = $db->loadColumn();
@@ -334,7 +336,7 @@ class FabrikModelUpgrade extends FabModelAdmin
 
 	protected function shouldUpgrade()
 	{
-		$db = JFactory::getDbo(true);
+		$db = Factory::getDbo(true);
 		$db->setQuery("SHOW TABLES");
 		$rows = $db->loadColumn();
 

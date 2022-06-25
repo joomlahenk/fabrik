@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -21,7 +24,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  Fabrik
  * @since       1.5
  */
-class FabrikControllerCroncronnotification extends JControllerLegacy
+class FabrikControllerCroncronnotification extends BaseController
 {
 	/**
 	 * Display the view
@@ -30,7 +33,7 @@ class FabrikControllerCroncronnotification extends JControllerLegacy
 	 */
 	public function display()
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewName = 'cronnotification';
 		$viewType	= $document->getType();
 

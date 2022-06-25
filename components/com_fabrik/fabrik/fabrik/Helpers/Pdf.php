@@ -15,6 +15,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.filesystem.file');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -35,7 +37,7 @@ class Pdf
 	 */
 	public static function renderPdf($html, $size = 'A4', $orientation = 'portrait')
 	{
-		$config = \JComponentHelper::getParams('com_fabrik');
+		$config = \ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('fabrik_pdf_lib', 'dompdf') === 'dompdf')
 		{
@@ -71,7 +73,7 @@ class Pdf
 		{
 			$mpdf = new \Mpdf\Mpdf(
 				[
-					'tempDir'     => \JFactory::getConfig()->get('tmp_path', JPATH_ROOT . '/tmp'),
+					'tempDir'     => \Factory::getConfig()->get('tmp_path', JPATH_ROOT . '/tmp'),
 					'mode'        => 'utf-8',
 					'format'      => $size,
 					'orientation' => $orientation
@@ -104,7 +106,7 @@ class Pdf
 	 */
 	public static function iniPdf()
 	{
-		$config = \JComponentHelper::getParams('com_fabrik');
+		$config = \ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('fabrik_pdf_lib', 'dompdf') === 'dompdf')
 		{
@@ -127,7 +129,7 @@ class Pdf
 			return false;
 		}
 
-		$config = \JFactory::getConfig();
+		$config = \Factory::getConfig();
 
 		$options = new Options();
 		$options->set('isRemoteEnabled', true);
@@ -271,7 +273,7 @@ class Pdf
 			// Oho malformed html - if we are debugging the site then show the errors
 			// otherwise continue, but it may mean that images/css/links are incorrect
 			$errors = libxml_get_errors();
-			$config = \JComponentHelper::getParams('com_fabrik');
+			$config = \ComponentHelper::getParams('com_fabrik');
 
 			// Don't show the errors if we want to debug the actual pdf html
 			if (JDEBUG && $config->get('pdf_debug', false) === true)

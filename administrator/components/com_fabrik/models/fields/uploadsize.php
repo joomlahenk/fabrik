@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\FormField;
 use Joomla\String\StringHelper;
 
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
@@ -23,7 +24,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
  * @since       1.6
  */
 
-class JFormFieldUploadsize extends JFormField
+class FormFieldUploadsize extends FormField
 {
 	/**
 	 * Element name

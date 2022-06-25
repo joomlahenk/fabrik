@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
@@ -117,7 +120,7 @@ class PlgFabrik_Validationrule extends FabrikPlugin
 		{
 			// Replace repeat data array with current repeatCounter value to ensure placeholders work.
 			// E.g. return {'table___field}' == '1';
-			$f = JFilterInput::getInstance();
+			$f = InputFilter::getInstance();
 			$post = $f->clean($_REQUEST, 'array');
 			$groupElements = $groupModel->getMyElements();
 
@@ -326,7 +329,7 @@ class PlgFabrik_Validationrule extends FabrikPlugin
 	 */
 	public function iconImage()
 	{
-		$plugin = JPluginHelper::getPlugin('fabrik_validationrule', $this->pluginName);
+		$plugin = PluginHelper::getPlugin('fabrik_validationrule', $this->pluginName);
 		$elIcon = $this->params->get('icon', '');
 
 		/**
@@ -339,8 +342,8 @@ class PlgFabrik_Validationrule extends FabrikPlugin
 		/*
 		if ($plugin->params === '{}')
 		{
-			$plugin_form = $this->getJForm();
-			JForm::addFormPath(JPATH_SITE . '/plugins/fabrik_validationrule/' . $this->get('pluginName'));
+			$plugin_form = $this->getForm();
+			Form::addFormPath(JPATH_SITE . '/plugins/fabrik_validationrule/' . $this->get('pluginName'));
 			$xmlFile = JPATH_SITE . '/plugins/fabrik_validationrule/' . $this->get('pluginName') . '/' . $this->get('pluginName') . '.xml';
 			$xml = $this->jform->loadFile($xmlFile, false);
 			$params_fieldset = $plugin_form->getFieldset('params');

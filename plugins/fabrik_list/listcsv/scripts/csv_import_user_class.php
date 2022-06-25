@@ -1,4 +1,9 @@
 <?php
+
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Factory;
+
 /**
  * Fabrik List CSV plugin import user class
  *
@@ -107,11 +112,11 @@ class ImportCSVCreateUser
 
 	public function createUser(&$listModel)
 	{
-		// Include the JLog class.
+		// Include the Log class.
 		jimport('joomla.log.log');
 
-		$app = JFactory::getApplication();
-		$db = JFactory::getDbo();
+		$app = Factory::getApplication();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$logMessageType='plg.list.listcsv.csv_import_user.information';
 
@@ -121,7 +126,7 @@ class ImportCSVCreateUser
 		$clear_passwd = '';
 
 		// Load in the com_user language file
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_user');
 
 		// Grab username, name and email
@@ -153,7 +158,7 @@ class ImportCSVCreateUser
 			{
 				$app->enqueueMessage("No email for {$userdata['username']}");
 			}
-			JLog::add('No email for ' . $userdata['username'], JLog::NOTICE, $logMessageType);
+			Log::add('No email for ' . $userdata['username'], Log::NOTICE, $logMessageType);
 
 			return false;
 		}
@@ -184,7 +189,7 @@ class ImportCSVCreateUser
 					$app->enqueueMessage($msg);
 				}
 
-				JLog::add($msg, JLog::NOTICE, $logMessageType);
+				Log::add($msg, Log::NOTICE, $logMessageType);
 
 				return false;
 			}
@@ -202,7 +207,7 @@ class ImportCSVCreateUser
 			}
 		}
 
-		$user = new JUser($user_id);
+		$user = new User($user_id);
 
 		// $userdata['gid'] = 18;
 		$userdata['block'] = 0;
@@ -211,7 +216,7 @@ class ImportCSVCreateUser
 
 		if ($isNew)
 		{
-			$now = JFactory::getDate();
+			$now = Factory::getDate();
 			$user->set('registerDate', $now->toSql());
 		}
 
@@ -223,7 +228,7 @@ class ImportCSVCreateUser
 				$app->enqueueMessage($user->getError(), 'error');
 			}
 
-			JLog::add('Error binding user info for: ' . $userdata['username'], JLog::NOTICE, $logMessageType);
+			Log::add('Error binding user info for: ' . $userdata['username'], Log::NOTICE, $logMessageType);
 
 			return false;
 		}
@@ -236,7 +241,7 @@ class ImportCSVCreateUser
 				$app->enqueueMessage($user->getError(), 'error');
 			}
 
-			JLog::add('Error storing user info for: ' . $userdata['username'], JLog::NOTICE, $logMessageType);
+			Log::add('Error storing user info for: ' . $userdata['username'], Log::NOTICE, $logMessageType);
 
 			return false;
 		}
@@ -258,11 +263,11 @@ class ImportCSVCreateUser
 
 		if ($isNew)
 		{
-			JLog::add('Created user: ' . $userdata['username'], JLog::NOTICE, $logMessageType);
+			Log::add('Created user: ' . $userdata['username'], Log::NOTICE, $logMessageType);
 		}
 		else
 		{
-			JLog::add('Modified user: ' . $userdata['username'], JLog::NOTICE, $logMessageType);
+			Log::add('Modified user: ' . $userdata['username'], Log::NOTICE, $logMessageType);
 		}
 
 		return true;

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\Normalise;
+use Joomla\CMS\Filesystem\File;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.model');
@@ -88,7 +90,7 @@ class FabrikModelNvd3_Chart extends FabrikFEModelVisualization
 		$script   = $params->get('script', '');
 		$fullPath = JPATH_ROOT . '/plugins/fabrik_visualization/nvd3_chart/scripts/' . $script;
 
-		if ($script != '' && JFile::exists($fullPath))
+		if ($script != '' && File::exists($fullPath))
 		{
 			require $fullPath;
 		}
@@ -106,10 +108,10 @@ class FabrikModelNvd3_Chart extends FabrikFEModelVisualization
 			// @TODO - make distinct render classes for each chart type. MUCH easier to manage.
 			$chartFile = JPATH_SITE . '/plugins/fabrik_visualization/nvd3_chart/charts/' . strtolower($chartType) . '.php';
 
-			if (JFile::exists($chartFile))
+			if (File::exists($chartFile))
 			{
 				require_once $chartFile;
-				$cls    = JStringNormalise::toCamelCase($chartType);
+				$cls    = Normalise::toCamelCase($chartType);
 				$render = new $cls($params);
 
 				return $render->render($params);

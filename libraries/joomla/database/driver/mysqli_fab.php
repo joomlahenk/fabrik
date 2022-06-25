@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /**
  * MySQL database driver
  *
@@ -38,7 +40,7 @@ class JDatabaseDriverMySQLi_Fab extends JDatabaseDriverMySQLi
 	 */
 	public function replacePrefix($sql, $prefix = '#__')
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$package = $app->getUserStateFromRequest('com_fabrik.package', 'package', 'fabrik', 'cmd');
 
 		if ($package == '')

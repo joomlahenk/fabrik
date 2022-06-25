@@ -11,6 +11,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Document\Document;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.helper');
@@ -18,7 +25,7 @@ jimport('joomla.filesystem.file');
 
 if (!defined('COM_FABRIK_FRONTEND'))
 {
-	throw new RuntimeException(JText::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'), 400);
+	throw new RuntimeException(Text::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'), 400);
 }
 
 jimport('joomla.log.log');
@@ -26,11 +33,11 @@ jimport('joomla.log.log');
 if (JDEBUG)
 {
 	// Add the logger.
-	JLog::addLogger(array('text_file' => 'fabrik.log.php'));
+	Log::addLogger(array('text_file' => 'fabrik.log.php'));
 }
 
 require_once JPATH_COMPONENT . '/controller.php';
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $app->set('jquery', true);
 $input = $app->input;
 
@@ -48,17 +55,17 @@ foreach ($docs as $d)
 		require_once JPATH_SITE . '/administrator/components/com_fabrik/classes/' . $d . 'document.php';
 
 		// Replace the document
-		$document = JFactory::getDocument();
-		$docClass = 'JDocument' . StringHelper::strtoupper($d);
+		$document = Factory::getDocument();
+		$docClass = 'Document' . StringHelper::strtoupper($d);
 		$document = new $docClass;
 	}
 }
 
-JModelLegacy::addIncludePath(JPATH_COMPONENT . '/models');
+BaseDatabaseModel::addIncludePath(JPATH_COMPONENT . '/models');
 
 // $$$ rob if you want to you can override any fabrik model by copying it from
 // models/ to models/adaptors the copied file will overwrite (NOT extend) the original
-JModelLegacy::addIncludePath(JPATH_COMPONENT . '/models/adaptors');
+BaseDatabaseModel::addIncludePath(JPATH_COMPONENT . '/models/adaptors');
 
 $controllerName = $input->getCmd('view');
 
@@ -81,7 +88,7 @@ if (StringHelper::strpos($cName, '.') != false)
 
 	$path = JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/controllers/' . $name . '.php';
 
-	if (JFile::exists($path))
+	if (File::exists($path))
 	{
 		require_once $path;
 		$isPlugin = true;
@@ -115,7 +122,7 @@ else
 
 	$path = JPATH_COMPONENT . '/controllers/' . $controller . '.php';
 
-	if (JFile::exists($path))
+	if (File::exists($path))
 	{
 		require_once $path;
 	}
@@ -137,7 +144,7 @@ if (strpos($input->getCmd('task'), '.') !== false)
 	$className = 'FabrikController' . StringHelper::ucfirst($controller);
 	$path = JPATH_COMPONENT . '/controllers/' . $controller . '.php';
 
-	if (JFile::exists($path))
+	if (File::exists($path))
 	{
 		require_once $path;
 
@@ -148,7 +155,7 @@ if (strpos($input->getCmd('task'), '.') !== false)
 	}
 	else
 	{
-		$controller = JControllerLegacy::getInstance('Fabrik');
+		$controller = BaseController::getInstance('Fabrik');
 	}
 }
 else
@@ -164,7 +171,7 @@ if ($isPlugin)
 	$controller->addViewPath(JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/views');
 
 	// Add the model path
-	$modelpaths = JModelLegacy::addIncludePath(JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/models');
+	$modelpaths = BaseDatabaseModel::addIncludePath(JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/models');
 }
 
 $package = $input->get('package', 'fabrik');

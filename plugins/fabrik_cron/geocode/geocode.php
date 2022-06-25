@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-cron.php';
 
@@ -74,7 +76,7 @@ class PlgFabrik_CronGeocode extends PlgFabrik_Cron
 		$primary_key_element = FabrikString::shortColName($table->db_primary_key);
 		$primary_key_element_long = $table_name . '___' . $primary_key_element . '_raw';
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$apiKey = trim($config->get('google_api_key', ''));
 
 		//$connection = (int) $params->get('connection');
@@ -114,7 +116,7 @@ class PlgFabrik_CronGeocode extends PlgFabrik_Cron
 		$geocode_from = $params->get('geocode_from', '1');
 		$geocode_normalize_format = $params->get('geocode_normalize_format', 'long');
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$verifyPeer = (bool) $config->get('verify_peer', '1');
 
 		$gmap = new GeoCode($verifyPeer);

@@ -11,6 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,7 +26,7 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik.visualization.calendar
  * @since       3.0
  */
-class FabrikViewFullcalendar extends JViewLegacy
+class FabrikViewFullcalendar extends HtmlView
 {
 	/**
 	 * Choose which list to add an event to
@@ -29,16 +35,16 @@ class FabrikViewFullcalendar extends JViewLegacy
 	 */
 	public function chooseAddEvent()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$this->setLayout('chooseAddEvent');
 		$model       = $this->getModel();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model->setId($input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0))));
 		$rows = $model->getEventLists();
 
 		foreach ($rows as $rowkey => $row) {
-			$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 			$listModel->setId($row->value);
 			if (!$listModel->canAdd())
 			{
@@ -65,7 +71,7 @@ class FabrikViewFullcalendar extends JViewLegacy
 		$script[] = "document.id('fabrik_event_type').addEvent('change', function(e) {";
 		$script[] = "var fid = e.target.get('value');";
 		$script[] = "var o = ({'id':'','listid':fid,'rowid':0});";
-		$script[] = "o.title = Joomla.JText._('PLG_VISUALIZATION_FULLCALENDAR_ADD_EVENT');";
+		$script[] = "o.title = Joomla.Text._('PLG_VISUALIZATION_FULLCALENDAR_ADD_EVENT');";
 
 		$script[] = "Fabrik.blocks['" . $ref . "'].addEvForm(o);";
 		$script[] = "Fabrik.Windows.chooseeventwin.close();";

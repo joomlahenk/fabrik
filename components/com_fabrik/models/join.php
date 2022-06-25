@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
 use \Joomla\Registry\Registry;
 
 jimport('joomla.application.component.model');
@@ -119,9 +120,9 @@ class FabrikFEModelJoin extends FabModel
 	}
 
 	/**
-	 * When loading the join JTable ensure its params are set to be a JRegistry item
+	 * When loading the join Table ensure its params are set to be a Registry item
 	 *
-	 * @param   JTable  &$join  Join table
+	 * @param   Table  &$join  Join table
 	 *
 	 * @return  void
 	 */

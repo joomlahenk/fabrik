@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,19 +25,19 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikAdminViewVisualization extends JViewLegacy
+class FabrikAdminViewVisualization extends HtmlView
 {
 	/**
 	 * Form
 	 *
-	 * @var JForm
+	 * @var Form
 	 */
 	protected $form;
 
 	/**
 	 * Visualization item
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $item;
 
@@ -108,9 +113,9 @@ class FabrikAdminViewVisualization extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
-		$user         = JFactory::getUser();
+		$user         = Factory::getUser();
 		$isNew        = ($this->item->get('id') == 0);
 		$userId       = $user->get('id');
 		$checkedOutBy = $this->item->get('checked_out');

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 //@TODO if we ever get calendars inside packages then the ids will need to be
 // Replaced with classes contained within a distinct id
 
@@ -57,7 +59,7 @@ echo $this->modalLayout;
 		<?php if ($this->params->get('show_fullcalendar_legend', 0))
 		{
 			$legends = $this->getModel()->getLegend();
-			echo "<h3>" . JText::_('PLG_VISUALIZATION_FULLCALENDAR_KEY') . "</h3>";
+			echo "<h3>" . Text::_('PLG_VISUALIZATION_FULLCALENDAR_KEY') . "</h3>";
 			echo "<ul>";
 
 			foreach ($legends as $legend)

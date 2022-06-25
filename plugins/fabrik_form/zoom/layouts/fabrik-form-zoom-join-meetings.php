@@ -11,6 +11,8 @@
 // No direct access
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
 $d = $displayData;
 
 if ($d->attending)
@@ -29,25 +31,25 @@ else
 <div class="zoomButtons">
     <div class="<?php echo $attendingClass; ?>">
         <button class="zoomAttending" data-attending="1">
-			<?php echo JText::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_LEAVE'); ?>
+			<?php echo Text::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_LEAVE'); ?>
         </button>
     </div>
 
     <div class="<?php echo $notAttendingClass; ?>">
         <div class="zoomOptInNotConfirmed">
             <button class="zoomNotAttending">
-                <?php echo JText::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_JOIN'); ?>
+                <?php echo Text::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_JOIN'); ?>
             </button>
         </div>
         <div class="zoomOptIn .fabrikHide">
             <div class="zoomOptInMessage">
-                <?php echo JText::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_OPT_IN_MESSAGE'); ?>
+                <?php echo Text::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_OPT_IN_MESSAGE'); ?>
             </div>
             <button class="zoomOptInConfirm" data-attending="0">
-		        <?php echo JText::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_OPT_IN_CONFIRM'); ?>
+		        <?php echo Text::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_OPT_IN_CONFIRM'); ?>
             </button>
             <button class="zoomOptInCancel">
-		        <?php echo JText::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_OPT_IN_CANCEL'); ?>
+		        <?php echo Text::_('PLG_FORM_ZOOM_MEETINGS_ATTENDING_OPT_IN_CANCEL'); ?>
             </button>
         </div>
     </div>

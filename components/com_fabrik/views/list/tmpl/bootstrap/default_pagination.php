@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /**
  * This is a file to add template specific chrome to pagination rendering.
  *
@@ -67,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 function fabrik_pagination_list_footer($list)
 {
 	// Initialise variables.
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	$html = "<div class=\"container\"><div class=\"pagination\">\n";
 
 	$html .= "\n<div class=\"limit\">" . FText::_('JGLOBAL_DISPLAY_NUM') . $list['limitfield'] . "</div>";

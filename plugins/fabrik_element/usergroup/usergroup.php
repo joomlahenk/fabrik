@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\User\User;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Plugin element to render multi select user group list
  *
@@ -44,7 +48,7 @@ class PlgFabrik_ElementUsergroup extends PlgFabrik_ElementList
 	/**
 	 * Get the user associated with this element
 	 *
-	 * @return bool|JUser
+	 * @return bool|User
 	 */
 	protected function getThisUser()
 	{
@@ -65,7 +69,7 @@ class PlgFabrik_ElementUsergroup extends PlgFabrik_ElementList
 				$userId = FArrayHelper::getValue($userId, 0);
 			}
 
-			$thisUser = !empty($userId) ? JFactory::getUser($userId) : false;
+			$thisUser = !empty($userId) ? Factory::getUser($userId) : false;
 		}
 
 		return $thisUser;
@@ -110,7 +114,7 @@ class PlgFabrik_ElementUsergroup extends PlgFabrik_ElementList
 		$layout = $this->getLayout('form');
 		$layoutData = new stdClass;
 		$layoutData->isEditable = $this->isEditable();
-		$layoutData->input = JHtml::_('access.usergroups', $name, $selected, true);
+		$layoutData->input = HTMLHelper::_('access.usergroups', $name, $selected, true);
 		$layoutData->selected = is_array($selected) ? implode(', ', $selected) : '';
 
 		return $layout->render($layoutData);

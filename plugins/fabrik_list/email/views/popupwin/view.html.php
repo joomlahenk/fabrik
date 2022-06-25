@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,7 +23,7 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik.list.email
  * @since       3.0
  */
-class FabrikViewPopupwin extends JViewLegacy
+class FabrikViewPopupwin extends HtmlView
 {
 	/**
 	 * Display the view
@@ -33,7 +36,7 @@ class FabrikViewPopupwin extends JViewLegacy
 	{
 		$w           = new FabrikWorker;
 		$params      = $this->getParams();
-		$app         = JFactory::getApplication();
+		$app         = Factory::getApplication();
 		$model       = $this->getModel();
 		$input       = $app->input;
 		$renderOrder = $input->getInt('renderOrder');

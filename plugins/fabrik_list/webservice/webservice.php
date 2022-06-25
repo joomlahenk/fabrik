@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -150,7 +152,7 @@ class PlgFabrik_ListWebservice extends PlgFabrik_List
 		$serviceData = $service->get($method, $filters, $startPoint, null);
 		$update = (bool) $params->get('webservice_update_existing', false);
 		$service->storeLocally($model, $serviceData, $fk, $update);
-		$this->msg = JText::sprintf($params->get('webservice_msg'), $service->addedCount, $service->updateCount);
+		$this->msg = Text::sprintf($params->get('webservice_msg'), $service->addedCount, $service->updateCount);
 
 		return true;
 	}

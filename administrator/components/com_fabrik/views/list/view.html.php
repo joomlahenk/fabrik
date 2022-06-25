@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,19 +25,19 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik
  * @since       1.5
  */
-class FabrikAdminViewList extends JViewLegacy
+class FabrikAdminViewList extends HtmlView
 {
 	/**
 	 * List form
 	 *
-	 * @var JForm
+	 * @var Form
 	 */
 	protected $form;
 
 	/**
 	 * List item
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $item;
 
@@ -156,7 +161,7 @@ class FabrikAdminViewList extends JViewLegacy
 	 */
 	public function confirmCopy($tpl = null)
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$cid   = $input->get('cid', array(0), 'array');
 		$lists = array();
@@ -204,7 +209,7 @@ class FabrikAdminViewList extends JViewLegacy
 	{
 		$model      = $this->getModel();
 		$this->form = $model->getContentTypeForm();
-		$input      = JFactory::getApplication()->input;
+		$input      = Factory::getApplication()->input;
 		$this->data = $input->post->get('jform', array(), 'array');
 		$this->addSelectSaveToolBar();
 		FabrikHelperHTML::framework();
@@ -222,7 +227,7 @@ class FabrikAdminViewList extends JViewLegacy
 	 */
 	protected function addSelectSaveToolBar()
 	{
-		$app         = JFactory::getApplication();
+		$app         = Factory::getApplication();
 		$this->state = $this->get('State');
 		$input       = $app->input;
 		$input->set('hidemainmenu', true);
@@ -244,10 +249,10 @@ class FabrikAdminViewList extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		$userId     = $user->get('id');
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -305,7 +310,7 @@ class FabrikAdminViewList extends JViewLegacy
 	 */
 	protected function addLinkedElementsToolbar()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
 		JToolBarHelper::title(FText::_('COM_FABRIK_MANAGER_LIST_LINKED_ELEMENTS'), 'list');
@@ -321,7 +326,7 @@ class FabrikAdminViewList extends JViewLegacy
 	 */
 	protected function addConfirmCopyToolbar()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
 		JToolBarHelper::title(FText::_('COM_FABRIK_MANAGER_LIST_COPY'), 'list');

@@ -11,10 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.file');
 
 // Load front end language file as well
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_fabrik', JPATH_SITE . '/components/com_fabrik');
 
 if (!defined('COM_FABRIK_FRONTEND'))
@@ -24,9 +28,9 @@ if (!defined('COM_FABRIK_FRONTEND'))
 
 jimport('joomla.application.component.model');
 jimport('joomla.application.component.helper');
-JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
 require_once COM_FABRIK_FRONTEND . '/controller.php';
@@ -39,9 +43,9 @@ $input->set('layout', $origLayout);
 
 require_once COM_FABRIK_FRONTEND . '/views/package/view.html.php';
 
-JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
-JTable::addIncludePath(COM_FABRIK_BASE . '/administrator/components/com_fabrik/tables');
-$document = JFactory::getDocument();
+BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+Table::addIncludePath(COM_FABRIK_BASE . '/administrator/components/com_fabrik/tables');
+$document = Factory::getDocument();
 
 require_once COM_FABRIK_FRONTEND . '/controllers/package.php';
 require_once COM_FABRIK_FRONTEND . '/views/form/view.html.php';
@@ -79,8 +83,8 @@ $controller->addViewPath(JPATH_SITE . '/plugins/fabrik_visualization/' . $name .
 $controller->addViewPath(COM_FABRIK_FRONTEND . '/views');
 
 // Add the model path
-$modelpaths = JModelLegacy::addIncludePath(JPATH_SITE . '/plugins/fabrik_visualization/' . $name . '/models');
-$modelpaths = JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+$modelpaths = BaseDatabaseModel::addIncludePath(JPATH_SITE . '/plugins/fabrik_visualization/' . $name . '/models');
+$modelpaths = BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
 
 $origId = $input->getInt('visualizationid');
 $origView = $input->get('view');

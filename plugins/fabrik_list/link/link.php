@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -132,7 +134,7 @@ class PlgFabrik_ListLink extends plgFabrik_List
 		parent::onLoadJavascriptInstance($args);
 		$opts = $this->getElementJSOptions();
 		$params = $this->getParams();
-		$opts->link = JRoute::_($params->get('table_link_link', ''));
+		$opts->link = Route::_($params->get('table_link_link', ''));
 		$opts->newTab = $params->get('table_link_new_tab', '0') === '1';
 		$opts->fabrikLink = ($params->get('table_link_isfabrik', '0') === '1' && $this->getModel()->getParams()->get('list_ajax_links') == '1')
 			|| $params->get('table_link_isfabrik', '0') === '2';

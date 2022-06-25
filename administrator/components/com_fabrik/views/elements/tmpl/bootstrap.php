@@ -12,18 +12,24 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('bootstrap.tooltip');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('bootstrap.tooltip');
 //JHTML::_('script', 'system/multiselect.js', false, true);
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
-$config = JComponentHelper::getParams('com_fabrik');
+$config = ComponentHelper::getParams('com_fabrik');
 $truncateOpts = array(
     'chars' => true,
     'html' => false,
     'wordcount' => (int)$config->get('fabrik_truncate_length', 0),
     'tip' =>false
 );
-$user	= JFactory::getUser();
+$user	= Factory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
@@ -31,7 +37,7 @@ $saveOrder	= $listOrder == 'e.ordering';
 if ($saveOrder)
 {
 	$saveOrderingUrl = 'index.php?option=com_fabrik&task=elements.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'elementList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	HTMLHelper::_('sortablelist.sortable', 'elementList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 
 $states	= array(
@@ -56,7 +62,7 @@ $states	= array(
 );
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=elements'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_fabrik&view=elements'); ?>" method="post" name="adminForm" id="adminForm">
 <?php if(!empty( $this->filterbar)): ?>
 	<div id="j-sidebar-container" class="col-md-4">
 		<?php echo $this->filterbar; ?>
@@ -93,7 +99,7 @@ $states	= array(
 				</th>
 
 				<th width="30px">
-					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'e.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+					<?php echo HTMLHelper::_('grid.sort', '<i class="icon-menu-2"></i>', 'e.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>
 				<th width="30px">&nbsp;&nbsp;&nbsp;</th>
 				<th width="30px"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
@@ -134,7 +140,7 @@ $states	= array(
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$ordering	= ($listOrder == 'e.ordering');
-			$link = JRoute::_('index.php?option=com_fabrik&task=element.edit&id='.(int) $item->id);
+			$link = Route::_('index.php?option=com_fabrik&task=element.edit&id='.(int) $item->id);
 			$canCreate	= $user->authorise('core.create',		'com_fabrik.element.'.$item->group_id);
 			$canEdit	= $user->authorise('core.edit',			'com_fabrik.element.'.$item->group_id);
 			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
@@ -170,11 +176,11 @@ $states	= array(
 				<td>
 				<?php if ($item->parent_id != 0) :
 					echo "<a href='index.php?option=com_fabrik&task=element.edit&id=" . $item->parent_id . "'>"
-					. JHTML::image('media/com_fabrik/images/child_element.png', JText::sprintf('COM_FABRIK_LINKED_ELEMENT', $item->parent_id), 'title="' . JText::sprintf('COM_FABRIK_LINKED_ELEMENT', $item->parent_id) . '"')
+					. JHTML::image('media/com_fabrik/images/child_element.png', Text::sprintf('COM_FABRIK_LINKED_ELEMENT', $item->parent_id), 'title="' . Text::sprintf('COM_FABRIK_LINKED_ELEMENT', $item->parent_id) . '"')
 					. '</a>&nbsp;';
 				else :
 					if (!empty($item->child_ids)) :
-						echo JHTML::image('media/com_fabrik/images/parent_element.png', JText::sprintf('COM_FABRIK_PARENT_ELEMENT', $item->child_ids), 'title="' . JText::sprintf('COM_FABRIK_PARENT_ELEMENT', $item->child_ids) . '"');
+						echo JHTML::image('media/com_fabrik/images/parent_element.png', Text::sprintf('COM_FABRIK_PARENT_ELEMENT', $item->child_ids), 'title="' . Text::sprintf('COM_FABRIK_PARENT_ELEMENT', $item->child_ids) . '"');
 					else :
 						// Trying out removing the icon all together if it isn't linked
 						// echo JHTML::image('media/com_fabrik/images/element.png', FText::_('COM_FABRIK_NONLINKED_ELEMENT'), 'title="' . FText::_('COM_FABRIK_NONLINKED_ELEMENT') . '"');
@@ -183,11 +189,11 @@ $states	= array(
 				?>
 				</td>
 				<td>
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'elements.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'elements.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php
 					if ($item->checked_out && ($item->checked_out != $user->get('id'))) :
@@ -223,11 +229,11 @@ $states	= array(
 				</td>
 				<td class="center">
 					<?php
-					echo JHtml::_('jgrid.state', $states, $item->show_in_list_summary, $i, 'elements.', true, true);
+					echo HTMLHelper::_('jgrid.state', $states, $item->show_in_list_summary, $i, 'elements.', true, true);
 					?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'elements.', $canChange);?>
+					<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'elements.', $canChange);?>
 				</td>
 			</tr>
 
@@ -239,6 +245,6 @@ $states	= array(
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>

@@ -2,6 +2,9 @@
 /**
 */
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
 use CB\Database\Table\PluginTable;
 use CB\Database\Table\TabTable;
 use CB\Database\Table\UserTable;
@@ -31,7 +34,7 @@ class getFabrikTab extends cbTabHandler {
 		// 2 = profile owner and admins
 		$private = (int)$this->params->get('fabrik_private', '0');
 		if ($private > 0) {
-			$viewer = JFactory::getuser();
+			$viewer = Factory::getuser();
 			if ($private === 1) {
 				if ($user->get('user_id') != $viewer->get('id')) {
 					return false;
@@ -44,10 +47,10 @@ class getFabrikTab extends cbTabHandler {
 			}
 		}
 		$dispatcher = new JDispatcher();
-		JPluginHelper::importPlugin('content', 'fabrik', true, $dispatcher);
-		if (JPluginHelper::importPlugin('content', 'fabrik', true, $dispatcher) !== true)
+		PluginHelper::importPlugin('content', 'fabrik', true, $dispatcher);
+		if (PluginHelper::importPlugin('content', 'fabrik', true, $dispatcher) !== true)
 		{
-			throw new RuntimeException(JText::_('Fabrik content plugin not loaded in CB tab!  Check that it is installed and enabled.'), 400);
+			throw new RuntimeException(Text::_('Fabrik content plugin not loaded in CB tab!  Check that it is installed and enabled.'), 400);
 		}
 		$dispatcher->register('content', 'plgContentFabrik');
 		$args = array();
@@ -57,7 +60,7 @@ class getFabrikTab extends cbTabHandler {
 		// $$$ hugh - set profile user in session so Fabrik user element can get at it
 		// TODO - should really make this table/form specific!
 
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		// $$$ hugh - testing using a unique session hash, which we will stuff in the
 		// plugin args, and will get added where necessary in Fabrik lists and forms so
 		// we can actually track the right form submissions with their coresponding CB

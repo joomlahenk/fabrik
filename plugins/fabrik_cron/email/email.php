@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -188,7 +189,7 @@ class PlgFabrik_Cronemail extends PlgFabrik_Cron
 		{
 			// Do any update found
 			/** @var FabrikFEModelList $listModel */
-			$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$listModel->setId($params->get('table'));
 			$table = $listModel->getTable();
 			$field = $params->get('cronemail-updatefield');

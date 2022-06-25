@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 /**
  * Trivial image serving script, to work round IE caching static CAPTCHA IMG's
  * @package     Joomla
@@ -19,10 +23,10 @@ define('DS', DIRECTORY_SEPARATOR);
 
 require_once JPATH_BASE . '/includes/defines.php';
 require_once JPATH_BASE . '/includes/framework.php';
-$app = JFactory::getApplication('site');
+$app = Factory::getApplication('site');
 $app->initialise();
 $package = $app->getUserState('com_fabrik.package', 'fabrik');
-$session = JFactory::getSession();
+$session = Factory::getSession();
 
 $code = $session->get('com_' . $package . '.element.captcha.security_code', false);
 
@@ -116,7 +120,7 @@ header('Accept-Ranges: bytes');
 // http://fabrikar.com/forums/showthread.php?t=26941&page=5
 if (version_compare(PHP_VERSION, '5.3.0') < 0)
 {
-	header('Content-Length: ' . JString::strlen($img));
+	header('Content-Length: ' . StringHelper::strlen($img));
 }
 
 header('Content-Type: image/jpeg');

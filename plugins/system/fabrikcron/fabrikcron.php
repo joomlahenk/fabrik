@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+
 jimport('joomla.plugin.plugin');
 jimport('joomla.filesystem.file');
 
@@ -22,7 +26,7 @@ jimport('joomla.filesystem.file');
  * @since       3.0
  */
 
-class PlgSystemFabrikcron extends JPlugin
+class PlgSystemFabrikcron extends CMSPlugin
 {
 
 	/**
@@ -64,9 +68,9 @@ class PlgSystemFabrikcron extends JPlugin
 	 */
 	protected function reschedule()
 	{
-		$now = JFactory::getDate();
+		$now = Factory::getDate();
 		$now = $now->toUnix();
-		$new = JFactory::getDate($this->row->nextrun);
+		$new = Factory::getDate($this->row->nextrun);
 		$tmp = $new->toUnix();
 
 		switch ($this->row->unit)
@@ -92,7 +96,7 @@ class PlgSystemFabrikcron extends JPlugin
 		}
 
 		// Mark them as being run
-		$nextRun = JFactory::getDate($tmp);
+		$nextRun = Factory::getDate($tmp);
 		$this->query->clear();
 		$this->query->update('#__{package}_cron');
 		$this->query->set('lastrun = ' . $this->db->quote($nextRun->toSql()));
@@ -143,9 +147,9 @@ class PlgSystemFabrikcron extends JPlugin
 
 	protected function doCron()
 	{
-		$app = JFactory::getApplication();
-		$mailer = JFactory::getMailer();
-		$config = JFactory::getConfig();
+		$app = Factory::getApplication();
+		$mailer = Factory::getMailer();
+		$config = Factory::getConfig();
 		$input = $app->input;
 
 		if ($app->isAdmin() || $input->get('option') == 'com_acymailing')
@@ -168,7 +172,7 @@ class PlgSystemFabrikcron extends JPlugin
 
 		if (!$now)
 		{
-			/* $$$ hugh - changed from using NOW() to JFactory::getDate(), to avoid time zone issues, see:
+			/* $$$ hugh - changed from using NOW() to Factory::getDate(), to avoid time zone issues, see:
 			 * http://fabrikar.com/forums/showthread.php?p=102245#post102245
 			 * .. which seems reasonable, as we use getDate() to set 'lastrun' to at the end of this func
 			 */
@@ -186,7 +190,7 @@ class PlgSystemFabrikcron extends JPlugin
 				->select("id, plugin, lastrun, unit, frequency, " . $nextRun . " AS nextrun")
 				->from('#__{package}_cron')
 				->where("published = '1'")
-				->where("$nextRun < '" . JFactory::getDate()->toSql() . "'");
+				->where("$nextRun < '" . Factory::getDate()->toSql() . "'");
 		}
 		else
 		{
@@ -206,11 +210,11 @@ class PlgSystemFabrikcron extends JPlugin
 		register_shutdown_function(array($this, 'shutdownHandler'));
 
 		$this->log->message = '';
-		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_fabrik/models');
+		BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_fabrik/models');
 
 		/** @var FabrikFEModelPluginmanager $pluginManager */
-		$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$pluginManager = BaseDatabaseModel::getInstance('Pluginmanager', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 
 		foreach ($rows as $row)
 		{

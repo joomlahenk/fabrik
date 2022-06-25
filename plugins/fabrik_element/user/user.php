@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Factory;
+
 require_once JPATH_SITE . '/plugins/fabrik_element/databasejoin/databasejoin.php';
 
 /**
@@ -92,7 +97,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 				$userId = is_array($userId) ? (int) FArrayHelper::getValue($userId, 0) : (int) $userId;
 
 				// On failed validation value is 1 - user ids are always more than that so don't load userid=1 otherwise an error is generated
-				$user = $userId <= 1 ? false : JFactory::getUser($userId);
+				$user = $userId <= 1 ? false : Factory::getUser($userId);
 			}
 		}
 		else if ($this->inRepeatGroup && $this->newGroup)
@@ -106,7 +111,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 			 *  $$$ hugh - this is blowing away the userid, as $element->default is empty at this point
 			 *  so for now I changed it to the $data value
 			 *  keep previous user
-			 *  $user = JFactory::getUser((int) $element->default);
+			 *  $user = Factory::getUser((int) $element->default);
 			 */
 			// $$$ hugh ... what a mess ... of course if it's a new form, $data doesn't exist ...
 			if (empty($data))
@@ -161,11 +166,11 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 				 */
 				if ($rowId && empty($id) && !$params->get('update_on_edit'))
 				{
-					$user = JFactory::getUser(0);
+					$user = Factory::getUser(0);
 				}
 				else
 				{
-					$user = $id === '' ? $this->user : JFactory::getUser((int) $id);
+					$user = $id === '' ? $this->user : Factory::getUser((int) $id);
 				}
 			}
 		}
@@ -179,8 +184,8 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 		$layoutData->isEditable = $this->isEditable();
 		$layoutData->hidden     = $element->hidden;
 		$layoutData->input      = parent::render($data, $repeatCounter);
-		$layoutData->readOnly   = is_a($user, 'JUser') ? $user->get($displayParam) : '';
-		$layoutData->value      = is_a($user, 'JUser') ? $user->get('id') : '';
+		$layoutData->readOnly   = is_a($user, 'User') ? $user->get($displayParam) : '';
+		$layoutData->value      = is_a($user, 'User') ? $user->get('id') : '';
 
 		return $layout->render($layoutData);
 	}
@@ -348,7 +353,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 			//if ($input->getString('rowid', '', 'string') == '' && $input->get('task') !== 'doimport')
 			if ($input->getString('rowid', '', 'string') == '' && !$this->getListModel()->importingCSV)
 			{
-				$session = JFactory::getSession();
+				$session = Factory::getSession();
 
 				if ($session->has('fabrik.plugin.profile_id'))
 				{
@@ -430,7 +435,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 					$userId   = FArrayHelper::getValue($formData, $element->name, '');
 					if (!empty($userId) && !is_numeric($userId))
 					{
-						$user      = JFactory::getUser($userId);
+						$user      = Factory::getUser($userId);
 						$newUserId = $user->get('id');
 
 						if (empty($newUserId) && FabrikWorker::isEmail($userId))
@@ -868,7 +873,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 			 * by the time it gets here we have normalized to elementname. So we check if the original qs filter was looking at the raw
 			 * value if it was then we want to filter on the key and not the label
 			 */
-			$filter = JFilterInput::getInstance();
+			$filter = InputFilter::getInstance();
 			$get    = $filter->clean($_GET, 'array');
 
 			if (!array_key_exists($key, $get))
@@ -968,7 +973,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 		}
 		else
 		{
-			// Test json string e.g. ["350"] - fixes JUser: :_load: User does not exist notices
+			// Test json string e.g. ["350"] - fixes User: :_load: User does not exist notices
 			if (!is_int($userId))
 			{
 				$userId = FabrikWorker::JSONtoData($userId, true);
@@ -981,7 +986,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 			return '';
 		}
 
-		$user = JFactory::getUser($userId);
+		$user = Factory::getUser($userId);
 
 		return $this->getUserDisplayProperty($user);
 	}
@@ -999,7 +1004,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 	{
 		$displayParam = $this->getLabelOrConcatVal();
 
-		return is_a($user, 'JUser') ? $user->get($displayParam) : false;
+		return is_a($user, 'User') ? $user->get($displayParam) : false;
 	}
 
 	/**
@@ -1089,7 +1094,7 @@ class PlgFabrik_ElementUser extends PlgFabrik_ElementDatabasejoin
 
 			if (!isset($displayMessage))
 			{
-				$this->app->enqueueMessage(JText::sprintf('PLG_ELEMENT_USER_NOTICE_GID', $this->getElement()->id), 'notice');
+				$this->app->enqueueMessage(Text::sprintf('PLG_ELEMENT_USER_NOTICE_GID', $this->getElement()->id), 'notice');
 				$displayMessage = true;
 			}
 		}

@@ -12,23 +12,25 @@ namespace Fabrik\Helpers;
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
 /**
  *
- * $$$ hugh JText::_() does funky stuff to strings with commas in them, like
+ * $$$ hugh Text::_() does funky stuff to strings with commas in them, like
  * truncating everything after the first comma, if what follows the first comma
  * is all "upper case".  But it tests for that using non MB safe code, so any non
  * ASCII strings (like Greek text) with a comma in them get truncated at the comma.
  * Corner case or what!  But we need to work round this behavior.
  *
- * So ... here's a wrapper for JText::_().
+ * So ... here's a wrapper for Text::_().
  */
-class Text extends \JText
+class Text extends Text
 {
 	/**
 	 * Translates a string into the current language.
 	 *
 	 * Examples:
-	 * <script>alert(Joomla.JText._('<?php echo Text::_("JDEFAULT", array("script"=>true));?>'));</script>
+	 * <script>alert(Joomla.Text._('<?php echo Text::_("JDEFAULT", array("script"=>true));?>'));</script>
 	 * will generate an alert message containing 'Default'
 	 * <?php echo Text::_("JDEFAULT");?> it will generate a 'Default' string
 	 *
@@ -44,7 +46,7 @@ class Text extends \JText
 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
 		/**
-		 * This function is now kind of redundant, as it uses to guard against some behavior of JText_() which no
+		 * This function is now kind of redundant, as it uses to guard against some behavior of Text_() which no
 		 * longer happens (as of 3.7).  But we'll keep it around as a wrapper in case we ever need to Do Fabrikm Stuff
 		 * to translatable strings.
 		 */

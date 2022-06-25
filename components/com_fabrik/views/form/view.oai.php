@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 require_once JPATH_SITE . '/components/com_fabrik/views/form/view.base.php';
 
@@ -44,7 +46,7 @@ class FabrikViewForm extends FabrikViewFormBase
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$this->oaiModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Oai', 'FabrikFEModel');
+		$this->oaiModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Oai', 'FabrikFEModel');
 	}
 
 	/**

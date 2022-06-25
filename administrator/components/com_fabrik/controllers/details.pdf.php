@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controllerform');
 
 /**
@@ -21,7 +24,7 @@ jimport('joomla.application.component.controllerform');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikAdminControllerDetails extends JControllerForm
+class FabrikAdminControllerDetails extends FormController
 {
 	/**
 	 * The prefix to use with controller messages.
@@ -37,9 +40,9 @@ class FabrikAdminControllerDetails extends JControllerForm
 	 */
 	public function view()
 	{
-		$document = JFactory::getDocument();
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
-		$app = JFactory::getApplication();
+		$document = Factory::getDocument();
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$input->set('tmpl', 'component');
 		$input->set('view', 'details');

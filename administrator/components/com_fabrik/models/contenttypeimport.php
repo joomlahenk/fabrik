@@ -18,6 +18,9 @@ require_once 'fabmodeladmin.php';
 require JPATH_COMPONENT_ADMINISTRATOR . '/models/databaseimporter.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contenttype.php';
 
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\Utilities\ArrayHelper;
 use \Joomla\Registry\Registry;
 
@@ -103,7 +106,7 @@ class FabrikAdminModelContentTypeImport extends FabModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$listModel = ArrayHelper::getValue($config, 'listModel', JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel'));
+		$listModel = ArrayHelper::getValue($config, 'listModel', Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel'));
 
 		if (!is_a($listModel, 'FabrikAdminModelList'))
 		{
@@ -120,7 +123,7 @@ class FabrikAdminModelContentTypeImport extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  mixed  A Form object on success, false on failure
 	 *
 	 * @since    3.3.5
 	 */
@@ -155,7 +158,7 @@ class FabrikAdminModelContentTypeImport extends FabModelAdmin
 		}
 
 //H		$paths = self::addContentTypeIncludePath();// useless
-//H		$path  = JPath::find($paths, $name);// useless
+//H		$path  = Path::find($paths, $name);// useless
 		$path  = JPATH_COMPONENT_ADMINISTRATOR . '/models/content_types/' . $name;
 		//print_r($path);exit;
 /*H
@@ -610,7 +613,7 @@ class FabrikAdminModelContentTypeImport extends FabModelAdmin
 			$groupData           = array();
 			$groupData           = FabrikContentTypHelper::domNodeAttributesToArray($group, $groupData);
 			$groupData['params'] = FabrikContentTypHelper::nodeParams($group);
-			$groupModel          = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+			$groupModel          = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 			$groupTable          = FabTable::getInstance('Group', 'FabrikTable');
 			$groupTable->bind($groupData);
 			$groupModel->setGroup($groupTable);
@@ -695,7 +698,7 @@ class FabrikAdminModelContentTypeImport extends FabModelAdmin
 			}
 
 			/** @var FabrikAdminModelContentTypeExport $exporter */
-			$exporter = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('ContentTypeExport', 'FabrikAdminModel',	array('listModel' => $this->listModel));
+			$exporter = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('ContentTypeExport', 'FabrikAdminModel',	array('listModel' => $this->listModel));
 			$xml      = $exporter->createXMLFromArray($groupData, $elements);
 			$this->doc->loadXML($xml);
 			$fields = $this->createGroupsFromContentType($dbTableName);

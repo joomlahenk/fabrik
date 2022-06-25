@@ -10,6 +10,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Document\DocumentRenderer;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 /**
  * Not used i think!
  *
@@ -18,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
  * @since       1.5
  */
 
-class JDocumentRendererXml extends JDocumentRenderer
+class DocumentRendererXml extends DocumentRenderer
 {
 	/**
 	 * Document mime type
@@ -36,12 +41,12 @@ class JDocumentRendererXml extends JDocumentRenderer
 	 */
 	public function render()
 	{
-		$now = JFactory::getDate();
+		$now = Factory::getDate();
 		$data = $this->_doc;
 
 		$uri = JURI::getInstance();
 		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-		$syndicationURL =& JRoute::_('&format=feed&type=atom');
+		$syndicationURL =& Route::_('&format=feed&type=atom');
 
 		$start = '<?xml version="1.0" encoding="iso-8859-1" ?>';
 		$xml = "$start<root>\n";
@@ -76,7 +81,7 @@ class JDocumentRendererXml extends JDocumentRenderer
 
 				foreach ($collection as $key => $val)
 				{
-					if (substr($key, 0, 1) !== '_' && JString::substr($key, 0, 6) !== 'fabrik' && $key !== 'slug')
+					if (substr($key, 0, 1) !== '_' && StringHelper::substr($key, 0, 6) !== 'fabrik' && $key !== 'slug')
 					{
 						$xml .= "\t\t<$key>" . htmlspecialchars($val, ENT_COMPAT, 'UTF-8') . "</$key>\n";
 					}

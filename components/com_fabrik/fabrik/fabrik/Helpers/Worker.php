@@ -13,34 +13,56 @@ namespace Fabrik\Helpers;
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\LanguageHelper;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Version;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Cache\Cache;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Mail\Mail;
+use Joomla\CMS\Mail\MailHelper;
+use Joomla\CMS\Crypt\Crypt;
+use Joomla\CMS\Crypt\Key;
+use Joomla\CMS\Crypt\Cipher\SimpleCipher;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
 use Fabrik\Helpers\FCipher;
 use DateTime;
 use Exception;
 use FabTable;
-use JAccess;
-use JCache;
-use JComponentHelper;
-use JCrypt;
-use JCryptCipherSimple;
-use JCryptKey;
+use Access;
+use Cache;
+use ComponentHelper;
+use Crypt;
+use SimpleCipher;
+use Key;
 use JDatabaseDriver;
-use JFactory;
-use JFile;
-use JFilterInput;
-use JForm;
-use JHtml;
-use JLanguageHelper;
-use JLanguageMultilang;
-use JLog;
-use JMail;
-use JMailHelper;
-use JModelLegacy;
+use Factory;
+use File;
+use InputFilter;
+use Form;
+use HTMLHelper;
+use LanguageHelper;
+use Multilanguage;
+use Log;
+use Mail;
+use MailHelper;
+use BaseDatabaseModel;
 use Joomla\CMS\Application\CMSApplication;
-use JPath;
-use JSession;
-use JTable;
-use JUri;
-use JVersion;
+use Path;
+use Session;
+use Table;
+use Uri;
+use Version;
 use RuntimeException;
 
 /**
@@ -407,7 +429,7 @@ class Worker
 		 */
 		if (empty($date))
 		{
-			$d    = JFactory::getDate();
+			$d    = Factory::getDate();
 			$date = $d->toSql(!$gmt);
 
 			return $date;
@@ -435,7 +457,7 @@ class Worker
 
 		if (!empty($matches))
 		{
-			$d    = JFactory::getDate($date);
+			$d    = Factory::getDate($date);
 			$date = $d->toSql(!$gmt);
 		}
 
@@ -473,7 +495,7 @@ class Worker
 
 		if (!empty($matches))
 		{
-			$d    = JFactory::getDate($date);
+			$d    = Factory::getDate($date);
 			$date = $d->format($format);
 		}
 
@@ -800,12 +822,12 @@ class Worker
 					$searchData = ArrayHelper::fromObject($searchData);
 				}
 				// Merge in request and specified search data
-				$f                 = JFilterInput::getInstance();
+				$f                 = InputFilter::getInstance();
 				$post              = $f->clean($_REQUEST, 'array');
 				$this->_searchData = is_null($searchData) ? $post : array_merge($post, $searchData);
 
 				// Enable users to use placeholder to insert session token
-				$this->_searchData['JSession::getFormToken'] = JSession::getFormToken();
+				$this->_searchData['Session::getFormToken'] = Session::getFormToken();
 
 				// Replace with the user's data
 				$msg = self::replaceWithUserData($msg);
@@ -853,7 +875,7 @@ class Worker
 		if (!is_array($request))
 		{
 			$request = array();
-			$f       = JFilterInput::getInstance();
+			$f       = InputFilter::getInstance();
 
 			foreach ($_REQUEST as $k => $v)
 			{
@@ -890,11 +912,11 @@ class Worker
 	 */
 	public static function replaceWithUserData($msg, $user = null, $prefix = 'my')
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if (is_null($user))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 		}
 
 		$user->levels = $user->getAuthorisedViewLevels();
@@ -946,7 +968,7 @@ class Worker
 
 			if (!empty($userId))
 			{
-				$user = JFactory::getUser($userId);
+				$user = Factory::getUser($userId);
 				$val  = $user->get(ArrayHelper::getValue($bits, 2));
 				$msg  = str_replace($match, $val, $msg);
 			}
@@ -1030,11 +1052,11 @@ class Worker
 	{
 		if (strstr($msg, '{$session->'))
 		{
-			$session   = JFactory::getSession();
+			$session   = Factory::getSession();
 			$sessionData = array(
 				'id' => $session->getId(),
 				'token' => $session->get('session.token'),
-				'formtoken' => JSession::getFormToken()
+				'formtoken' => Session::getFormToken()
 			);
 
 			foreach ($sessionData as $key => $value)
@@ -1087,7 +1109,7 @@ class Worker
 	 */
 	public static function unsafeReplacements()
 	{
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		$replacements = array(
 			'{$jConfig_absolute_path}' => JPATH_SITE,
@@ -1105,10 +1127,10 @@ class Worker
 	 */
 	public static function globalReplacements()
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$itemId    = self::itemId();
-		$config    = JFactory::getConfig();
-		$session   = JFactory::getSession();
+		$config    = Factory::getConfig();
+		$session   = Factory::getSession();
 		$token     = $session->get('session.token');
 
 		$replacements = array(
@@ -1156,7 +1178,7 @@ class Worker
 	 */
 	public static function langReplacements()
 	{
-		$langtag   = JFactory::getLanguage()->getTag();
+		$langtag   = Factory::getLanguage()->getTag();
 		$lang      = str_replace('-', '_', $langtag);
 		$shortlang = explode('_', $lang);
 		$shortlang = $shortlang[0];
@@ -1211,7 +1233,7 @@ class Worker
 		 * Not 100% if we should do this on $match before copying to $orig, but for now doing it
 		 * after, so we don't potentially disclose dbprefix if no substitution found.
 		 */
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$prefix = $config->get('dbprefix');
 		$match  = str_replace('#__', $prefix, $match);
 
@@ -1397,7 +1419,7 @@ class Worker
 
 		while ($file = readdir($handle))
 		{
-			$dir   = JPath::clean($path . '/' . $file);
+			$dir   = Path::clean($path . '/' . $file);
 			$isDir = is_dir($dir);
 
 			if ($file != "." && $file != "..")
@@ -1408,7 +1430,7 @@ class Worker
 					{
 						if ($fullPath)
 						{
-							$arr[] = trim(JPath::clean($path . '/' . $file));
+							$arr[] = trim(Path::clean($path . '/' . $file));
 						}
 						else
 						{
@@ -1459,7 +1481,7 @@ class Worker
 	 */
 	public static function getShortLang()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang = explode('-', $lang->getTag());
 
 		return array_shift($lang);
@@ -1475,10 +1497,10 @@ class Worker
 	{
 		$multiLang = false;
 
-		if (JLanguageMultilang::isEnabled())
+		if (Multilanguage::isEnabled())
 		{
-			$lang      = JFactory::getLanguage()->getTag();
-			$languages = JLanguageHelper::getLanguages();
+			$lang      = Factory::getLanguage()->getTag();
+			$languages = LanguageHelper::getLanguages();
 			foreach ($languages as $language)
 			{
 				if ($language->lang_code === $lang)
@@ -1506,18 +1528,18 @@ class Worker
 		jimport('joomla.application.component.helper');
 
 		// Get Config and Filters in Joomla 2.5
-		$config  = JComponentHelper::getParams('com_config');
+		$config  = ComponentHelper::getParams('com_config');
 		$filters = $config->get('filters');
 
 		// If no filter data found, get from com_content (Joomla 1.6/1.7 sites)
 		if (empty($filters))
 		{
-			$contentParams = JComponentHelper::getParams('com_content');
+			$contentParams = ComponentHelper::getParams('com_content');
 			$filters       = $contentParams->get('filters');
 		}
 
-		$user       = JFactory::getUser();
-		$userGroups = JAccess::getGroupsByUser($user->get('id'));
+		$user       = Factory::getUser();
+		$userGroups = Access::getGroupsByUser($user->get('id'));
 
 		$blackListTags       = array();
 		$blackListAttributes = array();
@@ -1620,18 +1642,18 @@ class Worker
 			{
 				// Remove the white-listed attributes from the black-list.
 				$tags   = array_diff($blackListTags, $whiteListTags);
-				$filter = JFilterInput::getInstance($tags, array_diff($blackListAttributes, $whiteListAttributes), 1, 1);
+				$filter = InputFilter::getInstance($tags, array_diff($blackListAttributes, $whiteListAttributes), 1, 1);
 			}
 			// White lists take third precedence.
 			elseif ($whiteList)
 			{
 				// Turn off xss auto clean
-				$filter = JFilterInput::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);
+				$filter = InputFilter::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);
 			}
 			// No HTML takes last place.
 			else
 			{
-				$filter = JFilterInput::getInstance();
+				$filter = InputFilter::getInstance();
 			}
 		}
 
@@ -1722,7 +1744,7 @@ class Worker
 	{
 		if (Html::isDebug())
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			$app->enqueueMessage($errString, $msgType);
 		}
 		else
@@ -1730,18 +1752,18 @@ class Worker
 			switch ($msgType)
 			{
 				case 'message':
-					$priority = JLog::INFO;
+					$priority = Log::INFO;
 					break;
 				case 'warning':
-					$priority = JLog::WARNING;
+					$priority = Log::WARNING;
 					break;
 				case 'error':
 				default:
-					$priority = JLog::ERROR;
+					$priority = Log::ERROR;
 					break;
 			}
 
-			JLog::add($errString, $priority, 'com_fabrik');
+			Log::add($errString, $priority, 'com_fabrik');
 		}
 	}
 
@@ -1793,12 +1815,12 @@ class Worker
 
 		if (!array_key_exists($sig, self::$database))
 		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-			$conf = JFactory::getConfig();
+			Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+			$conf = Factory::getConfig();
 
 			if (!$loadJoomlaDb)
 			{
-				$cnModel  = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
+				$cnModel  = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 				$cn       = $cnModel->getConnection($cnnId);
 				$host     = $cn->host;
 				$user     = $cn->user;
@@ -1821,7 +1843,7 @@ class Worker
 			$options = array('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database,
 				'prefix' => $dbPrefix);
 
-//			$version              = new JVersion;
+//			$version              = new Version;
 //			self::$database[$sig] = $version->RELEASE > 2.5 ? JDatabaseDriver::getInstance($options) : JDatabase::getInstance($options);
 			self::$database[$sig] = JDatabaseDriver::getInstance($options);
 
@@ -1845,7 +1867,7 @@ class Worker
 	 */
 	public static function bigSelects($fabrikDb)
 	{
-		$fbConfig = JComponentHelper::getParams('com_fabrik');
+		$fbConfig = ComponentHelper::getParams('com_fabrik');
 
 		if ($fbConfig->get('enable_big_selects', 0) == '1')
 		{
@@ -1886,7 +1908,7 @@ class Worker
 	 */
 	public static function getConnection($item = null)
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$jForm = $input->get('jform', array(), 'array');
 
@@ -1904,7 +1926,7 @@ class Worker
 
 		if (!array_key_exists($connId, self::$connection))
 		{
-			$connectionModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
+			$connectionModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 			$connectionModel->setId($connId);
 
 			if ($connId === -1)
@@ -1932,7 +1954,7 @@ class Worker
 	{
 		if (!self::$pluginManager)
 		{
-			self::$pluginManager = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
+			self::$pluginManager = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
 		}
 
 		return self::$pluginManager;
@@ -2117,13 +2139,13 @@ class Worker
 	{
 		if (empty($userId))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 		}
 		else
 		{
-			$user = JFactory::getUser($userId);
+			$user = Factory::getUser($userId);
 		}
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$tz = $user->getParam('timezone', $config->get('offset'));
 
 		return $tz;
@@ -2159,7 +2181,7 @@ class Worker
 	}
 
 	/**
-	 * Is the email really an email (more strict than JMailHelper::isEmailAddress())
+	 * Is the email really an email (more strict than MailHelper::isEmailAddress())
 	 *
 	 * @param   string $email Email address
 	 * @param   bool   $sms   test for SMS phone number instead of email, default false
@@ -2175,16 +2197,16 @@ class Worker
 			return self::isSMS($email);
 		}
 
-		$conf   = JFactory::getConfig();
+		$conf   = Factory::getConfig();
 		$mailer = $conf->get('mailer');
 
 		if ($mailer === 'mail')
 		{
 			// Sendmail and Joomla isEmailAddress don't use the same conditions
-			return (JMailHelper::isEmailAddress($email) && JMail::ValidateAddress($email));
+			return (MailHelper::isEmailAddress($email) && Mail::ValidateAddress($email));
 		}
 
-		return JMailHelper::isEmailAddress($email);
+		return MailHelper::isEmailAddress($email);
 	}
 
 	/**
@@ -2227,8 +2249,8 @@ class Worker
 	{
 		// do a couple of tweaks to improve spam scores
 
-		// Get a JMail instance
-		$mailer = JFactory::getMailer();
+		// Get a Mail instance
+		$mailer = Factory::getMailer();
 
 		// If html, make sure there's an <html> tag
 		if ($mode)
@@ -2364,14 +2386,14 @@ class Worker
 		{
 			$body = str_ireplace(array("<br />","<br>","<br/>"), "\n<br />", $body);
 			$body = html_entity_decode($body);
-			$mailer->AltBody = JMailHelper::cleanText(strip_tags($body));
+			$mailer->AltBody = MailHelper::cleanText(strip_tags($body));
 		}
 
 		foreach ($headers as $headerName => $headerValue) {
 			$mailer->addCustomHeader($headerName, $headerValue);
 		}
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('verify_peer', '1') === '0')
 		{
@@ -2415,7 +2437,7 @@ class Worker
 	public static function goBackAction()
 	{
 		jimport('joomla.environment.browser');
-		$uri = JUri::getInstance();
+		$uri = Uri::getInstance();
 
 		$url = filter_var(ArrayHelper::getValue($_SERVER, 'HTTP_REFERER'), FILTER_SANITIZE_URL);
 
@@ -2446,7 +2468,7 @@ class Worker
 	{
 		static $listIds = array();
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if (!$app->isClient('administrator'))
 		{
@@ -2455,8 +2477,8 @@ class Worker
 			{
 				if (!array_key_exists($listId, $listIds))
 				{
-					$db         = JFactory::getDbo();
-					$myLanguage = JFactory::getLanguage();
+					$db         = Factory::getDbo();
+					$myLanguage = Factory::getLanguage();
 					$myTag      = $myLanguage->getTag();
 					$qLanguage  = !empty($myTag) ? ' AND ' . $db->q($myTag) . ' = ' . $db->qn('m.language') : '';
 					$query      = $db->getQuery(true);
@@ -2515,7 +2537,7 @@ class Worker
 	 */
     public static function getMenuOrRequestVar($name, $val = '', $mambot = false, $priority = 'menu', $opts = array())
     {
-        $app   = JFactory::getApplication();
+        $app   = Factory::getApplication();
         $input = $app->input;
 
         if ($priority === 'menu')
@@ -2604,9 +2626,9 @@ class Worker
 	{
 		if (!is_null($row))
 		{
-			$app     = JFactory::getApplication();
+			$app     = Factory::getApplication();
 			$input   = $app->input;
-			$user    = JFactory::getUser();
+			$user    = Factory::getUser();
 			$userCol = $params->get($col, '');
 
 			if ($userCol != '')
@@ -2672,7 +2694,7 @@ class Worker
 	{
 // Only use Mpdf as dompdf is no longer installed joomla libraries
 /*
-		$config = \JComponentHelper::getParams('com_fabrik');
+		$config = \ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('fabrik_pdf_lib', 'dompdf') === 'dompdf')
 		{
@@ -2684,7 +2706,7 @@ class Worker
 			$file = COM_FABRIK_LIBRARY . '/vendor/mpdf/mpdf/composer.json';
 //		}
 
-		if (!JFile::exists($file))
+		if (!File::exists($file))
 		{
 			if ($puke)
 			{
@@ -2709,17 +2731,17 @@ class Worker
 	 *
 	 * @since   3.0.7
 	 *
-	 * @return  JCache
+	 * @return  Cache
 	 */
 	public static function getCache($listModel = null, $group = null, $ttl = null)
 	{
-		$config  = JFactory::getConfig();
-		$app     = JFactory::getApplication();
+		$config  = Factory::getConfig();
+		$app     = Factory::getApplication();
 		$package = isset($group) ? $group : $app->getUserState('com_fabrik.package', 'fabrik');
 		$time    = isset($ttl) ? (int) $ttl : (int) $config->get('cachetime');
 		$base    = JPATH_BASE . '/cache/';
 		$opts    = array('defaultgroup' => 'com_' . $package, 'cachebase' => $base, 'lifetime' => $time, 'language' => 'en-GB', 'storage' => 'file');
-		$cache   = JCache::getInstance('callback', $opts);
+		$cache   = Cache::getInstance('callback', $opts);
 		$doCache = $config->get('caching', 0) > 0 ? true : false;
 
 		if ($doCache && $listModel !== null)
@@ -2740,12 +2762,12 @@ class Worker
 	 *
 	 * @since   3.8
 	 *
-	 * @return  JCache
+	 * @return  Cache
 	 */
 	public static function useCache($listModel = null, $noGuest = true, $excludedFormats = null)
 	{
-		$config  = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config  = Factory::getConfig();
+		$app = Factory::getApplication();
 
 		if (!isset($excludedFormats))
 		{
@@ -2759,7 +2781,7 @@ class Worker
 		if ($doCache)
 		{
 			// Check the Fabrik global option
-			$fabrikConfig = JComponentHelper::getParams('com_fabrik');
+			$fabrikConfig = ComponentHelper::getParams('com_fabrik');
 
 			if ($fabrikConfig->get('disable_caching', '0') === '1')
 			{
@@ -2778,7 +2800,7 @@ class Worker
 			// Check if caching is disabled for guests
 			if ($noGuest)
 			{
-				if (JFactory::getUser()->get('id') === '0')
+				if (Factory::getUser()->get('id') === '0')
 				{
 					return false;
 				}
@@ -2794,7 +2816,7 @@ class Worker
 	}
 
 	/**
-	 * Get the default values for a given JForm
+	 * Get the default values for a given Form
 	 *
 	 * @param   string $form Form name e.g. list, form etc.
 	 *
@@ -2804,9 +2826,9 @@ class Worker
 	 */
 	public static function formDefaults($form)
 	{
-		JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-		JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-		$form = JForm::getInstance('com_fabrik.' . $form, $form, array('control' => '', 'load_data' => true));
+		Form::addFormPath(JPATH_COMPONENT . '/models/forms');
+		Form::addFieldPath(JPATH_COMPONENT . '/models/fields');
+		$form = Form::getInstance('com_fabrik.' . $form, $form, array('control' => '', 'load_data' => true));
 		$fs   = $form->getFieldset();
 		$json = array('params' => array());
 
@@ -2836,8 +2858,8 @@ class Worker
 /*
 	public static function j3()
 	{
-		$app     = JFactory::getApplication();
-//		$version = new JVersion;
+		$app     = Factory::getApplication();
+//		$version = new Version;
 
 		// Only use template test for testing in 2.5 with my temp J bootstrap template.
 		$tpl = $app->getTemplate();
@@ -2855,7 +2877,7 @@ class Worker
 	 */
 	public static function inFormProcess()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		return $app->input->get('task') == 'form.process' || ($app->isClient('administrator') && $app->input->get('task') == 'process');
 	}
@@ -2869,7 +2891,7 @@ class Worker
 	 */
 	public static function inAJAXValidation()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		return $app->input->get('task', '') === 'form.ajax_validate';
 	}
@@ -2935,14 +2957,14 @@ class Worker
 	{
 		$getID3 = false;
 
-		if (JFile::exists(COM_FABRIK_LIBRARY . '/libs/getid3/getid3/getid3.php'))
+		if (File::exists(COM_FABRIK_LIBRARY . '/libs/getid3/getid3/getid3.php'))
 		{
 			ini_set('display_errors', true);
 			require_once COM_FABRIK_LIBRARY . '/libs/getid3/getid3/getid3.php';
 			require_once COM_FABRIK_LIBRARY . '/libs/getid3/getid3/getid3.lib.php';
 
 			\getid3_lib::IncludeDependency(COM_FABRIK_LIBRARY . '/libs/getid3/getid3/extension.cache.mysqli.php', __FILE__, true);
-			$config   = JFactory::getConfig();
+			$config   = Factory::getConfig();
 			$host     = $config->get('host');
 			$database = $config->get('db');
 			$username = $config->get('user');

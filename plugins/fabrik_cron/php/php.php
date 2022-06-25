@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Filesystem\File;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-cron.php';
 
@@ -50,7 +53,7 @@ class PlgFabrik_Cronphp extends PlgFabrik_Cron
 	public function process(&$data, &$listModel)
 	{
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $filter->clean($params->get('cronphp_file'), 'CMD');
 
 		$code = trim($params->get('cronphp_params', ''));
@@ -62,7 +65,7 @@ class PlgFabrik_Cronphp extends PlgFabrik_Cron
 
 		$file = JPATH_ROOT . '/plugins/fabrik_cron/php/scripts/' . $file;
 
-		if (JFile::exists($file))
+		if (File::exists($file))
 		{
 			require_once $file;
 

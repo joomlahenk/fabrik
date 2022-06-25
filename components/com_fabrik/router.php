@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Menu\AbstractMenu;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -33,7 +37,7 @@ use Joomla\Utilities\ArrayHelper;
 function fabrikBuildRoute(&$query)
 {
 	$segments = array();
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$menu = $app->getMenu();
 
 	if (empty($query['Itemid']))
@@ -308,14 +312,14 @@ function fabrikParseRoute($segments)
 	  * 7/25/2017, made this behavior an option, as can cause SEF issues with duplicate pages
 	 */
 /* //Henk removed this for J!4
-    $config = JComponentHelper::getParams('com_fabrik');
+    $config = ComponentHelper::getParams('com_fabrik');
     $home404 = $config->get('fabrik_home_404', '0') === '1';
 
 	if (!$home404 && !$viewFound)
 	{
-		$app   = JFactory::getApplication();
-		$app->enqueueMessage(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
-		$menus = JMenu::getInstance('site');
+		$app   = Factory::getApplication();
+		$app->enqueueMessage(Text::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+		$menus = AbstractMenu::getInstance('site');
 		$menu  = $menus->getActive();
 		$link  = parse_url($menu->link);
 		$qs    = array();
@@ -363,7 +367,7 @@ function fabrikParseRoute($segments)
 */
 	if (!$viewFound)
 	{
-		//JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+		//JError::raiseError(404, Text::_('JGLOBAL_RESOURCE_NOT_FOUND'));
         throw new \Exception('JGLOBAL_RESOURCE_NOT_FOUND.', 404);
 	}
 

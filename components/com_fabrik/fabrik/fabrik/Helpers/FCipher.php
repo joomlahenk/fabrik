@@ -12,6 +12,9 @@ namespace Fabrik\Helpers;
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Crypt\Cipher;
 use Joomla\CMS\Crypt\Key;
 use Joomla\CMS\Crypt\Cipher\SodiumCipher;
@@ -45,7 +48,7 @@ class FCipher
 		}
 		else
 		{
-			$config = \JFactory::getConfig();
+			$config = \Factory::getConfig();
 			$secret = $config->get('secret', '');
 
 			if (trim($secret) == '')
@@ -116,7 +119,7 @@ class FCipher
 
 	private function getKey()
 	{
-		$fbConfig = \JComponentHelper::getParams('com_fabrik');
+		$fbConfig = \ComponentHelper::getParams('com_fabrik');
 		$privateKey = $fbConfig->get('fabrik_private_key', '');
 		$publicKey = $fbConfig->get('fabrik_public_key', '');
 
@@ -134,7 +137,7 @@ class FCipher
 
 	private function generateKey()
 	{
-		$fbConfig = \JComponentHelper::getParams('com_fabrik');
+		$fbConfig = \ComponentHelper::getParams('com_fabrik');
 		$key = $this->cipher->generateKey();
 		//$privateKey = $key->getPrivate();
 		//$publicKey = $key->getPublic();
@@ -143,8 +146,8 @@ class FCipher
 		$fbConfig->set('fabrik_private_key', bin2hex($privateKey));
 		$fbConfig->set('fabrik_public_key', bin2hex($publicKey));
 
-		$componentid = \JComponentHelper::getComponent('com_fabrik')->id;
-		$table = \JTable::getInstance('extension');
+		$componentid = \ComponentHelper::getComponent('com_fabrik')->id;
+		$table = \Table::getInstance('extension');
 		$table->load($componentid);
 		$table->bind(array('params' => $fbConfig->toString()));
 
@@ -266,7 +269,7 @@ class FCipher
 
 		// Just a random key of a given length.
 		$key->type    = 'simple';
-		$key->private = \JFactory::getConfig()->get('secret');
+		$key->private = \Factory::getConfig()->get('secret');
 		$key->public  = $key->private;
 
 		return $key;

@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 /**
  * @package		Joomla.Site
  * @copyright	Copyright (C) 2005 - Fabrikar.com All rights reserved.
@@ -61,10 +65,10 @@ require_once JPATH_BASE.'/includes/framework.php';
 JDEBUG ? $_PROFILER->mark('afterLoad') : null;
 
 // Instantiate the application.
-$app = JFactory::getApplication('site');
+$app = Factory::getApplication('site');
 
 
-class FabrikTableDownload extends JTable
+class FabrikTableDownload extends Table
 {
 
 	/**
@@ -83,8 +87,8 @@ class FabrikTableDownload extends JTable
 $prevVersion = '3.2.1';
 $version = '3.3.2';
 $joomla_version = '34';
-$now = JFactory::getDate()->toSql();
-$db = JFactory::getDbo();
+$now = Factory::getDate()->toSql();
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 
 // Unpublish
@@ -100,7 +104,7 @@ echo "<pre>";print_r($old);
 foreach ($old as $orig)
 {
 	unset($orig->id);
-	$item = JTable::getInstance('Download', 'FabrikTable');
+	$item = Table::getInstance('Download', 'FabrikTable');
 	$orig->version = $version;
 	$orig->download = str_replace($prevVersion, $version, $orig->download);
 	$orig->create_date = $now;

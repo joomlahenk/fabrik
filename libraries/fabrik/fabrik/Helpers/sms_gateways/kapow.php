@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Object\CMSObject;
 use Fabrik\Helpers\ArrayHelper;
 use Fabrik\Helpers\Sms;
 
@@ -22,7 +23,7 @@ use Fabrik\Helpers\Sms;
  * @since       3.0
  */
 
-class Kapow extends JObject
+class Kapow extends CMSObject
 {
 	/**
 	 * URL To Post SMS to

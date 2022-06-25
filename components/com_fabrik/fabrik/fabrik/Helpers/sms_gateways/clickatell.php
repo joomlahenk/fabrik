@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 use Clickatell\Api\ClickatellRest;
 use Fabrik\Helpers\ArrayHelper;
 
@@ -22,7 +24,7 @@ use Fabrik\Helpers\ArrayHelper;
  * @since       3.0
  */
 
-class Clickatell extends JObject
+class Clickatell extends CMSObject
 {
 	/**
 	 * Send SMS
@@ -65,7 +67,7 @@ class Clickatell extends JObject
 		}
 		catch (\Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
 			return false;
 		}
@@ -76,7 +78,7 @@ class Clickatell extends JObject
 			if ($item->error !== false)
 			{
 				// @TODO add language for this
-				JFactory::getApplication()->enqueueMessage('SMS failed with error code: ' . $item->errorCode, 'error');
+				Factory::getApplication()->enqueueMessage('SMS failed with error code: ' . $item->errorCode, 'error');
 
 				return false;
 			}

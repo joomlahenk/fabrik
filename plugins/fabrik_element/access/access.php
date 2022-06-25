@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+
 /**
  * Access element
  *
@@ -108,7 +112,7 @@ class PlgFabrik_ElementAccess extends PlgFabrik_Element
 			// If in front end we need to load the admin language..
 			$this->lang->load('joomla', JPATH_ADMINISTRATOR, null, false, false);
 
-			array_unshift($options, JHtml::_('select.option', '', FText::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
+			array_unshift($options, HTMLHelper::_('select.option', '', FText::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
 		}
 
 		return $options;
@@ -125,7 +129,7 @@ class PlgFabrik_ElementAccess extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $options = $this->getOpts();
@@ -137,7 +141,7 @@ class PlgFabrik_ElementAccess extends PlgFabrik_Element
 			{
 				if ($o->value == $data)
 				{
-					$text = JString::ltrim(str_replace('-', '', $o->text));
+					$text = StringHelper::ltrim(str_replace('-', '', $o->text));
 				}
 			}
 		}

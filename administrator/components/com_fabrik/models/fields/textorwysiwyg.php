@@ -11,10 +11,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
 
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('text');
+FormHelper::loadFieldClass('text');
 
 /**
  * Renders either a plain <textarea> or WYSIWYG editor
@@ -40,7 +45,7 @@ class JFormFieldTextorwysiwyg extends JFormFieldText
 	 */
 	protected function getInput()
 	{
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('fbConf_wysiwyg_label', '0') == '0')
 		{
@@ -102,9 +107,9 @@ class JFormFieldTextorwysiwyg extends JFormFieldText
 	}
 
 	/**
-	 * Method to get a JEditor object based on the form field.
+	 * Method to get a Editor object based on the form field.
 	 *
-	 * @return  object  The JEditor object.
+	 * @return  object  The Editor object.
 	 */
 	protected function &getEditor()
 	{
@@ -123,7 +128,7 @@ class JFormFieldTextorwysiwyg extends JFormFieldText
 				$types = explode('|', $type);
 
 				// Get the database object.
-				$db = JFactory::getDBO();
+				$db = Factory::getDBO();
 
 				// Iterate over the types looking for an existing editor.
 				foreach ($types as $element)
@@ -147,8 +152,8 @@ class JFormFieldTextorwysiwyg extends JFormFieldText
 					}
 				}
 			}
-			// Create the JEditor instance based on the given editor.
-			$this->editor = JFactory::getEditor($editor ? $editor : null);
+			// Create the Editor instance based on the given editor.
+			$this->editor = Factory::getEditor($editor ? $editor : null);
 		}
 
 		return $this->editor;

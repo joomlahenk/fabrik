@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 require_once JPATH_SITE . '/plugins/fabrik_element/databasejoin/databasejoin.php';
@@ -300,7 +305,7 @@ class PlgFabrik_ElementCascadingdropdown extends PlgFabrik_ElementDatabasejoin
 					$db->setQuery($query);
 					$popupFormId = $db->loadResult();
 					$url = 'index.php?option=com_fabrik&view=details&formid=' . $popupFormId . '&listid=' . $listId . '&rowid=' . $defaultValue;
-					$defaultLabel = '<a href="' . JRoute::_($url) . '">' . $defaultLabel . '</a>';
+					$defaultLabel = '<a href="' . Route::_($url) . '">' . $defaultLabel . '</a>';
 				}
 			}
 
@@ -417,14 +422,14 @@ class PlgFabrik_ElementCascadingdropdown extends PlgFabrik_ElementDatabasejoin
 			if (is_array($ids))
 			{
 				array_walk($ids, function(&$val) {
-					$db = JFactory::getDbo();
+					$db = Factory::getDbo();
 					$val = $db->quote($val);
 				});
 				$this->autocomplete_where = empty($ids) ? '1 = -1' : $key . ' IN (' . implode(',', $ids) . ')';
 			}
 		}
 
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$data = $filter->clean($_POST, 'array');
 		$opts = $this->_getOptionVals($data);
 		$this->_replaceAjaxOptsWithDbJoinOpts($opts);
@@ -872,7 +877,7 @@ class PlgFabrik_ElementCascadingdropdown extends PlgFabrik_ElementDatabasejoin
 		$key = $this->queryKey();
 		$orderBy = 'text';
 		$tables = $this->getFormModel()->getLinkedFabrikLists($params->get('join_db_name'));
-		$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 		$val = $params->get('cascadingdropdown_label_concat');
 
 		if (!empty($val) && $this->app->input->get('override_join_val_column_concat', '0') !== '1')
@@ -932,7 +937,7 @@ class PlgFabrik_ElementCascadingdropdown extends PlgFabrik_ElementDatabasejoin
 			$query->where($where);
 		}
 
-		if (!JString::stristr($where, 'order by'))
+		if (!StringHelper::stristr($where, 'order by'))
 		{
 			$query->order($orderBy . ' ASC');
 		}
@@ -1004,7 +1009,7 @@ class PlgFabrik_ElementCascadingdropdown extends PlgFabrik_ElementDatabasejoin
 		}
 		else
 		{
-			$this->cn = JModelLegacy::getInstance('Connection', 'FabrikFEModel');
+			$this->cn = BaseDatabaseModel::getInstance('Connection', 'FabrikFEModel');
 			$this->cn->setId($id);
 		}
 

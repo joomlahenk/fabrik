@@ -12,12 +12,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
 
 /**
@@ -57,7 +59,7 @@ class JFormFieldListfields extends JFormFieldList
 			$this->results = array();
 		}
 
-		$app           = JFactory::getApplication();
+		$app           = Factory::getApplication();
 		$input         = $app->input;
 		$controller    = $input->get('view', $input->get('task'));
 		$formModel     = false;
@@ -153,7 +155,7 @@ class JFormFieldListfields extends JFormFieldList
 	private function _formatOptions(array $res, $valueFormat)
 	{
 		$aEls       = array();
-		$input      = JFactory::getApplication()->input;
+		$input      = Factory::getApplication()->input;
 		$controller = $input->get('view', $input->get('task'));
 
 		if ($controller == 'element')
@@ -200,7 +202,7 @@ class JFormFieldListfields extends JFormFieldList
 	 */
 	private function _validationOptions()
 	{
-		$input         = JFactory::getApplication()->input;
+		$input         = Factory::getApplication()->input;
 		$id            = $input->getInt('id');
 		$pluginManager = FabrikWorker::getPluginManager();
 		$elementModel  = $pluginManager->getElementPlugin($id);
@@ -255,7 +257,7 @@ class JFormFieldListfields extends JFormFieldList
 	 */
 	private function _listOptions($controller, $valueFormat, $useStep, $onlyListFields, $showRaw, $pluginFilters, $labelMethod, $noJoins)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if ($controller === 'item')
 		{
@@ -345,7 +347,7 @@ class JFormFieldListfields extends JFormFieldList
 	{
 		$valField   = $valueFormat == 'tableelement' ? 'name' : 'id';
 		$id         = $this->form->getValue('id');
-		$groupModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+		$groupModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 		$groupModel->setId($id);
 		$formModel = $groupModel->getFormModel();
 
@@ -445,7 +447,7 @@ class JFormFieldListfields extends JFormFieldList
 	 */
 	protected function loadFromGroupId($groupId)
 	{
-		$app            = JFactory::getApplication();
+		$app            = Factory::getApplication();
 		$input          = $app->input;
 		$controller     = $input->get('view', $input->get('task'));
 		$valueFormat    = (string) $this->getAttribute('valueformat', 'id');
@@ -459,7 +461,7 @@ class JFormFieldListfields extends JFormFieldList
 		$showRaw = FabrikWorker::toBoolean($this->getAttribute('raw', false), false);
 
 		/** @var FabrikFEModelGroup $groupModel */
-		$groupModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+		$groupModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 		$groupModel->setId($groupId);
 		$optsKey = $valueFormat == 'tableelement' ? 'name' : 'id';
 		$useStep = FabrikWorker::toBoolean($this->getAttribute('usestep', false), false);

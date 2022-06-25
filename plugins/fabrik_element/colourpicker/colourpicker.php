@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Profiler\Profiler;
+
 /**
  * Plugin element to render colour picker
  *
@@ -45,7 +47,7 @@ class PlgFabrik_ElementColourpicker extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $data              = FabrikWorker::JSONtoData($data, true);

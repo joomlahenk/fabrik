@@ -1,8 +1,11 @@
 <?php
 
+use Joomla\CMS\Factory;
+
+
 // Radio button sum
 
-$db = JFactory::getDbo();
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 
 // Get labels

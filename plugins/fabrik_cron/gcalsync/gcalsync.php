@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-cron.php';
 
@@ -339,7 +342,7 @@ class PlgFabrik_CronGcalsync extends PlgFabrik_Cron
 					$when = $gdataCal->newWhen();
 
 					// Grab the start date, apply the tx offset, and format it for gcal
-					$start_date = JFactory::getDate($event->$gcal_start_date_element_long, $tz);
+					$start_date = Factory::getDate($event->$gcal_start_date_element_long, $tz);
 					$when->startTime = $this->formatDate($start_date);
 
 					/* We have to provide an end date for gcal, so if we don't have one,
@@ -353,7 +356,7 @@ class PlgFabrik_CronGcalsync extends PlgFabrik_Cron
 					}
 
 					// Grab the end date, apply the tx offset, and format it for gcal
-					$end_date = JFactory::getDate($event->$gcal_end_date_element_long, $tz);
+					$end_date = Factory::getDate($event->$gcal_end_date_element_long, $tz);
 					$when->endTime = $this->formatDate($end_date);
 					$newEvent->when = array($when);
 
@@ -386,11 +389,11 @@ class PlgFabrik_CronGcalsync extends PlgFabrik_Cron
 	/**
 	 * Format date for google
 	 *
-	 * @param   JDate  $date  Date
+	 * @param   Date  $date  Date
 	 *
 	 * @return string
 	 */
-	protected function formatDate(JDate $date)
+	protected function formatDate(Date $date)
 	{
 		$tzOffset = $date->format('P');
 

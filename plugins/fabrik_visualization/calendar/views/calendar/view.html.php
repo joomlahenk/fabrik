@@ -11,6 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +27,7 @@ jimport('joomla.application.component.view');
  * @since       3.0
  */
 
-class FabrikViewCalendar extends JViewLegacy
+class FabrikViewCalendar extends HtmlView
 {
 	/**
 	 * Execute and display a template script.
@@ -33,13 +39,13 @@ class FabrikViewCalendar extends JViewLegacy
 
 	public function display($tpl = 'default')
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 		$input = $app->input;
 		$j3 = FabrikWorker::j3();
 		$Itemid = FabrikWorker::itemId();
 		$model = $this->getModel();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$id = $input->get('id', $usersConfig->get('visualizationid', $input->get('visualizationid', 0)));
 		$model->setId($id);
 		$this->row = $model->getVisualization();
@@ -79,11 +85,11 @@ class FabrikViewCalendar extends JViewLegacy
 
 		$urls = new stdClass;
 
-		// Don't JRoute as its wont load with sef?
+		// Don't Route as its wont load with sef?
 		$urls->del = 'index.php?option=com_' . $package
 		. '&controller=visualization.calendar&view=visualization&task=deleteEvent&format=raw&Itemid=' . $Itemid . '&id=' . $id;
 		$urls->add = 'index.php?option=com_' . $package . '&view=visualization&format=raw&Itemid=' . $Itemid . '&id=' . $id;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$legend = $params->get('show_calendar_legend', 0) ? $model->getLegend() : '';
 		$tpl = $j3 ? 'bootstrap' : 'default';
 		$tpl = $params->get('calendar_layout', $j3);
@@ -161,22 +167,22 @@ class FabrikViewCalendar extends JViewLegacy
 
 		$json = json_encode($options);
 
-		JText::script('PLG_VISUALIZATION_CALENDAR_NEXT');
-		JText::script('PLG_VISUALIZATION_CALENDAR_PREVIOUS');
-		JText::script('PLG_VISUALIZATION_CALENDAR_DAY');
-		JText::script('PLG_VISUALIZATION_CALENDAR_WEEK');
-		JText::script('PLG_VISUALIZATION_CALENDAR_MONTH');
-		JText::script('PLG_VISUALIZATION_CALENDAR_KEY');
-		JText::script('PLG_VISUALIZATION_CALENDAR_TODAY');
-		JText::script('PLG_VISUALIZATION_CALENDAR_CONF_DELETE');
-		JText::script('PLG_VISUALIZATION_CALENDAR_DELETE');
-		JText::script('PLG_VISUALIZATION_CALENDAR_VIEW');
-		JText::script('PLG_VISUALIZATION_CALENDAR_EDIT');
-		JText::script('PLG_VISUALIZATION_CALENDAR_ADD_EDIT_EVENT');
-		JText::script('COM_FABRIK_FORM_SAVED');
-		JText::script('PLG_VISUALIZATION_CALENDAR_EVENT_START_END');
-		JText::script('PLG_VISUALIZATION_CALENDAR_DATE_ADD_TOO_LATE');
-		JText::script('PLG_VISUALIZATION_CALENDAR_DATE_ADD_TOO_EARLY');
+		Text::script('PLG_VISUALIZATION_CALENDAR_NEXT');
+		Text::script('PLG_VISUALIZATION_CALENDAR_PREVIOUS');
+		Text::script('PLG_VISUALIZATION_CALENDAR_DAY');
+		Text::script('PLG_VISUALIZATION_CALENDAR_WEEK');
+		Text::script('PLG_VISUALIZATION_CALENDAR_MONTH');
+		Text::script('PLG_VISUALIZATION_CALENDAR_KEY');
+		Text::script('PLG_VISUALIZATION_CALENDAR_TODAY');
+		Text::script('PLG_VISUALIZATION_CALENDAR_CONF_DELETE');
+		Text::script('PLG_VISUALIZATION_CALENDAR_DELETE');
+		Text::script('PLG_VISUALIZATION_CALENDAR_VIEW');
+		Text::script('PLG_VISUALIZATION_CALENDAR_EDIT');
+		Text::script('PLG_VISUALIZATION_CALENDAR_ADD_EDIT_EVENT');
+		Text::script('COM_FABRIK_FORM_SAVED');
+		Text::script('PLG_VISUALIZATION_CALENDAR_EVENT_START_END');
+		Text::script('PLG_VISUALIZATION_CALENDAR_DATE_ADD_TOO_LATE');
+		Text::script('PLG_VISUALIZATION_CALENDAR_DATE_ADD_TOO_EARLY');
 
 		$ref = $model->getJSRenderContext();
 
@@ -216,11 +222,11 @@ class FabrikViewCalendar extends JViewLegacy
 
 	public function chooseaddevent()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$this->setLayout('chooseaddevent');
 		$model = $this->getModel();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model->setId($input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0))));
 		$rows = $model->getEventLists();
 		$o = $model->getAddStandardEventFormInfo();
@@ -235,7 +241,7 @@ class FabrikViewCalendar extends JViewLegacy
 		}
 
 		$model->getEvents();
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$prefix = $config->get('dbprefix');
 		$attribs = 'class="inputbox" size="1" ';
 		$options = array_merge($options, $rows);

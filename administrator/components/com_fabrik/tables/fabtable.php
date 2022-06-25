@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\FormField;
+
 /**
  * Base Fabrik Table
  *
@@ -19,31 +22,31 @@ defined('_JEXEC') or die('Restricted access');
  * @since       3.0
  */
 
-class FabTable extends JTable
+class FabTable extends Table
 {
 	/**
-	 * JSON encoded JFormField param options
+	 * JSON encoded FormField param options
 	 *
 	 * @var string
 	 */
 	public $params = '';
 
 	/**
-	 * Static method to get an instance of a JTable class if it can be found in
-	 * the table include paths.  To add include paths for searching for JTable
-	 * classes @see JTable::addIncludePath().
+	 * Static method to get an instance of a Table class if it can be found in
+	 * the table include paths.  To add include paths for searching for Table
+	 * classes @see Table::addIncludePath().
 	 *
-	 * @param   string  $type    The type (name) of the JTable class to get an instance of.
+	 * @param   string  $type    The type (name) of the Table class to get an instance of.
 	 * @param   string  $prefix  An optional prefix for the table class name.
-	 * @param   array   $config  An optional array of configuration values for the JTable object.
+	 * @param   array   $config  An optional array of configuration values for the Table object.
 	 *
-	 * @return  mixed	A JTable object if found or boolean false if one could not be found.
+	 * @return  mixed	A Table object if found or boolean false if one could not be found.
 	 */
-	public static function getInstance($type, $prefix = 'JTable', $config = array())
+	public static function getInstance($type, $prefix = 'Table', $config = array())
 	{
 		$config['dbo'] = FabrikWorker::getDbo(true);
 
-		$instance = parent::getInstance($type, $prefix, $config);//H so we go to JTable
+		$instance = parent::getInstance($type, $prefix, $config);//H so we go to Table
 
 		/**
 		 * $$$ hugh - we added $params in this commit:

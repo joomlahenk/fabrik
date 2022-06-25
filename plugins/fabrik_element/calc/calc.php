@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -489,7 +491,7 @@ class PlgFabrik_ElementCalc extends PlgFabrik_Element
 		$this->loadMeForAjax();
 		$params        = $this->getParams();
 		$w             = new FabrikWorker;
-		$filter        = JFilterInput::getInstance();
+		$filter        = InputFilter::getInstance();
 		$d             = $filter->clean($_REQUEST, 'array');
 		$formModel     = $this->getFormModel();
 		$repeatCounter = $this->app->input->get('repeatCounter', '0');
@@ -677,7 +679,7 @@ class PlgFabrik_ElementCalc extends PlgFabrik_Element
 		$this->loadMeForAjax();
 
 		/** @var FabrikFEModelList $listModel */
-		$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$data = $listModel->getData();
 		$return = new stdClass;

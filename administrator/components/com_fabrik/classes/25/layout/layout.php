@@ -9,15 +9,17 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Layout\LayoutInterface;
+
 /**
  * Interface to handle display layout
  *
  * @package     Joomla.Libraries
  * @subpackage  Layout
- * @see         http://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
+ * @see         http://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_LayoutInterface
  * @since       3.0
  */
-interface JLayout
+interface LayoutInterface
 {
 	/**
 	 * Method to escape output.

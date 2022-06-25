@@ -11,6 +11,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Version;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.model');
@@ -79,7 +86,7 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $params = $this->getParams();
@@ -247,7 +254,7 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 
 		if (empty($this->creatorIds))
 		{
-			return JFactory::getUser()->get('id');
+			return Factory::getUser()->get('id');
 		}
 		else
 		{
@@ -446,11 +453,11 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 	{
 		$cookieName = "rating-table_{$listId}_row_{$rowId}" . FabrikString::filteredIp();
 		jimport('joomla.utilities.utility');
-		$version = new JVersion;
+		$version = new Version;
 
 		if (version_compare($version->RELEASE, '3.1', '>'))
 		{
-			return JApplicationHelper::getHash($cookieName);
+			return ApplicationHelper::getHash($cookieName);
 		}
 		else
 		{
@@ -499,7 +506,7 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 		$this->createRatingTable();
 		$db        = FabrikWorker::getDbo(true);
 		$tzOffset  = $this->config->get('offset');
-		$date      = JFactory::getDate('now', $tzOffset);
+		$date      = Factory::getDate('now', $tzOffset);
 		$strDate   = $db->q($date->toSql());
 		$userId    = $db->q($this->getStoreUserId($listId, $rowId));
 		$elementId = (int) $this->getElement()->id;
@@ -605,7 +612,7 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 		$opts->starIcon   = FabrikHelperHTML::icon("icon-star",  '', '', true);
 		$opts->starIconEmpty = FabrikHelperHTML::icon("icon-star-empty", '', '', true);
 
-		JText::script('PLG_ELEMENT_RATING_NO_RATING');
+		Text::script('PLG_ELEMENT_RATING_NO_RATING');
 
 		return array('FbRating', $id, $opts);
 	}
@@ -624,7 +631,7 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 		$list                = $listModel->getTable();
 		$opts                = new stdClass;
 		$opts->listid        = $list->id;
-		$opts->imagepath     = JUri::root() . '/plugins/fabrik_element/rating/images/';
+		$opts->imagepath     = Uri::root() . '/plugins/fabrik_element/rating/images/';
 		$opts->elid          = $this->getElement()->id;
 		$opts->canRate       = $params->get('rating-mode') == 'creator-rating' ? true : $this->canRate();
 		$opts->doAjax        = $params->get('rating-mode') != 'creator-rating';
@@ -655,7 +662,7 @@ class PlgFabrik_ElementRating extends PlgFabrik_Element
 	 */
 	public function filterValueList($normal, $tableName = '', $label = '', $id = '', $incjoin = true)
 	{
-		$usersConfig  = JComponentHelper::getParams('com_fabrik');
+		$usersConfig  = ComponentHelper::getParams('com_fabrik');
 		$params       = $this->getParams();
 		$filter_build = $params->get('filter_build_method', 0);
 

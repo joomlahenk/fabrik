@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\Html;
 use Joomla\String\StringHelper;
@@ -85,11 +88,11 @@ class FabrikFEModelCSVExport extends FabModel
 		$filePath = $this->getFilePath();
 		$str      = '';
 
-		if (JFile::exists($filePath))
+		if (File::exists($filePath))
 		{
 			if ($start === 0)
 			{
-				JFile::delete($filePath);
+				File::delete($filePath);
 			}
 			else
 			{
@@ -100,7 +103,7 @@ class FabrikFEModelCSVExport extends FabModel
 		{
 			// Fabrik3 odd cant pass 2nd param by reference if we try to write '' so assign it to $tmp first
 			$tmp = '';
-			$ok  = JFile::write($filePath, $tmp);
+			$ok  = File::write($filePath, $tmp);
 
 			if (!$ok)
 			{
@@ -116,7 +119,7 @@ class FabrikFEModelCSVExport extends FabModel
 		$this->model->render();
 		$this->removePkVal();
 		$this->outPutFormat = $input->get('excel') == 1 ? 'excel' : 'csv';
-		$config             = JComponentHelper::getParams('com_fabrik');
+		$config             = ComponentHelper::getParams('com_fabrik');
 		$this->delimiter    = $this->outPutFormat == 'excel' ? COM_FABRIK_EXCEL_CSV_DELIMITER : COM_FABRIK_CSV_DELIMITER;
 		$this->delimiter    = $config->get('csv_delimiter', $this->delimiter);
 		$local_delimiter    = $this->model->getParams()->get('csv_local_delimiter');
@@ -247,7 +250,7 @@ class FabrikFEModelCSVExport extends FabModel
 		}
 
 		error_reporting(0);
-		$ok = JFile::write($filePath, $str);
+		$ok = File::write($filePath, $str);
 
 		if (!$ok)
 		{
@@ -372,7 +375,7 @@ class FabrikFEModelCSVExport extends FabModel
 	{
 		$filePath = $this->getFilePath();
 		$str      = $this->getCSVContent();
-		JFile::delete($filePath);
+		File::delete($filePath);
 		echo $str;
 		exit;
 	}
@@ -386,7 +389,7 @@ class FabrikFEModelCSVExport extends FabModel
 	{
 		$filePath = $this->getFilePath();
 
-		if (JFile::exists($filePath))
+		if (File::exists($filePath))
 		{
 			$str = file_get_contents($filePath);
 		}
@@ -419,7 +422,7 @@ class FabrikFEModelCSVExport extends FabModel
 		if(file_exists(JPATH_PLUGINS.'/fabrik_list/listcsv/scripts/list_'.$listid.'_csv_export.php')){	
    			require(JPATH_PLUGINS.'/fabrik_list/listcsv/scripts/list_'.$listid.'_csv_export.php');
 		}
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		//$document->setMimeEncoding('application/zip');
 		$document->setMimeEncoding('text/csv');
 		$str = $this->getCSVContent();
@@ -440,7 +443,7 @@ class FabrikFEModelCSVExport extends FabModel
 		$this->app->setHeader('charset', $encoding);
 		$this->app->setBody($str);
 		echo $this->app->toString(false);
-		JFile::delete($filePath);
+		File::delete($filePath);
 		// $$$ rob 21/02/2012 - need to exit otherwise Chrome give 349 download error
 		exit;
 	}

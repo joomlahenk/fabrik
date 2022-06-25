@@ -9,18 +9,24 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.file');
 
 // Load front end language file as well
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_fabrik', JPATH_BASE . '/components/com_fabrik');
 
 if (!defined('COM_FABRIK_FRONTEND'))
 {
-	JError::raiseError(400, JText::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'));
+	JError::raiseError(400, Text::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'));
 }
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
 $origLayout = $input->get('layout');
@@ -40,8 +46,8 @@ require_once COM_FABRIK_FRONTEND . '/views/list/view.html.php';
 
 $input->set('layout', $origLayout);
 
-JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 
 $formId = (int) $params->get('formid');
 
@@ -62,7 +68,7 @@ if ($readonly == 1) {
 }
 
 $layout = $params->get('template', 'default');
-$usersConfig = JComponentHelper::getParams('com_fabrik');
+$usersConfig = ComponentHelper::getParams('com_fabrik');
 $rowid = (string) $params->get('row_id', '');
 $usersConfig->set('rowid', $rowid);
 

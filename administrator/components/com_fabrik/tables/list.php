@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -36,11 +39,11 @@ class FabrikTableList extends FabTable
 	}
 
 	/**
-	 * Method to bind an associative array or object to the JTable instance.This
+	 * Method to bind an associative array or object to the Table instance.This
 	 * method only binds properties that are publicly accessible and optionally
 	 * takes an array of properties to ignore when binding.
 	 *
-	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $src     An associative array or object to bind to the Table instance.
 	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  boolean  True on success.
@@ -50,7 +53,7 @@ class FabrikTableList extends FabTable
 		// Bind the rules.
 		if (isset($src['rules']) && is_array($src['rules']))
 		{
-			$rules = new JAccessRules($src['rules']);
+			$rules = new Rules($src['rules']);
 			$this->setRules($rules);
 		}
 
@@ -91,7 +94,7 @@ class FabrikTableList extends FabTable
 
 	/**
 	 * Method to load a row from the database by primary key and bind the fields
-	 * to the JTable instance properties.
+	 * to the Table instance properties.
 	 *
 	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
 	 * set the instance property value is used.
@@ -137,7 +140,7 @@ class FabrikTableList extends FabTable
 			// Check that $field is in the table.
 			if (!in_array($field, $fields))
 			{
-				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_CLASS_IS_MISSING_FIELD', get_class($this), $field));
+				$e = new JException(Text::sprintf('JLIB_DATABASE_ERROR_CLASS_IS_MISSING_FIELD', get_class($this), $field));
 				$this->setError($e);
 
 				return false;

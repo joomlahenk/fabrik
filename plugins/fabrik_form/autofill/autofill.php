@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+
 /**
  * other records in the table to auto fill in the rest of the form with that records data
  *
@@ -80,9 +83,9 @@ class PlgFabrik_FormAutofill extends PlgFabrik_Form
 		}
 
 		$opts = json_encode($opts);
-		JText::script('PLG_FORM_AUTOFILL_DO_UPDATE');
-		JText::script('PLG_FORM_AUTOFILL_SEARCHING');
-		JText::script('PLG_FORM_AUTOFILL_NORECORDS_FOUND');
+		Text::script('PLG_FORM_AUTOFILL_DO_UPDATE');
+		Text::script('PLG_FORM_AUTOFILL_SEARCHING');
+		Text::script('PLG_FORM_AUTOFILL_NORECORDS_FOUND');
 
 		if (!isset($formModel->formPluginJS))
 		{
@@ -114,14 +117,14 @@ class PlgFabrik_FormAutofill extends PlgFabrik_Form
 			$formId = $input->getInt('formid');
 			$input->set($element, $value, 'get');
 			/** @var FabrikFEModelForm $model */
-			$model = JModelLegacy::getInstance('form', 'FabrikFEModel');
+			$model = BaseDatabaseModel::getInstance('form', 'FabrikFEModel');
 			$model->setId($formId);
 			$listModel = $model->getlistModel();
 		}
 		else
 		{
 			/** @var FabrikFEModelList $listModel */
-			$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$listModel->setId($input->getInt('table'));
 		}
 

@@ -1,6 +1,8 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Filesystem\File;
+
 $d = $displayData;
 
 $class = $d->downloadImg !== '' ? '' : 'class="btn btn-primary button"';
@@ -8,7 +10,7 @@ $target = $d->openInBrowser ? ' target="_blank"' : '';
 ?>
 
 <?php if (!$d->canDownload) :
-    $noImg = ($d->noAccessImage === '' || !JFile::exists(JPATH_ROOT . '/media/com_fabrik/images/' . $d->noAccessImage));
+    $noImg = ($d->noAccessImage === '' || !File::exists(JPATH_ROOT . '/media/com_fabrik/images/' . $d->noAccessImage));
 	$aClass = $noImg ? 'class="btn button"' : '';
 
     if (!empty($d->noAccessURL)) :

@@ -12,6 +12,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Version;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\String\StringHelper;
 
 /**
@@ -34,7 +40,7 @@ class FabrikAdminHelper
 
 	public static function prepareSaveDate($strdate)
 	{
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$tzoffset = $config->get('offset');
 		$db = FabrikWorker::getDbo(true);
 
@@ -50,7 +56,7 @@ class FabrikAdminHelper
 				$strdate .= ' 00:00:00';
 			}
 
-			$date = JFactory::getDate($strdate, $tzoffset);
+			$date = Factory::getDate($strdate, $tzoffset);
 			$strdate = $date->toSql();
 		}
 
@@ -64,13 +70,13 @@ class FabrikAdminHelper
 	 *
 	 * @since	1.6
 	 *
-	 * @return	JObject
+	 * @return	CMSObject
 	 */
 
 	public static function getActions($categoryId = 0)
 	{
-		$user = JFactory::getUser();
-		$result = new JObject;
+		$user = Factory::getUser();
+		$result = new CMSObject;
 
 		if (empty($categoryId))
 		{
@@ -145,9 +151,9 @@ class FabrikAdminHelper
 	{
 		// Filter settings
 		jimport('joomla.application.component.helper');
-		$config = JComponentHelper::getParams('com_config');
-		$user = JFactory::getUser();
-		$userGroups = JAccess::getGroupsByUser($user->get('id'));
+		$config = ComponentHelper::getParams('com_config');
+		$user = Factory::getUser();
+		$userGroups = Access::getGroupsByUser($user->get('id'));
 
 		$filters = $config->get('filters');
 
@@ -251,17 +257,17 @@ class FabrikAdminHelper
 				// Remove the white-listed attributes from the black-list.
 				$tags = array_diff($blackListTags, $whiteListTags);
 				$attrs = array_diff($blackListAttributes, $whiteListAttributes);
-				$filter = JFilterInput::getInstance($tags, $attrs, 1, 1);
+				$filter = InputFilter::getInstance($tags, $attrs, 1, 1);
 			}
 			// White lists take third precedence.
 			elseif ($whiteList)
 			{
-				$filter = JFilterInput::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);
+				$filter = InputFilter::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);
 			}
 			// No HTML takes last place.
 			else
 			{
-				$filter = JFilterInput::getInstance();
+				$filter = InputFilter::getInstance();
 			}
 
 			$text = $filter->clean($text, 'html');
@@ -281,7 +287,7 @@ class FabrikAdminHelper
 
 	public static function setViewLayout(&$view)
 	{
-//		$v = new JVersion;
+//		$v = new Version;
 
 //		if ($v->RELEASE > 2.5)
 //		{

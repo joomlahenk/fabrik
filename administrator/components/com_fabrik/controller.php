@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -21,13 +24,13 @@ jimport('joomla.application.component.controller');
  * @since       3.0
  */
 
-class FabrikAdminController extends JControllerLegacy
+class FabrikAdminController extends BaseController
 {
 	/**
 	 * Display the view
 	 *
 	 * @param   bool   $cachable   If true, the view output will be cached
-	 * @param   array  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link InputFilter::clean()}.
 	 *
 	 * @return  void
 	 */

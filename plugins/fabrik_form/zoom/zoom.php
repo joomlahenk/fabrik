@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\ArrayHelper;
 use Fabrik\Helpers\StringHelper;
 use \Firebase\JWT\JWT;
@@ -362,7 +366,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             } catch (RequestException $e) {
                 return $this->handleException($e);
             } catch (Exception $e) {
-                $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+                $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
                 return false;
             }
 
@@ -376,7 +380,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
                 $userId = $this->getElementValue('zoom_users_userid_elemant');
 
                 if (!empty($userId)) {
-                    JUserHelper::addUserToGroup($userId, $usergroup);
+                    UserHelper::addUserToGroup($userId, $usergroup);
                 }
             }
         }
@@ -403,7 +407,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             } catch (RequestException $e) {
                 return $this->handleException($e);
             } catch (Exception $e) {
-                $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+                $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
                 return false;
             }
         }
@@ -430,7 +434,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             } catch (RequestException $e) {
                 return $this->handleException($e);
             } catch (Exception $e) {
-                $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+                $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
                 return false;
             }
 
@@ -557,7 +561,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             $payload[$zoomKey] = self::formatZoomPayload($value, $map['format']);
         }
 
-        $payload['timezone'] = JFactory::getConfig()->get('offset');
+        $payload['timezone'] = Factory::getConfig()->get('offset');
 
         if ($params->get('zoom_webinars_create_as', 'per') === 'per')
         {
@@ -571,7 +575,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
 
         if (empty($hostUserId))
         {
-            $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_NO_HOST_USER'));
+            $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_NO_HOST_USER'));
             return false;
         }
 
@@ -631,7 +635,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
         } catch (RequestException $e) {
             return $this->handleException($e);
         } catch (Exception $e) {
-            $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+            $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
             return false;
         }
 
@@ -754,7 +758,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
 
         if (empty($hostUserId))
         {
-            $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_NO_HOST_USER'));
+            $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_NO_HOST_USER'));
             return false;
         }
 
@@ -814,7 +818,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
         } catch (RequestException $e) {
             return $this->handleException($e);
         } catch (Exception $e) {
-            $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+            $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
             return false;
         }
 
@@ -899,11 +903,11 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
         if ($e->hasResponse())
         {
             $response = json_decode((string)$e->getResponse()->getBody());
-            $formModel->setFormErrorMsg(JText::sprintf('PLG_FORM_ZOOM_API_ERROR_MESSAGE', $response->message));
+            $formModel->setFormErrorMsg(Text::sprintf('PLG_FORM_ZOOM_API_ERROR_MESSAGE', $response->message));
         }
         else
         {
-            $formModel->setFormErrorMsg(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+            $formModel->setFormErrorMsg(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
         }
 
         return false;
@@ -1120,8 +1124,8 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
         $params = $this->getParams();
         $which = $params->get('zoom_which', '');
         $payload = new \stdClass();
-        $user = JFactory::getUser($userId);
-        $userProfile = JUserHelper::getProfile( $user->id );
+        $user = Factory::getUser($userId);
+        $userProfile = UserHelper::getProfile( $user->id );
 
         if (isset($userProfile->profile['first_name'])) {
             $payload->first_name = $userProfile->profile['first_name'];
@@ -1166,15 +1170,15 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             if ($e->hasResponse())
             {
                 $response = json_decode((string)$e->getResponse()->getBody());
-                throw new \RuntimeException(JText::sprintf('PLG_FORM_ZOOM_API_ERROR_MESSAGE', $response->message));
+                throw new \RuntimeException(Text::sprintf('PLG_FORM_ZOOM_API_ERROR_MESSAGE', $response->message));
             }
             else
             {
-                throw new \RuntimeException(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+                throw new \RuntimeException(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
             }
 
         } catch (Exception $e) {
-            throw new \RuntimeException(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+            throw new \RuntimeException(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
         }
 
         return $participant;
@@ -1182,7 +1186,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
 
     private function removeParticipant($zoomId, $participantId, $userId)
     {
-        $user = JFactory::getUser($userId);
+        $user = Factory::getUser($userId);
         $params = $this->getParams();
         $which = $params->get('zoom_which', '');
         $payload = new \stdClass();
@@ -1213,15 +1217,15 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             if ($e->hasResponse())
             {
                 $response = json_decode((string)$e->getResponse()->getBody());
-                throw new \Exception(JText::sprintf('PLG_FORM_ZOOM_API_ERROR_MESSAGE', $response->message));
+                throw new \Exception(Text::sprintf('PLG_FORM_ZOOM_API_ERROR_MESSAGE', $response->message));
             }
             else
             {
-                throw new \Exception(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+                throw new \Exception(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
             }
 
         } catch (Exception $e) {
-            throw new \RuntimeException(JText::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
+            throw new \RuntimeException(Text::_('PLG_FORM_ZOOM_API_ERROR_GENERAL'));
         }
 
         return $statusCode;
@@ -1241,7 +1245,7 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
         $zoomId      = $input->get('zoomId', '', 'string');
         $attending   = $input->get('attending', '', 'string');
         $renderOrder = $input->get('renderOrder', '', 'string');
-        $formModel   = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+        $formModel   = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
         $formModel->setId($formId);
         $params         = $formModel->getParams();
         $params         = $this->setParams($params, $renderOrder);
@@ -1555,11 +1559,11 @@ class PlgFabrik_FormZoom extends PlgFabrik_Form
             $done = true;
 
             // Watch quantity input and update add to cart button data.
-            $doc = JFactory::getDocument();
+            $doc = Factory::getDocument();
             $doc->addScriptDeclaration('jQuery(document).ready(function ($) {
             $(\'.zoom\').on(\'click\', function (e) {
             	var attend = $(this).data(\'attending\');
-                Fabrik.loader.start($(this).closest(\'.fabrikForm\'), Joomla.JText._(\'COM_FABRIK_LOADING\'));
+                Fabrik.loader.start($(this).closest(\'.fabrikForm\'), Joomla.Text._(\'COM_FABRIK_LOADING\'));
     
                 $.ajax({
                     url     : Fabrik.liveSite + \'index.php\',

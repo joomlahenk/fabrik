@@ -12,18 +12,22 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHTML::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
-JHtml::_('bootstrap.tooltip');
-// JHtmlBehavior::framework is deprecated. Update to jquery scripts. HOW??
-//JHtml::_('behavior.framework', true);
-$debug = JDEBUG;
-JHtml::_('script', 'system/mootools-core.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
-JHtml::_('script', 'system/mootools-more.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
-FabrikHelperHTML::formvalidation();
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 
-JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+JHTML::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
+HTMLHelper::_('bootstrap.tooltip');
+// JHtmlBehavior::framework is deprecated. Update to jquery scripts. HOW??
+//HTMLHelper::_('behavior.framework', true);
+$debug = JDEBUG;
+HTMLHelper::_('script', 'system/mootools-core.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+HTMLHelper::_('script', 'system/mootools-more.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+FabrikHelperHTML::formvalidation();
+HTMLHelper::_('behavior.keepalive');
+
+Text::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 ?>
 
 <script type="text/javascript">
@@ -43,7 +47,7 @@ JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 		});
 	}
 </script>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
 <?php if ($this->item->parent_id != 0)
 {
@@ -112,5 +116,5 @@ JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="redirectto" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

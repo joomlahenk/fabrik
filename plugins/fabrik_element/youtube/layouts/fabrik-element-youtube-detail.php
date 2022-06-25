@@ -2,8 +2,10 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Uri\Uri;
+
 $d      = $displayData;
-$uri    = JUri::getInstance();
+$uri    = Uri::getInstance();
 $scheme = $uri->getScheme();
 
 if ($d->type === 'youtube') :

@@ -10,6 +10,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\LayoutInterface;
+
 jimport('joomla.application.component.view');
 require_once COM_FABRIK_FRONTEND . '/views/list/view.base.php';
 
@@ -85,7 +87,7 @@ class FabrikViewList extends FabrikViewListBase
 		$this->doc->setName($this->doc->getTitle());
 	}
 		/**
-	 * Render the group by heading as a JLayout list.fabrik-group-by-heading
+	 * Render the group by heading as a LayoutInterface list.fabrik-group-by-heading
 
 	 *
 	 * @param   string  $groupedBy  Group by key for $this->grouptemplates

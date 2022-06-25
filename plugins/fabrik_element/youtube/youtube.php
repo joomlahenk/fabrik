@@ -9,6 +9,7 @@
  */
 
 // No direct access
+use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die('Restricted access');
@@ -39,7 +40,7 @@ class PlgFabrik_ElementYoutube extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         return $this->constructVideoPlayer($data, 'list');
@@ -120,7 +121,7 @@ class PlgFabrik_ElementYoutube extends PlgFabrik_Element
 	private function constructVideoPlayer($value, $mode = 'form')
 	{
 		$params = $this->getParams();
-		$uri    = JUri::getInstance();
+		$uri    = Uri::getInstance();
 		$scheme = $uri->getScheme();
 		$type = 'youtube';
 

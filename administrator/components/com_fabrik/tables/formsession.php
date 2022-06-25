@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+
 /**
  * Form Session Fabrik Table
  *
@@ -18,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikTableFormsession extends JTable
+class FabrikTableFormsession extends Table
 {
 	/**
 	 * Constructor

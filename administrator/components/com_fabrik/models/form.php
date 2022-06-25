@@ -14,6 +14,9 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once 'fabmodeladmin.php';
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -53,7 +56,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 	 * @param   string $prefix A prefix for the table class name. Optional.
 	 * @param   array  $config Configuration array for model. Optional.
 	 *
-	 * @return  JTable    A database object
+	 * @return  Table    A database object
 	 *
 	 * @since    1.6
 	 */
@@ -70,7 +73,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  mixed  A Form object on success, false on failure
 	 *
 	 * @since    1.6
 	 */
@@ -169,7 +172,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 	/**
 	 * Prepare and sanitise the table data prior to saving.
 	 *
-	 * @param   JTable  $table  A JTable object.
+	 * @param   Table  $table  A Table object.
 	 *
 	 * @return  void
 	 *
@@ -180,7 +183,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 		// Set the publish date to now
 		if ($table->published == 1 && (int) $table->publish_up == 0)
 		{
-			$table->publish_up = JFactory::getDate()->toSql();
+			$table->publish_up = Factory::getDate()->toSql();
 		}
 
 		if ($table->published == 1 && intval($table->publish_down) == 0)
@@ -210,7 +213,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 		$isNew  = (bool) $this->getState($this->getName() . '.new');
 
 		/** @var FabrikAdminModelList $listModel */
-		$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
+		$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
 		$item      = $listModel->loadFromFormId($formId);
 
 		$listModel->set('form.id', $formId);
@@ -278,7 +281,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 		$createGroup            = $data['_createGroup'];
 		$recordInDatabase       = $data['record_in_database'];
 		$jForm                  = $this->app->input->get('jform', array(), 'array');
-		$this->contentTypeModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('ContentTypeImport', 'FabrikAdminModel', array('listModel' => $listModel));
+		$this->contentTypeModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('ContentTypeImport', 'FabrikAdminModel', array('listModel' => $listModel));
 		$groups                 = FArrayHelper::getValue($data, 'current_groups');
 		$contentType            = ArrayHelper::getValue($jForm, 'contenttype');
 
@@ -439,7 +442,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 		$input  = $this->app->input;
 		$cid    = $input->get('cid', array(), 'array');
 		$formId = $cid[0];
-		$model  = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$model  = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$model->setId($formId);
 		$form = $model->getForm();
 
@@ -447,7 +450,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 		if ($form->record_in_database == 1)
 		{
 			// There is a list view linked to the form so lets load it
-			$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
+			$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
 			$listModel->loadFromFormId($formId);
 			$listModel->setFormModel($model);
 			$dbExists = $listModel->databaseTableExists();
@@ -498,7 +501,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 	/**
 	 * Method to validate the form data.
 	 *
-	 * @param   JForm  $form  The form to validate against.
+	 * @param   Form  $form  The form to validate against.
 	 * @param   array  $data  The data to validate.
 	 * @param   string $group The name of the field group to validate.
 	 *

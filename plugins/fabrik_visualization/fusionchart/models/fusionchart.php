@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
 use FusionExport\ExportManager;
 use FusionExport\ExportConfig;
 use Joomla\Utilities\ArrayHelper;
@@ -417,7 +422,7 @@ class FabrikModelFusionchart extends FabrikFEModelVisualization
 	private function _replaceRequest($msg)
 	{
 		$db = $this->_db;
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$request = $filter->clean($_REQUEST, 'array');
 
 		foreach ($request as $key => $val)
@@ -516,13 +521,13 @@ class FabrikModelFusionchart extends FabrikFEModelVisualization
 	public function getFusionchart()
 	{
 		$this->cantTrendLine = array();
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$params = $this->getParams();
 		$worker = new FabrikWorker;
 		$xtLibPath = $params->get('fusionchart_library', 'fusioncharts-suite-xt');
 		$xt    = $this->pathBase . 'fusionchart/libs/' . $xtLibPath . '/integrations/php/fusioncharts-wrapper/fusioncharts.php';
 
-		if (JFile::exists($xt))
+		if (File::exists($xt))
 		{
 			require_once $xt;
 			//$document->addScript($this->srcBase . "fusionchart/libs/fusioncharts-suite-xt/js/fusioncharts.js");
@@ -585,7 +590,7 @@ class FabrikModelFusionchart extends FabrikFEModelVisualization
 			if (!array_key_exists($tid, $tmodels))
 			{
 				$listModel = null;
-				$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+				$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 				$listModel->setId($tid);
 				$tmodels[$tid] = $listModel;
 			}
@@ -659,7 +664,7 @@ class FabrikModelFusionchart extends FabrikFEModelVisualization
 				* they get rendered as tow groups of data and on bar charts this overlays one average over the other, rather than next to it
 				*/
 				$calcfound = true;
-				$column = JString::substr($column, 6);
+				$column = StringHelper::substr($column, 6);
 				$calckey = $calc_prefixmap[$pref];
 				$caldata = FArrayHelper::getValue($cals[$calckey], $column . '_obj');
 

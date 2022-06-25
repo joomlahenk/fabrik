@@ -10,12 +10,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Filesystem\Folder;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
  * Renders a list of Fabrik content types
@@ -42,7 +46,7 @@ class JFormFieldFabrikContentTypeList extends JFormFieldList
 	protected function getOptions()
 	{
 		$base    = JPATH_COMPONENT_ADMINISTRATOR . '/models/content_types';
-		$files   = JFolder::files($base, '.xml');
+		$files   = Folder::files($base, '.xml');
 		$options = array();
 
 		foreach ($files as $file)
@@ -72,7 +76,7 @@ class JFormFieldFabrikContentTypeList extends JFormFieldList
 	{
 		$str = '<div class="row-fluid">
 		<div class="span5">' . parent::getInput() . '<div id="contentTypeListAclUi"></div></div><div class="span7">';
-		$str .= '<legend>' . JText::_('COM_FABRIK_PREVIEW') . ': </legend>';
+		$str .= '<legend>' . Text::_('COM_FABRIK_PREVIEW') . ': </legend>';
 		$str .= '<div class="well" id="contentTypeListPreview"></div>';
 
 		$str .= '</div>';

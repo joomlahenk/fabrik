@@ -11,6 +11,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,7 +27,7 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik.visualization.calendar
  * @since       3.0
  */
-class FabrikViewFullcalendar extends JViewLegacy
+class FabrikViewFullcalendar extends HtmlView
 {
 	/**
 	 * Execute and display a template script.
@@ -31,10 +38,10 @@ class FabrikViewFullcalendar extends JViewLegacy
 	 */
 	public function display($tpl = 'default')
 	{
-		$app         = JFactory::getApplication();
+		$app         = Factory::getApplication();
 		$input       = $app->input;
 		$model       = $this->getModel();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$this->id    = $input->get('id', $usersConfig->get('visualizationid', $input->get('visualizationid', 0)));
 		$model->setId($this->id);
 		$this->row = $model->getVisualization();
@@ -82,8 +89,8 @@ class FabrikViewFullcalendar extends JViewLegacy
 			array(
 				JPATH_ROOT . '/plugins/fabrik_visualization/fullcalendar/layouts',
 				$tmplPath . '/layouts',
-				JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts/com_fabrik',
-				JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts/com_fabrik/visualization'
+				JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts/com_fabrik',
+				JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts/com_fabrik/visualization'
 			)
 		);
 		$displayData       = new stdClass;
@@ -126,7 +133,7 @@ class FabrikViewFullcalendar extends JViewLegacy
 	private function jsOptions()
 	{
 		$model    = $this->getModel();
-		$app      = JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$package  = $app->getUserState('com_fabrik.package', 'fabrik');
 		$params   = $model->getParams();
 		$Itemid   = FabrikWorker::itemId();
@@ -139,7 +146,7 @@ class FabrikViewFullcalendar extends JViewLegacy
 		$urlFilters        = new stdClass;
 		//$urlFilters->where = $model->buildQueryWhere();
 
-		// Don't JRoute as its wont load with sef?
+		// Don't Route as its wont load with sef?
 		$urls->del = 'index.php?option=com_' . $package
 			. '&controller=visualization.fullcalendar&view=visualization&format=raw&Itemid=' . $Itemid
 			. '&id=' . $model->getId() . '&visualizationid=' . $model->getId();
@@ -154,7 +161,7 @@ class FabrikViewFullcalendar extends JViewLegacy
 
 		foreach ($urls as &$url)
 		{
-			$url = JRoute::_($url, false);
+			$url = Route::_($url, false);
 		}
 
 		$options                  = new stdClass;
@@ -209,17 +216,17 @@ class FabrikViewFullcalendar extends JViewLegacy
 	 */
 	private function jsText()
 	{
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_CONF_DELETE');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_DELETE');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_VIEW');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_EDIT');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_ADD_EVENT');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_EDIT_EVENT');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_VIEW_EVENT');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_EVENT_START_END');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_DATE_ADD_TOO_LATE');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_DATE_ADD_TOO_EARLY');
-		JText::script('PLG_VISUALIZATION_FULLCALENDAR_CLOSE');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_CONF_DELETE');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_DELETE');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_VIEW');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_EDIT');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_ADD_EVENT');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_EDIT_EVENT');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_VIEW_EVENT');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_EVENT_START_END');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_DATE_ADD_TOO_LATE');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_DATE_ADD_TOO_EARLY');
+		Text::script('PLG_VISUALIZATION_FULLCALENDAR_CLOSE');
 	}
 
 	/**
@@ -264,7 +271,7 @@ class FabrikViewFullcalendar extends JViewLegacy
 		$fcLangFolder = 'plugins/fabrik_visualization/fullcalendar/libs/fullcalendar/locale/';
 		
 		// Figure out what language we are using
-		$lang = strtolower(JFactory::getUser()->getParam('language', JFactory::getLanguage()->getTag()));
+		$lang = strtolower(Factory::getUser()->getParam('language', Factory::getLanguage()->getTag()));
 		if ( file_exists( JPATH_BASE . '/' . $fcLangFolder . $lang . '.js') === false ) {
 			$lang = FabrikWorker::getShortLang();
 			if ( file_exists( JPATH_BASE . '/' . $fcLangFolder . $lang . '.js') === false ) {
@@ -287,7 +294,7 @@ class FabrikViewFullcalendar extends JViewLegacy
 	}
 
 	/**
-	 * Create JS JLayout data
+	 * Create JS LayoutInterface data
 	 *
 	 * @return void
 	 */
@@ -300,8 +307,8 @@ class FabrikViewFullcalendar extends JViewLegacy
 		$paths = array(
 			JPATH_ROOT . '/plugins/fabrik_visualization/fullcalendar/layouts',
 			$tmplPath . '/layouts',
-			JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts/com_fabrik',
-			JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts/com_fabrik/visualization'
+			JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts/com_fabrik',
+			JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts/com_fabrik/visualization'
 		);
 
 		FabrikHelperHTML::jLayoutJs(

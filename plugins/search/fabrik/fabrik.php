@@ -9,6 +9,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Plugin\CMSPlugin;
+
 /**
  * Content Search plugin
  *
@@ -17,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
  * @since       3.0
  */
 
-class PlgSearchFabrik extends JPlugin
+class PlgSearchFabrik extends CMSPlugin
 {
 
 	/**

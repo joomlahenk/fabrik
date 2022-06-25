@@ -11,6 +11,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 /**
  * Plugin element to render day/month/year drop-downs
  *
@@ -117,11 +121,11 @@ class PlgFabrik_ElementBirthday extends PlgFabrik_Element
 
 				// $$$ rob - all this below is nice but ... you still need to set a default
 				$detailValue = '';
-				$year = JString::ltrim($year, '0');
+				$year = StringHelper::ltrim($year, '0');
 
 				if (FabrikWorker::isDate($value))
 				{
-					$date = JFactory::getDate($value);
+					$date = Factory::getDate($value);
 					$detailValue = $date->format($fd);
 				}
 
@@ -505,7 +509,7 @@ class PlgFabrik_ElementBirthday extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $groupModel = $this->getGroup();
@@ -562,7 +566,7 @@ class PlgFabrik_ElementBirthday extends PlgFabrik_Element
 
 		/**
 		 * $$$ rob default to a format date
-		 * $date = JFactory::getDate($d);
+		 * $date = Factory::getDate($d);
 		 * $dateDisplay = $date->toFormat($ft);
 		 * Jaanus: sorry, but in this manner the element doesn't work with dates earlier than 1901
 		*/
@@ -573,7 +577,7 @@ class PlgFabrik_ElementBirthday extends PlgFabrik_Element
 		$nextYear = date('Y') + 1;
 		$lastYear = date('Y') - 1;
 		$thisYear = date('Y');
-		$year = JString::ltrim($year, '0');
+		$year = StringHelper::ltrim($year, '0');
 		$dmy = $day . '.' . $month . '.' . $year;
 		$mdy = $month . '.' . $day . '.' . $year;
 		$dmy_slash = $day . '/' . $month . '/' . $year;
@@ -811,14 +815,14 @@ class PlgFabrik_ElementBirthday extends PlgFabrik_Element
 				$thisDay = $today->format('d');
 
 				// Set start date today's month/day of start year
-				$startYear = JFactory::getDate($value[0])->format('Y');
-				$startDate = JFactory::getDate();
+				$startYear = Factory::getDate($value[0])->format('Y');
+				$startDate = Factory::getDate();
 				$startDate->setDate($startYear, $thisMonth, $thisDay)->setTime(0, 0, 0);
 				$value[0] = $startDate->toSql();
 
 				// Set end date to today's month/day of year after end year (means search on age between 35 & 35 returns results)
-				$endYear = JFactory::getDate($value[1])->format('Y');
-				$endDate = JFactory::getDate();
+				$endYear = Factory::getDate($value[1])->format('Y');
+				$endDate = Factory::getDate();
 				$endDate->setDate($endYear + 1, $thisMonth, $thisDay)->setTime(23, 59, 59);
 				$value[1] = $endDate->toSql();
 

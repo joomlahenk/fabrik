@@ -12,6 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Version;
+use Joomla\CMS\Form\Form;
+
 require_once 'fabmodeladmin.php';
 
 /**
@@ -37,7 +41,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 	 * @param   string $prefix A prefix for the table class name. Optional.
 	 * @param   array  $config Configuration array for model. Optional.
 	 *
-	 * @return  JTable    A database object
+	 * @return  Table    A database object
 	 */
 	public function getTable($type = 'Cron', $prefix = 'FabrikTable', $config = array())
 	{
@@ -52,7 +56,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed    A JForm object on success, false on failure
+	 * @return  mixed    A Form object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -71,7 +75,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 		$origError = error_reporting();
 		error_reporting(0);
 /*
-		$version = new JVersion;
+		$version = new Version;
 		if ($version->RELEASE == 2.5)
 		{
 			//  get RSS parsed object
@@ -79,7 +83,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 			$options['rssUrl']     = 'http://feeds.feedburner.com/fabrik';
 			$options['cache_time'] = 86400;
 
-			$rssDoc = JFactory::getXMLparser('RSS', $options);
+			$rssDoc = Factory::getXMLparser('RSS', $options);
 		}
 		else
 		{
@@ -218,7 +222,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 		$db->execute();
 
 		echo "<li>Groups added to 'Contact Us' form</li>";
-		$listModel           = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
+		$listModel           = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
 		$list                = $this->getTable('List');
 		$list->label         = "Contact Us Data";
 		$list->introduction  = "This table stores the data submitted in the contact us form";
@@ -237,7 +241,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 		$list->store();
 		echo "<li>Table for 'Contact Us' created</li></div>";
 		$form->store();
-		$formModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$formModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$formModel->setId($form->id);
 		$formModel->form = $form;
 
@@ -280,7 +284,7 @@ class FabrikAdminModelHome extends FabModelAdmin
 	 */
 	public function dropData()
 	{
-		$connModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
+		$connModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 		$connModel->setId($item->connection_id);
 		$db    = FabrikWorker::getDbo(true);
 		$query = $db->getQuery(true);

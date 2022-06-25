@@ -12,9 +12,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <h3><?php echo FText::_('COM_FABRIK_MANAGER_ELEMENT_CONFIRM_DELETE_COMMENT'); ?></h3>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -48,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 					<input type="hidden" name="cid[]" value="<?php echo $element->id?>" />
 				</td>
 				<td>
-					<?php echo JHtml::_('grid.id', $i, $element->id, false, 'elementIds'); ?>
+					<?php echo HTMLHelper::_('grid.id', $i, $element->id, false, 'elementIds'); ?>
 				</td>
 				<td>
 					<?php echo  $element->name; ?>

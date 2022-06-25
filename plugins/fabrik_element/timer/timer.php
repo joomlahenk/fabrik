@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
@@ -102,8 +105,8 @@ class PlgFabrik_ElementTimer extends PlgFabrik_Element
 		$id = $this->getHTMLId($repeatCounter);
 		$opts = $this->getElementJSOptions($repeatCounter);
 		$opts->autostart = (bool) $params->get('timer_autostart', false);
-		JText::script('PLG_ELEMENT_TIMER_START');
-		JText::script('PLG_ELEMENT_TIMER_STOP');
+		Text::script('PLG_ELEMENT_TIMER_START');
+		Text::script('PLG_ELEMENT_TIMER_STOP');
 
 		return array('FbTimer', $id, $opts);
 	}
@@ -190,7 +193,7 @@ class PlgFabrik_ElementTimer extends PlgFabrik_Element
 		{
 			if ($d != '')
 			{
-				$date = JFactory::getDate($d);
+				$date = Factory::getDate($d);
 				$sum += $this->toSeconds($date);
 			}
 		}
@@ -214,7 +217,7 @@ class PlgFabrik_ElementTimer extends PlgFabrik_Element
 			return 0;
 		}
 
-		$date = JFactory::getDate($v);
+		$date = Factory::getDate($v);
 
 		return $this->toSeconds($date);
 	}

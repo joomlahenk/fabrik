@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.controller');
@@ -23,7 +27,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  Fabrik
  * @since       1.5
  */
-class FabrikControllerPlugin extends JControllerLegacy
+class FabrikControllerPlugin extends BaseController
 {
 	/**
 	 * Means that any method in Fabrik 2, e.e. 'ajax_upload' should
@@ -38,13 +42,13 @@ class FabrikControllerPlugin extends JControllerLegacy
 
 	public function pluginAjax()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$plugin = $input->get('plugin', '');
 		$method = $input->get('method', '');
 		$group = $input->get('g', 'element');
 
-		if (!JPluginHelper::importPlugin('fabrik_' . $group, $plugin))
+		if (!PluginHelper::importPlugin('fabrik_' . $group, $plugin))
 		{
 			$o = new stdClass;
 			$o->err = 'unable to import plugin fabrik_' . $group . ' ' . $plugin;
@@ -58,10 +62,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 			$method = 'on' . StringHelper::ucfirst($method);
 		}
 
-//		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
-		$dispatcher->triggerEvent($method);
-//		$dispatcher = JFactory::getApplication()->triggerEvent($method);
+		Factory::getApplication()->triggerEvent($method);
 	}
 
 	/**
@@ -74,7 +75,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 	{
 		$db = FabrikWorker::getDbo();
 		require_once COM_FABRIK_FRONTEND . '/user_ajax.php';
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$method = $app->input->get('method', '');
 		$userAjax = new userAjax($db);
 
@@ -95,7 +96,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 	public function doCron(&$pluginManager)
 	{
 		$db = FabrikWorker::getDbo();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$cid = $app->input->get('element_id', array(), 'array');
 		$query = $db->getQuery(true);
 		$query->select('id, plugin')->from('#__fabrik_cron');
@@ -108,7 +109,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 		// FabrikFEModelview does not exsist !!
-		$viewModel = JModelLegacy::getInstance('view', 'FabrikFEModel');
+		$viewModel = BaseDatabaseModel::getInstance('view', 'FabrikFEModel');
 		$c = 0;
 
 		foreach ($rows as $row)

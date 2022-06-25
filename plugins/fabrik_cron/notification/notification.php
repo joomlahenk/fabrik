@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-cron.php';
 
@@ -82,8 +86,8 @@ class PlgFabrik_Cronnotification extends PlgFabrik_Cron
 			$event = FText::_($row->event);
 			list($listId, $formId, $rowId) = explode('.', $row->reference);
 
-			$url = JRoute::_('index.php?option=com_fabrik&view=details&listid=' . $listId . '&formid=' . $formId . '&rowid=' . $rowId);
-			$msg = JText::sprintf('FABRIK_NOTIFICATION_EMAIL_PART', $row->creator_name, $url, $event);
+			$url = Route::_('index.php?option=com_fabrik&view=details&listid=' . $listId . '&formid=' . $formId . '&rowid=' . $rowId);
+			$msg = Text::sprintf('FABRIK_NOTIFICATION_EMAIL_PART', $row->creator_name, $url, $event);
 
 			if (!array_key_exists($row->observer_id, $usermsgs))
 			{
@@ -102,7 +106,7 @@ class PlgFabrik_Cronnotification extends PlgFabrik_Cron
 		foreach ($usermsgs as $email => $messages)
 		{
 			$msg = implode(' ', $messages);
-			$mailer = JFactory::getMailer();
+			$mailer = Factory::getMailer();
 
 			if ($mailer->sendMail($email_from, $email_from, $email, $subject, $msg, true))
 			{

@@ -11,19 +11,23 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\ArrayHelper;
 
 if (!defined('COM_FABRIK_FRONTEND'))
 {
-	JError::raiseError(400, JText::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'));
+	JError::raiseError(400, Text::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'));
 }
 
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.model');
 jimport('joomla.application.component.helper');
-JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
-JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
-JModelLegacy::addIncludePath(COM_FABRIK_BASE . '/administrator/components/com_fabrik/tables');
+BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+BaseDatabaseModel::addIncludePath(COM_FABRIK_BASE . '/administrator/components/com_fabrik/tables');
 
 require_once COM_FABRIK_FRONTEND . '/controller.php';
 require_once COM_FABRIK_FRONTEND . '/controllers/list.php';
@@ -33,10 +37,10 @@ require_once COM_FABRIK_FRONTEND . '/controllers/package.php';
 require_once COM_FABRIK_FRONTEND . '/views/form/view.html.php';
 
 // Load front end language file as well
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_fabrik', JPATH_BASE . '/components/com_fabrik');
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
 // Clear out other filters (e.g. content/module previously rendered which used the same list but different filter)
@@ -45,7 +49,7 @@ if ($params->get('clearfilters'))
 	$input->set('clearfilters', 1);
 }
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 // Ensure the package is set to fabrik
 $prevUserState = $app->getUserState('com_fabrik.package');
@@ -128,7 +132,7 @@ if ($showTitle !== '')
 	$listParams->set('show-title', $showTitle);
 }
 
-$ordering = JArrayHelper::fromObject(json_decode($params->get('ordering')));
+$ordering = ArrayHelper::fromObject(json_decode($params->get('ordering')));
 $orderBy = (array) $ordering['order_by'];
 $orderDir = (array) $ordering['order_dir'];
 
@@ -138,7 +142,7 @@ if (!empty($orderBy))
 	foreach ($orderBy as $k => $v)
 	{
 		$context = 'com_fabrik.list' . $model->getRenderContext() . '.order.' . $v;
-		JFactory::getSession()->set($context, $orderDir[$k]);
+		Factory::getSession()->set($context, $orderDir[$k]);
 	}
 
 	$model->getTable()->order_by = json_encode($orderBy);
@@ -147,7 +151,7 @@ if (!empty($orderBy))
 
 // Set up prefilters - will overwrite ones defined in the list!
 
-$prefilters = JArrayHelper::fromObject(json_decode($params->get('prefilters')));
+$prefilters = ArrayHelper::fromObject(json_decode($params->get('prefilters')));
 $conditions = (array) $prefilters['filter-conditions'];
 
 if (!empty($conditions))

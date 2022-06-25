@@ -11,25 +11,30 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\String\StringHelper;
 
 // Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_fabrik'))
+if (!Factory::getUser()->authorise('core.manage', 'com_fabrik'))
 {
-	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 404);
+	throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 404);
 }
 
 // Load front end language file as well
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_fabrik', JPATH_SITE . '/components/com_fabrik');
 
 // Test if the system plugin is installed and published
 if (!defined('COM_FABRIK_FRONTEND'))
 {
-	throw new RuntimeException(JText::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'), 400);
+	throw new RuntimeException(Text::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'), 400);
 }
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
 // Include dependencies
@@ -53,7 +58,7 @@ if (StringHelper::strpos($cName, '.') != false)
 
 	$path = JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/controllers/' . $name . '.php';
 
-	if (JFile::exists($path))
+	if (File::exists($path))
 	{
 		require_once $path;
 		$controller = $type . $name;
@@ -65,16 +70,16 @@ if (StringHelper::strpos($cName, '.') != false)
 		$controller->addViewPath(JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/views');
 
 		// Add the model path
-		JModelLegacy::addIncludePath(JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/models');
+		BaseDatabaseModel::addIncludePath(JPATH_SITE . '/plugins/fabrik_' . $type . '/' . $name . '/models');
 	}
 }
 else
 {
-	$controller	= JControllerLegacy::getInstance('FabrikAdmin');
+	$controller	= BaseController::getInstance('FabrikAdmin');
 }
 
 // Test that they've published some element plugins!
-$db = JFactory::getDbo();
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 $query->select('COUNT(extension_id)')->from('#__extensions')
 		->where('enabled = 1 AND folder = ' . $db->q('fabrik_element'));
@@ -82,7 +87,7 @@ $db->setQuery($query);
 
 if ((int)$db->loadResult() === 0)
 {
-	$app->enqueueMessage(JText::_('COM_FABRIK_PUBLISH_AT_LEAST_ONE_ELEMENT_PLUGIN'), 'notice');
+	$app->enqueueMessage(Text::_('COM_FABRIK_PUBLISH_AT_LEAST_ONE_ELEMENT_PLUGIN'), 'notice');
 }
 
 // Execute the task.

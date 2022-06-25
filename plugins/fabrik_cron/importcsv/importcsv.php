@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-cron.php';
 require_once COM_FABRIK_FRONTEND . '/models/importcsv.php';
@@ -128,7 +132,7 @@ class PlgFabrik_Cronimportcsv extends PlgFabrik_Cron
 		// TODO: Need to also have a FILTER for CSV files ONLY.
 		$filter = "\.CSV$|\.csv$";
 		$exclude = array('done', '.svn', 'CVS');
-		$files = JFolder::files($d, $filter, true, true, $exclude);
+		$files = Folder::files($d, $filter, true, true, $exclude);
 
 		// The csv import class needs to know we are doing a cron import
 		$input->set('cron_csvimport', true);
@@ -143,7 +147,7 @@ class PlgFabrik_Cronimportcsv extends PlgFabrik_Cron
 			}
 
 			FabrikWorker::log('plg.cron.cronimportcsv.information', "Starting import: $fullCsvFile:  ");
-			$clsImportCSV = JModelLegacy::getInstance('Importcsv', 'FabrikFEModel');
+			$clsImportCSV = BaseDatabaseModel::getInstance('Importcsv', 'FabrikFEModel');
 
 			if ($useTableName)
 			{
@@ -180,21 +184,21 @@ class PlgFabrik_Cronimportcsv extends PlgFabrik_Cron
 
 			if ($deleteFile == '1')
 			{
-				JFile::delete($fullCsvFile);
+				File::delete($fullCsvFile);
 			}
 			elseif ($deleteFile == '2')
 			{
 				$new_csvfile = $fullCsvFile . '.' . time();
-				JFile::move($fullCsvFile, $new_csvfile);
+				File::move($fullCsvFile, $new_csvfile);
 			}
 			elseif ($deleteFile == '3')
 			{
 				$done_folder = dirname($fullCsvFile) . '/done';
 
-				if (JFolder::exists($done_folder))
+				if (Folder::exists($done_folder))
 				{
 					$new_csvfile = $done_folder . '/' . basename($fullCsvFile);
-					JFile::move($fullCsvFile, $new_csvfile);
+					File::move($fullCsvFile, $new_csvfile);
 				}
 				else
 				{

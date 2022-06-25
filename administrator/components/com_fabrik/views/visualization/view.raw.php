@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,19 +24,19 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikAdminViewVisualization extends JViewLegacy
+class FabrikAdminViewVisualization extends HtmlView
 {
 	/**
 	 * Form
 	 *
-	 * @var JForm
+	 * @var Form
 	 */
 	protected $form;
 
 	/**
 	 * Visualization item
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $item;
 

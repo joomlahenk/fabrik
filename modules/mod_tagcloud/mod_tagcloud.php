@@ -11,7 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Helper\ModuleHelper;
+
 // Include the syndicate functions only once
 require_once dirname(__FILE__) . '/helper.php';
 $cloud = modTagCloudHelper::getCloud($params);
-require JModuleHelper::getLayoutPath('mod_tagcloud');
+require ModuleHelper::getLayoutPath('mod_tagcloud');

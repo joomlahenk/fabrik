@@ -12,8 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
 <?php foreach ($this->lists as $list) {?>
 	<h2><?php echo FText::_('COM_FABRIK_LIST_COPY_RENAME_LIST')?></h2>
@@ -40,5 +43,5 @@ defined('_JEXEC') or die('Restricted access');
 	<?php }?>
 	<input type="hidden" name="option" value="com_fabrik" />
 	<input type="hidden" name="task" value="list.doCopy" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

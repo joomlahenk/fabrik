@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 
@@ -121,12 +123,12 @@ class Com_FabrikInstallerScript
         {
             $dest = 'libraries/src/Document';
 
-            if (!JFolder::exists(JPATH_ROOT . '/' . $dest)) {
-                JFolder::create(JPATH_ROOT . '/' . $dest);
+            if (!Folder::exists(JPATH_ROOT . '/' . $dest)) {
+                Folder::create(JPATH_ROOT . '/' . $dest);
             }
-            // $$$ hugh - have to use false as last arg (use_streams) on JFolder::copy(), otherwise
+            // $$$ hugh - have to use false as last arg (use_streams) on Folder::copy(), otherwise
             // it bypasses FTP layer, and will fail if web server does not have write access to J! folders
-            $moveRes = JFolder::copy($componentFrontend . '/Document', $dest, JPATH_SITE, true, false);
+            $moveRes = Folder::copy($componentFrontend . '/Document', $dest, JPATH_SITE, true, false);
 
             if ($moveRes !== true) {
                 echo "<p style=\"color:red\">failed to copy " . $componentFrontend . '/Document to ' . $dest . '</p>';
@@ -136,12 +138,12 @@ class Com_FabrikInstallerScript
         }
 		$dest = 'libraries/fabrik';
 
-		if (!JFolder::exists(JPATH_ROOT . '/' . $dest))
+		if (!Folder::exists(JPATH_ROOT . '/' . $dest))
 		{
-			JFolder::create(JPATH_ROOT . '/' . $dest);
+			Folder::create(JPATH_ROOT . '/' . $dest);
 		}
 
-		$moveRes = JFolder::copy($componentFrontend . '/fabrik', $dest, JPATH_SITE, true, false);
+		$moveRes = Folder::copy($componentFrontend . '/fabrik', $dest, JPATH_SITE, true, false);
 
 		if ($moveRes !== true)
 		{
@@ -169,9 +171,9 @@ class Com_FabrikInstallerScript
 
 		foreach ($this->documents as $document)
 		{
-			if (!empty($document) && JFile::exists($dest . '/' . $document . 'Document.php'))
+			if (!empty($document) && File::exists($dest . '/' . $document . 'Document.php'))
 			{
-				JFile::delete($dest . '/' . $document . 'Document.php');
+				File::delete($dest . '/' . $document . 'Document.php');
 			}
 		}
 
@@ -179,19 +181,19 @@ class Com_FabrikInstallerScript
 
 		foreach ($this->documents as $document)
 		{
-			if (!empty($document) && JFolder::exists($dest . '/' . $document))
+			if (!empty($document) && Folder::exists($dest . '/' . $document))
 			{
-				JFolder::delete($dest . '/' . $document);
+				Folder::delete($dest . '/' . $document);
 			}
 		}
 
 		// TODO: add remove the rest of fabrik
 		$dest = JPATH_SITE . '/libraries/fabrik/';
-		JFolder::delete($dest);
+		Folder::delete($dest);
 		$dest = JPATH_SITE . '/media/com_fabrik/';
-		JFolder::delete($dest);
+		Folder::delete($dest);
 		$dest = JPATH_SITE . '/plugins/fabrik_element/';
-		JFolder::delete($dest);
+		Folder::delete($dest);
 		// more plugins to remove
 
 		$this->disableFabrikPlugins();
@@ -264,9 +266,9 @@ class Com_FabrikInstallerScript
 			{
 				$path = JPATH_PLUGINS . '/' . $folder . '/' . $plug;
 
-				if (JFolder::exists($path))
+				if (Folder::exists($path))
 				{
-					JFolder::delete($path);
+					Folder::delete($path);
 				}
 			}
 		}

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /**
  * @TODO - rewrite example JS with jQuery AJAX
  *
@@ -24,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * Fabrik will automatically try and call the function name specified in your 'method='.
  * You are responsible for grabbing any other parameters, using:
  *
- *  $app = JFactory::getApplication();
+ *  $app = Factory::getApplication();
  *  $input = $app->input;
  *  $input->getString('variablename');
  *
@@ -99,7 +101,7 @@ class UserAjax
 		$db = FabrikWorker::getDbo();
 		$query = $db->getQuery(true);
 		$retStr = '';
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$myUsername = $input->get('username', '');
 		$query->select('name')->from('#__users')->where('username = ' . $db->quote($myUsername));

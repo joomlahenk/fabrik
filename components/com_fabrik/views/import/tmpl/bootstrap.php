@@ -11,11 +11,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$url = JRoute::_('index.php');
-JHtml::_('bootstrap.tooltip');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+$url = Route::_('index.php');
+HTMLHelper::_('bootstrap.tooltip');
 FabrikHelperHTML::formvalidation();
-$action = JRoute::_('index.php?option=com_fabrik');
-$app = JFactory::getApplication();
+$action = Route::_('index.php?option=com_fabrik');
+$app = Factory::getApplication();
 $listId = $app->input->getInt('listid');
 $itemId   = FabrikWorker::itemId();
 
@@ -29,7 +34,7 @@ $itemId   = FabrikWorker::itemId();
     <?php
     endif;
     ?>
-	<h2><?php echo JText::sprintf('COM_FABRIK_CSV_IMPORT_HEADING', $this->listName); ?></h2>
+	<h2><?php echo Text::sprintf('COM_FABRIK_CSV_IMPORT_HEADING', $this->listName); ?></h2>
 	<?php foreach ($this->fieldsets as $fieldset) :
 	?>
 	<fieldset>

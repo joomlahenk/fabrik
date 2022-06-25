@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.view');
@@ -38,7 +39,7 @@ class FabrikViewImport extends FabrikView
         FabrikHelperHTML::iniRequireJs();
 		$input        = $this->app->input;
 		$this->listid = $input->getInt('listid', 0);
-		$this->model  = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$this->model  = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$this->model->setId($this->listid);
 		$this->table = $this->model->getTable();
 		$this->form  = $this->get('Form');

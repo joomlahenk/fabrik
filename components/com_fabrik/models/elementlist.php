@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
 
@@ -554,7 +556,7 @@ class PlgFabrik_ElementList extends PlgFabrik_Element
 	 */
 	public static function cacheAutoCompleteOptions($elementModel, $search, $opts = array())
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$label = FArrayHelper::getValue($opts, 'label', '');
 		$rows = $elementModel->filterValueList(true, '', $label);
 		$v = $app->input->get('value', '', 'string');
@@ -622,7 +624,7 @@ class PlgFabrik_ElementList extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: parent: start: {$this->element->name}") : null;
 
         $params = $this->getParams();

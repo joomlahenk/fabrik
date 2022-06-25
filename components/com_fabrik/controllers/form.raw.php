@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -23,7 +28,7 @@ jimport('joomla.application.component.controller');
  * @deprecated? Don't think this is used, code seems out of date, certainly for process anyway - redirect urls are
  * for Fabrik 2 !
  */
-class FabrikControllerForm extends JControllerLegacy
+class FabrikControllerForm extends BaseController
 {
 	/**
 	 * Is the view rendered from the J content plugin
@@ -39,10 +44,10 @@ class FabrikControllerForm extends JControllerLegacy
 	 */
 	public function display()
 	{
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
+		$app = Factory::getApplication();
+		$session = Factory::getSession();
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$input = $app->input;
 		$viewName = $input->get('view', 'form');
 		$modelName = $viewName;
@@ -90,10 +95,10 @@ class FabrikControllerForm extends JControllerLegacy
 	 */
 	public function process()
 	{
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
+		$app = Factory::getApplication();
+		$session = Factory::getSession();
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$input = $app->input;
 		$viewName = $input->get('view', 'form');
 		$viewType = $document->getType();
@@ -112,7 +117,7 @@ class FabrikControllerForm extends JControllerLegacy
 		// Check for request forgeries
 		if ($model->spoofCheck())
 		{
-			JSession::checkToken() or die('Invalid Token');
+			Session::checkToken() or die('Invalid Token');
 		}
 
 		if ($input->getBool('fabrik_ignorevalidation', false) != true)
@@ -209,7 +214,7 @@ class FabrikControllerForm extends JControllerLegacy
 
 	protected function makeRedirect(&$model, $msg = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 		$input = $app->input;
 		$formId = $input->getInt('formid');
@@ -262,11 +267,11 @@ class FabrikControllerForm extends JControllerLegacy
 				}
 			}
 
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 
 			if ($config->get('sef'))
 			{
-				$url = JRoute::_($url);
+				$url = Route::_($url);
 			}
 
 			$this->setRedirect($url, $msg);

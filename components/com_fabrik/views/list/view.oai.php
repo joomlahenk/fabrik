@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 require_once JPATH_SITE . '/components/com_fabrik/views/list/view.base.php';
 
 /**
@@ -44,7 +46,7 @@ class FabrikViewList extends FabrikViewListBase
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$this->oaiModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Oai', 'FabrikFEModel');
+		$this->oaiModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Oai', 'FabrikFEModel');
 	}
 
 	/**
@@ -184,7 +186,7 @@ class FabrikViewList extends FabrikViewListBase
 	{
 		$header       = $this->oaiModel->createElement('header');
 		$dateStampKey = $this->oaiModel->dateElName();
-		$dateStamp    = JFactory::getDate($row->$dateStampKey)->format('Y-m-d');
+		$dateStamp    = Factory::getDate($row->$dateStampKey)->format('Y-m-d');
 		$header->appendChild($this->oaiModel->createElement('identifier', $this->rowIdentifier . $row->__pk_val));
 		$header->appendChild($this->oaiModel->createElement('datestamp', $dateStamp));
 

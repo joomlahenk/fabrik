@@ -12,12 +12,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 require_once JPATH_COMPONENT . '/helpers/adminhtml.php';
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('bootstrap.tooltip');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('bootstrap.tooltip');
 //JHTML::_('script', 'system/multiselect.js', false, true);
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
-$user = JFactory::getUser();
+$user = Factory::getUser();
 $userId = $user->get('id');
 $listOrder = $this->state->get('list.ordering');
 $listDirn = $this->state->get('list.direction');
@@ -26,7 +30,7 @@ $imgs = array('publish_x.png', 'tick.png', 'publish_y.png');
 $tasks = array('publish', 'unpublish', 'publish');
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=crons'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_fabrik&view=crons'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo FText::_('JSEARCH_FILTER_LABEL'); ?>:</label>
@@ -41,13 +45,13 @@ $tasks = array('publish', 'unpublish', 'publish');
 { ?>
 			<select name="package" class="inputbox" onchange="this.form.submit()">
 				<option value="fabrik"><?php echo FText::_('COM_FABRIK_SELECT_PACKAGE'); ?></option>
-				<?php echo JHtml::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true); ?>
+				<?php echo HTMLHelper::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true); ?>
 			</select>
 			<?php } ?>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => true)), 'value', 'text',
+				<?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array('archived' => true)), 'value', 'text',
 	$this->state->get('filter.published'), true); ?>
 			</select>
 		</div>
@@ -83,7 +87,7 @@ $tasks = array('publish', 'unpublish', 'publish');
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 	$ordering = ($listOrder == 'ordering');
-	$link = JRoute::_('index.php?option=com_fabrik&task=cron.edit&id=' . (int) $item->id);
+	$link = Route::_('index.php?option=com_fabrik&task=cron.edit&id=' . (int) $item->id);
 	$canChange = true;
 			   ?>
 
@@ -92,7 +96,7 @@ $tasks = array('publish', 'unpublish', 'publish');
 						<?php echo $item->id; ?>
 					</td>
 					<td>
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 					</td>
 					<td>
 						<?php
@@ -112,7 +116,7 @@ $tasks = array('publish', 'unpublish', 'publish');
 						<?php echo $item->lastrun; ?>
 					</td>
 					<td>
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'crons.', $canChange);?>
+						<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'crons.', $canChange);?>
 					</td>
 				</tr>
 
@@ -124,5 +128,5 @@ $tasks = array('publish', 'unpublish', 'publish');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

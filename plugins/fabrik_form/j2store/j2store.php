@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -362,7 +364,7 @@ class PlgFabrik_FormJ2Store extends PlgFabrik_Form
 			return;
 		}
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_j2store', JPATH_SITE . '/administrator', null, false, true);
 		$data = $opts[0]->data;
 
@@ -408,7 +410,7 @@ class PlgFabrik_FormJ2Store extends PlgFabrik_Form
 			J2StoreStrapper::addJs();
 
 			// Watch quantity input and update add to cart button data.
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			$doc->addScriptDeclaration('jQuery(document).ready(function ($) {
 			$(document).on(\'change\', \'input[name=product_qty]\', function () {
 				var productId = $(this).data(\'product_id\'),
@@ -416,7 +418,7 @@ class PlgFabrik_FormJ2Store extends PlgFabrik_Form
 				$(\'a[data-product_id=\' + productId + \']\').data(\'product_qty\', q);
 			});
 			$(\'body\').on(\'adding_to_cart\', function(e, btn, data) {
-				Fabrik.loader.start(btn.closest(\'.fabrikForm\'), Joomla.JText._(\'COM_FABRIK_LOADING\'));
+				Fabrik.loader.start(btn.closest(\'.fabrikForm\'), Joomla.Text._(\'COM_FABRIK_LOADING\'));
 			});
 			$(\'body\').on(\'after_adding_to_cart\', function(e, btn, response, type) {
 				Fabrik.loader.stop(btn.closest(\'.fabrikForm\'));

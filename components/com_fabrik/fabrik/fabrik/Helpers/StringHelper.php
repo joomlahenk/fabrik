@@ -13,6 +13,9 @@ namespace Fabrik\Helpers;
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use PHPLicengine\Api\Api;
 use PHPLicengine\Service\Bitlink;
 use stdClass;
@@ -226,7 +229,7 @@ class StringHelper extends \Joomla\String\StringHelper
 	 */
 	public static function dbFieldName($str)
 	{
-		$name = \JFilterInput::getInstance()->clean($str, 'CMD');
+		$name = \InputFilter::getInstance()->clean($str, 'CMD');
 
 		// Chinese characters?
 		if ($name === '')
@@ -775,7 +778,7 @@ class StringHelper extends \Joomla\String\StringHelper
 	}
 
 	/**
-	 * Translator JText wrapper - removes tags and compares raw text
+	 * Translator Text wrapper - removes tags and compares raw text
 	 * so "<p>STRING_TO_TRANSLATE</p>" is translated even if wrapped in a <p> tag.
 	 *
 	 * @param   string  $text  Text to translate
@@ -932,7 +935,7 @@ class StringHelper extends \Joomla\String\StringHelper
 
 			if (!preg_match("#^'.*'$#", $value))
 			{
-				$db = \JFactory::getDbo();
+				$db = \Factory::getDbo();
 				$value = $db->quote($value);
 			}
 
@@ -1010,7 +1013,7 @@ class StringHelper extends \Joomla\String\StringHelper
 
 			if (!preg_match("#^`.*`$#", $value))
 			{
-				$db = \JFactory::getDbo();
+				$db = \Factory::getDbo();
 				$value = $db->quoteName($value);
 			}
 

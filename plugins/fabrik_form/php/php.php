@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Filesystem\File;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -495,10 +498,10 @@ class PlgFabrik_FormPHP extends PlgFabrik_Form
 		if ($params->get('form_php_file') != -1)
 		{
 			$require_once = $params->get('form_php_require_once', '0') == '1';
-			$php_file = JFilterInput::getInstance()->clean($params->get('form_php_file'), 'CMD');
+			$php_file = InputFilter::getInstance()->clean($params->get('form_php_file'), 'CMD');
 			$php_file = JPATH_ROOT . '/plugins/fabrik_form/php/scripts/' . $php_file;
 
-			if (!JFile::exists($php_file))
+			if (!File::exists($php_file))
 			{
 				throw new RuntimeException('Missing PHP form plugin file');
 			}
@@ -622,10 +625,10 @@ class PlgFabrik_FormPHP extends PlgFabrik_Form
 				$fabrikFormDataWithTableName = $formModel->formDataWithtableName;
 			}
 
-			$php_file = JFilterInput::getInstance()->clean($params->get('form_php_file'), 'CMD');
+			$php_file = InputFilter::getInstance()->clean($params->get('form_php_file'), 'CMD');
 			$php_file = JPATH_ROOT . '/plugins/fabrik_form/php/scripts/' . $php_file;
 
-			if (!JFile::exists($php_file))
+			if (!File::exists($php_file))
 			{
 				throw new RuntimeException('Missing PHP form plugin file');
 			}

@@ -12,6 +12,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.controllerform');
@@ -23,12 +29,12 @@ jimport('joomla.application.component.controllerform');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabControllerForm extends JControllerForm
+class FabControllerForm extends FormController
 {
 	/**
 	 * JApplication
 	 *
-	 * @var JApplicationCms
+	 * @var CMSApplication
 	 */
 	protected $app;
 
@@ -44,13 +50,13 @@ class FabControllerForm extends JControllerForm
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JControllerLegacy
+	 * @see     BaseController
 	 * @since   12.2
 	 * @throws  Exception
 	 */
 	public function __construct($config = array())
 	{
-		$this->app = ArrayHelper::getValue($config, 'app', JFactory::getApplication());
+		$this->app = ArrayHelper::getValue($config, 'app', Factory::getApplication());
 		parent::__construct($config);
 	}
 	/**
@@ -75,13 +81,13 @@ class FabControllerForm extends JControllerForm
 			if ($model->copy())
 			{
 				$nText = $this->text_prefix . '_N_ITEMS_COPIED';
-				$this->setMessage(JText::plural($nText, count($cid)));
+				$this->setMessage(Text::plural($nText, count($cid)));
 			}
 		}
 
 		$extension = $input->get('extension');
 		$extensionURL = ($extension) ? '&extension=' . $extension : '';
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
 	}
 
 	/**

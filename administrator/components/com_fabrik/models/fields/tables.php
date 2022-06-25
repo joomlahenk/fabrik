@@ -11,10 +11,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
 
@@ -85,7 +88,7 @@ class JFormFieldTables extends JFormFieldList
 
 	protected function getInput()
 	{
-		$app          = JFactory::getApplication();
+		$app          = Factory::getApplication();
 		$format       = $app->input->get('format', 'html');
 		$connectionDd = $this->element['observe'];
 

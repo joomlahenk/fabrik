@@ -13,6 +13,10 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Worker;
 
@@ -24,7 +28,7 @@ use Fabrik\Helpers\Worker;
  * @subpackage  Fabrik
  * @since       1.5
  */
-class FabrikControllerList extends JControllerLegacy
+class FabrikControllerList extends BaseController
 {
 	/**
 	 * Id used from content plugin when caching turned on to ensure correct element rendered
@@ -37,15 +41,15 @@ class FabrikControllerList extends JControllerLegacy
 	 * Display the view
 	 *
 	 * @param   object|boolean  $model      List model
-	 * @param   array|boolean   $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array|boolean   $urlparams  An array of safe url parameters and their variable types, for valid values see {@link InputFilter::clean()}.
 	 *
 	 * @return  null
 	 */
 
 	public function display($model = false, $urlparams = false)
 	{
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$document = Factory::getDocument();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$viewName = $input->get('view', 'list');
 		$modelName = $viewName;
@@ -101,11 +105,11 @@ class FabrikControllerList extends JControllerLegacy
 		else
 		{
 			// Build unique cache id on url, post and user id
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			$uri = JURI::getInstance();
 			$uri = $uri->toString(array('path', 'query'));
 			$cacheId = serialize(array($uri, $input->post, $user->get('id'), get_class($view), 'display', $this->cacheId));
-			$cache = JFactory::getCache('com_fabrik', 'view');
+			$cache = Factory::getCache('com_fabrik', 'view');
 			$cache->get($view, 'display', $cacheId);
 			Html::addToSessionCacheIds($cacheId);
 		}
@@ -118,7 +122,7 @@ class FabrikControllerList extends JControllerLegacy
 	 */
 	public function order()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$modelName = $input->get('view', 'list');
 		$model = $this->getModel($modelName, 'FabrikFEModel');
@@ -138,7 +142,7 @@ class FabrikControllerList extends JControllerLegacy
 	 */
 	public function clearfilter()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$msg = FText::_('COM_FABRIK_FILTERS_CLEARED');
 
 		if (!empty($msg))
@@ -168,7 +172,7 @@ class FabrikControllerList extends JControllerLegacy
 	 */
 	public function filter()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$modelName = $input->get('view', 'list');
 		$model = $this->getModel($modelName, 'FabrikFEModel');
@@ -189,8 +193,8 @@ class FabrikControllerList extends JControllerLegacy
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
-		$app = JFactory::getApplication();
+		Session::checkToken() or die('Invalid Token');
+		$app = Factory::getApplication();
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 		$input = $app->input;
 		$model = $this->getModel('list', 'FabrikFEModel');
@@ -271,7 +275,7 @@ class FabrikControllerList extends JControllerLegacy
 	 */
 	public function doPlugin()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 		$input = $app->input;
 		$cid = $input->get('cid', array(0), 'array');
@@ -295,7 +299,7 @@ class FabrikControllerList extends JControllerLegacy
 				$input->set('view', 'list');
 				$model->setRenderContext($model->getId());
 				$context = 'com_' . $package . '.list' . $model->getRenderContext() . '.msg';
-				$session = JFactory::getSession();
+				$session = Factory::getSession();
 				$session->set($context, implode("\n", $messages));
 			}
 			else
@@ -342,7 +346,7 @@ class FabrikControllerList extends JControllerLegacy
 	 */
 	public function elementFilter()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$id = $input->getInt('id');
 		$model = $this->getModel('list', 'FabrikFEModel');

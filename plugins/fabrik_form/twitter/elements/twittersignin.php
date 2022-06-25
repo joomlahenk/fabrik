@@ -1,6 +1,6 @@
 <?php
 /**
- * Post content to twitter: JForm Element
+ * Post content to twitter: Form Element
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.twitter
@@ -16,6 +16,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
 
 /**
@@ -26,7 +31,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
  * @since       3.0
  */
 
-class JFormFieldTwittersignin extends JFormField
+class FormFieldTwittersignin extends FormField
 {
 	/**
 	 * Element name
@@ -44,7 +49,7 @@ class JFormFieldTwittersignin extends JFormField
 	protected function getInput()
 	{
 		$iframeid = $this->id . '_iframe';
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$cid = $input->get('id', array(0), 'array');
 		$cid = FArrayHelper::getValue($cid, 0);
@@ -67,7 +72,7 @@ class JFormFieldTwittersignin extends JFormField
 		$winOpts = 'width=800,height=460,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes';
 		$js = "window.open('$href', 'twitterwins', '" . $winOpts . "');return false;";
 
-		$parsedUrl = parse_url(JUri::root());
+		$parsedUrl = parse_url(Uri::root());
 		$origin = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
 
 		$str = "

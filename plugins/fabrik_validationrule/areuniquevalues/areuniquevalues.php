@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/validation_rule.php';
 
@@ -174,8 +176,8 @@ class PlgFabrik_ValidationruleAreUniqueValues extends PlgFabrik_Validationrule
 				$labels[] = $otherElementModel->getElement()->label;
 			}
 
-			$labels = implode(' ' . strtolower(JText::_('COM_FABRIK_AND')) . ' ', $labels);
-			return JText::sprintf('PLG_VALIDATIONRULE_AREUNIQUEVALUES_ADDITIONAL_LABEL', $labels);
+			$labels = implode(' ' . strtolower(Text::_('COM_FABRIK_AND')) . ' ', $labels);
+			return Text::sprintf('PLG_VALIDATIONRULE_AREUNIQUEVALUES_ADDITIONAL_LABEL', $labels);
 		}
 		else
 		{

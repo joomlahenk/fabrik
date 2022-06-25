@@ -9,6 +9,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -117,7 +123,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 
 		while ($i < $length)
 		{
-			$char = JString::substr($possible, mt_rand(0, JString::strlen($possible) - 1), 1);
+			$char = StringHelper::substr($possible, mt_rand(0, StringHelper::strlen($possible) - 1), 1);
 			$key .= $char;
 			$i++;
 		}
@@ -137,7 +143,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 		$params        = $this->getParams();
 		$formModel     = $this->getModel();
 		$input         = $this->app->input;
-		$db            = JFactory::getDBO();
+		$db            = Factory::getDBO();
 		$rowId         = $input->get('rowid', '', 'string');
 		$loading       = strstr($messageType, 'form.load');
 		$http_referrer = $input->server->get('HTTP_REFERER', 'no HTTP_REFERER', 'string');
@@ -164,9 +170,9 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 
 		$logsPath = rtrim($logsPath, '/');
 
-		if (!JFolder::exists($logsPath))
+		if (!Folder::exists($logsPath))
 		{
-			if (!JFolder::create($logsPath))
+			if (!Folder::create($logsPath))
 			{
 				return;
 			}
@@ -214,7 +220,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 
 				if (!empty($data))
 				{
-					$filter        = JFilterInput::getInstance();
+					$filter        = InputFilter::getInstance();
 					$post          = $filter->clean($_POST, 'array');
 					$tableModel    = $formModel->getTable();
 					$origDataCount = count(array_keys(ArrayHelper::fromObject($formModel->_origData[0])));
@@ -340,7 +346,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 				}
 			}
 
-			$clabels_createdb = JString::substr_replace($clabels_createdb_imp, '', -2);
+			$clabels_createdb = StringHelper::substr_replace($clabels_createdb_imp, '', -2);
 
 			if ($params->get('compare_data') == 1)
 			{
@@ -442,8 +448,8 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 		/* For CSV files
 		 * If 'Append' method is used, you don't want to repeat the labels (Date, IP, ...)
 		* each time you add a line in the file */
-		$labels     = (!JFile::exists($logsFile) || $logsMode == 'w') ? 1 : 0;
-		$buffer     = ($logsMode == 'a' && JFile::exists($logsFile)) ? file_get_contents($logsFile) : '';
+		$labels     = (!File::exists($logsFile) || $logsMode == 'w') ? 1 : 0;
+		$buffer     = ($logsMode == 'a' && File::exists($logsFile)) ? file_get_contents($logsFile) : '';
 		$send_email = $params->get('log_send_email') == '1';
 		$make_file  = $params->get('make_file') == '1';
 
@@ -454,7 +460,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 
 		$email_msg = '';
 
-		// @TODO redo all this with JFile API and only writing a string once - needless overhead doing fwrite all the time
+		// @TODO redo all this with File API and only writing a string once - needless overhead doing fwrite all the time
 		if ($make_file || $send_email)
 		{
 			// Opening or creating the file
@@ -472,7 +478,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 					if ($ext != 'csv')
 					{
 						$thisMsg = $buffer . $custom_msg . "\n" . $sep . "\n";
-						JFile::write($logsFile, $thisMsg);
+						File::write($logsFile, $thisMsg);
 					}
 					else
 					{
@@ -484,7 +490,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 						}
 						// Inserting data in CSV with actual line break as row separator
 						$custMsg .= "\n" . $cdata_csv;
-						JFile::write($logsFile, $custMsg);
+						File::write($logsFile, $custMsg);
 					}
 				}
 			}
@@ -520,7 +526,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 					if ($make_file)
 					{
 						$htmlMsg = $buffer . $htmlMsg;
-						$res     = JFile::write($logsFile, $htmlMsg);
+						$res     = File::write($logsFile, $htmlMsg);
 
 						if (!$res)
 						{
@@ -562,7 +568,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 					if ($make_file)
 					{
 						$txtMsg = $buffer . $txtMsg;
-						JFile::write($logsFile, $txtMsg);
+						File::write($logsFile, $txtMsg);
 					}
 				}
 				elseif ($ext == 'csv')
@@ -633,7 +639,7 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 							$csvMsg = $buffer . $csvMsg;
 						}
 
-						JFile::write($logsFile, $csvMsg);
+						File::write($logsFile, $csvMsg);
 					}
 				}
 			}
@@ -728,12 +734,12 @@ class PlgFabrik_FormLogs extends PlgFabrik_Form
 
 				if (FabrikWorker::isEmail($email))
 				{
-					$mail = JFactory::getMailer();
+					$mail = Factory::getMailer();
 					$res  = $mail->sendMail($emailFrom, $emailFrom, $email, $subject, $email_msg, true);
 				}
 				else
 				{
-					$app->enqueueMessage(JText::sprintf('DID_NOT_SEND_EMAIL_INVALID_ADDRESS', $email));
+					$app->enqueueMessage(Text::sprintf('DID_NOT_SEND_EMAIL_INVALID_ADDRESS', $email));
 				}
 			}
 		}

@@ -11,6 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Profiler\Profiler;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -103,7 +109,7 @@ class FabrikViewFormBase extends FabrikView
 	 */
 	public function display($tpl = null)
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		$input    = $this->app->input;
 		$w        = new FabrikWorker;
 
@@ -377,7 +383,7 @@ class FabrikViewFormBase extends FabrikView
 			// If there is a menu item available AND the form is not rendered in a content plugin or module
 			if (is_object($menu) && !$this->isMambot)
 			{
-				$menuParams = is_a($menu->params, 'Registry') || is_a($menu->params, 'JRegistry') ? $menu->params : new Registry($menu->params);
+				$menuParams = is_a($menu->params, 'Registry') || is_a($menu->params, 'Registry') ? $menu->params : new Registry($menu->params);
 				$params->set('page_heading', FText::_($menuParams->get('page_heading', '')));
 				$params->set('show_page_heading', $menuParams->get('show_page_heading', 0));
 				$params->set('pageclass_sfx', $menuParams->get('pageclass_sfx'));
@@ -424,7 +430,7 @@ class FabrikViewFormBase extends FabrikView
 			return;
 		}
 
-		$fbConfig = JComponentHelper::getParams('com_fabrik');
+		$fbConfig = ComponentHelper::getParams('com_fabrik');
 
 		/** @var FabrikFEModelForm $model */
 		$model           = $this->getModel();
@@ -441,7 +447,7 @@ class FabrikViewFormBase extends FabrikView
 		if ($this->showPrint)
 		{
 			$text            = FabrikHelperHTML::image('print');
-			$text            .= JText::_('COM_FABRIK_PRINT_ICON_LABEL');
+			$text            .= Text::_('COM_FABRIK_PRINT_ICON_LABEL');
 			$this->printLink = '<a href="#" class="btn btn-default fabrikPrintIcon" onclick="window.print();return false;">' . $text . '</a>';
 		}
 
@@ -490,7 +496,7 @@ class FabrikViewFormBase extends FabrikView
 					$this->pdfURL = 'index.php?option=com_' . $this->package . '&view=details&formid=' . $model->getId() . '&rowid=' . $model->getRowId() . '&format=pdf';
 				}
 
-				$this->pdfURL           = JRoute::_($this->pdfURL);
+				$this->pdfURL           = Route::_($this->pdfURL);
 				$layout                 = FabrikHelperHTML::getLayout('form.fabrik-pdf-icon');
 				$pdfDisplayData         = new stdClass;
 				$pdfDisplayData->pdfURL = $this->pdfURL;
@@ -649,15 +655,15 @@ class FabrikViewFormBase extends FabrikView
 
 		if (!FabrikHelperHTML::inAjaxLoadedPage())
 		{
-			JText::script('COM_FABRIK_VALIDATING');
-            JText::script('COM_FABRIK_MUST_VALIDATE');
-			JText::script('COM_FABRIK_SUCCESS');
-			JText::script('COM_FABRIK_NO_REPEAT_GROUP_DATA');
-			JText::script('COM_FABRIK_VALIDATION_ERROR');
-			JText::script('COM_FABRIK_CONFIRM_DELETE_1');
+			Text::script('COM_FABRIK_VALIDATING');
+            Text::script('COM_FABRIK_MUST_VALIDATE');
+			Text::script('COM_FABRIK_SUCCESS');
+			Text::script('COM_FABRIK_NO_REPEAT_GROUP_DATA');
+			Text::script('COM_FABRIK_VALIDATION_ERROR');
+			Text::script('COM_FABRIK_CONFIRM_DELETE_1');
 		}
 
-		JText::script('COM_FABRIK_FORM_SAVED');
+		Text::script('COM_FABRIK_FORM_SAVED');
 
 		// $$$ rob don't declare as var $bKey, but rather assign to window, as if loaded via ajax window the function is wrapped
 		// inside an anonymous function, and therefore $bKey wont be available as a global var in window
@@ -795,7 +801,7 @@ class FabrikViewFormBase extends FabrikView
 
 		/** @var FabrikFEModelForm $model */
 		$model                = $this->getModel();
-		$fbConfig             = JComponentHelper::getParams('com_fabrik');
+		$fbConfig             = ComponentHelper::getParams('com_fabrik');
 		$form                 = $model->getForm();
 		$params               = $model->getParams();
 		$listModel            = $model->getlistModel();
@@ -874,8 +880,8 @@ class FabrikViewFormBase extends FabrikView
 			$minRepeat[$g->id]      = $g->minRepeat;
 			$numRepeatEls[$g->id]   = FabrikString::safeColNameToArrayKey($g->numRepeatElement);
 			$showMaxRepeats[$g->id] = $g->showMaxRepeats;
-			$minMaxErrMsg[$g->id]   = JText::_($g->minMaxErrMsg);
-			$noDataMsg[$g->id]      = JText::_($g->noDataMsg);
+			$minMaxErrMsg[$g->id]   = Text::_($g->minMaxErrMsg);
+			$noDataMsg[$g->id]      = Text::_($g->noDataMsg);
 		}
 
 		$opts->hiddenGroup    = $hidden;
@@ -899,7 +905,7 @@ class FabrikViewFormBase extends FabrikView
 			{
 				$joinParams = $groupModel->getJoinModel()->getJoin()->params;
 
-				if (!(is_a($joinParams, 'Registry') || is_a($joinParams, 'JRegistry')))
+				if (!(is_a($joinParams, 'Registry') || is_a($joinParams, 'Registry')))
 				{
 					$joinParams = new Registry($joinParams);
 				}
@@ -937,7 +943,7 @@ class FabrikViewFormBase extends FabrikView
 		if (!empty($aWYSIWYGNames))
 		{
 			jimport('joomla.html.editor');
-			$editor   = JEditor::getInstance($this->config->get('editor'));
+			$editor   = Editor::getInstance($this->config->get('editor'));
 			$script[] = $editor->save('label');
 
 			foreach ($aWYSIWYGNames as $parsedName)
@@ -950,7 +956,7 @@ class FabrikViewFormBase extends FabrikView
 		$script[] = "}";
 		$script[] = "function submitbutton(button) {";
 		$script[] = "\tif (button==\"cancel\") {";
-		$script[] = "\t\tdocument.location = '" . JRoute::_('index.php?option=com_' . $this->package . '&task=viewTable&cid=' . $listId) . "';";
+		$script[] = "\t\tdocument.location = '" . Route::_('index.php?option=com_' . $this->package . '&task=viewTable&cid=' . $listId) . "';";
 		$script[] = "\t}";
 		$script[] = "\tif (button == \"cancelShowForm\") {";
 		$script[] = "\t\treturn false;";
@@ -1328,7 +1334,7 @@ class FabrikViewFormBase extends FabrikView
 
 		/** @var FabrikFEModelForm $formModel */
 		$formModel = $this->getModel();
-		$filter    = JFilterInput::getInstance();
+		$filter    = InputFilter::getInstance();
 		$get       = $filter->clean($_GET, 'array');
 
 		foreach ($get as $key => $input)

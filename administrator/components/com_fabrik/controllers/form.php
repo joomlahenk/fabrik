@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Worker;
 
@@ -56,9 +59,9 @@ class FabrikAdminControllerForm extends FabControllerForm
 	 */
 	public function view()
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$input    = $this->input;
-		$model    = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$model    = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$viewType = $document->getType();
 		$this->setPath('view', COM_FABRIK_FRONTEND . '/views');
 		$viewLayout = $input->get('layout', 'default');
@@ -81,17 +84,17 @@ class FabrikAdminControllerForm extends FabControllerForm
 		}
 		else
 		{
-			$user    = JFactory::getUser();
+			$user    = Factory::getUser();
 			$uri     = JURI::getInstance();
 			$uri     = $uri->toString(array('path', 'query'));
 			$cacheId = serialize(array($uri, $input->post, $user->get('id'), get_class($view), 'display', $this->cacheId));
-			$cache   = JFactory::getCache('com_fabrik', 'view');
+			$cache   = Factory::getCache('com_fabrik', 'view');
 			ob_start();
 			$cache->get($view, 'display', $cacheId);
 			$contents = ob_get_contents();
 			ob_end_clean();
 			Html::addToSessionCacheIds($cacheId);
-			$token       = JSession::getFormToken();
+			$token       = Session::getFormToken();
 			$search      = '#<input type="hidden" name="[0-9a-f]{32}" value="1" />#';
 			$replacement = '<input type="hidden" name="' . $token . '" value="1" />';
 			echo preg_replace($search, $replacement, $contents);
@@ -109,13 +112,13 @@ class FabrikAdminControllerForm extends FabControllerForm
 	{
 		$this->name = 'Fabrik';
 		$input      = $this->input;
-		$document   = JFactory::getDocument();
+		$document   = Factory::getDocument();
 		$viewName   = $input->get('view', 'form');
 		$viewType   = $document->getType();
 		$this->setPath('view', COM_FABRIK_FRONTEND . '/views');
 		$view = $this->getView($viewName, $viewType);
 
-		if ($model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel'))
+		if ($model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel'))
 		{
 			$view->setModel($model, true);
 		}
@@ -130,7 +133,7 @@ class FabrikAdminControllerForm extends FabControllerForm
 		// Check for request forgeries
 		if ($model->spoofCheck())
 		{
-			JSession::checkToken() or die('Invalid Token');
+			Session::checkToken() or die('Invalid Token');
 		}
 
 		/**
@@ -378,8 +381,8 @@ class FabrikAdminControllerForm extends FabControllerForm
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
-		$app   = JFactory::getApplication();
+		Session::checkToken() or die('Invalid Token');
+		$app   = Factory::getApplication();
 		$input = $this->input;
 		$model = $this->getModel('list', 'FabrikFEModel');
 		$ids   = array($input->get('rowid', 0, 'string'));
@@ -435,13 +438,13 @@ class FabrikAdminControllerForm extends FabControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$data = $this->input->post->get('jform', array(), 'array');
 
 		if ((int) $data['id'] === 0)
 		{
-			$viewType = JFactory::getDocument()->getType();
-			$model    = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
+			$viewType = Factory::getDocument()->getType();
+			$model    = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
 
 			$view = $this->getView($this->view_item, $viewType, '');
 			$view->setModel($model, true);
@@ -492,7 +495,7 @@ class FabrikAdminControllerForm extends FabControllerForm
 	public function createContentType()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$id        = $this->input->get('cid', array(), 'array');
 		$id        = array_pop($id);
 		$formModel = $this->getModel('Form', 'FabrikFEModel');
@@ -502,7 +505,7 @@ class FabrikAdminControllerForm extends FabControllerForm
 		try
 		{
 			$contentModel->create($formModel);
-			$this->setMessage(JText::_('COM_FABRIK_CONTENT_TYPE_CREATED'));
+			$this->setMessage(Text::_('COM_FABRIK_CONTENT_TYPE_CREATED'));
 		} catch (Exception $e)
 		{
 			$this->setMessage($e->getMessage(), 'error');

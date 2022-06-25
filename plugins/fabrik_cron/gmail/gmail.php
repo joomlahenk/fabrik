@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-cron.php';
 
@@ -111,13 +116,13 @@ class PlgFabrik_Crongmail extends PlgFabrik_Cron
 
 				$thisData[$fromField] = $overview->from;
 				$thisData[$titleField] = $this->getTitle($overview);
-				$thisData[$dateField] = JFactory::getDate($overview->date)->toSql();
+				$thisData[$dateField] = Factory::getDate($overview->date)->toSql();
 				$thisData['imageFound'] = false;
 
 				$thisData[$fromField] = (empty($matches)) ? $overview->from : "<a href=\"mailto:$matches[1]\">$overview->from</a>";
 
 				// Use server time for all incoming messages.
-				$date = JFactory::getDate();
+				$date = Factory::getDate();
 
 				$thisData['processed_date'] = $date->toSql();
 				$struct = imap_fetchstructure($mbox, $overview->msgno);
@@ -155,9 +160,9 @@ class PlgFabrik_Crongmail extends PlgFabrik_Cron
 						if ($attachmentName != '')
 						{
 							// Randomize file name
-							$ext = JFile::getExt($attachmentName);
-							$name = JFile::stripExt($attachmentName);
-							$name .= '-' . JUserHelper::genRandomPassword(5) . '.' . $ext;
+							$ext = File::getExt($attachmentName);
+							$name = File::stripExt($attachmentName);
+							$name .= '-' . UserHelper::genRandomPassword(5) . '.' . $ext;
 							$thisData['attachmentName'] = $name;
 							$thisData['imageFound'] = true;
 							$fileContent = imap_fetchbody($mbox, $overview->msgno, 2);
@@ -294,9 +299,9 @@ class PlgFabrik_Crongmail extends PlgFabrik_Cron
 		$title = $overview->subject;
 
 		// Remove 'RE: ' from title
-		if (JString::strtoupper(substr($title, 0, 3)) == 'RE:')
+		if (StringHelper::strtoupper(substr($title, 0, 3)) == 'RE:')
 		{
-			$title = JString::substr($title, 3, JString::strlen($title));
+			$title = StringHelper::substr($title, 3, StringHelper::strlen($title));
 		}
 
 		return $title;

@@ -12,7 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$app = JFactory::getApplication();
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
+$app = Factory::getApplication();
 ?>
 <script type="text/javascript">
 Joomla.submitform = function(task, form) {
@@ -32,7 +35,7 @@ Joomla.submitform = function(task, form) {
 	form.submit();
 };
 </script>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
 	<?php
 	$cid	= $app->input->get('cid', array(), 'array');

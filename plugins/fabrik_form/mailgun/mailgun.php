@@ -9,6 +9,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\Normalise;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Document\Document;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\String\StringHelper;
 use Fabrik\Helpers\Pdf;
 use Mailgun\Mailgun;
 use Mailgun\Messages;
@@ -68,7 +77,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 	 */
 	public function onAfterProcess()
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		JDEBUG ? $profiler->mark("email: start: onAfterProcess") : null;
 		$params = $this->getParams();
 		$input = $this->app->input;
@@ -79,7 +88,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 
 		/** @var \FabrikFEModelForm $formModel */
 		$formModel = $this->getModel();
-		$emailTemplate = JPath::clean(JPATH_SITE . '/plugins/fabrik_form/mailgun/tmpl/' . $params->get('mailgun_template', ''));
+		$emailTemplate = Path::clean(JPATH_SITE . '/plugins/fabrik_form/mailgun/tmpl/' . $params->get('mailgun_template', ''));
 
 		$this->data = $this->getProcessData();
 
@@ -116,9 +125,9 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 
 		$messageTemplate = '';
 
-		if (JFile::exists($emailTemplate))
+		if (File::exists($emailTemplate))
 		{
-			$messageTemplate = JFile::getExt($emailTemplate) == 'php' ? $this->_getPHPTemplateEmail($emailTemplate) : $this
+			$messageTemplate = File::getExt($emailTemplate) == 'php' ? $this->_getPHPTemplateEmail($emailTemplate) : $this
 				->_getTemplateEmail($emailTemplate);
 
 			// $$$ hugh - added ability for PHP template to return false to abort, same as if 'condition' was was false
@@ -314,13 +323,13 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 				$this->data['emailto'] = $email;
 
 				$userId = array_key_exists($email, $userIds) ? $userIds[$email]->id : 0;
-				$thisUser = JFactory::getUser($userId);
+				$thisUser = Factory::getUser($userId);
 				$thisMessage = $w->parseMessageForPlaceholder($message, $this->data, true, false, $thisUser);
 				$thisSubject = strip_tags($w->parseMessageForPlaceholder($subject, $this->data, true, false, $thisUser));
 
 				if (!empty($attachType))
 				{
-					if (JFile::write($attachFileName, $thisMessage))
+					if (File::write($attachFileName, $thisMessage))
 					{
 						$thisAttachments[] = $attachFileName;
 					}
@@ -347,7 +356,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 
 				foreach ($thisAttachments as $aKey => $attachFile)
 				{
-					if (!JFile::exists($attachFile))
+					if (!File::exists($attachFile))
 					{
 						unset($thisAttachments[$aKey]);
 					}
@@ -385,7 +394,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 								'formid' => $formModel->getId(),
 								'rowid' => $this->data['rowid'],
 								'listid' => $formModel->getListModel()->getId(),
-								'userid' => JFactory::getUser()->get('id')
+								'userid' => Factory::getUser()->get('id')
 							)
 						)
 					));
@@ -413,7 +422,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 							'formid' => $formModel->getId(),
 							'rowid' => $this->data['rowid'],
 							'listid' => $formModel->getListModel()->getId(),
-							'userid' => JFactory::getUser()->get('id')
+							'userid' => Factory::getUser()->get('id')
 						)
 					);
 
@@ -438,25 +447,25 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 				 */
 				if ($res !== true)
 				{
-					$this->app->enqueueMessage(JText::sprintf('PLG_FORM_EMAIL_DID_NOT_SEND_EMAIL', $email), 'notice');
+					$this->app->enqueueMessage(Text::sprintf('PLG_FORM_EMAIL_DID_NOT_SEND_EMAIL', $email), 'notice');
 				}
 
-				if (JFile::exists($attachFileName))
+				if (File::exists($attachFileName))
 				{
-					JFile::delete($attachFileName);
+					File::delete($attachFileName);
 				}
 			}
 			else
 			{
-				$this->app->enqueueMessage(JText::sprintf('PLG_FORM_EMAIL_DID_NOT_SEND_EMAIL_INVALID_ADDRESS', $email), 'notice');
+				$this->app->enqueueMessage(Text::sprintf('PLG_FORM_EMAIL_DID_NOT_SEND_EMAIL_INVALID_ADDRESS', $email), 'notice');
 			}
 		}
 
 		foreach($this->deleteAttachments as $attachment)
 		{
-			if (JFile::exists($attachment))
+			if (File::exists($attachment))
 			{
-				JFile::delete($attachment);
+				File::delete($attachment);
 			}
 		}
 
@@ -510,7 +519,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 		$model->setRowId($this->data['rowid']);
 
 		/*
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$docType = $document->getType();
 		$document->setType('pdf');
 		*/
@@ -520,8 +529,8 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
          * in order to work around some plugins that don't do proper environment
 		 * checks before trying to use HTML document functions.
 		 */
-		$raw = clone JFactory::getDocument();
-		$lang = JFactory::getLanguage();
+		$raw = clone Factory::getDocument();
+		$lang = Factory::getLanguage();
 
 		// Get the document properties.
 		$attributes = array (
@@ -533,10 +542,10 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 		);
 
 		// Get the HTML document.
-		$html = JDocument::getInstance('pdf', $attributes);
+		$html = Document::getInstance('pdf', $attributes);
 
 		// Todo: Why is this document fetched and immediately overwritten?
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		// Swap the documents.
 		$document = $html;
@@ -636,11 +645,11 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 			$displayData->doc	= $document;
 			$displayData->model	= $model;
 			$fileName = $layout->render($displayData);
-			$file = $this->config->get('tmp_path') . '/' . JStringNormalise::toDashSeparated($fileName) . '.pdf';
+			$file = $this->config->get('tmp_path') . '/' . Normalise::toDashSeparated($fileName) . '.pdf';
 
 			$pdf = $domPdf->output();
 
-			if (JFile::write($file, $pdf))
+			if (File::write($file, $pdf))
 			{
 				$thisAttachments[] = $file;
 			}
@@ -834,8 +843,8 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 		}
 		else
 		{
-			JModelLegacy::addIncludePath(COM_FABRIK_BASE . 'components/com_content/models');
-			$articleModel = JModelLegacy::getInstance('Article', 'ContentModel');
+			BaseDatabaseModel::addIncludePath(COM_FABRIK_BASE . 'components/com_content/models');
+			$articleModel = BaseDatabaseModel::getInstance('Article', 'ContentModel');
 			$res = $articleModel->getItem($contentTemplate);
 		}
 
@@ -902,7 +911,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 					$label = trim(strip_tags($element->label));
 					$message .= $label;
 
-					if (strlen($label) != 0 && JString::strpos($label, ':', JString::strlen($label) - 1) === false)
+					if (strlen($label) != 0 && StringHelper::strpos($label, ':', StringHelper::strlen($label) - 1) === false)
 					{
 						$message .= ':';
 					}
@@ -1030,7 +1039,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 				if (count($userparts) === 2)
 				{
 					$username = $userparts[0];
-					$user   = JFactory::getUser($username);
+					$user   = Factory::getUser($username);
 
 					if (!empty($user))
 					{
@@ -1072,7 +1081,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 			'mailgun_metadata_element' => $this->app->input->get('X-Mailgun-Variables', '', 'raw'),
 			'mailgun_sender_element' => $this->app->input->get('sender', '', 'raw'),
 			'mailgun_msgid_element' => $this->app->input->get('Message-Id', '', 'raw'),
-			'mailgun_date_element' => JFactory::getDate()->toSql()
+			'mailgun_date_element' => Factory::getDate()->toSql()
 		);
 
 		$query->clear();
@@ -1134,7 +1143,7 @@ class PlgFabrik_FormMailgun extends PlgFabrik_Form
 	{
 		$formId      = $this->app->input->get('formid', '', 'string');
 		$renderOrder = $this->app->input->get('renderOrder', '', 'string');
-		$formModel   = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel   = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$listModel = $formModel->getListModel();
 		$params    = $formModel->getParams();

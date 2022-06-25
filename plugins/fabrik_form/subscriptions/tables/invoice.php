@@ -1,6 +1,6 @@
 <?php
 /**
- *  JTable For Subscriptions Invoices
+ *  Table For Subscriptions Invoices
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.subscriptions
@@ -11,17 +11,20 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/tables/fabtable.php';
 
 /**
- *  JTable For Subscriptions Invoices
+ *  Table For Subscriptions Invoices
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.subscriptions
  * @since       3.0.7
  */
 
-class FabrikTableInvoice extends JTable
+class FabrikTableInvoice extends Table
 {
 	/**
 	 * Constructor
@@ -44,7 +47,7 @@ class FabrikTableInvoice extends JTable
 
 	public function update($request)
 	{
-		$now = JFactory::getDate()->toSQL();
+		$now = Factory::getDate()->toSQL();
 		$this->transaction_date = $now;
 		$this->pp_txn_id = $request['txn_id'];
 		$this->pp_payment_status = $request['payment_status'];

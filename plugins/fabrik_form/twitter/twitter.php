@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 // Require the abstract plugin class
@@ -83,7 +87,7 @@ class PlgFabrik_FormTwitter extends PlgFabrik_Form
 	 */
 	protected function buildModel($id)
 	{
-		$this->model = JModelLegacy::getInstance('form', 'FabrikFEModel');
+		$this->model = BaseDatabaseModel::getInstance('form', 'FabrikFEModel');
 		$this->model->setId($id);
 		$form = $this->model->getForm();
 		$row = $this->getRow();
@@ -290,9 +294,9 @@ class PlgFabrik_FormTwitter extends PlgFabrik_Form
 		$id = $input->get('rowid');
 		$formId = $formModel->getId();
 		$data['fabrik_editurl'] = COM_FABRIK_LIVESITE
-			. JRoute::_("index.php?option=com_" . $this->package . "&amp;view=form&amp;formid=" . $formId . "&amp;rowid=" . $id);
+			. Route::_("index.php?option=com_" . $this->package . "&amp;view=form&amp;formid=" . $formId . "&amp;rowid=" . $id);
 		$data['fabrik_viewurl'] = COM_FABRIK_LIVESITE
-			. JRoute::_("index.php?option=com_" . $this->package . "&amp;view=details&amp;formid=" . $formId . "&amp;rowid=" . $id);
+			. Route::_("index.php?option=com_" . $this->package . "&amp;view=details&amp;formid=" . $formId . "&amp;rowid=" . $id);
 
 		// $$$ rob fabrik_viewurl/fabrik_editurl described in help text as fabrik_edit_url/fabrik_view_url.
 		// $$$ hugh - so let's add edit_link and view_link as well, just for consistency
@@ -399,7 +403,7 @@ class PlgFabrik_FormTwitter extends PlgFabrik_Form
 		$msg = $this->bitlifyMessage($msg);
 
 		// $$$ hugh - I thought the twitter class chopped the msg to 140, but apparently it doesn't ..
-		$msg = JString::substr($msg, 0, $this->max_msg_length);
+		$msg = StringHelper::substr($msg, 0, $this->max_msg_length);
 
 		return $msg;
 	}
@@ -411,7 +415,7 @@ class PlgFabrik_FormTwitter extends PlgFabrik_Form
 	 */
 	public function onAuthenticateAdmin()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 		$formModel = $this->buildModel($input->getInt('formid'));
@@ -490,7 +494,7 @@ class PlgFabrik_FormTwitter extends PlgFabrik_Form
 		$access_token = $connection->oauth("oauth/access_token", array("oauth_verifier" => $_REQUEST['oauth_verifier']));
 
 		// Save the access token to the element params
-		$formModel = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($input->getInt('formid'));
 		$row = $formModel->getForm();
 
@@ -531,7 +535,7 @@ class PlgFabrik_FormTwitter extends PlgFabrik_Form
 
 		// If we had already authorized the app then we will still be in the admin page - so update the fields:
 		echo FText::_('PLG_FORM_TWITTER_CREDENTIALS_SAVED');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		//$script = implode("\n", $js) . "
 		$script = <<<EOT
 window.opener.postMessage($json, '*');

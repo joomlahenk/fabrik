@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -120,7 +122,7 @@ class PlgFabrik_ElementSequence extends PlgFabrik_Element
 	{
 		$params = $this->getParams();
 		$w = new FabrikWorker();
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 
 		$position = $params->get('sequence_position', 'prefix');
 		$padding = $params->get('sequence_padding', '4');
@@ -278,7 +280,7 @@ class PlgFabrik_ElementSequence extends PlgFabrik_Element
 			}
 			else
 			{
-				$this->default = JText::_('PLG_ELEMENT_SEQUENCE_ASSIGNED_AFTER_SUBMIT');
+				$this->default = Text::_('PLG_ELEMENT_SEQUENCE_ASSIGNED_AFTER_SUBMIT');
 			}
 		}
 

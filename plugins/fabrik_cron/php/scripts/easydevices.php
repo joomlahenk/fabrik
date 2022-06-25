@@ -2,6 +2,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+
 $data = $listModel->getData();
 $data = $data[0][0];
 
@@ -26,12 +28,12 @@ $prevId = 0;
 $c = 0;
 
 foreach($rows as $row) {
-  $date = JFactory::getDate($row->time_date);
-  $prevDate = JFactory::getDate($prevTime);
+  $date = Factory::getDate($row->time_date);
+  $prevDate = Factory::getDate($prevTime);
   $diff = $prevDate->toUnix() - $date->toUnix() ;
 
 	if($diff != 0) {
-	  $newDate = JFactory::getDate($diff);
+	  $newDate = Factory::getDate($diff);
 	  $diff = $newDate->format('000-00-00 H:i:s');
 	}else{
 	  $diff = '000-00-00 00:00:00';

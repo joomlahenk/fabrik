@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
 /**
  * Fabrik quick icons
  *
@@ -33,7 +37,7 @@ abstract class ModFabrik_QuickIconHelper
 	 */
 	public static function listIcons()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id, label, params')->from('#__fabrik_lists')
 			->where('params LIKE \'%"dashboard":"1"%\'');
@@ -55,7 +59,7 @@ abstract class ModFabrik_QuickIconHelper
 	 * This method returns the array by reference so it can be
 	 * used to add custom buttons or remove default ones.
 	 *
-	 * @param   JRegistry  $params  The module parameters.
+	 * @param   Registry  $params  The module parameters.
 	 *
 	 * @return	array	An array of buttons
 	 */
@@ -70,56 +74,56 @@ abstract class ModFabrik_QuickIconHelper
 			if ($context == 'mod_fabrik_quickicon')
 			{
 				// Load mod_quickicon language file in case this method is called before rendering the module
-			JFactory::getLanguage()->load('mod_fabrik_quickicon');
+			Factory::getLanguage()->load('mod_fabrik_quickicon');
 
 				self::$buttons[$key] = array(
 
 					array(
-						'link' => JRoute::_('index.php?option=com_fabrik&view=lists'),
+						'link' => Route::_('index.php?option=com_fabrik&view=lists'),
 						'image' => '/components/com_fabrik/images/header/fabrik-list.png',
-						'text' => JText::_('MOD_FABRIK_QUICKICON_LISTS'),
+						'text' => Text::_('MOD_FABRIK_QUICKICON_LISTS'),
 						'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-						'link' => JRoute::_('index.php?option=com_fabrik&view=forms'),
+						'link' => Route::_('index.php?option=com_fabrik&view=forms'),
 						'image' => '/components/com_fabrik/images/header/fabrik-form.png',
-						'text' => JText::_('MOD_FABRIK_QUICKICON_FORMS'),
+						'text' => Text::_('MOD_FABRIK_QUICKICON_FORMS'),
 						'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-							'link' => JRoute::_('index.php?option=com_fabrik&view=groups'),
+							'link' => Route::_('index.php?option=com_fabrik&view=groups'),
 							'image' => '/components/com_fabrik/images/header/fabrik-group.png',
-							'text' => JText::_('MOD_FABRIK_QUICKICON_GROUPS'),
+							'text' => Text::_('MOD_FABRIK_QUICKICON_GROUPS'),
 							'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-							'link' => JRoute::_('index.php?option=com_fabrik&view=elements'),
+							'link' => Route::_('index.php?option=com_fabrik&view=elements'),
 							'image' => '/components/com_fabrik/images/header/fabrik-element.png',
-							'text' => JText::_('MOD_FABRIK_QUICKICON_ELEMENTS'),
+							'text' => Text::_('MOD_FABRIK_QUICKICON_ELEMENTS'),
 							'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-							'link' => JRoute::_('index.php?option=com_fabrik&view=visualizations'),
+							'link' => Route::_('index.php?option=com_fabrik&view=visualizations'),
 							'image' => '/components/com_fabrik/images/header/fabrik-visualization.png',
-							'text' => JText::_('MOD_FABRIK_QUICKICON_VISUALIZATIONS'),
+							'text' => Text::_('MOD_FABRIK_QUICKICON_VISUALIZATIONS'),
 							'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-							'link' => JRoute::_('index.php?option=com_fabrik&view=packages'),
+							'link' => Route::_('index.php?option=com_fabrik&view=packages'),
 							'image' => '/components/com_fabrik/images/header/fabrik-package.png',
-							'text' => JText::_('MOD_FABRIK_QUICKICON_PACKAGES'),
+							'text' => Text::_('MOD_FABRIK_QUICKICON_PACKAGES'),
 							'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-							'link' => JRoute::_('index.php?option=com_fabrik&view=connections'),
+							'link' => Route::_('index.php?option=com_fabrik&view=connections'),
 							'image' => '/components/com_fabrik/images/header/fabrik-connection.png',
-							'text' => JText::_('MOD_FABRIK_QUICKICON_CONNECTIONS'),
+							'text' => Text::_('MOD_FABRIK_QUICKICON_CONNECTIONS'),
 							'access' => array('core.manage', 'com_fabrik')
 					),
 					array(
-							'link' => JRoute::_('index.php?option=com_fabrik&view=crons'),
+							'link' => Route::_('index.php?option=com_fabrik&view=crons'),
 							'image' => '/components/com_fabrik/images/header/fabrik-schedule.png',
-							'text' => JText::_('MOD_FABRIK_QUICKICON_SCHEDULED_TASKS'),
+							'text' => Text::_('MOD_FABRIK_QUICKICON_SCHEDULED_TASKS'),
 							'access' => array('core.manage', 'com_fabrik')
 					)
 				);
@@ -154,7 +158,7 @@ abstract class ModFabrik_QuickIconHelper
 	 */
 	public static function button($button)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($button['access']))
 		{
@@ -184,7 +188,7 @@ abstract class ModFabrik_QuickIconHelper
 	/**
 	 * Get the alternate title for the module
 	 *
-	 * @param   JRegistry  $params  The module parameters.
+	 * @param   Registry  $params  The module parameters.
 	 * @param   object     $module  The module.
 	 *
 	 * @return	string	The alternate title for the module.
@@ -193,9 +197,9 @@ abstract class ModFabrik_QuickIconHelper
 	{
 		$key = $params->get('context', 'mod_fabrik_quickicon') . '_title';
 
-		if (JFactory::getLanguage()->hasKey($key))
+		if (Factory::getLanguage()->hasKey($key))
 		{
-			return JText::_($key);
+			return Text::_($key);
 		}
 		else
 		{

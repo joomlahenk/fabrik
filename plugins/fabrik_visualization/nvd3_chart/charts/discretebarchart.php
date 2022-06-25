@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+
 /**
  * Fabrik nvd3_chart Chart Plug-in Model - Discrete Bar Chart
  *
@@ -157,12 +161,12 @@ class DiscreteBarChart
 	{
 		$params = $this->params;
 		$db = FabrikWorker::getDbo(false, $params->get('conn_id'));
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$fabrik_show_in_list = $input->get('fabrik_show_in_list');
 		$labelColumn = $params->get('label_field');
 		$valueColumn = $params->get('value_field');
 		$calc = $params->get('value_calc', '');
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($listid);
 		$formModel = $listModel->getFormModel();
 

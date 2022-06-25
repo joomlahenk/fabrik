@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Version;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+
 jimport('joomla.form.formfield');
 
 /**
@@ -21,7 +26,7 @@ jimport('joomla.form.formfield');
  * @since       1.6
  */
 
-class JFormFieldFabrikModalrepeat extends JFormField
+class FormFieldFabrikModalrepeat extends FormField
 {
 	/**
 	 * The form field type.
@@ -42,10 +47,10 @@ class JFormFieldFabrikModalrepeat extends JFormField
 	protected function getInput()
 	{
 		// Initialize variables.
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
+		$app = Factory::getApplication();
+		$document = Factory::getDocument();
 		JHTML::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
-		$subForm = new JForm($this->name, array('control' => 'jform'));
+		$subForm = new Form($this->name, array('control' => 'jform'));
 		$xml = $this->element->children()->asXML();
 		$subForm->load($xml);
 //		$j3 = FabrikWorker::j3();
@@ -88,7 +93,7 @@ class JFormFieldFabrikModalrepeat extends JFormField
 		}
 		else
 		{
-			$feModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel($view, 'FabrikFEModel');
+			$feModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel($view, 'FabrikFEModel');
 			$feModel->setId($id);
 		}
 
@@ -120,11 +125,11 @@ class JFormFieldFabrikModalrepeat extends JFormField
 		 */
 		$children = $this->element->children();
 
-		// $$$ rob 19/07/2012 not sure y but this fires a strict standard warning deep in JForm, suppress error for now
+		// $$$ rob 19/07/2012 not sure y but this fires a strict standard warning deep in Form, suppress error for now
 		@$subForm->setFields($children);
 
 		$str = array();
-//		$version = new JVersion;
+//		$version = new Version;
 //		$j32 = version_compare($version->RELEASE, '3.2') >= 0 ? true : false;
 //		$j322 = ($j32 && $version->DEV_LEVEL >=3);
 //		$j33 = version_compare($version->RELEASE, '3.3') >= 0 ? true : false;
@@ -136,7 +141,7 @@ class JFormFieldFabrikModalrepeat extends JFormField
 //		$modalId = $j32 || $j33 ? 'attrib-' . $this->id . '_modal' : $this->id . '_modal';
 		$modalId = 'attrib-' . $this->id . '_modal';
 
-		// As JForm will render child fieldsets we have to hide it via CSS
+		// As Form will render child fieldsets we have to hide it via CSS
 		$fieldSetId = str_replace('jform_params_', '', $modalId);
 		$css = 'a[href="#' . $fieldSetId . '"] { display: none!important; }';
 		$document->addStyleDeclaration($css);

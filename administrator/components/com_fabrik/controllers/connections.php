@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+
 require_once 'fabcontrolleradmin.php';
 
 /**
@@ -79,8 +82,8 @@ class FabrikAdminControllerConnections extends FabControllerAdmin
 	public function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die(FText::_('JINVALID_TOKEN'));
-		$app = JFactory::getApplication();
+		Session::checkToken() or die(FText::_('JINVALID_TOKEN'));
+		$app = Factory::getApplication();
 		$input = $app->input;
 
 		// Get items to publish from the request.
@@ -122,6 +125,6 @@ class FabrikAdminControllerConnections extends FabControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 }

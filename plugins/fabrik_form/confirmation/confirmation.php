@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\String\StringHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -108,7 +112,7 @@ class PlgFabrik_FormConfirmation extends PlgFabrik_Form
 		$form = $formModel->getForm();
 
 		// Save the posted form data to the form session, for retrieval later
-		$sessionModel = JModelLegacy::getInstance('Formsession', 'FabrikFEModel');
+		$sessionModel = BaseDatabaseModel::getInstance('Formsession', 'FabrikFEModel');
 		$sessionModel->setFormId($formModel->getId());
 		$rowId = $input->get('rowid', 0);
 		$sessionModel->setRowId($rowId);
@@ -192,7 +196,7 @@ class PlgFabrik_FormConfirmation extends PlgFabrik_Form
 			// Unset this flag
 			$input->set('fabrik_confirmation', 2);
 
-			$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+			$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
 			$post = $safeHtmlFilter->clean($_POST, 'array');
 
 			/**
@@ -202,7 +206,7 @@ class PlgFabrik_FormConfirmation extends PlgFabrik_Form
 			// $$$ 24/10/2011 testing removing this as data is retrieved via the session not through posted data
 			foreach ($post as $key => $val)
 			{
-				$noneRaw = JString::substr($key, 0, JString::strlen($key) - 4);
+				$noneRaw = StringHelper::substr($key, 0, StringHelper::strlen($key) - 4);
 
 				if ($key == 'fabrik_vars')
 				{

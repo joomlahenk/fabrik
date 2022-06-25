@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Http\Response;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -221,7 +224,7 @@ class PlgFabrik_FormRest extends PlgFabrik_Form
 	 * @param   string  $endpoint  URL end point
 	 * @param   string  $data      Querystring variables
 	 *
-	 * @return  JHttpResponse
+	 * @return  Response
 	 */
 	private function processOAuth($endpoint, $data)
 	{
@@ -230,7 +233,7 @@ class PlgFabrik_FormRest extends PlgFabrik_Form
 		//$this->oAuth->setOption('sendheaders', false);
 		$method = $this->requestMethod();
 
-		//$key  = JFactory::getSession()->get('key', null, 'oauth_token');
+		//$key  = Factory::getSession()->get('key', null, 'oauth_token');
 		$token = $this->oAuth->authenticate();
 
 		$parameters = array(
@@ -536,7 +539,7 @@ class PlgFabrik_FormRest extends PlgFabrik_Form
 		$this->oAuth->setOption('authoriseURL', $params->get('authorize_uri'));
 		$this->oAuth->setOption('requestTokenURL', $params->get('request_token_uri'));
 		//$this->oAuth->setOption('callback', true);
-		$this->oAuth->setOption('callback', (string) JUri::getInstance());
+		$this->oAuth->setOption('callback', (string) Uri::getInstance());
 		$this->oAuth->setOption('authenticateURL', 'https://www.linkedin.com/uas/oauth/authenticate');
 		$this->oAuth->setOption('consumer_key', $params->get('oauth_consumer_key'));
 		$this->oAuth->setOption('consumer_secret', $params->get('oauth_consumer_secret'));

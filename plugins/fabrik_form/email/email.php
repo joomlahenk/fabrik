@@ -9,6 +9,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Document\Document;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
 use Fabrik\Helpers\ArrayHelper;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Pdf;
@@ -82,7 +86,7 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 
 		/** @var \FabrikFEModelForm $formModel */
 		$formModel     = $this->getModel();
-		$emailTemplate = \JPath::clean(JPATH_SITE . '/plugins/fabrik_form/email/tmpl/' . $params->get('email_template', ''));
+		$emailTemplate = \Path::clean(JPATH_SITE . '/plugins/fabrik_form/email/tmpl/' . $params->get('email_template', ''));
 
 		$this->data = $this->getProcessData();
 
@@ -119,9 +123,9 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 
 		$messageTemplate = '';
 
-		if (\JFile::exists($emailTemplate))
+		if (\File::exists($emailTemplate))
 		{
-			$messageTemplate = \JFile::getExt($emailTemplate) == 'php' ?
+			$messageTemplate = \File::getExt($emailTemplate) == 'php' ?
 				$this->_getPHPTemplateEmail($emailTemplate)
 				: $this->_getTemplateEmail($emailTemplate);
 
@@ -318,13 +322,13 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 				$this->data['emailto'] = $email;
 
 				$userId      = array_key_exists($email, $userIds) ? $userIds[$email]->id : 0;
-				$thisUser    = \JFactory::getUser($userId);
+				$thisUser    = \Factory::getUser($userId);
 				$thisMessage = $w->parseMessageForPlaceholder($message, $this->data, true, false, $thisUser);
 				$thisSubject = strip_tags($w->parseMessageForPlaceholder($subject, $this->data, true, false, $thisUser));
 
 				if (!empty($attachType))
 				{
-					if (\JFile::write($attachFileName, $thisMessage))
+					if (\File::write($attachFileName, $thisMessage))
 					{
 						$thisAttachments[] = $attachFileName;
 					}
@@ -351,7 +355,7 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 
 				foreach ($thisAttachments as $aKey => $attachFile)
 				{
-					if (!\JFile::exists($attachFile))
+					if (!\File::exists($attachFile))
 					{
 						unset($thisAttachments[$aKey]);
 					}
@@ -407,9 +411,9 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
                     $this->doLog($msgType, $msg);
 				}
 
-				if (\JFile::exists($attachFileName))
+				if (\File::exists($attachFileName))
 				{
-					\JFile::delete($attachFileName);
+					\File::delete($attachFileName);
 				}
 			}
 			else
@@ -420,9 +424,9 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 
 		foreach ($this->deleteAttachments as $attachment)
 		{
-			if (\JFile::exists($attachment))
+			if (\File::exists($attachment))
 			{
-				\JFile::delete($attachment);
+				\File::delete($attachment);
 			}
 		}
 
@@ -483,7 +487,7 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 		 */
 
 		// Set up document properties.
-		$lang       = \JFactory::getLanguage();
+		$lang       = \Factory::getLanguage();
 		$attributes = array(
 			'charset'   => 'utf-8',
 			'lineend'   => 'unix',
@@ -493,12 +497,12 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 		);
 
 		// Get a PDF document and set the title.
-		$document = \JFactory::getDocument();
-		$pdfDoc   = \JDocument::getInstance('pdf', $attributes);
+		$document = \Factory::getDocument();
+		$pdfDoc   = \Document::getInstance('pdf', $attributes);
 		$pdfDoc->setTitle($document->getTitle());
 
 		// assign it to the factory
-		\JFactory::$document = $pdfDoc;
+		\Factory::$document = $pdfDoc;
 
 		$input = $this->app->input;
 
@@ -587,7 +591,7 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 
 			$pdf = Pdf::renderPdf($html, $size, $orientation);
 
-			if (\JFile::write($file, $pdf))
+			if (\File::write($file, $pdf))
 			{
 				$thisAttachments[] = $file;
 			}
@@ -614,7 +618,7 @@ class PlgFabrik_FormEmail extends PlgFabrik_Form
 		}
 
 		// Swap the documents back.
-		\JFactory::$document = $document;
+		\Factory::$document = $document;
 	}
 
 	/**

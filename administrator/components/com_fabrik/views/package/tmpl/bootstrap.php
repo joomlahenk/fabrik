@@ -12,10 +12,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.tooltip');
 FabrikHelperHTML::formvalidation();
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.keepalive');
 JHTML::stylesheet('media/com_fabrik/css/package.css');
 ?>
 
@@ -38,7 +41,7 @@ submitform = function(task){
 </script>
 <div id="icons-container"></div>
 
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 		<?php foreach ($this->form->getFieldset('json') as $field) :
 			echo $field->input;
 		endforeach; ?>
@@ -87,10 +90,10 @@ submitform = function(task){
 			</div>
 		<?php endif; ?>
 			<div class="controls">
-				<?php echo JHtml::_('select.genericlist', $this->listOpts, 'list-pick[]', 'multiple="true" size="10"');?>
+				<?php echo HTMLHelper::_('select.genericlist', $this->listOpts, 'list-pick[]', 'multiple="true" size="10"');?>
 				<button class="btn" id="add-list"><?php echo FText::_('COM_FABRIK_ADD')?> &gt;</button>
 				<button class="btn" id="remove-list"><?php echo FText::_('COM_FABRIK_REMOVE')?> &lt;</button>
-				<?php echo JHtml::_('select.genericlist', $this->selListOpts, 'blocks[list][]', 'multiple="true" size="10"');?>
+				<?php echo HTMLHelper::_('select.genericlist', $this->selListOpts, 'blocks[list][]', 'multiple="true" size="10"');?>
 			</div>
 		</div>
 	</fieldset>
@@ -107,10 +110,10 @@ submitform = function(task){
 			</div>
 		<?php endif; ?>
 			<div class="controls">
-				<?php echo JHtml::_('select.genericlist', $this->formOpts, 'form-pick', 'multiple="true" size="10"')?>
+				<?php echo HTMLHelper::_('select.genericlist', $this->formOpts, 'form-pick', 'multiple="true" size="10"')?>
 				<button class="btn" id="add-form"><?php echo FText::_('COM_FABRIK_ADD')?> &gt;</button>
 				<button class="btn" id="remove-form"><?php echo FText::_('COM_FABRIK_REMOVE')?> &lt;</button>
-				<?php echo JHtml::_('select.genericlist', $this->selFormOpts, 'blocks[form][]', 'multiple="true" size="10"')?>
+				<?php echo HTMLHelper::_('select.genericlist', $this->selFormOpts, 'blocks[form][]', 'multiple="true" size="10"')?>
 			</div>
 		</div>
 
@@ -125,5 +128,5 @@ submitform = function(task){
 </div>
 </div> -->
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

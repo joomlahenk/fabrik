@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\FormController;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -22,6 +24,6 @@ jimport('joomla.application.component.controller');
  * @since       1.5
  */
 
-class FabrikControllerFormComment extends JControllerForm
+class FabrikControllerFormComment extends FormController
 {
 }

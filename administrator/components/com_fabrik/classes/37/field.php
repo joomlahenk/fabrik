@@ -9,6 +9,13 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\String\Normalise;
 use Joomla\String\StringHelper;
 
@@ -17,7 +24,7 @@ use Joomla\String\StringHelper;
  *
  * @since  11.1
  */
-abstract class JFormField
+abstract class FormField
 {
 	/**
 	 * The description text for the form field. Usually used in tooltips.
@@ -70,15 +77,15 @@ abstract class JFormField
 	protected $element;
 
 	/**
-	 * The JForm object of the form attached to the form field.
+	 * The Form object of the form attached to the form field.
 	 *
-	 * @var    JForm
+	 * @var    Form
 	 * @since  11.1
 	 */
 	protected $form;
 
 	/**
-	 * The form control prefix for field names from the JForm object attached to the form field.
+	 * The form control prefix for field names from the Form object attached to the form field.
 	 *
 	 * @var    string
 	 * @since  11.1
@@ -338,14 +345,14 @@ abstract class JFormField
 	/**
 	 * Method to instantiate the form field object.
 	 *
-	 * @param   JForm  $form  The form to attach to the form field object.
+	 * @param   Form  $form  The form to attach to the form field object.
 	 *
 	 * @since   11.1
 	 */
 	public function __construct($form = null)
 	{
 		// If there is a form passed into the constructor set the form and form control properties.
-		if ($form instanceof JForm)
+		if ($form instanceof Form)
 		{
 			$this->form = $form;
 			$this->formControl = $form->getFormControl();
@@ -523,7 +530,7 @@ abstract class JFormField
 			default:
 				if (property_exists(__CLASS__, $name))
 				{
-					JLog::add("Cannot access protected / private property $name of " . __CLASS__);
+					Log::add("Cannot access protected / private property $name of " . __CLASS__);
 				}
 				else
 				{
@@ -533,15 +540,15 @@ abstract class JFormField
 	}
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
-	 * @param   JForm  $form  The JForm object to attach to the form field.
+	 * @param   Form  $form  The Form object to attach to the form field.
 	 *
-	 * @return  JFormField  The form field object so that the method can be used in a chain.
+	 * @return  FormField  The form field object so that the method can be used in a chain.
 	 *
 	 * @since   11.1
 	 */
-	public function setForm(JForm $form)
+	public function setForm(Form $form)
 	{
 		$this->form = $form;
 		$this->formControl = $form->getFormControl();
@@ -550,7 +557,7 @@ abstract class JFormField
 	}
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
 	 * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form field object.
 	 * @param   mixed             $value    The form field value to validate.
@@ -564,7 +571,7 @@ abstract class JFormField
 	 */
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
-		// Make sure there is a valid JFormField XML element.
+		// Make sure there is a valid FormField XML element.
 		if ((string) $element->getName() != 'field')
 		{
 			return false;
@@ -728,7 +735,7 @@ abstract class JFormField
 
 		// Get the label text from the XML element, defaulting to the element name.
 		$title = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
-		$title = $this->translateLabel ? JText::_($title) : $title;
+		$title = $this->translateLabel ? Text::_($title) : $title;
 
 		return $title;
 	}
@@ -912,7 +919,7 @@ abstract class JFormField
 	 */
 	public function getControlGroup()
 	{
-		JLog::add('JFormField->getControlGroup() is deprecated use JFormField->renderField().', JLog::WARNING, 'deprecated');
+		Log::add('FormField->getControlGroup() is deprecated use FormField->renderField().', Log::WARNING, 'deprecated');
 
 		return $this->renderField();
 	}
@@ -965,7 +972,7 @@ abstract class JFormField
 		if ($this->showon)
 		{
 			$options['rel']           = ' data-showon=\'' .
-				json_encode(JFormHelper::parseShowOnConditions($this->showon, $this->formControl, $this->group)) . '\'';
+				json_encode(FormHelper::parseShowOnConditions($this->showon, $this->formControl, $this->group)) . '\'';
 			$options['showonEnabled'] = true;
 		}
 
@@ -989,11 +996,11 @@ abstract class JFormField
 	{
 		// Label preprocess
 		$label = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
-		$label = $this->translateLabel ? JText::_($label) : $label;
+		$label = $this->translateLabel ? Text::_($label) : $label;
 
 		// Description preprocess
 		$description = !empty($this->description) ? $this->description : null;
-		$description = !empty($description) && $this->translateDescription ? JText::_($description) : $description;
+		$description = !empty($description) && $this->translateDescription ? Text::_($description) : $description;
 
 		$alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname);
 
@@ -1006,7 +1013,7 @@ abstract class JFormField
 			'field'        => $this,
 			'group'        => $this->group,
 			'hidden'       => $this->hidden,
-			'hint'         => $this->translateHint ? JText::alt($this->hint, $alt) : $this->hint,
+			'hint'         => $this->translateHint ? Text::alt($this->hint, $alt) : $this->hint,
 			'id'           => $this->id,
 			'label'        => $label,
 			'labelclass'   => $this->labelclass,
@@ -1042,13 +1049,13 @@ abstract class JFormField
 	 *
 	 * @param   string  $layoutId  Id to load
 	 *
-	 * @return  JLayout
+	 * @return  LayoutInterface
 	 *
 	 * @since   3.5
 	 */
 	protected function getRenderer($layoutId = 'default')
 	{
-		$renderer = new JLayoutFile($layoutId);
+		$renderer = new FileLayout($layoutId);
 
 		$renderer->setDebug($this->isDebugEnabled());
 

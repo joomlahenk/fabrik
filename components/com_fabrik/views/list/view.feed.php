@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
 use \Joomla\Registry\Registry;
 use Joomla\CMS\Document\Feed\FeedItem;
 use Joomla\CMS\Document\Feed\FeedEnclosure;
@@ -156,7 +157,7 @@ class FabrikViewList extends FabrikViewListBase
 
         $this->doc->title = htmlspecialchars($w->parseMessageForPlaceHolder($table->label, $_REQUEST), ENT_COMPAT, 'UTF-8');
         $this->doc->description = htmlspecialchars(trim(strip_tags($w->parseMessageForPlaceHolder($table->introduction, $_REQUEST))));
-        $this->doc->link = JRoute::_('index.php?option=com_' . $this->package . '&view=list&listid=' . $table->id . '&Itemid=' . $itemId);
+        $this->doc->link = Route::_('index.php?option=com_' . $this->package . '&view=list&listid=' . $table->id . '&Itemid=' . $itemId);
 
         $this->addImage($params);
 
@@ -306,7 +307,7 @@ class FabrikViewList extends FabrikViewListBase
                 }
 
                 // Url link to article
-                $link = JRoute::_('index.php?option=com_' . $this->package . '&view=' . $view . '&listid=' . $table->id . '&formid=' . $form->id
+                $link = Route::_('index.php?option=com_' . $this->package . '&view=' . $view . '&listid=' . $table->id . '&formid=' . $form->id
                     . '&rowid=' . $row->slug
                 );
                 $guid = COM_FABRIK_LIVESITE . 'index.php?option=com_' . $this->package . '&view=' . $view . '&listid=' . $table->id . '&formid='

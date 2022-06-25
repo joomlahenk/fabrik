@@ -1,6 +1,6 @@
 <?php
 /**
- * Element error JLayout
+ * Element error LayoutInterface
  *
  * @package     Joomla
  * @subpackage  Fabrik
@@ -9,8 +9,11 @@
  */
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutInterface;
+
 $d = $displayData;
-$usersConfig = JComponentHelper::getParams('com_fabrik');
+$usersConfig = ComponentHelper::getParams('com_fabrik');
 $icon        = $usersConfig->get('error_icon', 'warning');
 ?>
 <span class="fabrikErrorMessage">

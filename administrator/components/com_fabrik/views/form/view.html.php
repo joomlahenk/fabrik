@@ -11,6 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,19 +26,19 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikAdminViewForm extends JViewLegacy
+class FabrikAdminViewForm extends HtmlView
 {
 	/**
 	 * Form
 	 *
-	 * @var JForm
+	 * @var Form
 	 */
 	protected $form;
 
 	/**
 	 * Form item
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $item;
 
@@ -82,8 +88,8 @@ class FabrikAdminViewForm extends JViewLegacy
 		$shim['admin/pluginmanager'] = $dep;
 		FabrikHelperHTML::iniRequireJS($shim);
 
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
 
 		$srcs                  = FabrikHelperHTML::framework();
 		$srcs['Fabrik']        = FabrikHelperHTML::mediaFile('fabrik.js');
@@ -115,10 +121,10 @@ class FabrikAdminViewForm extends JViewLegacy
 
 	protected function addToolbar()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		$userId     = $user->get('id');
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -176,7 +182,7 @@ class FabrikAdminViewForm extends JViewLegacy
 	{
 		$model      = $this->getModel();
 		$this->form = $model->getContentTypeForm();
-		$input      = JFactory::getApplication()->input;
+		$input      = Factory::getApplication()->input;
 		$this->data = $input->post->get('jform', array(), 'array');
 		$this->addSelectSaveToolBar();
 		FabrikHelperHTML::framework();
@@ -194,7 +200,7 @@ class FabrikAdminViewForm extends JViewLegacy
 	 */
 	protected function addSelectSaveToolBar()
 	{
-		$app         = JFactory::getApplication();
+		$app         = Factory::getApplication();
 		$this->state = $this->get('State');
 		$input       = $app->input;
 		$input->set('hidemainmenu', true);

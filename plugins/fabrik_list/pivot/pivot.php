@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -224,7 +225,7 @@ class PlgFabrik_ListPivot extends PlgFabrik_List
 
 	public static function cacheResults($listId)
 	{
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$data = $listModel->getData();
 

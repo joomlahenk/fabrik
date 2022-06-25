@@ -12,6 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controllerform');
 
 /**
@@ -22,7 +26,7 @@ jimport('joomla.application.component.controllerform');
  * @since       3.0
  */
 
-class FabrikAdminControllerPackage extends JControllerForm
+class FabrikAdminControllerPackage extends FormController
 {
 	/**
 	 * The prefix to use with controller messages.
@@ -38,7 +42,7 @@ class FabrikAdminControllerPackage extends JControllerForm
 	 */
 	public function dolist()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$db = FabrikWorker::getDbo(true);
 		$query = $db->getQuery(true);
@@ -57,7 +61,7 @@ class FabrikAdminControllerPackage extends JControllerForm
 
 		if (empty($rows))
 		{
-			echo "<li>" . JText::sprintf('COM_FABRIK_NO_FREE_ITEMS_FOUND') . "</li>";
+			echo "<li>" . Text::sprintf('COM_FABRIK_NO_FREE_ITEMS_FOUND') . "</li>";
 		}
 		else
 		{

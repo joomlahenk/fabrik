@@ -11,6 +11,17 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 jimport('joomla.plugin.plugin');
 
 /**
@@ -20,7 +31,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  Content.fabrik
  * @since       1.5
  */
-class PlgContentFabrik extends JPlugin
+class PlgContentFabrik extends CMSPlugin
 {
 	/**
 	 *  Prepare content method
@@ -40,27 +51,27 @@ class PlgContentFabrik extends JPlugin
 		jimport('joomla.filesystem.file');
 
 		// Load fabrik language
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_fabrik', JPATH_BASE . '/components/com_fabrik');
 
 		// Don't throw an exception, just don't do nuthin' if system plugin hasn't run
 		if (!defined('COM_FABRIK_FRONTEND'))
 		{
-			//throw new RuntimeException(JText::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'), 400);
+			//throw new RuntimeException(Text::_('COM_FABRIK_SYSTEM_PLUGIN_NOT_ACTIVE'), 400);
 			return true;
 		}
 
 		// Get plugin info
-		$plugin = JPluginHelper::getPlugin('content', 'fabrik');
+		$plugin = PluginHelper::getPlugin('content', 'fabrik');
 
 		// $$$ hugh had to rename this, it was stomping on com_content and friends $params
 		// $$$ which is passed by reference to us!
-		$fParams = new JRegistry($plugin->params);
+		$fParams = new Registry($plugin->params);
 
 		// Simple performance check to determine whether bot should process further
 		$botRegex = $fParams->get('botRegex') != '' ? $fParams->get('botRegex') : 'fabrik';
 
-		if (JString::strpos($row->text, '{' . $botRegex) === false)
+		if (StringHelper::strpos($row->text, '{' . $botRegex) === false)
 		{
 			return true;
 		}
@@ -88,8 +99,8 @@ class PlgContentFabrik extends JPlugin
 	protected function preplace($match)
 	{
 		$match = $match[0];
-		$match = JString::str_ireplace('<p>', '<div>', $match);
-		$match = JString::str_ireplace('</p>', '</div>', $match);
+		$match = StringHelper::str_ireplace('<p>', '<div>', $match);
+		$match = StringHelper::str_ireplace('</p>', '</div>', $match);
 
 		return $match;
 	}
@@ -148,7 +159,7 @@ class PlgContentFabrik extends JPlugin
 	 */
 	protected function replace($match)
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$match = $match[0];
 		$match = trim($match, "{");
@@ -157,8 +168,8 @@ class PlgContentFabrik extends JPlugin
 		$match = $this->parse(array($match));
 		$match = explode(" ", $match);
 		array_shift($match);
-		$user        = JFactory::getUser();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$user        = Factory::getUser();
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$unused      = array();
 
 		// Special case if we are wanting to write in an element's data
@@ -178,7 +189,7 @@ class PlgContentFabrik extends JPlugin
 		$useKey                = '';
 		$limit                 = false;
 		$ajax                  = true;
-		$session               = JFactory::getSession();
+		$session               = Factory::getSession();
 		$usersConfig->set('rowid', 0);
 		$viewName = '';
 
@@ -192,7 +203,7 @@ class PlgContentFabrik extends JPlugin
 			switch ($m[0])
 			{
 				case 'view':
-					$viewName = JString::strtolower($m[1]);
+					$viewName = StringHelper::strtolower($m[1]);
 					break;
 				case 'id':
 				case 'formid':
@@ -382,7 +393,7 @@ class PlgContentFabrik extends JPlugin
 				$this->_setRequest($unused);
 				$row = $model->getRow($rowId, false, true);
 
-				if (substr($element, JString::strlen($element) - 4, JString::strlen($element)) !== '_raw')
+				if (substr($element, StringHelper::strlen($element) - 4, StringHelper::strlen($element)) !== '_raw')
 				{
 					$element = $element . '_raw';
 				}
@@ -638,7 +649,7 @@ class PlgContentFabrik extends JPlugin
 	 */
 	protected function _setRequest($unused)
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 
 		// Ensure &gt; conditions set in {fabrik} are converted to >
@@ -684,7 +695,7 @@ class PlgContentFabrik extends JPlugin
 	 */
 	protected function resetRequest()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 
 		foreach ($this->origRequestVars as $k => $v)
@@ -706,7 +717,7 @@ class PlgContentFabrik extends JPlugin
 	/**
 	 * Get the model
 	 *
-	 * @param   JControllerLegacy &$controller Controller
+	 * @param   BaseController &$controller Controller
 	 * @param   string            $viewName    View name
 	 * @param   int               $id          Item id
 	 *
@@ -738,7 +749,7 @@ class PlgContentFabrik extends JPlugin
 
 		if (!isset($controller->_model))
 		{
-			JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', $prefix);
+			BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', $prefix);
 
 			if (!$controller->_model = $controller->getModel($viewName, $prefix))
 			{
@@ -762,7 +773,7 @@ class PlgContentFabrik extends JPlugin
 	 */
 	protected function getView(&$controller, $viewName, $id)
 	{
-		$viewType = JFactory::getDocument()->getType();
+		$viewType = Factory::getDocument()->getType();
 
 		if ($viewName == 'details')
 		{
@@ -888,9 +899,9 @@ class PlgContentFabrik extends JPlugin
 		require_once COM_FABRIK_FRONTEND . '/controllers/package.php';
 		require_once COM_FABRIK_FRONTEND . '/controllers/list.php';
 		require_once COM_FABRIK_FRONTEND . '/controllers/visualization.php';
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 
 		// $$$rob looks like including the view does something to the layout variable
 		require_once COM_FABRIK_FRONTEND . '/views/' . $view . '/view.html.php';

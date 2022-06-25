@@ -11,6 +11,8 @@
 // No direct access
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
 $d = $displayData;
 
 if ($d->attending)
@@ -34,7 +36,7 @@ else
             data-form-id="<?php echo $d->formId; ?>"
             data-render-order="<?php echo $d->renderOrder; ?>"
     >
-        <?php echo JText::_('PLG_FORM_ZOOM_WEBINARS_ATTENDING_LEAVE'); ?>
+        <?php echo Text::_('PLG_FORM_ZOOM_WEBINARS_ATTENDING_LEAVE'); ?>
     </button>
 </div>
 
@@ -46,7 +48,7 @@ else
             data-zoom-id="<?php echo $d->zoomId; ?>"
             data-form-id="<?php echo $d->formId; ?>"
             data-render-order="<?php echo $d->renderOrder; ?>">
-        <?php echo JText::_('PLG_FORM_ZOOM_WEBINARS_ATTENDING_JOIN'); ?>
+        <?php echo Text::_('PLG_FORM_ZOOM_WEBINARS_ATTENDING_JOIN'); ?>
     </button>
 </div>
 

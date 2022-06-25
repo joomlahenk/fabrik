@@ -11,7 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$app = JFactory::getApplication();
+use Joomla\CMS\Factory;
+
+$app = Factory::getApplication();
 $input = $app->input;
 $option = $input->getCmd('option');
 

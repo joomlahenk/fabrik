@@ -12,6 +12,7 @@ namespace Joomla\CMS\Document\Renderer\Html;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Document\DocumentRenderer;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Layout\LayoutHelper;
@@ -39,8 +40,8 @@ class ModulesRenderer extends DocumentRenderer
 		$renderer = $this->_doc->loadRenderer('module');
 		$buffer   = '';
 
-		$app          = \JFactory::getApplication();
-		$user         = \JFactory::getUser();
+		$app          = \Factory::getApplication();
+		$user         = \Factory::getUser();
 		$frontediting = ($app->isClient('site') && $app->get('frontediting', 1) && !$user->guest);
 		$menusEditing = ($app->get('frontediting', 1) == 2) && $user->authorise('core.edit', 'com_menus');
 
@@ -57,8 +58,7 @@ class ModulesRenderer extends DocumentRenderer
 			$buffer .= $moduleHtml;
 		}
 
-//		\JEventDispatcher::getInstance()->trigger('onAfterRenderModules', array(&$buffer, &$params));
-		\JFactory::getApplication()->triggerEvent('onAfterRenderModules', array(&$buffer, &$params));
+		Factory::getApplication()->triggerEvent('onAfterRenderModules', array(&$buffer, &$params));
 
 		return $buffer;
 	}

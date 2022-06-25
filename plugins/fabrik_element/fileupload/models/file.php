@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
+
 /**
  * Plugin element to render fileuploads of file type
  *
@@ -75,14 +78,14 @@ class FileRenderModel
 		{
 			$filename = basename($file);
 			$filename = strip_tags($filename);
-			$ext = JFile::getExt($filename);
+			$ext = File::getExt($filename);
 
 			if (!strstr($file, 'http://') && !strstr($file, 'https://'))
 			{
 				// $$$rob only add in livesite if we don't already have a full url (e.g. from amazons3)
 
 				// Trim / or \ off the start of $file
-				$file = JString::ltrim($file, '/\\');
+				$file = StringHelper::ltrim($file, '/\\');
 				$file = COM_FABRIK_LIVESITE . $file;
 			}
 
@@ -94,7 +97,7 @@ class FileRenderModel
 			$displayData = new stdClass;
 			$ext_icon = 'media/com_fabrik/images/' . $ext . '.png';
 			$displayData->thumb =  COM_FABRIK_LIVESITE . $ext_icon;
-			$displayData->useThumb = $params->get('make_thumbnail', false) && JFile::exists(COM_FABRIK_BASE . $ext_icon);
+			$displayData->useThumb = $params->get('make_thumbnail', false) && File::exists(COM_FABRIK_BASE . $ext_icon);
 			$displayData->ext = $ext;
 			$displayData->filename = $filename;
 			$displayData->file = $file;

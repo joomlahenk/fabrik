@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +24,7 @@ jimport('joomla.application.component.view');
  * @since       3.0.6
  */
 
-class FabrikAdminViewPlugin extends JViewLegacy
+class FabrikAdminViewPlugin extends HtmlView
 {
 	/**
 	 * Display the view
@@ -34,7 +37,7 @@ class FabrikAdminViewPlugin extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$model = $this->getModel();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$this->setStates();
 
 		if ($app->input->get('task') == 'top')
@@ -56,7 +59,7 @@ class FabrikAdminViewPlugin extends JViewLegacy
 	protected function setStates()
 	{
 		$model = $this->getModel();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$model->setState('type', $input->get('type'));
 		$model->setState('plugin', $input->get('plugin'));

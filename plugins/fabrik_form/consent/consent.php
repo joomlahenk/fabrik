@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+
  use \Joomla\CMS\Date\Date;
  
 // Require the abstract plugin class
@@ -140,11 +144,11 @@ class PlgFabrik_FormConsent extends PlgFabrik_Form
 		$params    = $this->getParams(); 
 		$formModel = $this->getModel();
 		$data 	   = $this->getProcessData();
-		$filter    = JFilterInput::getInstance();
+		$filter    = InputFilter::getInstance();
 		$post      = $filter->clean($_POST, 'array');
 		$contact   = array_key_exists('fabrik_contact_consent', $post);
 		$rowid	   = $post['rowid'];
-		$user 	   = JFactory::getUser();
+		$user 	   = Factory::getUser();
 		
 		if($params->get('consent_juser', '0') === '1')
 		{
@@ -246,7 +250,7 @@ class PlgFabrik_FormConsent extends PlgFabrik_Form
 		$params    = $this->getParams();
 		$formModel = $this->getModel();
 		
-		$now 	   = new JDate('now');
+		$now 	   = new Date('now');
 		$listId	   = $data['listid'];
 		$formId	   = $data['formid'];
 		$rowId	   = $data['rowid'];
@@ -308,7 +312,7 @@ class PlgFabrik_FormConsent extends PlgFabrik_Form
 
 		if($body == '')
 		{
-			$this->app->enqueueMessage(JText::_('PLG_FORM_CONSENT_MESSAGE_TEXT_EMPTY'), 'warning');
+			$this->app->enqueueMessage(Text::_('PLG_FORM_CONSENT_MESSAGE_TEXT_EMPTY'), 'warning');
 			return;
 		}
 		$thisAttachments = array();
@@ -333,12 +337,12 @@ class PlgFabrik_FormConsent extends PlgFabrik_Form
 			
 			if ($res !== true)
 			{
-				$this->app->enqueueMessage(JText::sprintf('PLG_FORM_CONSENT_DID_NOT_SEND_EMAIL', $email), 'warning');
+				$this->app->enqueueMessage(Text::sprintf('PLG_FORM_CONSENT_DID_NOT_SEND_EMAIL', $email), 'warning');
 			}
 		}
 		else
 		{
-			$this->app->enqueueMessage(JText::sprintf('PLG_FORM_CONSENT_DID_NOT_SEND_EMAIL_INVALID_ADDRESS', $email), 'warning');
+			$this->app->enqueueMessage(Text::sprintf('PLG_FORM_CONSENT_DID_NOT_SEND_EMAIL_INVALID_ADDRESS', $email), 'warning');
 		}
 		
 		return;

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\Folder;
+
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
 
 /**
@@ -50,7 +52,7 @@ class PlgFabrik_ElementFolder extends PlgFabrik_Element
 
 		if ($params->get('folder_listfolders', true))
 		{
-			$folders = JFolder::folders($path);
+			$folders = Folder::folders($path);
 
 			foreach ($folders as $folder)
 			{
@@ -65,7 +67,7 @@ class PlgFabrik_ElementFolder extends PlgFabrik_Element
 
 		if ($params->get('folder_listfiles', false))
 		{
-			$files = JFolder::files($path);
+			$files = Folder::files($path);
 
 			foreach ($files as $file)
 			{
@@ -108,7 +110,7 @@ class PlgFabrik_ElementFolder extends PlgFabrik_Element
 		$params = $this->getParams();
 		$element = $this->getElement();
 		$path = JPATH_ROOT . '/' . $params->get('fbfbfolder_path');
-		$folders = JFolder::folders($path);
+		$folders = Folder::folders($path);
 		$opts = $this->getElementJSOptions($repeatCounter);
 		$opts->defaultVal = $element->default;
 		$opts->data = $folders;

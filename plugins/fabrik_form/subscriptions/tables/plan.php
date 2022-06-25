@@ -1,6 +1,6 @@
 <?php
 /**
- *  JTable For Subscriptions Plans
+ *  Table For Subscriptions Plans
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.subscriptions
@@ -11,17 +11,19 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/tables/fabtable.php';
 
 /**
- *  JTable For Subscriptions Plans
+ *  Table For Subscriptions Plans
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.subscriptions
  * @since       3.0.7
  */
 
-class FabrikTablePlan extends JTable
+class FabrikTablePlan extends Table
 {
 	/**
 	 * Constructor

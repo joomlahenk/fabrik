@@ -13,6 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Worker;
 
@@ -26,7 +29,7 @@ use Fabrik\Helpers\Worker;
  * @since       1.5
  */
 
-class FabrikController extends JControllerLegacy
+class FabrikController extends BaseController
 {
 	/**
 	 * Is the controller inside a content plug-in
@@ -46,14 +49,14 @@ class FabrikController extends JControllerLegacy
 	 * Display the view
 	 *
 	 * @param   bool   $cachable   If true, the view output will be cached - NOTE not actually used to control caching!!!
-	 * @param   array  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link InputFilter::clean()}.
 	 *
 	 * @return  null
 	 */
 
 	public function display($cachable = false, $urlparams = false)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 
@@ -65,7 +68,7 @@ class FabrikController extends JControllerLegacy
 			$input->set('layout', $flayout);
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		$viewName = $input->get('view', 'form');
 		$modelName = $viewName;
@@ -101,15 +104,15 @@ class FabrikController extends JControllerLegacy
 			$cachable = true;
 		}
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (Worker::useCache() && !$this->isMambot)
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			$uri = JURI::getInstance();
 			$uri = $uri->toString(array('path', 'query'));
 			$cacheid = serialize(array($uri, $input->post, $user->get('id'), get_class($view), 'display', $this->cacheId));
-			$cache = JFactory::getCache('com_' . $package, 'view');
+			$cache = Factory::getCache('com_' . $package, 'view');
 			Html::addToSessionCacheIds($cacheid);
 			echo $cache->get($view, 'display', $cacheid);
 		}

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
@@ -38,7 +40,7 @@ class PlgFabrik_ElementField extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $data = FabrikWorker::JSONtoData($data, true);
@@ -294,7 +296,7 @@ class PlgFabrik_ElementField extends PlgFabrik_Element
 	 */
 	protected function linkOpts()
 	{
-		$fbConfig = JComponentHelper::getParams('com_fabrik');
+		$fbConfig = ComponentHelper::getParams('com_fabrik');
 		$params = $this->getParams();
 		$target = $params->get('link_target_options', 'default');
 		$opts = array();
@@ -352,7 +354,7 @@ class PlgFabrik_ElementField extends PlgFabrik_Element
 
 		$opts->geocomplete = $params->get('autocomplete', '0') === '3';
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$apiKey = trim($config->get('google_api_key', ''));
 		$opts->mapKey = empty($apiKey) ? false : $apiKey;
 		$opts->language = trim(strtolower($config->get('google_api_language', '')));

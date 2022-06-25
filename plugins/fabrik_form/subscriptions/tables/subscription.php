@@ -1,6 +1,6 @@
 <?php
 /**
- *  JTable For Subscriptions
+ *  Table For Subscriptions
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.subscriptions
@@ -11,17 +11,20 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/tables/fabtable.php';
 
 /**
- *  JTable For Subscriptions
+ *  Table For Subscriptions
  *
  * @package     Joomla.Plugin
  * @subpackage  Fabrik.form.subscriptions
  * @since       3.0.7
  */
 
-class FabrikTableSubscription extends JTable
+class FabrikTableSubscription extends Table
 {
 	/**
 	 * Constructor
@@ -44,7 +47,7 @@ class FabrikTableSubscription extends JTable
 
 	public function expire($msg = 'IPN expireSub')
 	{
-		$now = JFactory::getDate()->toSql();
+		$now = Factory::getDate()->toSql();
 		$this->status = 'Expired';
 		$this->eot_date = $now;
 		$this->eot_cause = $msg;
@@ -60,7 +63,7 @@ class FabrikTableSubscription extends JTable
 
 	public function activate()
 	{
-		$now = JFactory::getDate()->toSql();
+		$now = Factory::getDate()->toSql();
 		$this->status = 'Active';
 		$this->lastpay_date = $now;
 
@@ -75,7 +78,7 @@ class FabrikTableSubscription extends JTable
 
 	public function refund()
 	{
-		$now = JFactory::getDate()->toSql();
+		$now = Factory::getDate()->toSql();
 		$this->status = 'Refunded';
 		$this->cancel_date = $now;
 		$this->eot_date = $now;
@@ -91,7 +94,7 @@ class FabrikTableSubscription extends JTable
 	 */
 	public function cancel()
 	{
-		$now = JFactory::getDate()->toSql();
+		$now = Factory::getDate()->toSql();
 		$this->status = 'Cancelled';
 		$this->cancel_date = $now;
 		$this->eot_cause = 'IPN Cancel';

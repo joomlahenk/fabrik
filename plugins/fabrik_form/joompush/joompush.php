@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -32,7 +37,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 	 */
 	public function onAfterProcess()
 	{
-		if (JComponentHelper::getComponent('com_joompush', true)->enabled)
+		if (ComponentHelper::getComponent('com_joompush', true)->enabled)
 		{
 			require_once JPATH_ROOT . '/components/com_joompush/helpers/jpush.php';
 			require_once JPATH_ROOT . '/components/com_joompush/helpers/joompush.php';
@@ -134,7 +139,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 	protected function getMessage()
 	{
 		$params = $this->getParams();
-		$msg    = JText::_($params->get('joompush_message', ''));
+		$msg    = Text::_($params->get('joompush_message', ''));
 		$w = new FabrikWorker;
 		return $w->parseMessageForPlaceHolder($msg, $this->data);
 	}
@@ -148,7 +153,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 	protected function getTitle()
 	{
 		$params = $this->getParams();
-		$msg    = JText::_($params->get('joompush_title', ''));
+		$msg    = Text::_($params->get('joompush_title', ''));
 		$w = new FabrikWorker;
 		return $w->parseMessageForPlaceHolder($msg, $this->data);
 	}
@@ -162,7 +167,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 	 */
 	protected function getAdminGroupId()
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 		$query
 			->select('id')
@@ -193,7 +198,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 	 */
 	protected function getSubscriberKeys($userId)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('key'))
 			->from($db->quoteName('#__joompush_subscribers'))
@@ -205,7 +210,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 
 	protected function getJPTemplate($templateId)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query
 			->select(
@@ -249,7 +254,7 @@ class PlgFabrik_FormJoompush extends PlgFabrik_Form
 
 			$template          = new stdClass;
 			$template->icon    = $params->get('joompush_notification_icon');
-			$template->url     = JRoute::_($url);
+			$template->url     = Route::_($url);
 			$template->title   = $this->getTitle();
 			$template->message = $this->getMessage();
 		}

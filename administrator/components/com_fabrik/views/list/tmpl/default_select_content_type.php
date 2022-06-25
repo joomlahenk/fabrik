@@ -12,15 +12,19 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 FabrikHelperHTML::formvalidation();
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
 
 ?>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm"
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm"
 	id="adminForm" class="form-validate form-horizontal">
 
 	<div class="alert alert-info">
-		<span class="icon-puzzle"></span> <?php echo JText::_('COM_FABRIK_FIELD_CONTENT_TYPE_INTRO_LABEL'); ?>
+		<span class="icon-puzzle"></span> <?php echo Text::_('COM_FABRIK_FIELD_CONTENT_TYPE_INTRO_LABEL'); ?>
 	</div>
 	<hr />
 
@@ -38,7 +42,7 @@ JHTML::_('script','system/multiselect.js', ['relative' => true]);
 
 	<input type="hidden" name="option" value="com_fabrik" />
 	<input type="hidden" name="task" value="list.doSave" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <style>
 	#contentTypeListPreview {

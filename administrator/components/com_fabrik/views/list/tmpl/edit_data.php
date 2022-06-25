@@ -12,9 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_GROUP_LABEL_DATA'), 'list-data-panel');
-echo JHtml::_('sliders.start', 'table-sliders-data-'.(int) $this->item->id, array('useCookie'=>0));
-echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_DATA'), 'data-details'); ?>
+use Joomla\CMS\HTML\HTMLHelper;
+
+echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_GROUP_LABEL_DATA'), 'list-data-panel');
+echo HTMLHelper::_('sliders.start', 'table-sliders-data-'.(int) $this->item->id, array('useCookie'=>0));
+echo HTMLHelper::_('sliders.panel', FText::_('COM_FABRIK_DATA'), 'data-details'); ?>
 <fieldset class="adminform">
 	<legend><?php echo FText::_('COM_FABRIK_DATA'); ?></legend>
 	<ul class="adminformlist">
@@ -75,7 +77,7 @@ echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_DATA'), 'data-details'); ?>
 	</ul>
 </fieldset>
 
-<?php echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_PREFILTER'), 'data-prefilters'); ?>
+<?php echo HTMLHelper::_('sliders.panel', FText::_('COM_FABRIK_PREFILTER'), 'data-prefilters'); ?>
 <fieldset>
 		<legend>
 			<?php echo JHTML::_('tooltip', FText::_('COM_FABRIK_PREFILTER_DESC'), FText::_('COM_FABRIK_PREFILTER'), 'tooltip.png', FText::_('COM_FABRIK_PREFILTER')); ?>
@@ -97,7 +99,7 @@ echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_DATA'), 'data-details'); ?>
 	</table>
 </fieldset>
 
-<?php echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_JOINS'), 'joins-details'); ?>
+<?php echo HTMLHelper::_('sliders.panel', FText::_('COM_FABRIK_JOINS'), 'joins-details'); ?>
 <fieldset>
 	<legend>
 		<?php echo JHTML::_('tooltip', FText::_('COM_FABRIK_JOINS_DESC'), FText::_('COM_FABRIK_JOINS'), 'tooltip.png', FText::_('COM_FABRIK_JOINS'));?>
@@ -121,6 +123,6 @@ echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_DATA'), 'data-details'); ?>
 	} ?>
 </fieldset>
 
-<?php echo JHtml::_('sliders.panel', FText::_('COM_FABRIK_RELATED_DATA'), 'related-data-details'); ?>
+<?php echo HTMLHelper::_('sliders.panel', FText::_('COM_FABRIK_RELATED_DATA'), 'related-data-details'); ?>
 <?php echo $this->loadTemplate('related_data');?>
-<?php echo JHtml::_('sliders.end'); ?>
+<?php echo HTMLHelper::_('sliders.end'); ?>

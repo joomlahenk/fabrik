@@ -11,6 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,19 +27,19 @@ jimport('joomla.application.component.view');
  * @since       1.5
  */
 
-class FabrikAdminViewElement extends JViewLegacy
+class FabrikAdminViewElement extends HtmlView
 {
 	/**
 	 * Form
 	 *
-	 * @var JForm
+	 * @var Form
 	 */
 	protected $form;
 
 	/**
 	 * Element item
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $item;
 
@@ -91,7 +97,7 @@ class FabrikAdminViewElement extends JViewLegacy
 		$this->addToolbar();
 		$this->parent = $model->getParent();
 		FabrikAdminHelper::setViewLayout($this);
-		JText::script('COM_FABRIK_ERR_ELEMENT_JS_ACTION_NOT_DEFINED');
+		Text::script('COM_FABRIK_ERR_ELEMENT_JS_ACTION_NOT_DEFINED');
 
 		$srcs = FabrikHelperHTML::framework();
 		$srcs['Fabrik'] = FabrikHelperHTML::mediaFile('fabrik.js');
@@ -124,7 +130,7 @@ class FabrikAdminViewElement extends JViewLegacy
 	{
 		$model = $this->getModel();
 		$this->state = $model->getState();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$this->addConfirmToolbar();
 		$this->item = $model->getItem();
 		$this->oldName = $app->getUserState('com_fabrik.oldname');
@@ -145,7 +151,7 @@ class FabrikAdminViewElement extends JViewLegacy
 	protected function addConfirmToolbar()
 	{
 		JToolBarHelper::title(FText::_('COM_FABRIK_MANAGER_ELEMENT_EDIT'), 'checkbox-unchecked');
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
 		JToolBarHelper::save('element.updatestructure', 'JTOOLBAR_SAVE');
@@ -162,10 +168,10 @@ class FabrikAdminViewElement extends JViewLegacy
 
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->get('id');
 		$isNew = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));

@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\FormField;
+
 /**
  * Renders a Fabrik Help link
  *
@@ -19,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
  * @since    3.0.9
  */
 
-class JFormFieldStripewebhook extends JFormField
+class FormFieldStripewebhook extends FormField
 {
 	/**
 	 * Element name

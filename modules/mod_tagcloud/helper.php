@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class modTagcloudHelper
 {
 	public static function getCloud(&$params)
@@ -26,8 +28,8 @@ class modTagcloudHelper
 		$min = (int) $params->get('min', 1);
 		$max = (int) $params->get('max', 20);
 		$seperator = $params->get('seperator', '');
-		$document = JFactory::getDocument();
-		$db = JFactory::getDbo();
+		$document = Factory::getDocument();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($column)->from($table);
 		if ($filter != '')

@@ -12,6 +12,9 @@ namespace Joomla\CMS\Document;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Utility\Utility;
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Log\Log;
@@ -148,7 +151,7 @@ class PartialDocument extends Document
         $data['scripts']     = $this->_scripts;
         $data['script']      = $this->_script;
         $data['custom']      = $this->_custom;
-        $data['scriptText']  = \JText::script();
+        $data['scriptText']  = Text::script();
 
         return $data;
     }
@@ -257,7 +260,7 @@ class PartialDocument extends Document
         {
             foreach ($data['scriptText'] as $key => $string)
             {
-                \JText::script($key, $string);
+                Text::script($key, $string);
             }
         }
 
@@ -464,7 +467,7 @@ class PartialDocument extends Document
 
         if ($this->_caching == true && $type == 'modules')
         {
-            $cache = \JFactory::getCache('com_modules', '');
+            $cache = \Factory::getCache('com_modules', '');
             $hash = md5(serialize(array($name, $attribs, null, $renderer)));
             $cbuffer = $cache->get('cbuffer_' . $type);
 
@@ -615,8 +618,8 @@ class PartialDocument extends Document
 
         if (!isset($children))
         {
-            $db = \JFactory::getDbo();
-            $app = \JFactory::getApplication();
+            $db = \Factory::getDbo();
+            $app = \Factory::getApplication();
             $menu = $app->getMenu();
             $active = $menu->getActive();
             $children = 0;
@@ -693,7 +696,7 @@ class PartialDocument extends Document
     {
         // Check
         $directory = isset($params['directory']) ? $params['directory'] : 'templates';
-        $filter = \JFilterInput::getInstance();
+        $filter = \InputFilter::getInstance();
         $template = $filter->clean($params['template'], 'cmd');
         $file = $filter->clean($params['file'], 'cmd');
 
@@ -708,7 +711,7 @@ class PartialDocument extends Document
         }
 
         // Load the language file for the template
-        $lang = \JFactory::getLanguage();
+        $lang = \Factory::getLanguage();
 
         // 1.5 or core then 1.6
         $lang->load('tpl_' . $template, JPATH_BASE, null, false, true)
@@ -745,7 +748,7 @@ class PartialDocument extends Document
             for ($i = count($matches[0]) - 1; $i >= 0; $i--)
             {
                 $type = $matches[1][$i];
-                $attribs = empty($matches[2][$i]) ? array() : \JUtility::parseAttributes($matches[2][$i]);
+                $attribs = empty($matches[2][$i]) ? array() : \Utility::parseAttributes($matches[2][$i]);
                 $name = isset($attribs['name']) ? $attribs['name'] : null;
 
                 // Separate buffers to be executed first and last

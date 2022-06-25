@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +25,7 @@ jimport('joomla.application.component.view');
  * @since       3.0
  */
 
-class FabrikViewGooglemap extends JViewLegacy
+class FabrikViewGooglemap extends HtmlView
 {
 	/**
 	 * Execute and display a template script.
@@ -33,12 +37,12 @@ class FabrikViewGooglemap extends JViewLegacy
 
 	public function display($tpl = 'default')
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$j3    = FabrikWorker::j3();
 		$srcs  = FabrikHelperHTML::framework();
 		FabrikHelperHTML::slimbox();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model       = $this->getModel();
 		$model->setId($input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0))));
 		$this->row = $model->getVisualization();

@@ -2,12 +2,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Utility\Utility;
+
 error_reporting(E_ALL);
 ini_set('max_execution_time', 300);
 
 jimport('joomla.mail.helper');
-JTable::addIncludePath(JPATH_ROOT . '/plugins/fabrik_form/subscriptions/tables');
-//JTable::addIncludePath(JPATH_ROOT . '/plugins/fabrik_cron/php/scripts/tables');
+Table::addIncludePath(JPATH_ROOT . '/plugins/fabrik_form/subscriptions/tables');
+//Table::addIncludePath(JPATH_ROOT . '/plugins/fabrik_cron/php/scripts/tables');
 //require_once JPATH_ROOT . '/plugins/fabrik_cron/php/scripts/ipn.php';
 require_once JPATH_ROOT . '/plugins/fabrik_form/subscriptions/scripts/ipn.php';
 
@@ -38,7 +42,7 @@ CASE
 $expiration_mails = $db->loadObjectList('emailday');
 
 
-$config = JFactory::getConfig();
+$config = Factory::getConfig();
 $sitename = $config->get('sitename');
 $mailfrom = $config->get('mailfrom');
 $fromname = $config->get('fromname');
@@ -82,7 +86,7 @@ foreach ($res as $row) {
 			$mail->body = str_replace('{'.$k.'}', $v, $mail->body);
 		}
 		echo "would mail: " . $row->email;
-		//$res = JUtility::sendMail($mailfrom, $fromname, $row->email, $mail->subject, $mail->body, true);
+		//$res = Utility::sendMail($mailfrom, $fromname, $row->email, $mail->subject, $mail->body, true);
 	}
 
 	if (array_key_exists($row->daysleft, $expiration_mails) && $row->recurring == 0)
@@ -94,7 +98,7 @@ foreach ($res as $row) {
 			$mail->body = str_replace('{'.$k.'}', $v, $mail->body);
 		}
 		echo "would mail: " . $row->email;
-		//$res = JUtility::sendMail($mailfrom, $fromname, $row->email, $mail->subject, $mail->body, true);
+		//$res = Utility::sendMail($mailfrom, $fromname, $row->email, $mail->subject, $mail->body, true);
 	}
 }
 
@@ -160,7 +164,7 @@ ORDER BY s.lastpay_date
 	$ipn = new FabrikSubscriptionsIPN();
 	$rows = $db->loadObjectList();
 //var_dump($db->getQuery(), $rows);exit;
-	$now = JFactory::getDate()->toSql();
+	$now = Factory::getDate()->toSql();
 	$sub = FabTable::getInstance('Subscription', 'FabrikTable');
 	foreach ($rows as $row) {
 		$sub->load($row->subid);

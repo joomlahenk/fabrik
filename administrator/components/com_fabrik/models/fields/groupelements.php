@@ -11,7 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JFormHelper::loadFieldClass('groupedlist');
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+
+FormHelper::loadFieldClass('groupedlist');
 
 /**
  * Renders a list of fabrik lists or db tables
@@ -37,7 +40,7 @@ class JFormFieldGroupElements extends JFormFieldGroupedList
 	 */
 	protected function getGroups()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$db = FabrikWorker::getDbo(true);
 
@@ -48,7 +51,7 @@ class JFormFieldGroupElements extends JFormFieldGroupedList
 		->where('e.id = ' . $input->getInt('elementid'));
 		$db->setQuery($query);
 		$formId = $db->loadResult();
-		$formModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$formModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 
 		$rows = array();

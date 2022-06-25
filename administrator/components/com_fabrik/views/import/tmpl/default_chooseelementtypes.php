@@ -12,9 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 $jform = $input->get('jform', array(), 'array');
 ?>
@@ -22,7 +24,7 @@ $jform = $input->get('jform', array(), 'array');
 	<?php if (!empty($this->newHeadings)) :
 		if ((int) $this->table->id !== 0) :
 		echo "<H3>" . FText::_('COM_FABRIK_IMPORT_NEW_HEADINGS_FOUND') . "</h3>";
-		echo JText::sprintf('COM_FABRIK_IMPORT_NEW_HEADINGS_FOUND_DESC', $this->table->label, $this->table->label);
+		echo Text::sprintf('COM_FABRIK_IMPORT_NEW_HEADINGS_FOUND_DESC', $this->table->label, $this->table->label);
 	endif;?>
 
 		<table class="adminlist table table-striped">

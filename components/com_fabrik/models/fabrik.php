@@ -11,6 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.model');
@@ -22,20 +30,20 @@ jimport('joomla.application.component.model');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabModel extends JModelLegacy
+class FabModel extends BaseDatabaseModel
 {
 	/**
-	 * @var JApplicationCms
+	 * @var CMSApplication
 	 */
 	protected $app;
 
 	/**
-	 * @var JUser
+	 * @var User
 	 */
 	protected $user;
 
 	/**
-	 * @var JDate
+	 * @var Date
 	 */
 	protected $date;
 
@@ -52,7 +60,7 @@ class FabModel extends JModelLegacy
 	protected $config;
 
 	/**
-	 * @var JLanguage
+	 * @var Language
 	 */
 	protected $lang;
 
@@ -66,12 +74,12 @@ class FabModel extends JModelLegacy
 	 */
 	public function __construct($config = array())
 	{
-		$this->app = ArrayHelper::getValue($config, 'app', JFactory::getApplication());
-		$this->user = ArrayHelper::getValue($config, 'user', JFactory::getUser());
-		$this->config = ArrayHelper::getValue($config, 'config', JFactory::getConfig());
-		$this->session = ArrayHelper::getValue($config, 'session', JFactory::getSession());
-		$this->date = ArrayHelper::getValue($config, 'date', JFactory::getDate());
-		$this->lang = ArrayHelper::getValue($config, 'lang', JFactory::getLanguage());
+		$this->app = ArrayHelper::getValue($config, 'app', Factory::getApplication());
+		$this->user = ArrayHelper::getValue($config, 'user', Factory::getUser());
+		$this->config = ArrayHelper::getValue($config, 'config', Factory::getConfig());
+		$this->session = ArrayHelper::getValue($config, 'session', Factory::getSession());
+		$this->date = ArrayHelper::getValue($config, 'date', Factory::getDate());
+		$this->lang = ArrayHelper::getValue($config, 'lang', Factory::getLanguage());
 		$this->package = $this->app->getUserState('com_fabrik.package', 'fabrik');
 
 		parent::__construct($config);
@@ -108,7 +116,7 @@ class FabModel extends JModelLegacy
 	 * @param   string  $prefix   The class prefix. Optional.
 	 * @param   array   $options  Configuration array for model. Optional.
 	 *
-	 * @return	JTable	The table
+	 * @return	Table	The table
 	 */
 	public function getTable($name = '', $prefix = 'Table', $options = array())
 	{
@@ -122,7 +130,7 @@ class FabModel extends JModelLegacy
 			return $table;
 		}
 
-		throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_TABLE_NAME_NOT_SUPPORTED', $name));
+		throw new RuntimeException(Text::sprintf('JLIB_APPLICATION_ERROR_TABLE_NAME_NOT_SUPPORTED', $name));
 
 		return null;
 	}

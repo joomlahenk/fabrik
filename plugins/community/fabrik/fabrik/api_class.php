@@ -8,7 +8,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die();
-//$defines = JFile::exists(JPATH_SITE.'/components/com_fabrik/user_defines.php') ? JPATH_SITE.'/components/com_fabrik/user_defines.php' : JPATH_SITE.'/components/com_fabrik/defines.php';
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+//$defines = File::exists(JPATH_SITE.'/components/com_fabrik/user_defines.php') ? JPATH_SITE.'/components/com_fabrik/user_defines.php' : JPATH_SITE.'/components/com_fabrik/defines.php';
 //require_once( $defines );
 require_once( JPATH_SITE.'/plugins/content/fabrik/fabrik.php' );
 
@@ -31,7 +34,7 @@ class jsFabrik extends plgContentFabrik
 
 	function jsFabrikRender( $match )
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$extension = 'com_fabrik';
 		$base_dir = JPATH_SITE . '/components/' . $extension . '/';
 		$language_tag = null;

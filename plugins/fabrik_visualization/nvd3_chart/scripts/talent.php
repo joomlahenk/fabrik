@@ -1,6 +1,9 @@
 <?php
 
-$db = JFactory::getDbo();
+use Joomla\CMS\Factory;
+
+
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 
 $query->select('COUNT( * ) AS value, relevantie_playground AS label')->from('fab_userinfo')->group('relevantie_playground');

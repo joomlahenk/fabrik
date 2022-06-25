@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -39,7 +41,7 @@ class PlgFabrik_FormKunena extends PlgFabrik_Form
 		jimport('joomla.filesystem.file');
 		$define = COM_FABRIK_BASE . 'libraries/kunena/bootstrap.php';
 
-		if (JFile::exists($define))
+		if (File::exists($define))
 		{
 			// Kunenea 3.x
 			require_once $define;
@@ -49,7 +51,7 @@ class PlgFabrik_FormKunena extends PlgFabrik_Form
 		{
 			$define = COM_FABRIK_BASE . 'components/com_kunena/lib/kunena.defines.php';
 
-			if (JFile::exists($define))
+			if (File::exists($define))
 			{
 				require_once $define;
 				$this->post2x();
@@ -86,7 +88,7 @@ class PlgFabrik_FormKunena extends PlgFabrik_Form
 			require_once $file;
 		}
 
-		if (JFile::exists(KUNENA_PATH_FUNCS . '/post.php'))
+		if (File::exists(KUNENA_PATH_FUNCS . '/post.php'))
 		{
 			$postfile = KUNENA_PATH_FUNCS . '/post.php';
 		}

@@ -8,6 +8,11 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Helper for mod_fabrik_list
  *
@@ -20,14 +25,14 @@ class ModFabrikListHelper
 	/**
 	 * Assign module settings to the list model
 	 *
-	 * @param   JRegistry     $params  Module parameters
-	 * @param   JModelLegacy  &$model  List model
+	 * @param   Registry     $params  Module parameters
+	 * @param   BaseDatabaseModel  &$model  List model
 	 *
 	 * @return  $model
 	 */
 	public static function applyParams($params, &$model)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$useajax = $params->get('useajax', '');
 		$showTitle = $params->get('show-title', '');
@@ -70,7 +75,7 @@ class ModFabrikListHelper
 		$model->randomRecords = $random;
 
 		// Set up prefilters - will overwrite ones defined in the list!
-		$prefilters = JArrayHelper::fromObject(json_decode($params->get('prefilters')));
+		$prefilters = ArrayHelper::fromObject(json_decode($params->get('prefilters')));
 		$conditions = (array) $prefilters['filter-conditions'];
 
 		if (!empty($conditions))

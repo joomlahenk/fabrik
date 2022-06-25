@@ -11,12 +11,19 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
-JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-JTable::addIncludePath(JPATH_SITE . '/plugins/fabrik_form/subscriptions/tables');
+Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+Table::addIncludePath(JPATH_SITE . '/plugins/fabrik_form/subscriptions/tables');
 
 /**
  * Redirects the browser to subscriptions to perform payment
@@ -49,11 +56,11 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	 */
 	public function __construct(&$subject, $config = array())
 	{
-		// Include the JLog class.
+		// Include the Log class.
 		jimport('joomla.log.log');
 
 		// Add the logger.
-		JLog::addLogger(array('text_file' => 'fabrik.subs.log.php'));
+		Log::addLogger(array('text_file' => 'fabrik.subs.log.php'));
 		parent::__construct($subject, $config);
 	}
 
@@ -214,7 +221,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 		$sub = $db->loadObject();
 
 		// @TODO test replace various placeholders
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$post = $filter->clean($_REQUEST, 'array');
 		$name = $this->config->get('sitename') . ' {plan_name}  User: {jos_fabrik_subs_users___name} ({jos_fabrik_subs_users___username})';
 		$tmp = array_merge($post, ArrayHelper::fromObject($sub));
@@ -309,7 +316,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	{
 		$params = $this->getParams();
 		$formModel = $this->getModel();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$pendingSub = $this->pendingSub($formModel, false);
 		if ($pendingSub !== false)
 		{
@@ -398,7 +405,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 		if ($subscriptionId !== 0)
 		{
 			// Updating a subscription - load the invoice
-			$invoice = JTable::getInstance('Invoice', 'FabrikTable');
+			$invoice = Table::getInstance('Invoice', 'FabrikTable');
 			$invoice->load(array('subscr_id' => $sub->id));
 			$opts['invoice'] = $invoice->invoice_number;
 
@@ -428,8 +435,8 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 		$surl[$this->renderOrder] = $url;
 		$this->session->set($context . 'url', $surl);
 
-		// @TODO use JLog instead of fabrik log
-		// JLog::add($subject . ', ' . $body, JLog::NOTICE, 'com_fabrik');
+		// @TODO use Log instead of fabrik log
+		// Log::add($subject . ', ' . $body, Log::NOTICE, 'com_fabrik');
 		return true;
 	}
 
@@ -517,10 +524,10 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 		$input = $this->app->input;
 		$formId = $input->getInt('formid');
 		$rowId = $input->getString('rowid', '', 'string');
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
 
 		/** @var FabrikFEModelForm $formModel */
-		$formModel = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$params = $formModel->getParams();
 		$msg = (array) $params->get('subscriptions_return_msg');
@@ -534,7 +541,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 			$row = $listModel->getRow($rowId);
 			$msg = $w->parseMessageForPlaceHolder($msg, $row);
 
-			if (JString::stristr($msg, '[show_all]'))
+			if (StringHelper::stristr($msg, '[show_all]'))
 			{
 				$all_data = array();
 
@@ -569,18 +576,18 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	public function onIpn()
 	{
 		$input = $this->app->input;
-		JLog::add($input->server->getString('REQUEST_URI') . ' ' . http_build_query($_REQUEST), JLog::INFO, 'fabrik.ipn.start');
+		Log::add($input->server->getString('REQUEST_URI') . ' ' . http_build_query($_REQUEST), Log::INFO, 'fabrik.ipn.start');
 
 		// Lets try to load in the custom returned value so we can load up the form and its parameters
 		$custom = $input->get('custom', '', 'string');
 		list($formId, $invoiceId) = explode(':', $custom);
 
 		$input->set('invoiceid', $invoiceId);
-		$mail = JFactory::getMailer();
+		$mail = Factory::getMailer();
 
 		// Pretty sure they are added but double add
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
-		$formModel = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+		$formModel = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$listModel = $formModel->getlistModel();
 		$params = $formModel->getParams();
@@ -627,7 +634,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 		$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
 		$header .= $sandBox ? "Host: www.sandbox.paypal.com:443\r\n" : "Host: www.paypal.com:443\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . JString::strlen($req) . "\r\n\r\n";
+		$header .= "Content-Length: " . StringHelper::strlen($req) . "\r\n\r\n";
 
 		$subscriptionsurl = $sandBox ? 'ssl://www.sandbox.paypal.com' : 'ssl://www.paypal.com';
 
@@ -678,7 +685,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 					* check that payment_amount/payment_currency are correct
 					* process payment
 					*/
-					if (JString::strcmp(strtoupper($res), "VERIFIED") == 0)
+					if (StringHelper::strcmp(strtoupper($res), "VERIFIED") == 0)
 					{
 						$query = $db->getQuery(true);
 						$query->select($ipn_status_field)->from('#__fabrik_subs_invoices')
@@ -780,7 +787,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 							}
 						}
 					}
-					elseif (JString::strcmp($res, "INVALID") == 0)
+					elseif (StringHelper::strcmp($res, "INVALID") == 0)
 					{
 						$status = false;
 						$err_title = 'form.subscriptions.ipnfailure.invalid';
@@ -801,13 +808,13 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 			$emailtext .= $key . " = " . $value . "\n\n";
 		}
 
-		$logLevel = JLog::INFO;
+		$logLevel = Log::INFO;
 		$logMessage = "transaction type: $txn_type \n///////////////// \n emailtext: " . $emailtext . "\n//////////////\nres= " . $res
 		. "\n//////////////\n" . $req . "\n//////////////\n";
 
 		if ($status == false)
 		{
-			$logLevel = JLog::CRITICAL;
+			$logLevel = Log::CRITICAL;
 			$subject = $this->config->get('sitename') . ": Error with Fabrik Subscriptions IPN";
 			$logMessageTitle = $err_title;
 			$logMessage .= $err_msg;
@@ -849,7 +856,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 			$logMessage .= "\n No IPN custom transaction function ";
 		}
 
-		JLog::add($logMessage, $logLevel, $logMessageTitle);
+		Log::add($logMessage, $logLevel, $logMessageTitle);
 		jexit();
 	}
 
@@ -863,7 +870,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	{
 		$ipn = 'plugins/fabrik_form/subscriptions/scripts/ipn.php';
 
-		if (JFile::exists($ipn))
+		if (File::exists($ipn))
 		{
 			require_once $ipn;
 
@@ -920,14 +927,14 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	/**
 	 * Create the subscription
 	 *
-	 * @return  JTable subscription
+	 * @return  Table subscription
 	 */
 	protected function createSubscription()
 	{
 		$gateway = $this->getGateway();
 		$plan = $this->getPlan();
 		$input = $this->app->input;
-		$sub = JTable::getInstance('Subscription', 'FabrikTable');
+		$sub = Table::getInstance('Subscription', 'FabrikTable');
 
 		// Replace fields with db prefix
 		$billingCycle = $this->getBillingCycle();
@@ -959,15 +966,15 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	/**
 	 * Create an invoice for a subscription
 	 *
-	 * @param   JTable  $sub  Subscription row
+	 * @param   Table  $sub  Subscription row
 	 *
-	 * @return  JTable Invoice
+	 * @return  Table Invoice
 	 */
 	protected function createInvoice($sub)
 	{
 		$input = $this->app->input;
 
-		$invoice = JTable::getInstance('Invoice', 'FabrikTable');
+		$invoice = Table::getInstance('Invoice', 'FabrikTable');
 		$invoice->invoice_number = uniqid('', true);
 		$input->setVar('invoice_number', $invoice->invoice_number);
 
@@ -982,7 +989,7 @@ class PlgFabrik_FormSubscriptions extends PlgFabrik_Form
 	/**
 	 * Set the Invoice payment options
 	 *
-	 * @param   JTable  &$invoice  Invoice
+	 * @param   Table  &$invoice  Invoice
 	 *
 	 * @return  void
 	 */

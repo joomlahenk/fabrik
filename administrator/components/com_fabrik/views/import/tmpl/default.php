@@ -12,16 +12,19 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
-JHtml::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 FabrikHelperHTML::formvalidation();
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 $input->set('hidemainmenu', true);
 ?>
 
-<form enctype="multipart/form-data" action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form enctype="multipart/form-data" action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <div class="width-100 fltlft">
 	<?php
 $id = $input->getInt('listid', 0); // from list data view in admin

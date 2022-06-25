@@ -12,6 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -268,7 +272,7 @@ class FabrikAdminModelElements extends FabModelList
 	 * @param   string $prefix A prefix for the table class name. Optional.
 	 * @param   array  $config Configuration array for model. Optional.
 	 *
-	 * @return  JTable    A database object
+	 * @return  Table    A database object
 	 *
 	 * @since   1.6
 	 */
@@ -296,10 +300,10 @@ class FabrikAdminModelElements extends FabModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_fabrik');
+		$params = ComponentHelper::getParams('com_fabrik');
 		$this->setState('params', $params);
 
 		$published = $app->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
@@ -336,7 +340,7 @@ class FabrikAdminModelElements extends FabModelList
 
 	public function getShowInListOptions()
 	{
-		return array(JHtml::_('select.option', 0, FText::_('JNO')), JHtml::_('select.option', 1, FText::_('JYES')));
+		return array(HTMLHelper::_('select.option', 0, FText::_('JNO')), HTMLHelper::_('select.option', 1, FText::_('JYES')));
 	}
 
 	/**
@@ -348,7 +352,7 @@ class FabrikAdminModelElements extends FabModelList
 	public function getPluginOptions()
 	{
 		$db     = FabrikWorker::getDbo(true);
-		$user   = JFactory::getUser();
+		$user   = Factory::getUser();
 		$levels = implode(',', $user->getAuthorisedViewLevels());
 		$query  = $db->getQuery(true);
 		$query->select('element AS value, element AS text')->from('#__extensions')->where('enabled >= 1')->where('type =' . $db->quote('plugin'))
@@ -407,7 +411,7 @@ class FabrikAdminModelElements extends FabModelList
 
 		if (!empty($blocked))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			$app->enqueueMessage(FText::_('COM_FABRIK_CANT_UNPUBLISHED_PK_ELEMENT'), 'warning');
 		}
 

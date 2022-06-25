@@ -14,6 +14,8 @@ defined('JPATH_PLATFORM') or die;
 
 //require_once JPATH_SITE . '/components/com_fabrik/helpers/pdf.php';
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\Pdf;
 
 jimport('joomla.utilities.utility');
@@ -139,7 +141,7 @@ class PdfDocument extends HtmlDocument
 	{
 		parent::__construct($options);
 
-		$this->config = \JComponentHelper::getParams('com_fabrik');
+		$this->config = \ComponentHelper::getParams('com_fabrik');
 		if ($this->config->get('pdf_debug', false))
 		{
 			$this->setMimeEncoding('text/html');
@@ -269,7 +271,7 @@ class PdfDocument extends HtmlDocument
 		 * but haven't tested it much
 		 */
 		$data = mb_convert_encoding($data,'HTML-ENTITIES','UTF-8');
-		$config = \JComponentHelper::getParams('com_fabrik');
+		$config = \ComponentHelper::getParams('com_fabrik');
 
 		if ($this->config->get('fabrik_pdf_lib', 'dompdf') === 'dompdf')
 		{
@@ -297,7 +299,7 @@ class PdfDocument extends HtmlDocument
 				{
 					$mpdf = new \Mpdf\Mpdf(
 						[
-							'tempDir'     => \JFactory::getConfig()->get('tmp_path', JPATH_ROOT . '/tmp'),
+							'tempDir'     => \Factory::getConfig()->get('tmp_path', JPATH_ROOT . '/tmp'),
 							'mode'        => 'utf-8',
 							'format'      => $this->size,
 							'orientation' => $this->orientation

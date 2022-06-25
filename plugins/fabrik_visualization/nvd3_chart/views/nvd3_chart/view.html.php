@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +26,7 @@ jimport('joomla.application.component.view');
  * @since       3.1
  */
 
-class FabrikViewNvd3_Chart extends JViewLegacy
+class FabrikViewNvd3_Chart extends HtmlView
 {
 	/**
 	 * Execute and display a template script.
@@ -33,12 +38,12 @@ class FabrikViewNvd3_Chart extends JViewLegacy
 
 	public function display($tpl = 'default')
 	{
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$document = Factory::getDocument();
+		$app = Factory::getApplication();
 		$input = $app->input;
 
 		$model = $this->getModel();
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model->setId($input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0))));
 
 		if (!$model->canView())
@@ -76,7 +81,7 @@ class FabrikViewNvd3_Chart extends JViewLegacy
 
 		$this->params = $params;
 		$viewName = $this->getName();
-		$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
+		$pluginManager = BaseDatabaseModel::getInstance('Pluginmanager', 'FabrikFEModel');
 		$plugin = $pluginManager->getPlugIn('calendar', 'visualization');
 		$this->params = $params;
 

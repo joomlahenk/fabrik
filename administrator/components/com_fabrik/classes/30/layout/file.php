@@ -9,6 +9,13 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\BaseLayout;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Path;
+
 /**
  * Base class for rendering a display layout
  * loaded from from a layout file
@@ -18,7 +25,7 @@ defined('JPATH_BASE') or die;
  * @see         http://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
  * @since       3.0
  */
-class JLayoutFile extends JLayoutBase
+class FileLayout extends BaseLayout
 {
 	/**
 	 * @var    string  Dot separated path to the layout file, relative to base path
@@ -51,7 +58,7 @@ class JLayoutFile extends JLayoutBase
 	 *
 	 * @param   string  $layoutId  Dot separated path to the layout file, relative to base path
 	 * @param   string  $basePath  Base path to use when loading layout files
-	 * @param   mixed   $options   Optional custom options to load. JRegistry or array format [@since 3.2]
+	 * @param   mixed   $options   Optional custom options to load. Registry or array format [@since 3.2]
 	 *
 	 * @since   3.0
 	 */
@@ -134,7 +141,7 @@ class JLayoutFile extends JLayoutBase
 					$rawPath  = str_replace('.', '/', $this->layoutId) . '.' . $suffix . '.php';
 					$this->addDebugMessage('<strong>Searching layout for:</strong> ' . $rawPath);
 
-					if ($this->fullPath = JPath::find($this->includePaths, $rawPath))
+					if ($this->fullPath = Path::find($this->includePaths, $rawPath))
 					{
 						$this->addDebugMessage('<strong>Found layout:</strong> ' . $this->fullPath);
 
@@ -147,9 +154,9 @@ class JLayoutFile extends JLayoutBase
 			$rawPath  = str_replace('.', '/', $this->layoutId) . '.php';
 			$this->addDebugMessage('<strong>Searching layout for:</strong> ' . $rawPath);
 
-			$this->fullPath = JPath::find($this->includePaths, $rawPath);
+			$this->fullPath = Path::find($this->includePaths, $rawPath);
 
-			if ($this->fullPath = JPath::find($this->includePaths, $rawPath))
+			if ($this->fullPath = Path::find($this->includePaths, $rawPath))
 			{
 				$this->addDebugMessage('<strong>Found layout:</strong> ' . $this->fullPath);
 			}
@@ -249,7 +256,7 @@ class JLayoutFile extends JLayoutBase
 			if (substr_count($component, 'com_'))
 			{
 				// Latest check: component exists and is enabled
-				return JComponentHelper::isEnabled($component);
+				return ComponentHelper::isEnabled($component);
 			}
 		}
 
@@ -326,7 +333,7 @@ class JLayoutFile extends JLayoutBase
 				break;
 
 			default:
-				$client = (int) JFactory::getApplication()->isAdmin();
+				$client = (int) Factory::getApplication()->isAdmin();
 				break;
 		}
 
@@ -367,7 +374,7 @@ class JLayoutFile extends JLayoutBase
 		$this->addIncludePaths(JPATH_ROOT . '/layouts');
 
 		// (2) Standard Joomla! layouts overriden
-		$this->addIncludePaths(JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts');
+		$this->addIncludePaths(JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts');
 
 		// Component layouts & overrides if exist
 		$component = $this->options->get('component', null);
@@ -385,7 +392,7 @@ class JLayoutFile extends JLayoutBase
 			}
 
 			// (4) Component template overrides path
-			$this->addIncludePath(JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts/' . $component);
+			$this->addIncludePath(JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts/' . $component);
 		}
 
 		// (5 - highest priority) Received a custom high priority path ?

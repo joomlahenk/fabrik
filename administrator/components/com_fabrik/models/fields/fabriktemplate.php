@@ -11,10 +11,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('folderlist');
+FormHelper::loadFieldClass('folderlist');
 
 /**
  * Get a list of templates - either in components/com_fabrik/views/{view}/tmpl or {view}/tmpl25
@@ -51,21 +57,21 @@ class JFormFieldFabrikTemplate extends JFormFieldFolderList
         $options = array();
 
 
-        $path = JPath::clean($path);
+        $path = Path::clean($path);
 
         // Prepend some default options based on field attributes.
         if (!$this->hideNone)
         {
-            $options[] = JHtml::_('select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+            $options[] = HTMLHelper::_('select.option', '-1', Text::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
         }
 
         if (!$this->hideDefault)
         {
-            $options[] = JHtml::_('select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+            $options[] = HTMLHelper::_('select.option', '', Text::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
         }
 
         // Get a list of folders in the search path with the given filter.
-        $folders = JFolder::folders($path, $this->filter, $this->recursive, true);
+        $folders = Folder::folders($path, $this->filter, $this->recursive, true);
 
         // Build the options list from the list of folders.
         if (is_array($folders))
@@ -84,7 +90,7 @@ class JFormFieldFabrikTemplate extends JFormFieldFolderList
                 // Remove the root part and the leading /
                 $folder = trim(str_replace($path, '', $folder), '/');
 
-                $options[] = JHtml::_('select.option', $folder, $folder);
+                $options[] = HTMLHelper::_('select.option', $folder, $folder);
             }
         }
 

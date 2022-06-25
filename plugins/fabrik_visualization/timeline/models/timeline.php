@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\Normalise;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.model');
@@ -180,7 +185,7 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 		$className = FArrayHelper::getValue($classNames, $c);
 		$eval = FArrayHelper::getValue($evals, $c);
 
-		$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 		$listModel->setId($listId);
 
 		$eventdata = array();
@@ -241,14 +246,14 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 							$end = array_key_exists($enddate . '_raw', $row) ? $row->{$enddate . '_raw'} : @$row->$enddate;
 							$event->end = ($end >= $event->start) ? $end : '';
 
-							$sDate = JFactory::getDate($event->end);
+							$sDate = Factory::getDate($event->end);
 							$sDate->setTimezone($timeZone);
 							$event->end = $sDate->toISO8601(true);
 							$bits = explode('+', $event->end);
 							$event->end = $bits[0] . '+00:00';
 						}
 
-						$sDate = JFactory::getDate($event->start);
+						$sDate = Factory::getDate($event->start);
 						$sDate->setTimezone($timeZone);
 						$event->start = $sDate->toISO8601(true);
 						$bits = explode('+', $event->start);
@@ -309,7 +314,7 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 		foreach ($lists as $listId)
 		{
 			$where = FArrayHelper::getValue($where, $listId, '');
-			$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 			$listModel->setId($listId);
 			$listModel->setPluginQueryWhere('timeline', $where);
 			$totals[$listId] = $listModel->getTotalRecords();
@@ -339,12 +344,12 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 	public function render()
 	{
 		$params = $this->getParams();
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$this->clearSession();
 		jimport('string.normalise');
 
 		// The simile jQuery autodetect and load code is broken as it tests for $ (for which mootools gives a false positive) so include
-		$parsedUrl = parse_url(JUri::root());
+		$parsedUrl = parse_url(Uri::root());
 		$document->addScript($parsedUrl['scheme'] . '://code.jquery.com/jquery-1.9.1.min.js');
 		//@@@trob: preload simile-ajax-api.js with the correct scheme (to avoid hardcoded http loading inside timeline-api.js)
 		$document->addScript($parsedUrl['scheme'] . '://api.simile-widgets.org/ajax/2.2.1/simile-ajax-api.js');
@@ -358,7 +363,7 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 		$textColours = (array) $params->get('timeline_text_color', array());
 		$classNames = (array) $params->get('timeline_class', array());
 
-		$timeZone = new DateTimeZone(JFactory::getConfig()->get('offset'));
+		$timeZone = new DateTimeZone(Factory::getConfig()->get('offset'));
 
 		$lists = $params->get('timeline_table', array());
 		$eventdata = array();
@@ -399,23 +404,23 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 	protected function toVariable($input)
 	{
 		// Should simply be (except there's a bug in J)
-		// JStringNormalise::toVariable($event->className);
+		// Normalise::toVariable($event->className);
 
 		$input = trim($input);
 
 		// Remove dashes and underscores, then convert to camel case.
-		$input = JStringNormalise::toSpaceSeparated($input);
-		$input = JStringNormalise::toCamelCase($input);
+		$input = Normalise::toSpaceSeparated($input);
+		$input = Normalise::toCamelCase($input);
 
 		// Remove leading digits.
 		$input = preg_replace('#^[\d\.]*#', '', $input);
 
 		// Lowercase the first character.
-		$first = JString::substr($input, 0, 1);
-		$first = JString::strtolower($first);
+		$first = StringHelper::substr($input, 0, 1);
+		$first = StringHelper::strtolower($first);
 
 		// Replace the first character with the lowercase character.
-		$input = JString::substr_replace($input, $first, 0, 1);
+		$input = StringHelper::substr_replace($input, $first, 0, 1);
 
 		return $input;
 	}
@@ -497,7 +502,7 @@ class FabrikModelTimeline extends FabrikFEModelVisualization
 			$data[] = $o;
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$css = implode("\n", $css);
 		$document->addStyleDeclaration($css);
 

@@ -12,18 +12,22 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\String\StringHelper;
 
-$db = JFactory::getDbo();
+$db = Factory::getDbo();
 
 // Load front end language file as well
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_fabrik', JPATH_SITE . '/components/com_fabrik');
 
 /*
 // Get the package id from #__fabrik_packages for this option
 $query = $db->getQuery(true);
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 $option = $input->get('option');
 $shortName = StringHelper::substr($option, 4);
@@ -47,17 +51,17 @@ jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 
 // Set the user state to load the package db tables
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $option = FabrikString::ltrimword($option, 'com_');
 $app->setUserState('com_fabrik.package', $option);
 
-JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_fabrik/models');
+Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_fabrik/models');
 
 $controller = $input->getCmd('view');
 $path = JPATH_SITE . '/components/com_fabrik/controllers/' . $controller . '.php';
 
-if (JFile::exists($path))
+if (File::exists($path))
 {
 	require_once $path;
 }
@@ -84,7 +88,7 @@ if (strpos($input->getCmd('task'), '.') !== false)
 	$classname = 'FabrikController' . StringHelper::ucfirst($controller);
 	$path = JPATH_SITE . '/components/com_fabrik/controllers/' . $controller . '.php';
 
-	if (JFile::exists($path))
+	if (File::exists($path))
 	{
 		require_once $path;
 

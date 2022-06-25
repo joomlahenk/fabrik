@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
@@ -73,7 +75,7 @@ class PlgFabrik_ElementFbcomment extends PlgFabrik_Element
 				$formModel = $this->getFormModel();
 				$formId = $formModel->getId();
 				$href = 'index.php?option=com_fabrik&view=form&formid=' . $formId . '&rowid=' . $rowId;
-				$href = JRoute::_($href);
+				$href = Route::_($href);
 				$displayData->href = COM_FABRIK_LIVESITE_ROOT . $href;
 			}
 		}

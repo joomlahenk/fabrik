@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\Utilities\ArrayHelper;
 
 require_once JPATH_ADMINISTRATOR . '/components/com_fabrik/helpers/element.php';
@@ -27,7 +29,7 @@ jimport('joomla.form.helper');
  * @since       1.6
  */
 
-class JFormFieldSuboptions extends JFormField
+class FormFieldSuboptions extends FormField
 {
 	/**
 	 * Element name
@@ -45,7 +47,7 @@ class JFormFieldSuboptions extends JFormField
 
 	protected function getInput()
 	{
-		JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
+		Text::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 
 		$default = new stdClass;
 		$default->sub_values = array();

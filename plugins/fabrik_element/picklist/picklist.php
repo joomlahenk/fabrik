@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
+
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
 
 /**
@@ -129,7 +132,7 @@ class PlgFabrik_ElementPicklist extends PlgFabrik_ElementList
 
 		$opts->hovercolour   = $params->get('picklist-hovercolour', '#AFFFFD');
 		$opts->bghovercolour = $params->get('picklist-bghovercolour', '#FFFFDF');
-		JText::script('PLG_ELEMENT_PICKLIST_ENTER_VALUE_LABEL');
+		Text::script('PLG_ELEMENT_PICKLIST_ENTER_VALUE_LABEL');
 
 		return array('FbPicklist', $id, $opts);
 	}
@@ -151,7 +154,7 @@ class PlgFabrik_ElementPicklist extends PlgFabrik_ElementList
 
 		for ($i = 0; $i < count($labels); $i++)
 		{
-			if (JString::strtolower($labels[$i]) == JString::strtolower($value))
+			if (StringHelper::strtolower($labels[$i]) == StringHelper::strtolower($value))
 			{
 				$val = $values[$i];
 

@@ -10,6 +10,10 @@ namespace Joomla\CMS\Form;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\String\Normalise;
 use Joomla\String\StringHelper;
@@ -80,7 +84,7 @@ abstract class FormField
 	protected $form;
 
 	/**
-	 * The form control prefix for field names from the JForm object attached to the form field.
+	 * The form control prefix for field names from the Form object attached to the form field.
 	 *
 	 * @var    string
 	 * @since  1.7.0
@@ -535,7 +539,7 @@ abstract class FormField
 			default:
 				if (property_exists(__CLASS__, $name))
 				{
-					\JLog::add("Cannot access protected / private property $name of " . __CLASS__);
+					\Log::add("Cannot access protected / private property $name of " . __CLASS__);
 				}
 				else
 				{
@@ -545,9 +549,9 @@ abstract class FormField
 	}
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
-	 * @param   Form  $form  The JForm object to attach to the form field.
+	 * @param   Form  $form  The Form object to attach to the form field.
 	 *
 	 * @return  FormField  The form field object so that the method can be used in a chain.
 	 *
@@ -562,7 +566,7 @@ abstract class FormField
 	}
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
 	 * @param   \SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form field object.
 	 * @param   mixed              $value    The form field value to validate.
@@ -576,7 +580,7 @@ abstract class FormField
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
-		// Make sure there is a valid JFormField XML element.
+		// Make sure there is a valid FormField XML element.
 		if ((string) $element->getName() != 'field')
 		{
 			return false;
@@ -748,7 +752,7 @@ abstract class FormField
 
 		// Get the label text from the XML element, defaulting to the element name.
 		$title = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
-		$title = $this->translateLabel ? \JText::_($title) : $title;
+		$title = $this->translateLabel ? Text::_($title) : $title;
 
 		return $title;
 	}
@@ -927,7 +931,7 @@ abstract class FormField
 	 */
 	public function getControlGroup()
 	{
-		\JLog::add('FormField->getControlGroup() is deprecated use FormField->renderField().', \JLog::WARNING, 'deprecated');
+		\Log::add('FormField->getControlGroup() is deprecated use FormField->renderField().', \Log::WARNING, 'deprecated');
 
 		return $this->renderField();
 	}
@@ -1004,11 +1008,11 @@ abstract class FormField
 	{
 		// Label preprocess
 		$label = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
-		$label = $this->translateLabel ? \JText::_($label) : $label;
+		$label = $this->translateLabel ? Text::_($label) : $label;
 
 		// Description preprocess
 		$description = !empty($this->description) ? $this->description : null;
-		$description = !empty($description) && $this->translateDescription ? \JText::_($description) : $description;
+		$description = !empty($description) && $this->translateDescription ? Text::_($description) : $description;
 
 		$alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname);
 
@@ -1021,7 +1025,7 @@ abstract class FormField
 			'field'          => $this,
 			'group'          => $this->group,
 			'hidden'         => $this->hidden,
-			'hint'           => $this->translateHint ? \JText::alt($this->hint, $alt) : $this->hint,
+			'hint'           => $this->translateHint ? Text::alt($this->hint, $alt) : $this->hint,
 			'id'             => $this->id,
 			'label'          => $label,
 			'labelclass'     => $this->labelclass,

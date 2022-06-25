@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filter\InputFilter;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -69,7 +71,7 @@ class PlgFabrik_ListListcsv extends PlgFabrik_List
 	public function onImportCSVRow()
 	{
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $params->get('listcsv_import_php_file');
 		$file = $filter->clean($file, 'CMD');
 
@@ -104,7 +106,7 @@ class PlgFabrik_ListListcsv extends PlgFabrik_List
 	public function onAfterImportCSVRow($args)
 	{
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $params->get('listcsv_after_import_php_file');
 		$file = $filter->clean($file, 'CMD');
 
@@ -139,7 +141,7 @@ class PlgFabrik_ListListcsv extends PlgFabrik_List
 	public function onCompleteImportCSV()
 	{
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $params->get('listcsv_import_complete_php_file');
 		$file = $filter->clean($file, 'CMD');
 
@@ -174,7 +176,7 @@ class PlgFabrik_ListListcsv extends PlgFabrik_List
 	public function onStartImportCSV()
 	{
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $params->get('listcsv_import_start_php_file');
 		$file = $filter->clean($file, 'CMD');
 
@@ -213,7 +215,7 @@ class PlgFabrik_ListListcsv extends PlgFabrik_List
 	{
 		$listModel = $this->getModel();
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $params->get('listcsv_export_php_file');
 		$file = $filter->clean($file, 'CMD');
 
@@ -253,7 +255,7 @@ class PlgFabrik_ListListcsv extends PlgFabrik_List
 	{
 		$listModel = $this->getModel();
 		$params = $this->getParams();
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$file = $params->get('listcsv_export_headings_php_file');
 		$file = $filter->clean($file, 'CMD');
 

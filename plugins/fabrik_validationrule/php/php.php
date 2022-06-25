@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Plugin\PluginHelper;
 use \Joomla\Registry\Registry;
 
 // Require the abstract plugin class
@@ -123,7 +124,7 @@ class PlgFabrik_ValidationrulePhp extends PlgFabrik_Validationrule
 	 */
 	public function iconImage()
 	{
-		$plugin = JPluginHelper::getPlugin('fabrik_validationrule', $this->pluginName);
+		$plugin = PluginHelper::getPlugin('fabrik_validationrule', $this->pluginName);
 		$globalParams = new Registry($plugin->params);
 		$default = $globalParams->get('icon', 'star');
 		$params = $this->getParams();

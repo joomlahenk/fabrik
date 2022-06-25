@@ -12,8 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="fabrik-form" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="fabrik-form" class="form-validate">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -49,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 					<input type="hidden" name="cid[]" value="<?php echo $element->id?>" />
 				</td>
 				<td>
-					<?php echo JHtml::_('grid.id', $i, $element->id, false, 'elementIds'); ?>
+					<?php echo HTMLHelper::_('grid.id', $i, $element->id, false, 'elementIds'); ?>
 				</td>
 				<td>
 					<?php echo $element->name; ?>

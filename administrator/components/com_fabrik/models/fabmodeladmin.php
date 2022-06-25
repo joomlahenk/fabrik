@@ -14,6 +14,11 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modeladmin');
 
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -23,7 +28,7 @@ use Joomla\Utilities\ArrayHelper;
  * @subpackage  Fabrik
  * @since       3.0
  */
-abstract class FabModelAdmin extends JModelAdmin
+abstract class FabModelAdmin extends AdminModel
 {
 	/**
 	 * @var JApplicationCMS
@@ -31,7 +36,7 @@ abstract class FabModelAdmin extends JModelAdmin
 	protected $app;
 
 	/**
-	 * @var JUser
+	 * @var User
 	 */
 	protected $user;
 
@@ -41,7 +46,7 @@ abstract class FabModelAdmin extends JModelAdmin
 	protected $config;
 
 	/**
-	 * @var JSession
+	 * @var Session
 	 */
 	protected $session;
 
@@ -67,18 +72,18 @@ abstract class FabModelAdmin extends JModelAdmin
 	 *
 	 * @param   array $config An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   12.2
 	 */
 	public function __construct($config = array())
 	{
-		$this->app           = ArrayHelper::getValue($config, 'app', JFactory::getApplication());
-		$this->user          = ArrayHelper::getValue($config, 'user', JFactory::getUser());
-		$this->config        = ArrayHelper::getValue($config, 'config', JFactory::getConfig());
-		$this->session       = ArrayHelper::getValue($config, 'session', JFactory::getSession());
-		$this->db            = ArrayHelper::getValue($config, 'db', JFactory::getDbo());
+		$this->app           = ArrayHelper::getValue($config, 'app', Factory::getApplication());
+		$this->user          = ArrayHelper::getValue($config, 'user', Factory::getUser());
+		$this->config        = ArrayHelper::getValue($config, 'config', Factory::getConfig());
+		$this->session       = ArrayHelper::getValue($config, 'session', Factory::getSession());
+		$this->db            = ArrayHelper::getValue($config, 'db', Factory::getDbo());
 		$this->pluginManager = ArrayHelper::getValue($config, 'pluginManager',
-			JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel'));
+			Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel'));
 		parent::__construct($config);
 	}
 

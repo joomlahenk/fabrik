@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -20,7 +24,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  Fabrik.list.email
  * @since       3.0
  */
-class FabrikControllerListemail extends JControllerLegacy
+class FabrikControllerListemail extends BaseController
 {
 	/**
 	 * Path of uploaded file
@@ -50,9 +54,9 @@ class FabrikControllerListemail extends JControllerLegacy
 	 */
 	public function popupwin()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewName = 'popupwin';
 		$viewType = $document->getType();
 
@@ -65,7 +69,7 @@ class FabrikControllerListemail extends JControllerLegacy
 		$formModel = $listModel->getFormModel();
 
 		// Push a model into the view
-		$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
+		$pluginManager = BaseDatabaseModel::getInstance('Pluginmanager', 'FabrikFEModel');
 		$model = $pluginManager->getPlugIn('email', 'list');
 
 		$model->formModel = $formModel;
@@ -89,9 +93,9 @@ class FabrikControllerListemail extends JControllerLegacy
 	 */
 	public function doemail()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
-		$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
+		$pluginManager = BaseDatabaseModel::getInstance('Pluginmanager', 'FabrikFEModel');
 		$model = $pluginManager->getPlugIn('email', 'list');
 		$listModel = $this->getModel('List', 'FabrikFEModel');
 		$listModel->setId($input->getInt('id'));

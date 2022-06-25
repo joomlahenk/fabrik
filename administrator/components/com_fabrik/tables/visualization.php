@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
 use \Joomla\Registry\Registry;
 
 /**
@@ -20,7 +21,7 @@ use \Joomla\Registry\Registry;
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikTableVisualization extends JTable
+class FabrikTableVisualization extends Table
 {
 	/**
 	 * Constructor
@@ -33,11 +34,11 @@ class FabrikTableVisualization extends JTable
 	}
 
 	/**
-	 * Method to bind an associative array or object to the JTable instance.This
+	 * Method to bind an associative array or object to the Table instance.This
 	 * method only binds properties that are publicly accessible and optionally
 	 * takes an array of properties to ignore when binding.
 	 *
-	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $src     An associative array or object to bind to the Table instance.
 	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  boolean  True on success.

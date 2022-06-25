@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use \Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.controller');
@@ -23,7 +26,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  Fabrik
  * @since       3.4
  */
-class FabrikControllerOai extends JControllerLegacy
+class FabrikControllerOai extends BaseController
 {
 	/**
 	 * Display the view
@@ -31,7 +34,7 @@ class FabrikControllerOai extends JControllerLegacy
 	 * @param   boolean $cachable  If true, the view output will be cached - NOTE not actually used to control
 	 *                             caching!!!
 	 * @param   array   $urlparams An array of safe url parameters and their variable types, for valid values see
-	 *                             {@link JFilterInput::clean()}.
+	 *                             {@link InputFilter::clean()}.
 	 *
 	 * @throws Exception
 	 * @return  JController|void  A JController object to support chaining.
@@ -39,9 +42,9 @@ class FabrikControllerOai extends JControllerLegacy
 
 	public function display($cachable = false, $urlparams = array())
 	{
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 		$doc->setMimeEncoding('application/xml');
-		$this->app   = JFactory::getApplication();
+		$this->app   = Factory::getApplication();
 		$this->input = $this->app->input;
 		$verb        = strtolower($this->input->get('verb'));
 
@@ -113,7 +116,7 @@ class FabrikControllerOai extends JControllerLegacy
 		list($listId, $rowId) = $this->model->getListRowIdFromIdentifier($identifier);
 
 		/** @var FabrikFEModelList $listModel */
-		$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$formId = $listModel->getFormModel()->getId();
 		$url .= '&formid=' . $formId . '&rowid=' . $rowId;

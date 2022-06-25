@@ -12,6 +12,9 @@ namespace Joomla\CMS\Document\Renderer\Html;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Document\HtmlDocument;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Document\DocumentRenderer;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Uri\Uri;
@@ -43,7 +46,7 @@ class HeadRenderer extends DocumentRenderer
 	/**
 	 * Generates the head HTML and return the results as a string
 	 *
-	 * @param   JDocumentHtml  $document  The document for which the head will be created
+	 * @param   HtmlDocument  $document  The document for which the head will be created
 	 *
 	 * @return  string  The head hTML
 	 *
@@ -61,11 +64,11 @@ class HeadRenderer extends DocumentRenderer
 
 		if ($document->getScriptOptions())
 		{
-			\JHtml::_('behavior.core');
+			\HTMLHelper::_('behavior.core');
 		}
 
 		// Trigger the onBeforeCompileHead event
-		$app = \JFactory::getApplication();
+		$app = \Factory::getApplication();
 		$app->triggerEvent('onBeforeCompileHead');
 
 		// Get line endings

@@ -11,10 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
  * Plugin List Field class for Fabrik.
@@ -57,7 +61,7 @@ class JFormFieldPluginList extends JFormFieldList
 			return self::$cache[$cacheKey];
 		}
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($key . ' AS value, element AS text');
@@ -70,7 +74,7 @@ class JFormFieldPluginList extends JFormFieldList
 		// Get the options.
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
-		array_unshift($options, JHtml::_('select.option', '', FText::_('COM_FABRIK_PLEASE_SELECT')));
+		array_unshift($options, HTMLHelper::_('select.option', '', FText::_('COM_FABRIK_PLEASE_SELECT')));
 		self::$cache[$cacheKey] = $options;
 
 		return $options;

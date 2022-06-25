@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -42,7 +45,7 @@ class FabrikControllerVisualizationcalendar extends FabrikControllerVisualizatio
 	public function getEvents()
 	{
 		$input  = $this->input;
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$model  = $this->getModel('calendar');
 		$id     = $input->getInt('id', $config->get('visualizationid', $input->getInt('visualizationid', 0)));
 		$model->setId($id);
@@ -78,7 +81,7 @@ class FabrikControllerVisualizationcalendar extends FabrikControllerVisualizatio
 		$input       = $this->input;
 		$listId      = $input->getInt('listid');
 		$viewName    = 'calendar';
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model       = $this->getModel($viewName);
 		$id          = $input->getInt('visualizationid', $usersConfig->get('visualizationid', 0));
 		$model->setId($id);
@@ -96,7 +99,7 @@ class FabrikControllerVisualizationcalendar extends FabrikControllerVisualizatio
 
 		$dateField = FabrikString::safeColNameToArrayKey($dateField);
 		$rowId     = $input->getString('rowid', '');
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$table = $listModel->getTable();
 		$input->set('view', 'form');

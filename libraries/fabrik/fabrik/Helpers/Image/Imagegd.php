@@ -10,9 +10,12 @@ namespace Fabrik\Helpers\Image;
 
 defined('_JEXEC') or die('Restricted access');
 
-use \JHtml;
-use \JFactory;
-use \JFile;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
+use \HTMLHelper;
+use \Factory;
+use \File;
 use \Error;
 use \Fabrik\Helpers\StringHelper;
 
@@ -101,7 +104,7 @@ class Imagegd extends Image
 	 */
 	protected function imageCreateFrom($source)
 	{
-		$ext = StringHelper::strtolower(JFile::getExt($source));
+		$ext = StringHelper::strtolower(File::getExt($source));
 
 		switch ($ext)
 		{
@@ -130,7 +133,7 @@ class Imagegd extends Image
 	 */
 	public function imageToFile($destCropFile, $image)
 	{
-		$ext = StringHelper::strtolower(JFile::getExt($destCropFile));
+		$ext = StringHelper::strtolower(File::getExt($destCropFile));
 		ob_start();
 
 		switch ($ext)
@@ -170,7 +173,7 @@ class Imagegd extends Image
 		}
 
 		$source = $this->imageCreateFrom($source);
-		$app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Rotates the image
 		$rotate = imagerotate($source, $degrees, 0);

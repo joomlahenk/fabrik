@@ -9,6 +9,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -126,7 +127,7 @@ class PlgFabrik_FormNotification extends PlgFabrik_Form
 	protected function process($add, $why)
 	{
 		$params = $this->getParams();
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = (int) $user->get('id');
 		$ref = $this->getRef();
 		$db = FabrikWorker::getDbo();
@@ -208,7 +209,7 @@ class PlgFabrik_FormNotification extends PlgFabrik_Form
 
 		if ($params->get('send_mode', 0) == 0)
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			return $user->get('id') == 0 ? false : true;
 		}
@@ -259,7 +260,7 @@ class PlgFabrik_FormNotification extends PlgFabrik_Form
 		$date = $db->q($this->date->toSql());
 		$ref = $this->getRef();
 		$msg = $notify ? FText::_('PLG_CRON_NOTIFICATION_ADDED') : FText::_('PLG_CRON_NOTIFICATION_REMOVED');
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$app->enqueueMessage($msg);
 		$query = $db->getQuery(true);
 		$fields = array('reference = ' . $ref, 'event = ' . $event, 'date_time = ' . $date);

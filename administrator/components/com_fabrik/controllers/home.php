@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\AdminController;
+
 jimport('joomla.application.component.controlleradmin');
 
 /**
@@ -20,7 +22,7 @@ jimport('joomla.application.component.controlleradmin');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikAdminControllerHome extends JControllerAdmin
+class FabrikAdminControllerHome extends AdminController
 {
 	/**
 	 * Delete all data from fabrik

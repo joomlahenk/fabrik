@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +23,7 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik_skeleton
  * @since       3.0
  */
-class SkeletonViewPackage extends JViewLegacy
+class SkeletonViewPackage extends HtmlView
 {
 	/**
 	 * Display

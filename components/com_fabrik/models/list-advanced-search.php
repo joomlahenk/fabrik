@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.model');
@@ -341,7 +342,7 @@ class FabrikFEModelAdvancedSearch extends FabModel
 
 		// Defines if we are in a module or in the component.
 		$url .= '&amp;scope=' . $this->app->scope;
-		$url .= '&amp;tkn=' . JSession::getFormToken();
+		$url .= '&amp;tkn=' . Session::getFormToken();
 
 		return $url;
 	}

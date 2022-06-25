@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -48,7 +50,7 @@ class PlgFabrik_ElementLink extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
 		$listModel = $this->getlistModel();
@@ -123,16 +125,16 @@ class PlgFabrik_ElementLink extends PlgFabrik_Element
 			$lbl = trim($data['label']);
 			$href = $w->parseMessageForPlaceHolder(urldecode($href), ArrayHelper::fromObject($thisRow));
 
-			if (JString::strtolower($href) == 'http://' || JString::strtolower($href) == 'https://')
+			if (StringHelper::strtolower($href) == 'http://' || StringHelper::strtolower($href) == 'https://')
 			{
 				// Treat some default values as empty
 				$href = '';
 			}
 			else if (strlen($href) > 0 && substr($href, 0, 1) != "/"
-				&& substr(JString::strtolower($href), 0, 7) != 'http://'
-				&& substr(JString::strtolower($href), 0, 8) != 'https://'
-				&& substr(JString::strtolower($href), 0, 6) != 'ftp://'
-				&& substr(JString::strtolower($href), 0, 7) != 'mailto:'
+				&& substr(StringHelper::strtolower($href), 0, 7) != 'http://'
+				&& substr(StringHelper::strtolower($href), 0, 8) != 'https://'
+				&& substr(StringHelper::strtolower($href), 0, 6) != 'ftp://'
+				&& substr(StringHelper::strtolower($href), 0, 7) != 'mailto:'
 			)
 			{
 				$href = 'http://' . $href;

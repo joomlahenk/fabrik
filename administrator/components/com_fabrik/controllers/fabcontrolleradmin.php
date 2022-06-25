@@ -1,6 +1,6 @@
 <?php
 /**
- * Extends JControllerAdmin allowing for confirmation of removal of
+ * Extends AdminController allowing for confirmation of removal of
  * items, along with call to model to perform additional
  * @package     Joomla.Administrator
  * @subpackage  Fabrik
@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\AdminController;
+
 jimport('joomla.application.component.controlleradmin');
 
 /**
@@ -21,7 +23,7 @@ jimport('joomla.application.component.controlleradmin');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabControllerAdmin extends JControllerAdmin
+class FabControllerAdmin extends AdminController
 {
 	/**
 	 * Component name

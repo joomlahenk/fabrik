@@ -10,6 +10,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+
 /**
  * Abstract Form Field class for the Joomla Framework.
  *
@@ -17,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Form
  * @since       11.1
  */
-abstract class JFormField
+abstract class FormField
 {
 	/**
 	 * The description text for the form field.  Usually used in tooltips.
@@ -36,7 +39,7 @@ abstract class JFormField
 	protected $element;
 
 	/**
-	 * The JForm object of the form attached to the form field.
+	 * The Form object of the form attached to the form field.
 	 *
 	 * @var    object
 	 * @since  11.1
@@ -44,7 +47,7 @@ abstract class JFormField
 	protected $form;
 
 	/**
-	 * The form control prefix for field names from the JForm object attached to the form field.
+	 * The form control prefix for field names from the Form object attached to the form field.
 	 *
 	 * @var    string
 	 * @since  11.1
@@ -195,7 +198,7 @@ abstract class JFormField
 	public function __construct($form = null)
 	{
 		// If there is a form passed into the constructor set the form and form control properties.
-		if ($form instanceof JForm)
+		if ($form instanceof Form)
 		{
 			$this->form = $form;
 			$this->formControl = $form->getFormControl();
@@ -260,15 +263,15 @@ abstract class JFormField
 	}
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
-	 * @param   object  $form  The JForm object to attach to the form field.
+	 * @param   object  $form  The Form object to attach to the form field.
 	 *
 	 * @return  object  The form field object so that the method can be used in a chain.
 	 *
 	 * @since   11.1
 	 */
-	public function setForm(JForm $form)
+	public function setForm(Form $form)
 	{
 		$this->form = $form;
 		$this->formControl = $form->getFormControl();
@@ -277,7 +280,7 @@ abstract class JFormField
 	}
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
 	 * @param   object  &$element  The JXMLElement object representing the <field /> tag for the
 	 *                             form field object.
@@ -293,7 +296,7 @@ abstract class JFormField
 	 */
 	public function setup(&$element, $value, $group = null)
 	{
-		// Make sure there is a valid JFormField XML element.
+		// Make sure there is a valid FormField XML element.
 		if (!($element instanceof JXMLElement) || (string) $element->getName() != 'field')
 		{
 			return false;
@@ -442,7 +445,7 @@ abstract class JFormField
 			$repeatCounter = empty($this->form->repeatCounter) ? 0 : $this->form->repeatCounter;
 			$id .= '-' . $repeatCounter;
 
-			if (get_class($this) === 'JFormFieldRadio')
+			if (get_class($this) === 'FormFieldRadio')
 			{
 				$id .= '-';
 			}

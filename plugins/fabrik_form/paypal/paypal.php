@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -38,7 +43,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
         $formModel  = $this->getModel();
         $input      = $this->app->input;
         $this->data = $this->getProcessData();
-        JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+        Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 
         if (!$this->shouldProcess('paypal_conditon', null, $params))
         {
@@ -49,7 +54,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
 
         // don't use previously cached user, for example juser plugin may have created and autologged in
         //$userId = $this->user->get('id');
-        $userId = JFactory::getUser()->get('id');
+        $userId = Factory::getUser()->get('id');
         $ipn    = $this->getIPNHandler($params);
 
         if ($ipn !== false)
@@ -171,7 +176,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
         // $$$ rob add in subscription variables
         if ($this->isSubscription($params))
         {
-            $subTable = JModelLegacy::getInstance('List', 'FabrikFEModel');
+            $subTable = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
             $subTable->setId((int) $params->get('paypal_subs_table'));
 
             $idEl          = FabrikString::safeColName($params->get('paypal_subs_id', ''));
@@ -197,7 +202,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
                 $opts['no_note'] = 1;
                 $opts['custom']  = '';
 
-                $filter = JFilterInput::getInstance();
+                $filter = InputFilter::getInstance();
                 $post   = $filter->clean($_POST, 'array');
                 $tmp    = array_merge($post, ArrayHelper::fromObject($sub));
 
@@ -549,10 +554,10 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
         $input  = $this->app->input;
         $formId = $input->getInt('formid');
         $rowId  = $input->getString('rowid', '', 'string');
-        JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+        BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
 
         /** @var FabrikFEModelForm $formModel */
-        $formModel = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+        $formModel = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
         $formModel->setId($formId);
         $params = $formModel->getParams();
 
@@ -566,7 +571,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
             $row       = $listModel->getRow($rowId);
             $retMsg    = $w->parseMessageForPlaceHolder($retMsg, $row);
 
-            if (JString::stristr($retMsg, '[show_all]'))
+            if (StringHelper::stristr($retMsg, '[show_all]'))
             {
                 $all_data = array();
 
@@ -603,8 +608,8 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
         //header('HTTP/1.1 200 OK');
 
         $input = $this->app->input;
-        $mail  = JFactory::getMailer();
-        JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+        $mail  = Factory::getMailer();
+        Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
         $this->doLog('fabrik.ipn.start', json_encode($_REQUEST));
 
         // Lets try to load in the custom returned value so we can load up the form and its parameters
@@ -612,10 +617,10 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
         list($formId, $rowId, $ipnValue) = explode(":", $custom);
 
         // Pretty sure they are added but double add
-        JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models');
+        BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models');
 
         /** @var FabrikFEModelForm $formModel */
-        $formModel = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+        $formModel = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
         $formModel->setId($formId);
         $listModel = $formModel->getlistModel();
         $params    = $formModel->getParams();
@@ -690,7 +695,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
         $header .= "Connection: close\r\n";
         $header .= "User-Agent: Fabrik Joomla Plugin\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: " . JString::strlen($req) . "\r\n\r\n";
+        $header .= "Content-Length: " . StringHelper::strlen($req) . "\r\n\r\n";
 
         // Assign posted variables to local variables
         $item_name        = $input->get('item_name', '', 'string');
@@ -743,7 +748,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
                      * check that payment_amount/payment_currency are correct
                      * process payment
                      */
-                    if (JString::strcmp($tres, "VERIFIED") === 0)
+                    if (StringHelper::strcmp($tres, "VERIFIED") === 0)
                     {
                         $status = 'ok';
 
@@ -907,7 +912,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
                             }
                         }
                     }
-                    elseif (JString::strcmp($tres, "INVALID") === 0)
+                    elseif (StringHelper::strcmp($tres, "INVALID") === 0)
                     {
                         $status = 'form.paypal.ipnfailure.invalid';
                         $errMsg = 'paypal postback failed with INVALID';
@@ -1006,7 +1011,7 @@ class PlgFabrik_FormPaypal extends PlgFabrik_Form
             $php_file = FArrayHelper::getValue($php_file, $renderOrder, $php_file);
         }
 
-        $f        = JFilterInput::getInstance();
+        $f        = InputFilter::getInstance();
         $php_file = $f->clean($php_file, 'CMD');
         $php_file = empty($php_file) ? '' : 'plugins/fabrik_form/paypal/scripts/' . $php_file;
 

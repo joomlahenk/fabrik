@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -20,6 +22,6 @@ jimport('joomla.application.component.model');
  * @since       3.0
  * @deprecated  Not used
  */
-class FabrikFEModelFormGroup extends JModelLegacy
+class FabrikFEModelFormGroup extends BaseDatabaseModel
 {
 }

@@ -9,6 +9,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
@@ -84,7 +86,7 @@ class PlgFabrik_ElementAttending extends PlgFabrik_Element
 
 		foreach ($attending as &$attend)
 		{
-			$attend->user = JFactory::getUser($attend->user_id);
+			$attend->user = Factory::getUser($attend->user_id);
 		}
 
 		return $attending;
@@ -106,7 +108,7 @@ class PlgFabrik_ElementAttending extends PlgFabrik_Element
 		$this->createRatingTable();
 		$db        = FabrikWorker::getDbo(true);
 		$tzoffset  = $this->config->get('offset');
-		$date      = JFactory::getDate('now', $tzoffset);
+		$date      = Factory::getDate('now', $tzoffset);
 		$strDate   = $db->q($date->toSql());
 		$userid    = $this->user->get('id');
 		$elementid = (int) $this->getElement()->id;

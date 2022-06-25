@@ -1,6 +1,6 @@
 <?php
 /**
- * JHtml element helper
+ * HTMLHelper element helper
  *
  * @package     Joomla.Administrator
  * @subpackage  Fabrik
@@ -12,8 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
- * JHtml element helper
+ * HTMLHelper element helper
  *
  * @package  Fabrik
  * @since    3.0

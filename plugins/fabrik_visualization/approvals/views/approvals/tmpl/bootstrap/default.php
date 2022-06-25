@@ -11,10 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 //@TODO if we ever get calendars inside packages then the ids will need to be
 // Replaced with classes contained within a distinct id
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $package = $app->getUserState('com_fabrik.package', 'fabrik');
 $row = $this->row;
 ?>

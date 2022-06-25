@@ -11,10 +11,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Helper\ModuleHelper;
+
 require_once dirname(__FILE__) . '/helper.php';
 
 $buttons   = modFabrik_QuickIconHelper::getButtons($params);
 $lists     = modFabrik_QuickIconHelper::listIcons();
 $menuLinks = $params->get('show_menu_links', 1);
 
-require JModuleHelper::getLayoutPath('mod_fabrik_quickicon', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_fabrik_quickicon', $params->get('layout', 'default'));

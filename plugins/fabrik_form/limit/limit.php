@@ -9,6 +9,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -76,7 +79,7 @@ class PlgFabrik_FormLimit extends PlgFabrik_Form
 
 		if ($c >= $limit)
 		{
-			$msg = $params->get('limit_reached_message', JText::sprintf('PLG_FORM_LIMIT_LIMIT_REACHED', $limit));
+			$msg = $params->get('limit_reached_message', Text::sprintf('PLG_FORM_LIMIT_LIMIT_REACHED', $limit));
 			$msg = str_replace('{limit}', $limit, $msg);
 			$this->app->enqueueMessage(FText::_($msg), 'notice');
 
@@ -86,7 +89,7 @@ class PlgFabrik_FormLimit extends PlgFabrik_Form
 		{
 			if ($params->get('show_limit_message', true))
 			{
-				$this->app->enqueueMessage(JText::sprintf('PLG_FORM_LIMIT_ENTRIES_LEFT_MESSAGE', $limit - $c, $limit));
+				$this->app->enqueueMessage(Text::sprintf('PLG_FORM_LIMIT_ENTRIES_LEFT_MESSAGE', $limit - $c, $limit));
 			}
 		}
 
@@ -189,7 +192,7 @@ class PlgFabrik_FormLimit extends PlgFabrik_Form
 	{
 		$params = $this->getParams();
 		$listId = (int) $params->get('limit_table');
-		$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$dbTable = $listModel->getTable()->db_table_name;
 		$db = $listModel->getDb();

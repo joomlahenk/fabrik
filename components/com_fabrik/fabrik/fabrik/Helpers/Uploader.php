@@ -13,9 +13,13 @@ namespace Fabrik\Helpers;
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-use JFactory;
-use JFile;
-use JFolder;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Factory;
+use File;
+use Folder;
 use Joomla\Registry\Registry;
 use RuntimeException;
 
@@ -26,7 +30,7 @@ use RuntimeException;
  * @subpackage  Fabrik
  * @since       3.0
  */
-class Uploader extends \JObject
+class Uploader extends \CMSObject
 {
 	/**
 	 * Form model
@@ -122,9 +126,9 @@ class Uploader extends \JObject
 
 	public function _makeRecursiveFolders($folderPath, $mode = 0755)
 	{
-		if (!JFolder::exists($folderPath))
+		if (!Folder::exists($folderPath))
 		{
-			if (!JFolder::create($folderPath, $mode))
+			if (!Folder::create($folderPath, $mode))
 			{
 				throw new RuntimeException("Could not make dir $folderPath ");
 			}
@@ -186,7 +190,7 @@ class Uploader extends \JObject
 		}
 
 		jimport('joomla.filesystem.file');
-		$format = StringHelper::strtolower(JFile::getExt($file['name']));
+		$format = StringHelper::strtolower(File::getExt($file['name']));
 		$allowable = explode(',', StringHelper::strtolower($params->get('ul_file_types')));
 		$format = StringHelper::ltrimword($format, '.');
 		$format2 = ".$format";
@@ -208,7 +212,7 @@ class Uploader extends \JObject
 		}
 
 		$ignored = array();
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$imginfo = null;
 
 		if ($params->get('restrict_uploads', 1))

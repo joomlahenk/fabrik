@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -147,7 +148,7 @@ class PlgFabrik_ListRadius_lookup extends PlgFabrik_List
 
 	protected function getSearchLatLon()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$baseContext = $this->getSessionContext();
 		$latitude = $app->getUserStateFromRequest($baseContext . 'lat' . $this->renderOrder, 'radius_search_lat' . $this->renderOrder);
 		$longitude = $app->getUserStateFromRequest($baseContext . 'lon' . $this->renderOrder, 'radius_search_lon' . $this->renderOrder);
@@ -168,7 +169,7 @@ class PlgFabrik_ListRadius_lookup extends PlgFabrik_List
 		/** @var FabrikFEModelList $model */
 		$model = $this->getModel();
 		$key = $this->onGetFilterKey();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$lookUps = $app->input->get('radius_lookup' . $this->renderOrder, array(), 'array');
 		$active = in_array('1', $lookUps);
 

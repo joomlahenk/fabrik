@@ -10,8 +10,11 @@ namespace Fabrik\Helpers\Image;
 
 defined('_JEXEC') or die('Restricted access');
 
-use \JHtml;
-use \JFactory;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
+use \HTMLHelper;
+use \Factory;
 use \RuntimeException;
 use \Fabrik\Helpers\StringHelper;
 
@@ -39,7 +42,7 @@ class Imagegd2 extends Imagegd
 	 */
 	public function resize($maxWidth, $maxHeight, $origFile, $destFile, $quality = 100)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Check if the file exists
 		if (!$this->storage->exists($origFile))
@@ -135,7 +138,7 @@ class Imagegd2 extends Imagegd
 		}
 
 		/* save the file
-		 * write them out to output buffer first so that we can use JFile to write them
+		 * write them out to output buffer first so that we can use File to write them
 		 to the server (potential using J ftp layer)  */
 		if ($header == "image/jpeg")
 		{

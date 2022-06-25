@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +25,7 @@ jimport('joomla.application.component.view');
  * @since       3.0
  */
 
-class FabrikViewCalendar extends JViewLegacy
+class FabrikViewCalendar extends HtmlView
 {
 	/**
 	 * Display the view
@@ -34,9 +38,9 @@ class FabrikViewCalendar extends JViewLegacy
 	public function display($tmpl = 'default')
 	{
 		$model = $this->getModel();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model->setId($input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0))));
 
 		if (!$model->canView())

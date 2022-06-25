@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 use ReCaptcha\ReCaptcha;
 
 require_once JPATH_ROOT . '/plugins/fabrik_element/captcha/vendor/autoload.php';
@@ -41,7 +45,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 
 		while ($i < $characters)
 		{
-			$code .= JString::substr($possible, mt_rand(0, JString::strlen($possible) - 1), 1);
+			$code .= StringHelper::substr($possible, mt_rand(0, StringHelper::strlen($possible) - 1), 1);
 			$i++;
 		}
 
@@ -164,7 +168,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 
 		//$str = '<script type="text/javascript" src="' . $server . '/js/recaptcha_ajax.js"></script> ';
 		$str      = '  <div id="' . $id . '"></div> ';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript($server . '/js/recaptcha_ajax.js');
 		FabrikHelperHTML::addScriptDeclaration(
 			'window.addEvent("fabrik.loaded", function() {
@@ -221,7 +225,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 
 			// $$$tom added lang & theme options
 			$theme = $params->get('recaptcha_theme', 'red');
-			$lang  = FabrikWorker::replaceWithLanguageTags(JString::strtolower($params->get('recaptcha_lang', 'en')));
+			$lang  = FabrikWorker::replaceWithLanguageTags(StringHelper::strtolower($params->get('recaptcha_lang', 'en')));
 			$error = null;
 
 			if ($this->user->get('id') != 0 && $params->get('captcha-showloggedin', 0) == false)
@@ -230,7 +234,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 			}
 			else
 			{
-				$browser = JBrowser::getInstance();
+				$browser = Browser::getInstance();
 				$ssl     = $browser->isSSLConnection();
 
 				return $this->fabrik_recaptcha_get_html($id, $publickey, $theme, $lang, $error, $ssl);
@@ -243,7 +247,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 			$displayData->id       = $id;
 			$displayData->name     = $name;
 			$displayData->site_key = $params->get('recaptcha_publickey');
-			$displayData->lang     = FabrikWorker::replaceWithLanguageTags(JString::strtolower($params->get('recaptcha_lang', 'en')));
+			$displayData->lang     = FabrikWorker::replaceWithLanguageTags(StringHelper::strtolower($params->get('recaptcha_lang', 'en')));
 
 			return $layout->render($displayData);
 		}
@@ -254,7 +258,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 			$displayData->id       = $id;
 			$displayData->name     = $name;
 			$displayData->site_key = $params->get('recaptcha_publickey');
-			$displayData->lang     = FabrikWorker::replaceWithLanguageTags(JString::strtolower($params->get('recaptcha_lang', 'en')));
+			$displayData->lang     = FabrikWorker::replaceWithLanguageTags(StringHelper::strtolower($params->get('recaptcha_lang', 'en')));
 
 			return $layout->render($displayData);
 		}
@@ -417,7 +421,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 	}
 
 	/**
-	 * Get validation error - run through JText
+	 * Get validation error - run through Text
 	 *
 	 * @return  string
 	 */
@@ -515,7 +519,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 
 		for ($i = 0; $i < 3; $i++)
 		{
-			if (JString::strlen($rgb[$i]) == 1)
+			if (StringHelper::strlen($rgb[$i]) == 1)
 			{
 				$rgb[$i] .= $rgb[$i];
 			}
@@ -632,7 +636,7 @@ class PlgFabrik_ElementCaptcha extends PlgFabrik_Element
 		// http://fabrikar.com/forums/showthread.php?t=26941&page=5
 		if (version_compare(PHP_VERSION, '5.3.0') < 0)
 		{
-			header('Content-Length: ' . JString::strlen($img));
+			header('Content-Length: ' . StringHelper::strlen($img));
 		}
 
 		imagedestroy($image);

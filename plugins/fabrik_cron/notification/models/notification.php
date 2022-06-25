@@ -10,6 +10,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.model');
@@ -38,7 +42,7 @@ class FabrikModelNotification extends FabModel
 			$rows = $this->getRows();
 		}
 
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 
 		foreach ($rows as &$row)
 		{
@@ -50,14 +54,14 @@ class FabrikModelNotification extends FabModel
 
 			$listModel->setId($listId);
 			$data = $listModel->getRow($rowId);
-			$row->url = JRoute::_('index.php?option=com_fabrik&view=details&listid=' . $listId . '&formid=' . $formId . '&rowid=' . $rowId);
+			$row->url = Route::_('index.php?option=com_fabrik&view=details&listid=' . $listId . '&formid=' . $formId . '&rowid=' . $rowId);
 			$row->title = $row->url;
 
 			foreach ($data as $key => $value)
 			{
 				$key = explode('___', $key);
 				$key = array_pop($key);
-				$k = JString::strtolower($key);
+				$k = StringHelper::strtolower($key);
 
 				if ($k == 'title')
 				{
@@ -115,7 +119,7 @@ class FabrikModelNotification extends FabModel
 	 */
 	public function loadLang()
 	{
-		$client = JApplicationHelper::getClientInfo(0);
+		$client = ApplicationHelper::getClientInfo(0);
 		$langFile = 'plg_fabrik_cron_notification';
 		$langPath = $client->path . '/plugins/fabrik_cron/notification';
 

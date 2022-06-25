@@ -11,6 +11,21 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Fabrik\Helpers\LayoutFile;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
@@ -304,7 +319,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	public function __construct(&$subject, $config = array())
 	{
 		parent::__construct($subject, $config);
-		$this->validator = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('ElementValidator', 'FabrikFEModel');
+		$this->validator = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('ElementValidator', 'FabrikFEModel');
 		$this->validator->setElementModel($this);
 		$this->access = new stdClass;
 	}
@@ -367,7 +382,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	{
 		if (!$this->element || $force)
 		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+			Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 			$row = FabTable::getInstance('Element', 'FabrikTable');
 			$row->load($this->id);
 			$this->element = $row;
@@ -422,7 +437,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	{
 		if (!$this->element)
 		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+			Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 			$this->element = FabTable::getInstance('Element', 'FabrikTable');
 		}
 
@@ -486,7 +501,7 @@ class PlgFabrik_Element extends FabrikPlugin
 
 		if (is_null($this->group) || $this->group->getId() != $groupId)
 		{
-			$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+			$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 			$model->setId($groupId);
 			$model->getGroup();
 			$this->group = $model;
@@ -544,7 +559,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		{
 			$listModel  = $this->getListModel();
 			$table      = $listModel->getTable();
-			$this->form = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+			$this->form = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 			$this->form->setId($table->form_id);
 			$this->form->getForm();
 		}
@@ -1203,7 +1218,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	}
 
 	/**
-	 * Get validation error - run through JText
+	 * Get validation error - run through Text
 	 *
 	 * @return  string
 	 */
@@ -2148,7 +2163,7 @@ class PlgFabrik_Element extends FabrikPlugin
 			$rule->name = $name;
 		}
 
-		$groupModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+		$groupModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 		$groupModel->setId($groupId);
 		$groupListModel = $groupModel->getListModel();
 
@@ -2171,7 +2186,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		$params->parent_linked = 1;
 		$rule->params          = json_encode($params);
 		$rule->parent_id       = $id;
-		$config                = JComponentHelper::getParams('com_fabrik');
+		$config                = ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('unpublish_clones', false))
 		{
@@ -2565,7 +2580,7 @@ class PlgFabrik_Element extends FabrikPlugin
 			if (strstr($customLink, '{slug}') && array_key_exists('slug', $data))
 			{
 				$slug       = str_replace(':', '-', $data['slug']);
-				$slug       = JApplicationHelper::stringURLSafe($slug);
+				$slug       = ApplicationHelper::stringURLSafe($slug);
 				$customLink = str_replace('{slug}', $slug, $customLink);
 			}
 
@@ -2677,7 +2692,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	/**
 	 * Helper method to build an input field
 	 *
-	 * @deprecated use JLayouts instead
+	 * @deprecated use LayoutInterfaces instead
 	 *
 	 * @param   string $node     Input type default 'input'
 	 * @param   array  $bits     Input property => value
@@ -3075,7 +3090,7 @@ class PlgFabrik_Element extends FabrikPlugin
 						$jsStr .= $jsControllerKey . ".addElementFX('$triggerid', '$jsAct->js_e_event');\n";
 						self::$fxAdded[$key] = true;
 
-						$f                 = JFilterInput::getInstance();
+						$f                 = InputFilter::getInstance();
 						$post              = $f->clean($_POST, 'array');
 						$jsAct->js_e_value = $w->parseMessageForPlaceHolder(htmlspecialchars_decode($jsAct->js_e_value), $post);
 
@@ -3182,7 +3197,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		//$elName = $this->getFilterFullName();
 		$elName = $this->getFullName(true, false);
 		$elid   = $this->getElement()->id;
-		$f      = JFilterInput::getInstance();
+		$f      = InputFilter::getInstance();
 		$data   = $f->clean($_REQUEST, 'array');
 
 		// See if the data is in the request array - can use tablename___elementname=filterval in query string
@@ -3525,7 +3540,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 *
 	 * @since 3.0.7
 	 *
-	 * @return  string  Checkbox filter JLayout HTML
+	 * @return  string  Checkbox filter LayoutInterface HTML
 	 */
 	protected function checkboxFilter($rows, $default, $v)
 	{
@@ -3553,7 +3568,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		if ($res === '')
 		{
 			//$basePath = COM_FABRIK_FRONTEND . '/layouts/';
-			//$layout   = new JLayoutFile('list.filter.fabrik-filter-checkbox', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
+			//$layout   = new FileLayout('list.filter.fabrik-filter-checkbox', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
 			//$layout = $this->getLayout('list.filter.fabrik-filter-checkbox');
 			$layout = $this->getListModel()->getLayout('list.filter.fabrik-filter-checkbox');
 			$res      = $layout->render($displayData);
@@ -3729,7 +3744,7 @@ class PlgFabrik_Element extends FabrikPlugin
 				[value] => ["1"]
 		)
 		and converts them into
-		[0] => JObject Object
+		[0] => CMSObject Object
 		(
 				[_errors:protected] => Array
 				(
@@ -4029,7 +4044,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 */
 	protected function getFilterBuildMethod()
 	{
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$params      = $this->getParams();
 		$filterBuild = $params->get('filter_build_method', 0);
 
@@ -4096,7 +4111,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	protected function filterValueList_Exact($normal, $tableName = '', $label = '', $id = '', $incJoin = true)
 	{
 		$listModel = $this->getListModel();
-		$fbConfig  = JComponentHelper::getParams('com_fabrik');
+		$fbConfig  = ComponentHelper::getParams('com_fabrik');
 		$fabrikDb  = $listModel->getDb();
 		$table     = $listModel->getTable();
 		$element   = $this->getElement();
@@ -5934,7 +5949,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		$p   = $this->getElement()->plugin;
 		$src = 'plugins/fabrik_element/' . $p . '/list-' . $p . '.js';
 
-		if (JFile::exists(JPATH_SITE . '/' . $src))
+		if (File::exists(JPATH_SITE . '/' . $src))
 		{
 			$className = 'Fb' . ucfirst($p) .'List';
 			$srcs[$className] = $src;
@@ -5952,7 +5967,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 */
 	public function beforeSave(&$row)
 	{
-		$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+		$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
 		$post           = $safeHtmlFilter->clean($_POST, 'array');
 		$post           = $post['jform'];
 		$dbjoinEl       = (is_subclass_of($this, 'PlgFabrik_ElementDatabasejoin') || get_class($this) == 'PlgFabrik_ElementDatabasejoin');
@@ -6095,7 +6110,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	public function ajax_loadTableFields()
 	{
 		$db             = FabrikWorker::getDbo();
-		$listModel      = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$listModel      = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$input          = $this->app->input;
 		$this->_cnnId   = $input->getInt('cid', 0);
 		$tbl            = $db->qn($input->get('table'));
@@ -6128,7 +6143,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	public function getFieldDescription()
 	{
 		$element = $this->getPluginName();
-		$plugin  = JPluginHelper::getPlugin('fabrik_element', $element);
+		$plugin  = PluginHelper::getPlugin('fabrik_element', $element);
 		$fParams = new Registry($plugin->params);
 		$p       = $this->getParams();
 
@@ -6242,7 +6257,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: parent: start: {$this->element->name}") : null;
 
         $params    = $this->getParams();
@@ -6302,7 +6317,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 */
 	protected function renderListDataFinal($data, $opts)
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListDataFinal: parent: start: {$this->element->name}") : null;
 
         if (is_array($data))
@@ -6353,7 +6368,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		if ($res === '')
 		{
 			$basePath = COM_FABRIK_FRONTEND . '/layouts/';
-			$layout   = new JLayoutFile('fabrik-element-list', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
+			$layout   = new FileLayout('fabrik-element-list', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
 			$res      = $layout->render($displayData);
 		}
 
@@ -6422,7 +6437,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		}
 
 		$basePath                        = COM_FABRIK_BASE . '/components/com_fabrik/layouts/element';
-		$layout                          = new JLayoutFile('fabrik-element-addoptions', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
+		$layout                          = new FileLayout('fabrik-element-addoptions', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
 		$displayData                     = new stdClass;
 		$displayData->id                 = $this->getHTMLId($repeatCounter);
 		$displayData->add_image          = FabrikHelperHTML::image('plus', 'form', @$this->tmpl, array('alt' => FText::_('COM_FABRIK_ADD')));
@@ -6696,7 +6711,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	{
 		$input   = $this->app->input;
 		$rDir    = $input->getString('dir');
-		$folders = JFolder::folders($rDir);
+		$folders = Folder::folders($rDir);
 
 		if ($folders === false)
 		{
@@ -6876,7 +6891,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		$this->loadMeForAjax();
 
 		// Check for request forgeries
-		if ($formModel->spoofCheck() && !JSession::checkToken('request'))
+		if ($formModel->spoofCheck() && !Session::checkToken('request'))
 		{
 			$o->error = FText::_('JERROR_ALERTNOAUTHOR');
 			echo json_encode($o);
@@ -7269,7 +7284,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	{
 		if (is_null($this->joinModel))
 		{
-			$this->joinModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Join', 'FabrikFEModel');
+			$this->joinModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Join', 'FabrikFEModel');
 
 			// $$$ rob ensure we load the join by asking for the parents id, but then ensure we set the element id back to this elements id
 			$this->joinModel->getJoinFromKey('element_id', $this->getParent()->id);
@@ -7457,11 +7472,11 @@ class PlgFabrik_Element extends FabrikPlugin
 	protected function loadMeForAjax()
 	{
 		$input      = $this->app->input;
-		$this->form = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$this->form = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$formId     = $input->getInt('formid');
 		$this->form->setId($formId);
 		$this->setId($input->getInt('element_id'));
-		$this->list = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$this->list = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$this->list->loadFromFormId($formId);
 		$table          = $this->list->getTable(true);
 		$table->form_id = $formId;
@@ -8040,7 +8055,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 */
 	public function getAdvancedSelectClass()
 	{
-		$fbConfig       = JComponentHelper::getParams('com_fabrik');
+		$fbConfig       = ComponentHelper::getParams('com_fabrik');
 		$params         = $this->getParams();
 		$advancedClass  = '';
 		$globalAdvanced = (int) $fbConfig->get('advanced_behavior', '0');
@@ -8054,7 +8069,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	}
 
 	/**
-	 * Get the element's JLayout file
+	 * Get the element's LayoutInterface file
 	 * Its actually an instance of LayoutFile which inverses the ordering added include paths.
 	 * In LayoutFile the addedPath takes precedence over the default paths, which makes more sense!
 	 *
@@ -8090,7 +8105,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	}
 
 	/**
-	 * Get the JLayout base path for the plugin's layout files.
+	 * Get the LayoutInterface base path for the plugin's layout files.
 	 *
 	 * @return string
 	 */
@@ -8133,10 +8148,10 @@ class PlgFabrik_Element extends FabrikPlugin
 	{
 		if (!is_null($path))
 		{
-			JFormHelper::addRulePath($path);
+			FormHelper::addRulePath($path);
 		}
 
-		$rule = JFormHelper::loadRuleType($type, true);
+		$rule = FormHelper::loadRuleType($type, true);
 		$xml  = new SimpleXMLElement('<xml></xml>');
 		$this->lang->load('com_users');
 
@@ -8196,11 +8211,11 @@ class PlgFabrik_Element extends FabrikPlugin
 	}
 
 	/**
-	 * Add any jsJLayout templates to Fabrik.jLayouts js object.
+	 * Add any jsLayoutInterface templates to Fabrik.jLayouts js object.
 	 *
 	 * @return void
 	 */
-	public function jsJLayouts()
+	public function jsLayoutInterfaces()
 	{
 	}
 

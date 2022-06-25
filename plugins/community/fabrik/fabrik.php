@@ -9,6 +9,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 require_once( JPATH_ROOT .'/components/com_community/libraries/core.php');
 
 class plgCommunityFabrik extends CApplications
@@ -28,7 +31,7 @@ class plgCommunityFabrik extends CApplications
 		$uri		= JURI::base();
 		//$user		= CFactory::getActiveProfile();
 		$user		= CFactory::getRequestUser();
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 		$css		= $uri	.'plugins/community/groups/style.css';
 		$document->addStyleSheet($css);
 
@@ -41,7 +44,7 @@ class plgCommunityFabrik extends CApplications
 		$element = $this->params->get('fabrik_element');
 
 		if( !empty($view) && !empty($id) ) {
-			$cache = JFactory::getCache('plgCommunityFabrik');
+			$cache = Factory::getCache('plgCommunityFabrik');
 			$cache->setCaching($this->params->get('cache', 1));
 			$className = 'plgCommunityFabrik';
 			$callback = array($className, '_getFabrikHTML');
@@ -49,7 +52,7 @@ class plgCommunityFabrik extends CApplications
 			$content = $cache->call($callback, $view, $id, $rowid, $usekey, $layout, $element, $additional, $this->userparams, $user->id);
 		}else{
 			$content = "<div class=\"icon-nopost\"><img src='".JURI::base()."components/com_community/assets/error.gif' alt=\"\" /></div>";
-			$content .= "<div class=\"content-nopost\">".JText::_('Fabrik view details not set.')."</div>";
+			$content .= "<div class=\"content-nopost\">".Text::_('Fabrik view details not set.')."</div>";
 		}
 
 		return $content;

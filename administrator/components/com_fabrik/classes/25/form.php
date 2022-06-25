@@ -23,6 +23,19 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\FormRule;
+use Joomla\CMS\Form\Rule\UrlRule;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\Utilities\ArrayHelper;
+
 jimport('joomla.filesystem.path');
 jimport('joomla.utilities.arrayhelper');
 
@@ -39,10 +52,10 @@ jimport('joomla.utilities.arrayhelper');
  * @link        http://www.w3.org/TR/html5/forms.html
  * @since       11.1
  */
-class JForm
+class Form
 {
 	/**
-	 * The JRegistry data store for form fields during display.
+	 * The Registry data store for form fields during display.
 	 * @var    object
 	 * @since  11.1
 	 */
@@ -101,8 +114,8 @@ class JForm
 		// Set the name for the form.
 		$this->name = $name;
 
-		// Initialise the JRegistry data.
-		$this->data = new JRegistry;
+		// Initialise the Registry data.
+		$this->data = new Registry;
 
 		// Set the options if specified.
 		$this->options['control'] = isset($options['control']) ? $options['control'] : false;
@@ -119,7 +132,7 @@ class JForm
 	 */
 	public function bind($data)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
@@ -134,14 +147,14 @@ class JForm
 		// Convert the input to an array.
 		if (is_object($data))
 		{
-			if ($data instanceof JRegistry)
+			if ($data instanceof Registry)
 			{
-				// Handle a JRegistry.
+				// Handle a Registry.
 				$data = $data->toArray();
 			}
-			elseif ($data instanceof JObject)
+			elseif ($data instanceof CMSObject)
 			{
-				// Handle a JObject.
+				// Handle a CMSObject.
 				$data = $data->getProperties();
 			}
 			else
@@ -159,7 +172,7 @@ class JForm
 				// If the field exists set the value.
 				$this->data->set($k, $v);
 			}
-			elseif (is_object($v) || JArrayHelper::isAssociative($v))
+			elseif (is_object($v) || ArrayHelper::isAssociative($v))
 			{
 				// If the value is an object or an associative array hand it off to the recursive bind level method.
 				$this->bindLevel($k, $v);
@@ -192,7 +205,7 @@ class JForm
 				// If the field exists set the value.
 				$this->data->set($group . '.' . $k, $v);
 			}
-			elseif (is_object($v) || JArrayHelper::isAssociative($v))
+			elseif (is_object($v) || ArrayHelper::isAssociative($v))
 			{
 				// If the value is an object or an associative array, hand it off to the recursive bind level method
 				$this->bindLevel($group . '.' . $k, $v);
@@ -212,15 +225,15 @@ class JForm
 	 */
 	public function filter($data, $group = null)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
 		}
 
 		// Initialise variables.
-		$input = new JRegistry($data);
-		$output = new JRegistry;
+		$input = new Registry($data);
+		$output = new Registry;
 
 		// Get the fields for which to filter the data.
 		$fields = $this->findFieldsByGroup($group);
@@ -277,19 +290,19 @@ class JForm
 	}
 
 	/**
-	 * Method to get a form field represented as a JFormField object.
+	 * Method to get a form field represented as a FormField object.
 	 *
 	 * @param   string  $name   The name of the form field.
 	 * @param   string  $group  The optional dot-separated form group path on which to find the field.
 	 * @param   mixed   $value  The optional value to use as the default for the field.
 	 *
-	 * @return  mixed  The JFormField object for the field or boolean false on error.
+	 * @return  mixed  The FormField object for the field or boolean false on error.
 	 *
 	 * @since   11.1
 	 */
 	public function getField($name, $group = null, $value = null)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
@@ -322,7 +335,7 @@ class JForm
 	 */
 	public function getFieldAttribute($name, $attribute, $default = null, $group = null)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			// TODO: throw exception.
@@ -346,12 +359,12 @@ class JForm
 	}
 
 	/**
-	 * Method to get an array of JFormField objects in a given fieldset by name.  If no name is
+	 * Method to get an array of FormField objects in a given fieldset by name.  If no name is
 	 * given then all fields are returned.
 	 *
 	 * @param   string  $set  The optional name of the fieldset.
 	 *
-	 * @return  array  The array of JFormField objects in the fieldset.
+	 * @return  array  The array of FormField objects in the fieldset.
 	 *
 	 * @since   11.1
 	 */
@@ -410,7 +423,7 @@ class JForm
 		$fieldsets = array();
 		$sets = array();
 
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return $fieldsets;
@@ -514,13 +527,13 @@ class JForm
 	}
 
 	/**
-	 * Method to get an array of JFormField objects in a given field group by name.
+	 * Method to get an array of FormField objects in a given field group by name.
 	 *
 	 * @param   string   $group   The dot-separated form group path for which to get the form fields.
 	 * @param   boolean  $nested  True to also include fields in nested groups that are inside of the
 	 * group for which to find fields.
 	 *
-	 * @return  array    The array of JFormField objects in the field group.
+	 * @return  array    The array of FormField objects in the field group.
 	 *
 	 * @since   11.1
 	 */
@@ -666,7 +679,7 @@ class JForm
 		// Attempt to load the XML if a string.
 		if (is_string($data))
 		{
-			$data = JFactory::getXML($data, false);
+			$data = Factory::getXML($data, false);
 
 			// Make sure the XML loaded correctly.
 			if (!$data)
@@ -776,8 +789,8 @@ class JForm
 		// Check to see if the path is an absolute path.
 		if (!is_file($file))
 		{
-			// Not an absolute path so let's attempt to find one using JPath.
-			$file = JPath::find(self::addFormPath(), strtolower($file) . '.xml');
+			// Not an absolute path so let's attempt to find one using Path.
+			$file = Path::find(self::addFormPath(), strtolower($file) . '.xml');
 
 			// If unable to find the file return false.
 			if (!$file)
@@ -786,7 +799,7 @@ class JForm
 			}
 		}
 		// Attempt to load the XML file.
-		$xml = JFactory::getXML($file, true);
+		$xml = Factory::getXML($file, true);
 
 		return $this->load($xml, $reset, $xpath);
 	}
@@ -803,7 +816,7 @@ class JForm
 	 */
 	public function removeField($name, $group = null)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			// TODO: throw exception.
@@ -834,7 +847,7 @@ class JForm
 	 */
 	public function removeGroup($group)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			// TODO: throw exception.
@@ -865,7 +878,7 @@ class JForm
 	public function reset($xml = false)
 	{
 		unset($this->data);
-		$this->data = new JRegistry;
+		$this->data = new Registry;
 
 		if ($xml)
 		{
@@ -891,7 +904,7 @@ class JForm
 	 */
 	public function setField(&$element, $group = null, $replace = true)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			// TODO: throw exception.
@@ -961,7 +974,7 @@ class JForm
 	 */
 	public function setFieldAttribute($name, $attribute, $value, $group = null)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			// TODO: throw exception.
@@ -1004,7 +1017,7 @@ class JForm
 	 */
 	public function setFields(&$elements, $group = null, $replace = true)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			// TODO: throw exception.
@@ -1076,8 +1089,8 @@ class JForm
 	/**
 	 * Method to validate form data.
 	 *
-	 * Validation warnings will be pushed into JForm::errors and should be
-	 * retrieved with JForm::getErrors() when validate returns boolean false.
+	 * Validation warnings will be pushed into Form::errors and should be
+	 * retrieved with Form::getErrors() when validate returns boolean false.
 	 *
 	 * @param   array   $data   An array of field values to validate.
 	 * @param   string  $group  The optional dot-separated form group path on which to filter the
@@ -1089,7 +1102,7 @@ class JForm
 	 */
 	public function validate($data, $group = null)
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
@@ -1099,7 +1112,7 @@ class JForm
 		$return = true;
 
 		// Create an input registry object from the data to validate.
-		$input = new JRegistry($data);
+		$input = new Registry($data);
 
 		// Get the fields for which to validate the data.
 		$fields = $this->findFieldsByGroup($group);
@@ -1221,13 +1234,13 @@ class JForm
 
 				$value = is_array($value) ? $value : array($value);
 
-				JArrayHelper::toInteger($value);
+				ArrayHelper::toInteger($value);
 				$return = $value;
 				break;
 
 			// Filter safe HTML.
 			case 'SAFEHTML':
-				$return = JFilterInput::getInstance(null, null, 1, 1)->clean($value, 'string');
+				$return = InputFilter::getInstance(null, null, 1, 1)->clean($value, 'string');
 				break;
 
 			// Convert a date to UTC based on the server timezone offset.
@@ -1235,10 +1248,10 @@ class JForm
 				if (intval($value) > 0)
 				{
 					// Get the server timezone setting.
-					$offset = JFactory::getConfig()->get('offset');
+					$offset = Factory::getConfig()->get('offset');
 
 					// Return an SQL formatted datetime string in UTC.
-					$return = JFactory::getDate($value, $offset)->toSql();
+					$return = Factory::getDate($value, $offset)->toSql();
 				}
 				else
 				{
@@ -1251,10 +1264,10 @@ class JForm
 				if (intval($value) > 0)
 				{
 					// Get the user timezone setting defaulting to the server timezone setting.
-					$offset = JFactory::getUser()->getParam('timezone', JFactory::getConfig()->get('offset'));
+					$offset = Factory::getUser()->getParam('timezone', Factory::getConfig()->get('offset'));
 
 					// Return a MySQL formatted datetime string in UTC.
-					$return = JFactory::getDate($value, $offset)->toSql();
+					$return = Factory::getDate($value, $offset)->toSql();
 				}
 				else
 				{
@@ -1263,7 +1276,7 @@ class JForm
 				break;
 
 			// Ensures a protocol is present in the saved field. Only use when
-			// the only permitted protocols requre '://'. See JFormRuleUrl for list of these.
+			// the only permitted protocols requre '://'. See UrlRule for list of these.
 
 			case 'URL':
 				if (empty($value))
@@ -1271,7 +1284,7 @@ class JForm
 					return;
 				}
 
-				$value = JFilterInput::getInstance()->clean($value, 'html');
+				$value = InputFilter::getInstance()->clean($value, 'html');
 				$value = trim($value);
 
 				// Check for a protocol
@@ -1402,10 +1415,10 @@ class JForm
 				{
 					$return = call_user_func($filter, $value);
 				}
-				// Filter using JFilterInput. All HTML code is filtered by default.
+				// Filter using InputFilter. All HTML code is filtered by default.
 				else
 				{
-					$return = JFilterInput::getInstance()->clean($value, $filter);
+					$return = InputFilter::getInstance()->clean($value, $filter);
 				}
 				break;
 		}
@@ -1429,7 +1442,7 @@ class JForm
 		$element = false;
 		$fields = array();
 
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
@@ -1520,7 +1533,7 @@ class JForm
 		// Initialise variables.
 		$false = false;
 
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return $false;
@@ -1558,7 +1571,7 @@ class JForm
 		$false = false;
 		$fields = array();
 
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return $false;
@@ -1632,7 +1645,7 @@ class JForm
 		$groups = array();
 		$tmp = array();
 
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return $false;
@@ -1700,13 +1713,13 @@ class JForm
 	}
 
 	/**
-	 * Method to load, setup and return a JFormField object based on field data.
+	 * Method to load, setup and return a FormField object based on field data.
 	 *
 	 * @param   string  $element  The XML element object representation of the form field.
 	 * @param   string  $group    The optional dot-separated form group path on which to find the field.
 	 * @param   mixed   $value    The optional value to use as the default for the field.
 	 *
-	 * @return  mixed  The JFormField object for the field or boolean false on error.
+	 * @return  mixed  The FormField object for the field or boolean false on error.
 	 *
 	 * @since   11.1
 	 */
@@ -1721,7 +1734,7 @@ class JForm
 		// Get the field type.
 		$type = $element['type'] ? (string) $element['type'] : 'text';
 
-		// Load the JFormField object for the field.
+		// Load the FormField object for the field.
 		$field = $this->loadFieldType($type);
 
 		// If the object could not be loaded, get a text field object.
@@ -1742,7 +1755,7 @@ class JForm
 
 			if (($translate = $element['translate_default']) && ((string) $translate == 'true' || (string) $translate == '1'))
 			{
-				$lang = JFactory::getLanguage();
+				$lang = Factory::getLanguage();
 
 				if ($lang->hasKey($default))
 				{
@@ -1759,7 +1772,7 @@ class JForm
 			$value = $this->getValue((string) $element['name'], $group, $default);
 		}
 
-		// Setup the JFormField object.
+		// Setup the FormField object.
 		$field->setForm($this);
 
 		if ($field->setup($element, $value, $group))
@@ -1773,34 +1786,34 @@ class JForm
 	}
 
 	/**
-	 * Proxy for {@link JFormHelper::loadFieldType()}.
+	 * Proxy for {@link FormHelper::loadFieldType()}.
 	 *
 	 * @param   string  $type  The field type.
 	 * @param   bool    $new   Flag to toggle whether we should get a new instance of the object.
 	 *
-	 * @return  mixed  JFormField object on success, false otherwise.
+	 * @return  mixed  FormField object on success, false otherwise.
 	 *
 	 * @since   11.1
 	 */
 	protected function loadFieldType($type, $new = true)
 	{
-		return JFormHelper::loadFieldType($type, $new);
+		return FormHelper::loadFieldType($type, $new);
 	}
 
 	/**
-	 * Proxy for JFormHelper::loadRuleType().
+	 * Proxy for FormHelper::loadRuleType().
 	 *
 	 * @param   string  $type  The rule type.
 	 * @param   bool    $new   Flag to toggle whether we should get a new instance of the object.
 	 *
-	 * @return  mixed  JFormRule object on success, false otherwise.
+	 * @return  mixed  FormRule object on success, false otherwise.
 	 *
-	 * @see     JFormHelper::loadRuleType()
+	 * @see     FormHelper::loadRuleType()
 	 * @since   11.1
 	 */
 	protected function loadRuleType($type, $new = true)
 	{
-		return JFormHelper::loadRuleType($type, $new);
+		return FormHelper::loadRuleType($type, $new);
 	}
 
 	/**
@@ -1813,7 +1826,7 @@ class JForm
 	 */
 	protected function syncPaths()
 	{
-		// Make sure there is a valid JForm XML document.
+		// Make sure there is a valid Form XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
@@ -1856,12 +1869,12 @@ class JForm
 	}
 
 	/**
-	 * Method to validate a JFormField object based on field data.
+	 * Method to validate a FormField object based on field data.
 	 *
 	 * @param   string  $element  The XML element object representation of the form field.
 	 * @param   string  $group    The optional dot-separated form group path on which to find the field.
 	 * @param   mixed   $value    The optional value to use as the default for the field.
-	 * @param   object  $input    An optional JRegistry object with the entire data set to validate
+	 * @param   object  $input    An optional Registry object with the entire data set to validate
 	 * against the entire form.
 	 *
 	 * @return  mixed  Boolean true if field value is valid, JException on failure.
@@ -1903,7 +1916,7 @@ class JForm
 						$message = FText::_($element['name']);
 					}
 
-					$message = JText::sprintf('JLIB_FORM_VALIDATE_FIELD_REQUIRED', $message);
+					$message = Text::sprintf('JLIB_FORM_VALIDATE_FIELD_REQUIRED', $message);
 				}
 
 				return new JException($message, 2, E_WARNING);
@@ -1913,13 +1926,13 @@ class JForm
 		// Get the field validation rule.
 		if ($type = (string) $element['validate'])
 		{
-			// Load the JFormRule object for the field.
+			// Load the FormRule object for the field.
 			$rule = $this->loadRuleType($type);
 
 			// If the object could not be loaded return an error message.
 			if ($rule === false)
 			{
-				return new JException(JText::sprintf('JLIB_FORM_VALIDATE_FIELD_RULE_MISSING', $type), -2, E_ERROR);
+				return new JException(Text::sprintf('JLIB_FORM_VALIDATE_FIELD_RULE_MISSING', $type), -2, E_ERROR);
 			}
 
 			// Run the field validation rule test.
@@ -1944,7 +1957,7 @@ class JForm
 			}
 			else
 			{
-				return new JException(JText::sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', FText::_((string) $element['label'])), 1, E_WARNING);
+				return new JException(Text::sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', FText::_((string) $element['label'])), 1, E_WARNING);
 			}
 		}
 
@@ -1952,7 +1965,7 @@ class JForm
 	}
 
 	/**
-	 * Proxy for {@link JFormHelper::addFieldPath()}.
+	 * Proxy for {@link FormHelper::addFieldPath()}.
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
@@ -1962,37 +1975,37 @@ class JForm
 	 */
 	public static function addFieldPath($new = null)
 	{
-		return JFormHelper::addFieldPath($new);
+		return FormHelper::addFieldPath($new);
 	}
 
 	/**
-	 * Proxy for JFormHelper::addFormPath().
+	 * Proxy for FormHelper::addFormPath().
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
 	 * @return  array  The list of paths that have been added.
 	 *
-	 * @see     JFormHelper::addFormPath()
+	 * @see     FormHelper::addFormPath()
 	 * @since   11.1
 	 */
 	public static function addFormPath($new = null)
 	{
-		return JFormHelper::addFormPath($new);
+		return FormHelper::addFormPath($new);
 	}
 
 	/**
-	 * Proxy for JFormHelper::addRulePath().
+	 * Proxy for FormHelper::addRulePath().
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
 	 * @return  array  The list of paths that have been added.
 	 *
-	 * @see JFormHelper::addRulePath()
+	 * @see FormHelper::addRulePath()
 	 * @since   11.1
 	 */
 	public static function addRulePath($new = null)
 	{
-		return JFormHelper::addRulePath($new);
+		return FormHelper::addRulePath($new);
 	}
 
 	/**
@@ -2005,7 +2018,7 @@ class JForm
 	 * already exists with the same group/name.
 	 * @param   string  $xpath    An optional xpath to search for the fields.
 	 *
-	 * @return  object  JForm instance.
+	 * @return  object  Form instance.
 	 *
 	 * @since   11.1
 	 * @throws  Exception if an error occurs.
@@ -2026,7 +2039,7 @@ class JForm
 			}
 
 			// Instantiate the form.
-			$forms[$name] = new JForm($name, $options);
+			$forms[$name] = new Form($name, $options);
 
 			// Load the data.
 			if (substr(trim($data), 0, 1) == '<')

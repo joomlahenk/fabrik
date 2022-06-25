@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/visualization.php';
@@ -158,7 +160,7 @@ class FabrikModelSlideshow extends FabrikFEModelVisualization
 		{
 			$params = $this->getParams();
 			$listid = $params->get('slideshow_viz_table');
-			$this->listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+			$this->listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 			$this->listModel->setId($listid);
 		}
 

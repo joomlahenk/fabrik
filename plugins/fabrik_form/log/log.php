@@ -9,6 +9,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\Worker;
 
@@ -206,7 +208,7 @@ EOT;
 		$fields = $this->getFields();
 		$mode = $params->get('log_mode', '1');
 		$groupModels = $formModel->getGroupsHiarachy();
-		$date = new \JDate();
+		$date = new \Date();
 		$pks = [];
 		$joinsSeen = [];
 		$changes = [];
@@ -380,7 +382,7 @@ EOT;
 
 			if ($logDelete === '2' && !empty($logId))
 			{
-				$db    = JFactory::getDbo();
+				$db    = Factory::getDbo();
 				$query = $db->getQuery($db);
 
 				foreach ($changes as $change)
@@ -464,7 +466,7 @@ EOT;
 		$mode = $params->get('log_mode', '1');
 		$groups = $formModel->getGroupsHiarachy();
 		$changes = array();
-		$date = new \JDate();
+		$date = new \Date();
 
 		foreach ($groups as $groupModel)
 		{
@@ -641,8 +643,8 @@ EOT;
 	{
 		/** @var FabrikFEModelForm $formModel */
 		$formModel = $this->getModel();
-		$date = new \JDate();
-		$db = JFactory::getDbo();
+		$date = new \Date();
+		$db = Factory::getDbo();
 		$query = $db->getQuery($db);
 
 		$query->insert('#__fabrik_change_log')
@@ -704,7 +706,7 @@ EOT;
 
 			if (!empty($logId))
 			{
-				$db    = JFactory::getDbo();
+				$db    = Factory::getDbo();
 				$query = $db->getQuery($db);
 
 				foreach ($changes as $change)

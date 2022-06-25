@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
 use \Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
 
@@ -24,7 +27,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  Fabrik
  * @since       1.5
  */
-class FabrikControllerPlugin extends JControllerLegacy
+class FabrikControllerPlugin extends BaseController
 {
 	/**
 	 * Id used from content plugin when caching turned on to ensure correct element rendered
@@ -42,7 +45,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 	 */
 	public function pluginAjax()
 	{
-		$app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 		$input  = $app->input;
 		$plugin = $input->get('plugin', '');
 		$method = $input->get('method', '');
@@ -56,7 +59,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 			$pluginManager->loadPlugIn($plugin, $group);
 		} catch (Exception $e)
 		{
-			if (!JPluginHelper::importPlugin('fabrik_' . $group, $plugin))
+			if (!PluginHelper::importPlugin('fabrik_' . $group, $plugin))
 			{
 				$o      = new stdClass;
 				$o->err = 'unable to import plugin fabrik_' . $group . ' ' . $plugin;
@@ -71,10 +74,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 			$method = 'on' . StringHelper::ucfirst($method);
 		}
 
-//		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
-		$dispatcher->triggerEvent($method);
-//		$dispatcher = JFactory::getApplication()->triggerEvent($method);
+		Factory::getApplication()->triggerEvent($method);
 	}
 
 	/**
@@ -86,7 +86,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 	{
 		$db = FabrikWorker::getDbo();
 		require_once COM_FABRIK_FRONTEND . '/user_ajax.php';
-		$app      = JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$input    = $app->input;
 		$method   = $input->get('method', '');
 		$userAjax = new userAjax($db);
@@ -107,7 +107,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 	public function doCron(&$pluginManager)
 	{
 		$db    = FabrikWorker::getDbo();
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$cid   = $input->get('element_id', array(), 'array');
 		$cid   = ArrayHelper::toInteger($cid);
@@ -127,7 +127,7 @@ class FabrikControllerPlugin extends JControllerLegacy
 
 		$db->setQuery($query);
 		$rows      = $db->loadObjectList();
-		$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$c         = 0;
 
 		foreach ($rows as $row)

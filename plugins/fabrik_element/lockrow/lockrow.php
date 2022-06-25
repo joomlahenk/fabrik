@@ -10,6 +10,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -63,7 +64,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 
 			if (!isset($thisUserId))
 			{
-				$this_user  = JFactory::getUser();
+				$this_user  = Factory::getUser();
 				$thisUserId = (int) $this_user->get('id');
 			}
 			else
@@ -85,7 +86,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 			// if user ids are different, it's locked, regardless
 			if ((int) $lockingUserId !== (int) $origLockingUserId || (int)$lockingUserId !== (int)$thisUserId)
 			{
-				$origLockingUser = JFactory::getUser($origLockingUserId);
+				$origLockingUser = Factory::getUser($origLockingUserId);
 				$this->app->enqueueMessage($this->getCustomMsg('PLG_ELEMENT_LOCKROW_SUBMIT_NOT_OWNER_MSG', [$origLockingUser->username, $origLockingUser->name]));
 
 				return true;
@@ -280,7 +281,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 
 	function render($data, $repeatCounter = 0)
 	{
-		$app     = JFactory::getApplication();
+		$app     = Factory::getApplication();
 		$name    = $this->getHTMLName($repeatCounter);
 		$id      = $this->getHTMLId($repeatCounter);
 		$params  = $this->getParams();
@@ -312,11 +313,11 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 		if (!empty($value))
 		{
 			list($time, $lockingUserId) = explode(';', $value);
-			$lockingUser = JFactory::getUser($lockingUserId);
+			$lockingUser = Factory::getUser($lockingUserId);
 			$ttlTime = (int) $time + ($ttl * 60);
 			$timeNow = time();
 
-			$thisUser = JFactory::getUser();
+			$thisUser = Factory::getUser();
 			// $$$ decide what to do about guests
 			$thisUserId = $thisUser->get('id');
 
@@ -397,7 +398,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 			$db          = $listModel->getDb();
 			$query       = $db->getQuery(true);
 
-			$user    = JFactory::getUser();
+			$user    = Factory::getUser();
 			$userId  = $user->get('id');
 			$lockstr = time() . ";" . $userId;
 
@@ -409,7 +410,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 			$db->execute();
 
 			// $$$ @TODO - may need to clean com_content cache as well
-			$cache = JFactory::getCache('com_fabrik');
+			$cache = Factory::getCache('com_fabrik');
 			$cache->clean();
 		}
 
@@ -528,7 +529,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 
 	public function elementListJavascript()
 	{
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		$userId     = $user->get('id');
 		$id         = $this->getHTMLId();
 		$listModel  = $this->getListModel();
@@ -611,7 +612,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 				$db->execute();
 
 				// $$$ @TODO - may need to clean com_content cache as well
-				$cache = JFactory::getCache('com_fabrik');
+				$cache = Factory::getCache('com_fabrik');
 				$cache->clean();
 			}
 			else
@@ -652,7 +653,7 @@ class PlgFabrik_ElementLockrow extends PlgFabrik_Element
 			$db->execute();
 
 			// $$$ @TODO - may need to clean com_content cache as well
-			$cache = JFactory::getCache('com_fabrik');
+			$cache = Factory::getCache('com_fabrik');
 			$cache->clean();
 		}
 		else

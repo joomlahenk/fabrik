@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -19,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @package  Fabrik
  * @since    3.0
  */
-class FabrikControllerImport extends JControllerLegacy
+class FabrikControllerImport extends BaseController
 {
 	/**
 	 * Display the view
@@ -27,21 +31,21 @@ class FabrikControllerImport extends JControllerLegacy
 	 * @param   boolean $cachable  If true, the view output will be cached - NOTE not actually used to control
 	 *                             caching!!!
 	 * @param   array   $urlparams An array of safe url parameters and their variable types, for valid values see
-	 *                             {@link JFilterInput::clean()}.
+	 *                             {@link InputFilter::clean()}.
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
 
 	public function display($cachable = false, $urlparams = array())
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$this->getModel('Importcsv', 'FabrikFEModel')->clearSession();
 		$this->listid = $input->getInt('listid', 0);
 		$listModel    = $this->getModel('list', 'FabrikFEModel');
 		$listModel->setId($this->listid);
 		$this->table = $listModel->getTable();
-		$document    = JFactory::getDocument();
+		$document    = Factory::getDocument();
 		$viewName    = $input->get('view', 'form');
 		$viewType    = $document->getType();
 
@@ -62,7 +66,7 @@ class FabrikControllerImport extends JControllerLegacy
 	 */
 	public function doimport()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 
 		/** @var FabrikFEModelImportcsv $model */
@@ -91,7 +95,7 @@ class FabrikControllerImport extends JControllerLegacy
 		}
 
 		$id       = $listModel->getId();
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewName = $input->get('view', 'form');
 		$viewType = $document->getType();
 

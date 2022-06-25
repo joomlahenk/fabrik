@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -166,7 +171,7 @@ class FabrikFEModelVisualization extends FabModel
             {
                 if (!array_key_exists($id, $this->tables))
                 {
-                    $listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+                    $listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
                     $listModel->setId($id);
                     $listModel->getTable();
                     $this->tables[$id . '-' . $c] = $listModel;
@@ -213,7 +218,7 @@ class FabrikFEModelVisualization extends FabModel
 	public function getFilters()
 	{
 		$params = $this->getParams();
-		$name = JString::strtolower(str_replace('fabrikModel', '', get_class($this)));
+		$name = StringHelper::strtolower(str_replace('fabrikModel', '', get_class($this)));
 		$filters = array();
 		$showFilters = $params->get($name . '_show_filters', array());
 		$listModels = $this->getlistModels();
@@ -301,7 +306,7 @@ class FabrikFEModelVisualization extends FabModel
 					. $table->id . '&amp;nextview=' . $this->app->input->get('view', 'list')
 					. '&scope&amp;=' . $this->app->scope;
 
-				$url .= '&amp;tkn=' . JSession::getFormToken();
+				$url .= '&amp;tkn=' . Session::getFormToken();
 				$links[$table->label] = $url;
 			}
 		}
@@ -402,7 +407,7 @@ class FabrikFEModelVisualization extends FabModel
 		// Limitstart gets added in the pagination model
 		$action = preg_replace("/limitstart" . $this->getState('id') . "}=(.*)?(&|)/", '', $action);
 		$action = FabrikString::rtrimword($action, "&");
-		$this->getFilterFormURL = JRoute::_($action);
+		$this->getFilterFormURL = Route::_($action);
 
 		return $this->getFilterFormURL;
 	}
@@ -650,7 +655,7 @@ class FabrikFEModelVisualization extends FabModel
 
 		foreach ($views as $view)
 		{
-			if (JFile::exists(COM_FABRIK_FRONTEND . '/js/' . $view . '_' . $this->getId() . '.js'))
+			if (File::exists(COM_FABRIK_FRONTEND . '/js/' . $view . '_' . $this->getId() . '.js'))
 			{
 				$scripts[$scriptsKey] = 'components/com_fabrik/js/' . $view . '_' . $this->getId() . '.js';
 			}

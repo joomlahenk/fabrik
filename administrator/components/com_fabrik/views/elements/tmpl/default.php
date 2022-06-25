@@ -12,13 +12,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\Registry\Registry;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('bootstrap.tooltip');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('bootstrap.tooltip');
 //JHTML::_('script', 'system/multiselect.js', false, true);
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
-$user	= JFactory::getUser();
+$user	= Factory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
@@ -33,7 +36,7 @@ window.addEvent('domready', function () {
 	});
 });
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=elements'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_fabrik&view=elements'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo FText::_('JSEARCH_FILTER_LABEL'); ?>:</label>
@@ -48,7 +51,7 @@ window.addEvent('domready', function () {
 			?>
 			<select name="package" class="inputbox" onchange="this.form.submit()">
 				<option value="fabrik"><?php echo FText::_('COM_FABRIK_SELECT_PACKAGE');?></option>
-				<?php echo JHtml::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true);?>
+				<?php echo HTMLHelper::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true);?>
 			</select>
 			<?php
 			endif;
@@ -56,27 +59,27 @@ window.addEvent('domready', function () {
 
 			<select name="filter_form" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('COM_FABRIK_SELECT_FORM');?></option>
-				<?php echo JHtml::_('select.options', $this->formOptions, 'value', 'text', $this->state->get('filter.form'), true);?>
+				<?php echo HTMLHelper::_('select.options', $this->formOptions, 'value', 'text', $this->state->get('filter.form'), true);?>
 			</select>
 
 			<select name="filter_group" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('COM_FABRIK_SELECT_GROUP');?></option>
-				<?php echo JHtml::_('select.options', $this->groupOptions, 'value', 'text', $this->state->get('filter.group'), true);?>
+				<?php echo HTMLHelper::_('select.options', $this->groupOptions, 'value', 'text', $this->state->get('filter.group'), true);?>
 			</select>
 
 			<select name="filter_plugin" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('COM_FABRIK_SELECT_PLUGIN')?></option>
-				<?php echo JHtml::_('select.options', $this->pluginOptions, 'value', 'text', $this->state->get('filter.plugin'), true)?>
+				<?php echo HTMLHelper::_('select.options', $this->pluginOptions, 'value', 'text', $this->state->get('filter.plugin'), true)?>
 			</select>
 
 		<select name="filter_showinlist" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('COM_FABRIK_SELECT_SHOW_IN_LIST');?></option>
-				<?php echo JHtml::_('select.options', $this->showInListOptions, 'value', 'text', $this->state->get('filter.showinlist'), true);?>
+				<?php echo HTMLHelper::_('select.options', $this->showInListOptions, 'value', 'text', $this->state->get('filter.showinlist'), true);?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => false)), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array('archived' => false)), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
 		</div>
@@ -113,9 +116,9 @@ window.addEvent('domready', function () {
 				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'e.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'e.ordering', $listDirn, $listOrder); ?>
+					<?php echo HTMLHelper::_('grid.sort',  'JGRID_HEADING_ORDERING', 'e.ordering', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
-					<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'elements.saveorder'); ?>
+					<?php echo HTMLHelper::_('grid.order',  $this->items, 'filesave.png', 'elements.saveorder'); ?>
 					<?php  endif;
 					?>
 				</th>
@@ -132,7 +135,7 @@ window.addEvent('domready', function () {
 		<?php foreach ($this->items as $i => $item) :
 			$ordering	= ($listOrder == 'e.ordering');
 			$params = new Registry($item->params);
-			$link = JRoute::_('index.php?option=com_fabrik&task=element.edit&id='.(int) $item->id);
+			$link = Route::_('index.php?option=com_fabrik&task=element.edit&id='.(int) $item->id);
 			$canCreate	= $user->authorise('core.create',		'com_fabrik.element.'.$item->group_id);
 			$canEdit	= $user->authorise('core.edit',			'com_fabrik.element.'.$item->group_id);
 			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
@@ -151,7 +154,7 @@ window.addEvent('domready', function () {
 				?>
 					</td>
 					<td><?php echo $item->id; ?></td>
-					<td><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+					<td><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 					<td>
 						<?php
 						if ($item->checked_out && ($item->checked_out != $user->get('id'))) :
@@ -186,10 +189,10 @@ window.addEvent('domready', function () {
 						<?php echo $item->plugin; ?>
 					</td>
 					<td>
-						<?php echo JHtmlGrid::boolean($i, $item->show_in_list_summary, 'elements.showInListView', 'elements.hideFromListView');?>
+						<?php echo HTMLHelperGrid::boolean($i, $item->show_in_list_summary, 'elements.showInListView', 'elements.hideFromListView');?>
 					</td>
 					<td>
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'elements.', $canChange);?>
+						<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'elements.', $canChange);?>
 					</td>
 					<td class="order">
 						<?php if ($saveOrder) :
@@ -226,5 +229,5 @@ window.addEvent('domready', function () {
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

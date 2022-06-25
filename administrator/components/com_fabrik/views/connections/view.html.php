@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +26,7 @@ jimport('joomla.application.component.view');
  * @since       1.6
  */
 
-class FabrikAdminViewConnections extends JViewLegacy
+class FabrikAdminViewConnections extends HtmlView
 {
 	/**
 	 * Connection items
@@ -33,7 +38,7 @@ class FabrikAdminViewConnections extends JViewLegacy
 	/**
 	 * Pagination
 	 *
-	 * @var  JPagination
+	 * @var  Pagination
 	 */
 	protected $pagination;
 
@@ -55,7 +60,7 @@ class FabrikAdminViewConnections extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
@@ -114,7 +119,7 @@ class FabrikAdminViewConnections extends JViewLegacy
 			}
 		}
 
-		if (JFactory::getUser()->authorise('core.manage', 'com_checkin'))
+		if (Factory::getUser()->authorise('core.manage', 'com_checkin'))
 		{
 			JToolBarHelper::custom('connections.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 		}
@@ -141,20 +146,20 @@ class FabrikAdminViewConnections extends JViewLegacy
 //		{
 			JHtmlSidebar::setAction('index.php?option=com_fabrik&view=connections');
 
-			$publishOpts = JHtml::_('jgrid.publishedOptions', array('archived' => false));
+			$publishOpts = HTMLHelper::_('jgrid.publishedOptions', array('archived' => false));
 			JHtmlSidebar::addFilter(
 			FText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_published',
-			JHtml::_('select.options', $publishOpts, 'value', 'text', $this->state->get('filter.published'), true)
+			HTMLHelper::_('select.options', $publishOpts, 'value', 'text', $this->state->get('filter.published'), true)
 			);
 /*
 			if (!empty($this->packageOptions))
 			{
-				array_unshift($this->packageOptions, JHtml::_('select.option', 'fabrik', FText::_('COM_FABRIK_SELECT_PACKAGE')));
+				array_unshift($this->packageOptions, HTMLHelper::_('select.option', 'fabrik', FText::_('COM_FABRIK_SELECT_PACKAGE')));
 				JHtmlSidebar::addFilter(
 				FText::_('JOPTION_SELECT_PUBLISHED'),
 				'package',
-				JHtml::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true)
+				HTMLHelper::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true)
 				);
 			}
 */

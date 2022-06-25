@@ -12,6 +12,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormRule;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
 
@@ -88,7 +96,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 	 * @param   string $prefix A prefix for the table class name. Optional.
 	 * @param   array  $config Configuration array for model. Optional.
 	 *
-	 * @return  JTable  A database object
+	 * @return  Table  A database object
 	 */
 	public function getTable($type = 'Element', $prefix = 'FabrikTable', $config = array())
 	{
@@ -103,7 +111,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  mixed  A Form object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -161,13 +169,11 @@ class FabrikAdminModelElement extends FabModelAdmin
 	public function addToListView(&$pks, $value = 1)
 	{
 		// Initialise variables.
-//		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
 		$item       = $this->getTable();
 		$pks        = (array) $pks;
 
 		// Include the content plugins for the change of state event.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Access checks.
 		foreach ($pks as $i => $pk)
@@ -195,8 +201,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the onContentChangeState event.
-		$result = $dispatcher->triggerEvent($this->event_change_state, array($context, $pks, $value));
-//		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
+		$result = Factory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
 
 		if (in_array(false, $result, true))
 		{
@@ -282,13 +287,13 @@ class FabrikAdminModelElement extends FabModelAdmin
 		$opts->deleteButton = '<a class="btn btn-danger"><i class="icon-delete"></i> ';
 		$opts->deleteButton .= FText::_('COM_FABRIK_DELETE') . '</a>';
 		$opts = json_encode($opts);
-		JText::script('COM_FABRIK_PLEASE_SELECT');
-		JText::script('COM_FABRIK_JS_SELECT_EVENT');
-		JText::script('COM_FABRIK_JS_INLINE_JS_CODE');
-		JText::script('COM_FABRIK_JS_INLINE_COMMENT_WARNING');
-		JText::script('COM_FABRIK_JS_WHEN_ELEMENT');
-		JText::script('COM_FABRIK_JS_IS');
-		JText::script('COM_FABRIK_JS_NO_ACTION');
+		Text::script('COM_FABRIK_PLEASE_SELECT');
+		Text::script('COM_FABRIK_JS_SELECT_EVENT');
+		Text::script('COM_FABRIK_JS_INLINE_JS_CODE');
+		Text::script('COM_FABRIK_JS_INLINE_COMMENT_WARNING');
+		Text::script('COM_FABRIK_JS_WHEN_ELEMENT');
+		Text::script('COM_FABRIK_JS_IS');
+		Text::script('COM_FABRIK_JS_NO_ACTION');
 		$js[] = "window.addEvent('domready', function () {";
 		$js[] = "\tvar opts = $opts;";
 
@@ -320,7 +325,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 		}
 
 		$input->set('view', 'element');
-		JPluginHelper::importPlugin('fabrik_element', $plugin);
+		PluginHelper::importPlugin('fabrik_element', $plugin);
 
 		if ($plugin == '')
 		{
@@ -347,7 +352,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 	/**
 	 * Prepare and sanitise the table data prior to saving.
 	 *
-	 * @param   JTable $table A reference to a JTable object.
+	 * @param   Table $table A reference to a Table object.
 	 *
 	 * @return  void
 	 *
@@ -360,12 +365,12 @@ class FabrikAdminModelElement extends FabModelAdmin
 	/**
 	 * Method to validate the form data.
 	 *
-	 * @param   JForm  $form  The form to validate against.
+	 * @param   Form  $form  The form to validate against.
 	 * @param   array  $data  The data to validate.
 	 * @param   string $group The name of the field group to validate.
 	 *
-	 * @see     JFormRule
-	 * @see     JFilterInput
+	 * @see     FormRule
+	 * @see     InputFilter
 	 *
 	 * @return  mixed  Array of filtered data if valid, false otherwise.
 	 */
@@ -463,7 +468,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 			else
 			{
 				/** @var FabrikFEModelList $joinListModel */
-				$joinListModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+				$joinListModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 				$joinListModel->setId($joinTblId);
 				$joinEls = $joinListModel->getElements();
 
@@ -518,7 +523,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 	 */
 	public function save($data)
 	{
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('fbConf_wysiwyg_label', 0) == 0)
 		{
@@ -597,7 +602,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 			$data['parent_id'] = 0;
 		}
 
-		$dateNow = new JDate;
+		$dateNow = new Date;
 
 		if ($row->id != 0)
 		{
@@ -637,8 +642,8 @@ class FabrikAdminModelElement extends FabModelAdmin
 
 		foreach ($validation_plugins as $plugin)
 		{
-			$plugin_form = $plugin->getJForm();
-			JForm::addFormPath(JPATH_SITE . '/plugins/fabrik_validationrule/' . $plugin->get('pluginName'));
+			$plugin_form = $plugin->getForm();
+			Form::addFormPath(JPATH_SITE . '/plugins/fabrik_validationrule/' . $plugin->get('pluginName'));
 			$xmlFile = JPATH_SITE . '/plugins/fabrik_validationrule/' . $plugin->get('pluginName') . '/forms/fields.xml';
 			$xml     = $plugin->jform->loadFile($xmlFile, false);
 
@@ -780,7 +785,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 		$list          = $elementModel->getListModel()->getTable();
 		$origElid      = $row->id;
 		$tmpgroupModel = $elementModel->getGroup();
-		$config        = JComponentHelper::getParams('com_fabrik');
+		$config        = ComponentHelper::getParams('com_fabrik');
 
 		if ($tmpgroupModel->isJoin())
 		{
@@ -1324,7 +1329,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 	/**
 	 * A protected method to get a set of ordering conditions.
 	 *
-	 * @param   object $table A JTable object.
+	 * @param   object $table A Table object.
 	 *
 	 * @return  array  An array of conditions to add to ordering queries.
 	 *
@@ -1388,8 +1393,8 @@ class FabrikAdminModelElement extends FabModelAdmin
 		$this->aValidations = array();
 
 //		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
-		$ok         = JPluginHelper::importPlugin('fabrik_validationrule');
+		$dispatcher    = Factory::getApplication()->getDispatcher();
+		$ok         = PluginHelper::importPlugin('fabrik_validationrule');
 
 		foreach ($usedPlugins as $usedPlugin)
 		{
@@ -1400,8 +1405,8 @@ class FabrikAdminModelElement extends FabModelAdmin
 				$conf['name']         = StringHelper::strtolower($usedPlugin);
 				$conf['type']         = StringHelper::strtolower('fabrik_Validationrule');
 				$plugIn               = new $class($dispatcher, $conf);
-//				$plugIn               = JFactory::getApplication()->bootPlugin($conf['name'], $conf['type']);
-				$oPlugin              = JPluginHelper::getPlugin('fabrik_validationrule', $usedPlugin);
+//				$plugIn               = Factory::getApplication()->bootPlugin($conf['name'], $conf['type']);
+				$oPlugin              = PluginHelper::getPlugin('fabrik_validationrule', $usedPlugin);
 				$plugIn->elementModel = $elementModel;
 				$this->aValidations[] = $plugIn;
 			}

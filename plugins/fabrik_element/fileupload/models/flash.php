@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+
 /**
  * Fileupload - Plugin element to render Flash files
  *
@@ -62,7 +65,7 @@ class FlashRenderModel extends FabModel
 			return;
 		}
 
-		$fbConfig = JComponentHelper::getParams('com_fabrik');
+		$fbConfig = ComponentHelper::getParams('com_fabrik');
 
 		// Analyse file and store returned data in $ThisFileInfo
 		$relPath = str_replace("\\", "/", JPATH_SITE . $file);
@@ -113,7 +116,7 @@ class FlashRenderModel extends FabModel
 
 				$thumb_path = COM_FABRIK_BASE . $thumb_dir . '/' . $pathinfo['filename'] . '.png';
 
-				if (JFile::exists($thumb_path))
+				if (File::exists($thumb_path))
 				{
 					$thumb_file = COM_FABRIK_LIVESITE . $thumb_dir . '/' . $pathinfo['filename'] . '.png';
 				}

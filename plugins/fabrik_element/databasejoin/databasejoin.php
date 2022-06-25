@@ -11,6 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\String\StringHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -237,7 +245,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 	{
 		if ($this->isJoin())
 		{
-			$fbConfig = JComponentHelper::getParams('com_fabrik');
+			$fbConfig = ComponentHelper::getParams('com_fabrik');
 			$limit    = $fbConfig->get('filter_list_max', 100);
 			$rows     = array_values($this->checkboxRows(null, null, null, null, 0, $limit));
 		}
@@ -415,7 +423,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		if (!$this->getFormModel()->getForm()->record_in_database)
 		{
 			// Db join in form not recording to db
-			$joinModel  = JModelLegacy::getInstance('Join', 'FabrikFEModel');
+			$joinModel  = BaseDatabaseModel::getInstance('Join', 'FabrikFEModel');
 			$this->join = $joinModel->getJoinFromKey('element_id', $element->get('id'));
 
 			return $this->join;
@@ -443,7 +451,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 
 			$config        = array();
 			$config['dbo'] = FabrikWorker::getDbo(true);
-			$this->join    = JTable::getInstance('Join', 'FabrikTable', $config);
+			$this->join    = Table::getInstance('Join', 'FabrikTable', $config);
 
 			if ($this->join->load(array('element_id' => $element->get('id'))))
 			{
@@ -507,7 +515,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 	/**
 	 * Get other joins that point to this element
 	 *
-	 * @param   JTable &$table Table
+	 * @param   Table &$table Table
 	 *
 	 * @deprecated - don't think its used
 	 *
@@ -1103,7 +1111,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 				|| ($mode == 'filter' && $displayType == 'auto-complete')
 			)
 			{
-				$where .= JString::stristr($where, 'WHERE') ? ' AND ' . $this->autocomplete_where : ' WHERE ' . $this->autocomplete_where;
+				$where .= StringHelper::stristr($where, 'WHERE') ? ' AND ' . $this->autocomplete_where : ' WHERE ' . $this->autocomplete_where;
 			}
 		}
 
@@ -1120,7 +1128,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 				$filterWhere         = str_replace($this->orderBy, '', $filterWhere);
 				$filterWhere         = str_replace($matches[0], '', $filterWhere);
 			}
-			//$where .= JString::stristr($where, 'WHERE') ? ' AND ' . $filterWhere : ' WHERE ' . $filterWhere;
+			//$where .= StringHelper::stristr($where, 'WHERE') ? ' AND ' . $filterWhere : ' WHERE ' . $filterWhere;
 			$where .= !empty($where) ? ' AND ' . $filterWhere : ' WHERE ' . $filterWhere;
 		}
 
@@ -1258,7 +1266,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		}
 		else
 		{
-			$this->cn = JModelLegacy::getInstance('Connection', 'FabrikFEModel');
+			$this->cn = BaseDatabaseModel::getInstance('Connection', 'FabrikFEModel');
 			$this->cn->setId($id);
 		}
 
@@ -1454,7 +1462,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 	}
 
 	/**
-	 * Render the front end select / add buttons in a JLayout file
+	 * Render the front end select / add buttons in a LayoutInterface file
 	 *
 	 * @param   array $data row data in case template override wants it
 	 * @param   string  $repeatCounter  repeat count, in case override wants it
@@ -1550,7 +1558,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 					}
 
 					$url               = $popUrl . $value;
-					$defaultLabels[$i] = '<a href="' . JRoute::_($url) . '">' . FArrayHelper::getValue($defaultLabels, $i) . '</a>';
+					$defaultLabels[$i] = '<a href="' . Route::_($url) . '">' . FArrayHelper::getValue($defaultLabels, $i) . '</a>';
 				}
 			}
 		}
@@ -2117,7 +2125,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $groupModel = $this->getGroupModel();
@@ -2457,7 +2465,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		$where .= $preFilterWhere;
 		$sql .= $where;
 
-		if (!JString::stristr($where, 'order by'))
+		if (!StringHelper::stristr($where, 'order by'))
 		{
 			$sql .= $this->getOrderBy('filter');
 		}
@@ -2512,7 +2520,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 					// Check if the 'Joins where and/or order by statement' has an order by
 					$joinWhere = $params->get('database_join_where_sql');
 
-					if (JString::stristr($joinWhere, 'ORDER BY'))
+					if (StringHelper::stristr($joinWhere, 'ORDER BY'))
 					{
 						$joinWhere = str_replace('order by', 'ORDER BY', $joinWhere);
 						$joinWhere = explode('ORDER BY', $joinWhere);
@@ -2525,7 +2533,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 
 					$filterWhere = trim($params->get('database_join_filter_where_sql', ''));
 
-					if (JString::stristr($filterWhere, 'ORDER BY'))
+					if (StringHelper::stristr($filterWhere, 'ORDER BY'))
 					{
 						$filterWhere = str_replace('order by', 'ORDER BY', $filterWhere);
 						$filterWhere = explode('ORDER BY', $filterWhere);
@@ -2568,7 +2576,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 				}
 				else
 				{
-					$order = JString::str_ireplace('ORDER BY', '', $this->orderBy);
+					$order = StringHelper::str_ireplace('ORDER BY', '', $this->orderBy);
 					$query->order($order);
 
 					return $query;
@@ -3026,7 +3034,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 
 		if ($this->getParams()->get('database_join_display_type', 'dropdown') == 'auto-complete')
 		{
-            $usersConfig           = JComponentHelper::getParams('com_fabrik');
+            $usersConfig           = ComponentHelper::getParams('com_fabrik');
             $autoOpts                            = array();
 			$autoOpts['max']                     = $this->getParams()->get(
 			    'dbjoin_autocomplete_rows',
@@ -3059,11 +3067,11 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 	}
 
 	/**
-	 * Add any jsJLayout templates to Fabrik.jLayouts js object.
+	 * Add any jsLayoutInterface templates to Fabrik.jLayouts js object.
 	 *
 	 * @return void
 	 */
-	public function jsJLayouts()
+	public function jsLayoutInterfaces()
 	{
 		$opts = $this->elementJavascriptOpts();
 		$params = $this->getParams();
@@ -3259,7 +3267,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		$this->loadMeForAjax();
 		$this->getElement(true);
 		$params = $this->getParams();
-		$filter  = JFilterInput::getInstance();
+		$filter  = InputFilter::getInstance();
 		$request = $filter->clean($_REQUEST, 'array');
 		$groupModel = $this->getGroupModel();
 
@@ -3837,7 +3845,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		$params    = $this->getParams();
 		$jKey      = $this->getLabelOrConcatVal();
 		$where     = $this->buildQueryWhere(array(), true, $params->get('join_db_name'));
-		$where     = JString::stristr($where, 'order by') ? $where : '';
+		$where     = StringHelper::stristr($where, 'order by') ? $where : '';
 		$dbName    = $this->getDbName();
 		/**
 		 * Use lookup alias rather than directly referencing $dbName

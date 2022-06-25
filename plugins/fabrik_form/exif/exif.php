@@ -9,6 +9,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -46,7 +49,7 @@ class PlgFabrik_FormExif extends PlgFabrik_Form
 	 */
 	protected function exifToNumber($value, $format)
 	{
-		$spos = JString::strpos($value, '/');
+		$spos = StringHelper::strpos($value, '/');
 
 		if ($spos === false)
 		{
@@ -145,7 +148,7 @@ class PlgFabrik_FormExif extends PlgFabrik_Form
 		$this->upload_field = $plugin->getFullName();
 		$file_path = JPATH_SITE . '/' . $data[$this->upload_field];
 
-		if (JFile::exists($file_path))
+		if (File::exists($file_path))
 		{
 			$coords = $this->getCoordinates($file_path);
 

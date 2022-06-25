@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controllerform');
 
 require_once 'fabcontrollerform.php';
@@ -34,7 +36,7 @@ class FabrikAdminControllerContentType extends FabControllerForm
 		$contentType = $this->input->getString('contentType');
 		$listModel = $this->getModel('list');
 		$model = $this->getModel('contenttypeImport', '', array('listModel' => $listModel));
-		$viewType = JFactory::getDocument()->getType();
+		$viewType = Factory::getDocument()->getType();
 		$this->name = 'Fabrik';
 		$this->setPath('view', COM_FABRIK_FRONTEND . '/views');
 		$viewLayout = $this->input->get('layout', 'default');
@@ -43,7 +45,7 @@ class FabrikAdminControllerContentType extends FabControllerForm
 		$view->setLayout($viewLayout);
 
 		/** @var FabrikFEModelForm  $formModel */
-		$formModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$formModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$formModel->groups = $model->loadContentType($contentType)->preview();
 		$view->setModel($formModel, true);
 

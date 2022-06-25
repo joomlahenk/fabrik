@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 require_once 'fabcontrolleradmin.php';
@@ -39,7 +42,7 @@ class FabrikAdminControllerLists extends FabControllerAdmin
 	 * @param   string  $prefix  The class prefix. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  JModelLegacy  The model.
+	 * @return  BaseDatabaseModel  The model.
 	 *
 	 * @since   12.2
 	 */
@@ -113,7 +116,7 @@ class FabrikAdminControllerLists extends FabControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 
 	/**
@@ -124,7 +127,7 @@ class FabrikAdminControllerLists extends FabControllerAdmin
 	public function delete()
 	{
 		$listsModel = $this->getModel('lists');
-		$viewType = JFactory::getDocument()->getType();
+		$viewType = Factory::getDocument()->getType();
 		$view = $this->getView($this->view_item, $viewType);
 		$view->setLayout('confirmdelete');
 

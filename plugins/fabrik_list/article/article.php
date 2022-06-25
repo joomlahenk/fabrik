@@ -11,6 +11,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -88,7 +91,7 @@ class PlgFabrik_ListArticle extends PlgFabrik_List
 		$input = $this->app->input;
 		$ids = $input->get('ids', array(), 'array');
 		$origRowId = $input->get('rowid');
-		$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
+		$pluginManager = BaseDatabaseModel::getInstance('Pluginmanager', 'FabrikFEModel');
 
 		// Abstract version of the form article plugin
 		/** @var PlgFabrik_FormArticle $articlePlugin */
@@ -134,7 +137,7 @@ class PlgFabrik_ListArticle extends PlgFabrik_List
 		$input = $this->app->input;
 		$ids = $input->get('ids', array(), 'array');
 
-		return JText::sprintf('PLG_LIST_ARTICLES_UPDATED', count($ids));
+		return Text::sprintf('PLG_LIST_ARTICLES_UPDATED', count($ids));
 	}
 
 	/**

@@ -11,6 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
 use Fabrik\Helpers\Pdf;
 use Fabrik\Helpers\StringHelper;
 use Joomla\Utilities\ArrayHelper;
@@ -130,7 +138,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 			$url .= '&' . $opts->additionalQS;
 		}
 
-		$opts->popupUrl = JRoute::_($url, false);
+		$opts->popupUrl = Route::_($url, false);
 		$opts               = json_encode($opts);
 		$this->jsInstance   = "new FbListEmail($opts)";
 
@@ -190,7 +198,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 			$tableEmail = $params->get('emailtable_to_table_email');
 			$tableName  = $params->get('emailtable_to_table_name');
 
-			$toTableModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+			$toTableModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 			$toTableModel->setId($table);
 			$toDb = $toTableModel->getDb();
 
@@ -381,7 +389,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 		jimport('joomla.filesystem.file');
 		jimport('joomla.client.helper');
 		$input = $this->app->input;
-		JClientHelper::setCredentialsFromRequest('ftp');
+		ClientHelper::setCredentialsFromRequest('ftp');
 		$files          = $input->files->get('attachment', array());
 		$folder         = JPATH_ROOT . '/images/stories';
 		$this->filepath = array();
@@ -397,7 +405,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 
 			$path = $folder . '/' . strtolower($name);
 
-			if (!JFile::upload($file['tmp_name'], $path))
+			if (!File::upload($file['tmp_name'], $path))
 			{
 				JError::raiseWarning(100, FText::_('PLG_LIST_EMAIL_ERR_CANT_UPLOAD_FILE'));
 
@@ -588,11 +596,11 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 		$this->_updateRows($updated);
 
 		// T3 blank tmpl doesn't seem to render messages when tmpl=component
-		$this->app->enqueueMessage(JText::sprintf('%s emails sent', $sent));
+		$this->app->enqueueMessage(Text::sprintf('%s emails sent', $sent));
 
 		if ($notSent != 0)
 		{
-			$this->app->enqueueMessage(JText::sprintf('%s emails not sent', $notSent), 'notice');
+			$this->app->enqueueMessage(Text::sprintf('%s emails not sent', $notSent), 'notice');
 		}
 
 		return true;
@@ -817,7 +825,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 		$tableName  = $params->get('emailtable_to_table_name');
 		$tableWhere = $params->get('emailtable_to_table_where', '');
 
-		$toTableModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$toTableModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$toTableModel->setId($table);
 		$toDb = $toTableModel->getDb();
 
@@ -854,9 +862,9 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 		$content         = empty($contentTemplate) ? '' : FabrikHelperHTML::getContentTemplate($contentTemplate);
 		$emailTemplate   = $this->_emailTemplate();
 
-		if (JFile::exists($emailTemplate))
+		if (File::exists($emailTemplate))
 		{
-			if (JFile::getExt($emailTemplate) == 'php')
+			if (File::getExt($emailTemplate) == 'php')
 			{
 				$message = '';
 				$phpMsg  = true;
@@ -888,7 +896,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 
 		if ($emailTemplate != "-1" && !empty($emailTemplate))
 		{
-			$emailTemplate = JPath::clean(JPATH_SITE . '/plugins/fabrik_list/email/tmpl/' . $emailTemplate);
+			$emailTemplate = Path::clean(JPATH_SITE . '/plugins/fabrik_list/email/tmpl/' . $emailTemplate);
 		}
 
 		return $emailTemplate;
@@ -1143,7 +1151,7 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 
 		if ($params->get('wysiwyg', true))
 		{
-			$editor = \JEditor::getInstance($this->config->get('editor'));
+			$editor = \Editor::getInstance($this->config->get('editor'));
 			$buttons = (bool) $params->get('wysiwyg_extra_buttons', true);
 
 			return $editor->display('message', $msg, '100%', '200px', 75, 10, $buttons, 'message');
@@ -1189,10 +1197,10 @@ class PlgFabrik_ListEmail extends PlgFabrik_List
 		{
 			$params  = $this->getParams();
 			$gateway = $params->get('emailtable_sms_gateway', 'kapow.php');
-			$input   = new JFilterInput;
+			$input   = new InputFilter;
 			$gateway = $input->clean($gateway, 'CMD');
             require_once JPATH_ROOT . '/libraries/fabrik/fabrik/Helpers/sms_gateways/' . StringHelper::strtolower($gateway);
-			$gateway               = JFile::stripExt($gateway);
+			$gateway               = File::stripExt($gateway);
 			$this->gateway         = new $gateway;
 			$this->gateway->params = $params;
 		}

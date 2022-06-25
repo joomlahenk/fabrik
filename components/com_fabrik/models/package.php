@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 use \Joomla\Registry\Registry;
 
 jimport('joomla.application.component.modelitem');
@@ -34,7 +37,7 @@ class FabrikFEModelPackage extends FabModel
 	/**
 	 * Package items
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	private $package = null;
 
@@ -69,7 +72,7 @@ class FabrikFEModelPackage extends FabModel
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
 
 		// Load the parameters.
 		$params = $app->getParams();
@@ -81,7 +84,7 @@ class FabrikFEModelPackage extends FabModel
 		$this->setState('params', $params);
 
 		// TODO: Tune these values based on other permissions.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ((!$user->authorise('core.edit.state', 'com_fabrik')) && (!$user->authorise('core.edit', 'com_fabrik')))
 		{
@@ -211,7 +214,7 @@ class FabrikFEModelPackage extends FabModel
 
 			foreach ($aIds as $id)
 			{
-				$viewModel = JModelLegacy::getInstance('view', 'FabrikFEModel');
+				$viewModel = BaseDatabaseModel::getInstance('view', 'FabrikFEModel');
 				$viewModel->setId($id);
 				$this->tables[] = $viewModel->getTable();
 				$formModel = $viewModel->getFormModel();
@@ -248,7 +251,7 @@ class FabrikFEModelPackage extends FabModel
  * @since       3.0
  */
 
-class FabrikPackageMenu extends JModelLegacy
+class FabrikPackageMenu extends BaseDatabaseModel
 {
 	/**
 	 * Method to set the  id

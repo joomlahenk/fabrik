@@ -11,6 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -245,10 +253,10 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 		}
 
 		$opts = json_encode($opts);
-		JText::script('PLG_FORM_COMMENT_TYPE_A_COMMENT_HERE');
-		JText::script('PLG_FORM_COMMENT_PLEASE_ENTER_A_COMMENT_BEFORE_POSTING');
-		JText::script('PLG_FORM_COMMENT_PLEASE_ENTER_A_NAME_BEFORE_POSTING');
-		JText::script('PLG_FORM_COMMENT_ENTER_EMAIL_BEFORE_POSTNG');
+		Text::script('PLG_FORM_COMMENT_TYPE_A_COMMENT_HERE');
+		Text::script('PLG_FORM_COMMENT_PLEASE_ENTER_A_COMMENT_BEFORE_POSTING');
+		Text::script('PLG_FORM_COMMENT_PLEASE_ENTER_A_NAME_BEFORE_POSTING');
+		Text::script('PLG_FORM_COMMENT_ENTER_EMAIL_BEFORE_POSTNG');
 		$script = "var comments = new FabrikComment('fabrik-comments', $opts);";
 
 		if ($this->doThumbs())
@@ -310,7 +318,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 			$cols = $params->get('comment_internal_wysiwyg_cols', '100');
 			$rows = $params->get('comment_internal_wysiwyg_rows', '5');
 			$layoutData->id = 'fabrik_form_comment_' . $layoutData->renderOrder . '_' . $reply_to;
-			$editor = JEditor::getInstance($this->config->get('editor'));
+			$editor = Editor::getInstance($this->config->get('editor'));
 			$buttons = (bool) $params->get('comment_internal_wysiwyg_extra_buttons', false);
 			$layoutData->editor = $editor->display($layoutData->id, '', '100%', '100%', $cols, $rows, $buttons, $layoutData->id);
 		}
@@ -549,7 +557,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 	private function setFormModel()
 	{
 		$input = $this->app->input;
-		$formModel = JModelLegacy::getInstance('form', 'FabrikFEModel');
+		$formModel = BaseDatabaseModel::getInstance('form', 'FabrikFEModel');
 		$formModel->setId($input->getInt('formid'));
 		$this->model = $formModel;
 
@@ -565,7 +573,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 	{
 		$input = $this->app->input;
 		$row = FabTable::getInstance('comment', 'FabrikTable');
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$request = $filter->clean($_REQUEST, 'array');
 
 		foreach ($request as $k => $v)
@@ -684,7 +692,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 		}
 		catch (RuntimeException $e)
 		{
-			JLog::add('Couldn\'t save fabrik comment notification event: ' + $db->stderr(true), JLog::WARNING, 'fabrik');
+			Log::add('Couldn\'t save fabrik comment notification event: ' + $db->stderr(true), Log::WARNING, 'fabrik');
 
 			return false;
 		}
@@ -727,7 +735,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 			}
 			catch (RuntimeException $e)
 			{
-				JLog::add('Couldn\'t save fabrik comment notification: ' + $db->stderr(true), JLog::WARNING, 'fabrik');
+				Log::add('Couldn\'t save fabrik comment notification: ' + $db->stderr(true), Log::WARNING, 'fabrik');
 
 				return false;
 			}
@@ -758,7 +766,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 					}
 					catch (RuntimeException $e)
 					{
-						JLog::add('Couldn\'t save fabrik comment notification: ' + $db->stderr(true), JLog::WARNING, 'fabrik');
+						Log::add('Couldn\'t save fabrik comment notification: ' + $db->stderr(true), Log::WARNING, 'fabrik');
 
 						return false;
 					}
@@ -786,7 +794,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 					}
 					catch (RuntimeException $e)
 					{
-						JLog::add('Couldn\'t save fabrik comment notification for admin: ' + $db->stderr(true), JLog::WARNING, 'fabrik');
+						Log::add('Couldn\'t save fabrik comment notification for admin: ' + $db->stderr(true), Log::WARNING, 'fabrik');
 					}
 				}
 			}
@@ -849,7 +857,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 		$layout = $this->getLayout('emailnotification');
 		$message = $layout->render($layoutData);
 
-		$mail = JFactory::getMailer();
+		$mail = Factory::getMailer();
 
 		if ((int) $params->get('comment-internal-notify') == 1)
 		{
@@ -888,7 +896,7 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 
 				if (is_numeric($ownerEmail))
 				{
-					$ownerUser = JFactory::getUser((int)$rowData->$owner);
+					$ownerUser = Factory::getUser((int)$rowData->$owner);
 					$ownerEmail = $ownerUser->get('email');
 				}
 
@@ -1002,11 +1010,11 @@ class PlgFabrik_FormComment extends PlgFabrik_Form
 		 * components/com_jcomments/languages/yourfile.ini to
 		 * components/com_jcomments/language/xx-XX/yourfile.ini
 		 */
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_jcomments', JPATH_BASE . '/components/com_jcomments');
 		$jComments = JPATH_SITE . '/components/com_jcomments/jcomments.php';
 
-		if (JFile::exists($jComments))
+		if (File::exists($jComments))
 		{
 			require_once $jComments;
 

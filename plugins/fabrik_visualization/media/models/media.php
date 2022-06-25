@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/visualization.php';
@@ -85,7 +90,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 
 		$listId = $params->get('media_table');
 
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$list = $listModel->getTable();
 		$form = $listModel->getFormModel();
@@ -114,7 +119,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 		$allData = $listModel->getData();
 		$this->app->setUserState($context . 'limitstart', $orig_limitstart);
 		$this->app->setUserState($context . 'limitlength', $orig_limitlength);
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		if ($params->get('media_which_player', 'jw') == 'xspf')
 		{
@@ -140,7 +145,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 					}
 
 					$location = str_replace('\\', '/', $location);
-					$location = JString::ltrim($location, '/');
+					$location = StringHelper::ltrim($location, '/');
 					$location = COM_FABRIK_LIVESITE . $location;
 					$str .= "		<track>\n";
 					$str .= "			<location>" . $location . "</location>\n";
@@ -158,7 +163,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 						if (!empty($image))
 						{
 							$image = str_replace('\\', '/', $image);
-							$image = JString::ltrim($image, '/');
+							$image = StringHelper::ltrim($image, '/');
 							$image = COM_FABRIK_LIVESITE . $image;
 							$str .= "			<image>" . $image . "</image>\n";
 						}
@@ -177,7 +182,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 					}
 					else
 					{
-						$link = JRoute::_('index.php?option=com_' . $this->package . '&view=form&formid=' . $form->getId() . '&rowid=' . $row->__pk_val);
+						$link = Route::_('index.php?option=com_' . $this->package . '&view=form&formid=' . $form->getId() . '&rowid=' . $row->__pk_val);
 						$str .= "			<info>" . $link . "</info>\n";
 					}
 
@@ -212,7 +217,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 					}
 
 					$location = str_replace('\\', '/', $location);
-					$location = JString::ltrim($location, '/');
+					$location = StringHelper::ltrim($location, '/');
 					$location = COM_FABRIK_LIVESITE . $location;
 					$str .= "		<item>\n";
 					$str .= '			<media:content url="' . $location . '" />' . "\n";
@@ -230,7 +235,7 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 						if (!empty($image))
 						{
 							$image = str_replace('\\', '/', $image);
-							$image = JString::ltrim($image, '/');
+							$image = StringHelper::ltrim($image, '/');
 							$image = COM_FABRIK_LIVESITE . $image;
 							$str .= '			<media:thumbnail url="' . $image . '" />' . "\n";
 						}
@@ -249,13 +254,13 @@ class FabrikModelMedia extends FabrikFEModelVisualization
 					}
 					else
 					{
-						$link = JRoute::_('index.php?option=com_' . $this->package . '&view=form&formid=' . $form->getId() . '&rowid=' . $row->__pk_val);
+						$link = Route::_('index.php?option=com_' . $this->package . '&view=form&formid=' . $form->getId() . '&rowid=' . $row->__pk_val);
 						$str .= "			<link>" . $link . "</link>\n";
 					}
 
 					if (!empty($dateElement))
 					{
-						$pubDate = JFactory::getDate($row->$dateElementRaw);
+						$pubDate = Factory::getDate($row->$dateElementRaw);
 						$str .= "			<pubDate>" . htmlspecialchars($pubDate->toRFC822(), ENT_COMPAT, 'UTF-8') . "</pubDate>\n";
 					}
 

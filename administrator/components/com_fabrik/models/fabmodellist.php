@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.modellist');
 
 /**
@@ -21,7 +24,7 @@ jimport('joomla.application.component.modellist');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabModelList extends JModelList
+class FabModelList extends ListModel
 {
 	/**
 	 * Constructor.
@@ -70,7 +73,7 @@ class FabModelList extends JModelList
 /*	public function getPackageOptions()
 	{
 		// Initialise variables. Always use J db here no matter what package we are using
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -146,7 +149,7 @@ class FabModelList extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the package state
 		$package = $app->getUserStateFromRequest('com_fabrik.package', 'package', '');

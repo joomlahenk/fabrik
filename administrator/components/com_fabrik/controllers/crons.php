@@ -12,6 +12,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 require_once 'fabcontrolleradmin.php';
@@ -80,10 +81,10 @@ class FabrikAdminControllerCrons extends FabControllerAdmin
 	 */
 	public function run()
 	{
-		$mailer = JFactory::getMailer();
-		$config = JFactory::getConfig();
+		$mailer = Factory::getMailer();
+		$config = Factory::getConfig();
 		$db = FabrikWorker::getDbo(true);
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
@@ -92,9 +93,9 @@ class FabrikAdminControllerCrons extends FabControllerAdmin
 		$query->select('*')->from('#__fabrik_cron')->where('id IN (' . $cid . ')');
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
-		$adminListModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
-		$pluginManager = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
-		$listModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$adminListModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
+		$pluginManager = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
+		$listModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$c = 0;
 		$this->log = FabTable::getInstance('Log', 'FabrikTable');
 
@@ -158,7 +159,7 @@ class FabrikAdminControllerCrons extends FabControllerAdmin
 
 			if ($pluginParams->get('cron_reschedule_manual', '0') === '1')
 			{
-				$table->lastrun = JFactory::getDate()->toSql();
+				$table->lastrun = Factory::getDate()->toSql();
 				$table->store();
 			}
 		}

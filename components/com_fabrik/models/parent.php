@@ -13,6 +13,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -23,7 +25,7 @@ jimport('joomla.application.component.model');
  * @since       3.0
  */
 
-class FabrikFEModel extends JModelLegacy
+class FabrikFEModel extends BaseDatabaseModel
 {
 	/**
 	 * required for compatibility with mambo 4.5.4

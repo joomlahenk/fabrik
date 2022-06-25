@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -45,7 +49,7 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 
 		if ($params->get('myloc', 1) == 1)
 		{
-			$options[] = JHtml::_('select.option', 'mylocation', FText::_('PLG_VIEW_RADIUS_MY_LOCATION'));
+			$options[] = HTMLHelper::_('select.option', 'mylocation', FText::_('PLG_VIEW_RADIUS_MY_LOCATION'));
 		}
 		else if ($default_search == 'mylocation')
 		{
@@ -55,7 +59,7 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 		if ($params->get('place', 1) == 1)
 		{
 			$placeElement = $this->getPlaceElement()->getElement();
-			$options[] = JHtml::_('select.option', 'place', strip_tags($placeElement->label));
+			$options[] = HTMLHelper::_('select.option', 'place', strip_tags($placeElement->label));
 		}
 		else if ($default_search == 'place')
 		{
@@ -64,7 +68,7 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 
 		if ($params->get('coords', 1) == 1)
 		{
-			$options[] = JHtml::_('select.option', 'latlon', FText::_('PLG_VIEW_RADIUS_COORDINATES'));
+			$options[] = HTMLHelper::_('select.option', 'latlon', FText::_('PLG_VIEW_RADIUS_COORDINATES'));
 		}
 		else if ($default_search == 'latlon')
 		{
@@ -73,11 +77,11 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 
 		if ($params->get('geocode', 1) == 1)
 		{
-			$options[] = JHtml::_('select.option', 'geocode', FText::_('PLG_VIEW_RADIUS_GEOCODE'));
+			$options[] = HTMLHelper::_('select.option', 'geocode', FText::_('PLG_VIEW_RADIUS_GEOCODE'));
 		}
 
 		$selectName = 'radius_search_type' . $this->renderOrder . '[]';
-		$select = JHtml::_('select.genericlist', $options, $selectName, '', 'value', 'text', $default_search);
+		$select = HTMLHelper::_('select.genericlist', $options, $selectName, '', 'value', 'text', $default_search);
 
 		return $select;
 	}
@@ -98,11 +102,11 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 
 		foreach ($distances as $distance)
 		{
-			$options[] = JHtml::_('select.option', $distance, $distance);
+			$options[] = HTMLHelper::_('select.option', $distance, $distance);
 		}
 
 		$selectName = 'radius_search_distance' . $this->renderOrder . '[]';
-		$select = JHtml::_('select.genericlist', $options, $selectName, 'class="input-small"', 'value', 'text', $default);
+		$select = HTMLHelper::_('select.genericlist', $options, $selectName, 'class="input-small"', 'value', 'text', $default);
 
 		return $select;
 	}
@@ -202,10 +206,10 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 			table.radius_table td{border:0;}");
 		}
 
-		JText::script('PLG_VIEW_RADIUS_NO_GEOLOCATION_AVAILABLE');
-		JText::script('COM_FABRIK_SEARCH');
-		JText::script('PLG_LIST_RADIUS_SEARCH');
-		JText::script('PLG_LIST_RADIUS_SEARCH_BUTTON');
+		Text::script('PLG_VIEW_RADIUS_NO_GEOLOCATION_AVAILABLE');
+		Text::script('COM_FABRIK_SEARCH');
+		Text::script('PLG_LIST_RADIUS_SEARCH');
+		Text::script('PLG_LIST_RADIUS_SEARCH_BUTTON');
 
 		$mapElement = $this->getMapElement();
 		$mapName = $mapElement->getFullName(true, false);
@@ -572,7 +576,7 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 		$opts->geoCodeAsType = $params->get('geocode_as_type', 1);
 		$opts->renderOrder = $this->renderOrder;
 		$opts->offset_y = (int)$params->get('window_offset_y', '0');
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$apiKey = trim($config->get('google_api_key', ''));
 		$opts->key = empty($apiKey) ? false : $apiKey;
 		$opts->language = trim(strtolower($config->get('google_api_language', '')));
@@ -581,8 +585,8 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 		$opts = json_encode($opts);
 		$this->jsInstance = "new FbListRadius_search($opts)";
 
-		JText::script('PLG_LIST_RADIUS_SEARCH_CLEAR_CONFIRM');
-		JText::script('PLG_LIST_RADIUS_SEARCH_GEOCODE_ERROR');
+		Text::script('PLG_LIST_RADIUS_SEARCH_CLEAR_CONFIRM');
+		Text::script('PLG_LIST_RADIUS_SEARCH_GEOCODE_ERROR');
 
 		return true;
 	}

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Profiler\Profiler;
 use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\Googlemap;
 use Fabrik\Helpers\Image\Image;
@@ -66,7 +68,7 @@ class PlgFabrik_ElementGooglemap extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $listModel = $this->getListModel();
@@ -436,7 +438,7 @@ class PlgFabrik_ElementGooglemap extends PlgFabrik_Element
 		$opts->use_overlays_select = $params->get('fb_gm_use_overlays_select', 'checkbox');
 		$opts->use_overlays_checked = $params->get('fb_gm_use_overlays_checked', '');
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$apiKey = trim($config->get('google_api_key', ''));
 		$opts->key = empty($apiKey) ? false : $apiKey;
 		$opts->language             = trim(strtolower($config->get('google_api_language', '')));
@@ -755,7 +757,7 @@ class PlgFabrik_ElementGooglemap extends PlgFabrik_Element
 		$attribs[] = 'markers=' . $markers;
 		$attribs[] = 'sensor=false';
 
-		$config = JComponentHelper::getParams('com_fabrik');
+		$config = ComponentHelper::getParams('com_fabrik');
 		$apiKey = trim($config->get('google_api_key', ''));
 		$client = $config->get('google_buisness_client_id', '');
 		$signature = $config->get('google_buisness_signature', '');

@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -95,7 +98,7 @@ class PlgFabrik_FormRedirect extends PlgFabrik_Form
 			}
 
 			$url .= $next_rowid;
-			$this->data['jump_page'] = JRoute::_($url);
+			$this->data['jump_page'] = Route::_($url);
 		}
 
 		if ($this->data['jump_page'] != '')
@@ -131,7 +134,7 @@ class PlgFabrik_FormRedirect extends PlgFabrik_Form
 		}
 
 		$smsg[$this->renderOrder] = $this->data['thanks_message'];
-		$smsg[$this->renderOrder] = JText::sprintf($this->data['thanks_message']);
+		$smsg[$this->renderOrder] = Text::sprintf($this->data['thanks_message']);
 
 		// Don't display system message if thanks is empty
 		if (FArrayHelper::getValue($this->data, 'thanks_message', '') !== '')

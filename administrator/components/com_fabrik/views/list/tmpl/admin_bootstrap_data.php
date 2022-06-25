@@ -12,7 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$doc = JFactory::getDocument();
+use Joomla\CMS\Factory;
+
+$doc = Factory::getDocument();
 $rtlDir = $doc->direction === 'rtl' ? 'left' : 'right';
 $rtlDirInv = $doc->direction === 'rtl' ? 'right' : 'left';
 ?>

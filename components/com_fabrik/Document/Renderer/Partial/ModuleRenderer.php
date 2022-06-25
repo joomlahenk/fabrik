@@ -12,6 +12,7 @@ namespace Joomla\CMS\Document\Renderer\Partial;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Document\DocumentRenderer;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Log\Log;
@@ -82,15 +83,15 @@ class ModuleRenderer extends DocumentRenderer
 			$module->params = (string) $params;
 		}
 
-		// Default for compatibility purposes. Set cachemode parameter or use JModuleHelper::moduleCache from within the module instead
+		// Default for compatibility purposes. Set cachemode parameter or use ModuleHelper::moduleCache from within the module instead
 		$cachemode = $params->get('cachemode', 'oldstatic');
 
-		if ($params->get('cache', 0) == 1 && \JFactory::getConfig()->get('caching') >= 1 && $cachemode != 'id' && $cachemode != 'safeuri')
+		if ($params->get('cache', 0) == 1 && \Factory::getConfig()->get('caching') >= 1 && $cachemode != 'id' && $cachemode != 'safeuri')
 		{
 			// Default to itemid creating method and workarounds on
 			$cacheparams = new \stdClass;
 			$cacheparams->cachemode = $cachemode;
-			$cacheparams->class = 'JModuleHelper';
+			$cacheparams->class = 'ModuleHelper';
 			$cacheparams->method = 'renderModule';
 			$cacheparams->methodparams = array($module, $attribs);
 

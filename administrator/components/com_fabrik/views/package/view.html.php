@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.view');
@@ -23,19 +28,19 @@ jimport('joomla.application.component.view');
  * @since       1.5
  */
 
-class FabrikAdminViewPackage extends JViewLegacy
+class FabrikAdminViewPackage extends HtmlView
 {
 	/**
 	 * Form
 	 *
-	 * @var JForm
+	 * @var Form
 	 */
 	protected $form;
 
 	/**
 	 * Package item
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $item;
 
@@ -57,7 +62,7 @@ class FabrikAdminViewPackage extends JViewLegacy
 		$srcs = FabrikHelperHTML::framework();
 		FabrikHelperHTML::script($srcs);
 		$this->listform	= $this->get('PackageListForm');
-		JHtml::_('behavior.modal', 'a.modal');
+		HTMLHelper::_('behavior.modal', 'a.modal');
 		parent::display('list');
 	}
 
@@ -72,7 +77,7 @@ class FabrikAdminViewPackage extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		JHtml::_('behavior.modal', 'a.modal');
+		HTMLHelper::_('behavior.modal', 'a.modal');
 		$model = $this->getModel();
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
@@ -96,7 +101,7 @@ class FabrikAdminViewPackage extends JViewLegacy
 		$opts = ArrayHelper::getvalue($canvas, 'options', array());
 		$d = new stdClass;
 		$layout = FArrayHelper::getValue($canvas, 'layout', $d);
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		$opts = new stdClass;
 
@@ -129,9 +134,9 @@ class FabrikAdminViewPackage extends JViewLegacy
 
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->get('id');
 		$isNew = ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));

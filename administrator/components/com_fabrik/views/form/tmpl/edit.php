@@ -12,11 +12,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHTML::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
-JHtml::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 FabrikHelperHTML::formvalidation();
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.keepalive');
 
 ?>
 <script type="text/javascript">
@@ -44,7 +47,7 @@ JHtml::_('behavior.keepalive');
 	}
 </script>
 
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	<div class="width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo FText::_('COM_FABRIK_DETAILS');?></legend>
@@ -125,27 +128,27 @@ JHtml::_('behavior.keepalive');
 	</div>
 
 	<div class="width-50 fltrt">
-		<?php echo JHtml::_('tabs.start', 'table-tabs-' . $this->item->id, array('useCookie' => 1));
+		<?php echo HTMLHelper::_('tabs.start', 'table-tabs-' . $this->item->id, array('useCookie' => 1));
 
-		echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_GROUP_LABEL_PUBLISHING_DETAILS'), 'form_publishing');
+		echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_GROUP_LABEL_PUBLISHING_DETAILS'), 'form_publishing');
 		echo $this->loadTemplate('publishing');
 
-		echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_GROUPS'), 'form_groups');
+		echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_GROUPS'), 'form_groups');
 		echo $this->loadTemplate('groups');
 
-		echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_LAYOUT'), 'form_templates');
+		echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_LAYOUT'), 'form_templates');
 		echo $this->loadTemplate('templates');
 
-		echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_OPTIONS'), 'form_options');
+		echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_OPTIONS'), 'form_options');
 		echo $this->loadTemplate('options');
 
-		echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_PLUGINS'), 'form_plugins');
+		echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_PLUGINS'), 'form_plugins');
 		echo $this->loadTemplate('plugins');
-		echo JHtml::_('tabs.end'); ?>
+		echo HTMLHelper::_('tabs.end'); ?>
 	</div>
 
 	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

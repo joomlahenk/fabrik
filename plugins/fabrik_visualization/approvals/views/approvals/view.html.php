@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +25,7 @@ jimport('joomla.application.component.view');
  * @since       3.0.6
  */
 
-class FabrikViewApprovals extends JViewLegacy
+class FabrikViewApprovals extends HtmlView
 {
 	/**
 	 * Execute and display a template script.
@@ -35,9 +39,9 @@ class FabrikViewApprovals extends JViewLegacy
 	{
 		$model = $this->getModel();
 		$j3 = FabrikWorker::j3();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$id = $input->get('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0)));
 		$model->setId($id);
 

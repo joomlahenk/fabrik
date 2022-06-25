@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -110,7 +112,7 @@ class PlgFabrik_FormReceipt extends PlgFabrik_Form
 		$to = explode(',', $to);
 
 		$subject = html_entity_decode($params->get('receipt_subject', ''));
-		$subject = JText::_($w->parseMessageForPlaceHolder($subject, $data, false));
+		$subject = Text::_($w->parseMessageForPlaceHolder($subject, $data, false));
 
 		@list($emailFrom, $emailFromName) = explode(":", $w->parseMessageForPlaceholder($params->get('from_email'), $this->data, false), 2);
 

@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -87,7 +90,7 @@ class FabrikTableElement extends FabTable
 		// Bind the rules.
 		if (isset($array['rules']) && is_array($array['rules']))
 		{
-			$rules = new JAccessRules($array['rules']);
+			$rules = new Rules($array['rules']);
 			$this->setRules($rules);
 		}
 
@@ -163,7 +166,7 @@ class FabrikTableElement extends FabTable
 		// Check for a database error.
 		if (!$this->_db->execute())
 		{
-			throw new Exception(JText::sprintf('JLIB_DATABASE_ERROR_PUBLISH_FAILED', get_class($this)));
+			throw new Exception(Text::sprintf('JLIB_DATABASE_ERROR_PUBLISH_FAILED', get_class($this)));
 		}
 
 		// If check-in is supported and all rows were adjusted, check them in.
@@ -176,7 +179,7 @@ class FabrikTableElement extends FabTable
 			}
 		}
 
-		// If the JTable instance value is in the list of primary keys that were set, set the instance.
+		// If the Table instance value is in the list of primary keys that were set, set the instance.
 		if (in_array($this->$k, $pks))
 		{
 			$this->published = $state;

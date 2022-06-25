@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Version;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -25,14 +28,14 @@ class FabrikFEModelConnection extends FabModel
 	/**
 	 * Current connection
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $connection = null;
 
 	/**
 	 * Default connection table
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $defaultConnection = null;
 
@@ -102,7 +105,7 @@ class FabrikFEModelConnection extends FabModel
 	 */
 	public function getDriverInstance($options)
 	{
-//		$version = new JVersion;
+//		$version = new Version;
 
 //		return $version->RELEASE > 2.5 ? JDatabaseDriver::getInstance($options) : JDatabase::getInstance($options);
 		return JDatabaseDriver::getInstance($options);
@@ -111,7 +114,7 @@ class FabrikFEModelConnection extends FabModel
 	/**
 	 * Decrypt once a connection password - if its params->encryptedPw option is true
 	 *
-	 * @param   JTable  &FabrikTableConnection  Connection
+	 * @param   Table  &FabrikTableConnection  Connection
 	 *
 	 * @since   3.1rc1
 	 *

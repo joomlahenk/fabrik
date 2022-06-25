@@ -12,6 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.modellist');
 
 /**
@@ -22,7 +27,7 @@ jimport('joomla.application.component.modellist');
  * @since       3.0
  */
 
-class FabrikAdminModelConnections extends JModelList
+class FabrikAdminModelConnections extends ListModel
 {
 	/**
 	 * Constructor.
@@ -101,7 +106,7 @@ class FabrikAdminModelConnections extends JModelList
 	 * @param   string  $prefix  A prefix for the table class name. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  JTable  A database object
+	 * @return  Table  A database object
 	 */
 
 	public function getTable($type = 'Connection', $prefix = 'FabrikTable', $config = array())
@@ -127,10 +132,10 @@ class FabrikAdminModelConnections extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_fabrik');
+		$params = ComponentHelper::getParams('com_fabrik');
 		$this->setState('params', $params);
 		$published = $app->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
 		$this->setState('filter.published', $published);

@@ -12,16 +12,20 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('bootstrap.tooltip');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('bootstrap.tooltip');
 //JHTML::_('script', 'system/multiselect.js', false, true);
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
-$user = JFactory::getUser();
+$user = Factory::getUser();
 $userId = $user->get('id');
 $listOrder = $this->state->get('list.ordering');
 $listDirn = $this->state->get('list.direction');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=groups'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_fabrik&view=groups'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo FText::_('JSEARCH_FILTER_LABEL'); ?>:</label>
@@ -36,20 +40,20 @@ $listDirn = $this->state->get('list.direction');
 			<?php if (!empty($this->packageOptions)) :?>
 			<select name="package" class="inputbox" onchange="this.form.submit()">
 				<option value="fabrik"><?php echo FText::_('COM_FABRIK_SELECT_PACKAGE'); ?></option>
-				<?php echo JHtml::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true); ?>
+				<?php echo HTMLHelper::_('select.options', $this->packageOptions, 'value', 'text', $this->state->get('com_fabrik.package'), true); ?>
 			</select>
 			<?php endif; ?>
 
 			<select name="filter_form" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('COM_FABRIK_SELECT_FORM'); ?></option>
-				<?php echo JHtml::_('select.options', $this->formOptions, 'value', 'text', $this->state->get('filter.form'), true); ?>
+				<?php echo HTMLHelper::_('select.options', $this->formOptions, 'value', 'text', $this->state->get('filter.form'), true); ?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
 				<?php
 				$published = $this->state->get('filter.published');
-				echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => false)), 'value', 'text', $published, true);
+				echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array('archived' => false)), 'value', 'text', $published, true);
 				?>
 			</select>
 		</div>
@@ -92,7 +96,7 @@ $listDirn = $this->state->get('list.direction');
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 	$ordering = ($listOrder == 'ordering');
-	$link = JRoute::_('index.php?option=com_fabrik&task=group.edit&id=' . (int) $item->id);
+	$link = Route::_('index.php?option=com_fabrik&task=group.edit&id=' . (int) $item->id);
 	$canCreate = $user->authorise('core.create', 'com_fabrik.group.' . $item->form_id);
 	$canEdit = $user->authorise('core.edit', 'com_fabrik.group.' . $item->form_id);
 	$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
@@ -104,7 +108,7 @@ $listDirn = $this->state->get('list.direction');
 						<?php echo $item->id; ?>
 					</td>
 					<td>
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 					</td>
 					<td>
 						<?php
@@ -130,7 +134,7 @@ $listDirn = $this->state->get('list.direction');
 						</a>
 					</td>
 					<td>
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'groups.', $canChange); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'groups.', $canChange); ?>
 					</td>
 				</tr>
 
@@ -142,5 +146,5 @@ $listDirn = $this->state->get('list.direction');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

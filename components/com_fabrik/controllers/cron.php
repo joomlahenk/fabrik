@@ -13,6 +13,10 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Worker;
 
@@ -25,7 +29,7 @@ use Fabrik\Helpers\Worker;
  * @subpackage  Fabrik
  * @since       3.0.7
  */
-class FabrikControllerCron extends JControllerLegacy
+class FabrikControllerCron extends BaseController
 {
 	/**
 	 * Id used from content plugin when caching turned on to ensure correct element rendered
@@ -45,13 +49,13 @@ class FabrikControllerCron extends JControllerLegacy
 	 * Display the view
 	 *
 	 * @param   boolean          $cachable   If true, the view output will be cached - NOTE not actually used to control caching!!!
-	 * @param   array|boolean    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array|boolean    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link InputFilter::clean()}.
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewName = $this->getViewName();
 		$viewType = $document->getType();
 
@@ -66,7 +70,7 @@ class FabrikControllerCron extends JControllerLegacy
 		// Display the view
 		$view->error = $this->getError();
 
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$task = $input->getCmd('task');
 
 		if (!strstr($task, '.'))
@@ -89,12 +93,12 @@ class FabrikControllerCron extends JControllerLegacy
 			$post = $input->get('post');
 
 			// Build unique cache id on url, post and user id
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			$uri = JURI::getInstance();
 			$uri = $uri->toString(array('path', 'query'));
 			$cacheId = serialize(array($uri, $post, $user->get('id'), get_class($view), 'display', $this->cacheId));
-			$cache = JFactory::getCache('com_fabrik', 'view');
+			$cache = Factory::getCache('com_fabrik', 'view');
 			$cache->get($view, 'display', $cacheId);
 			Html::addToSessionCacheIds($cacheId);
 		}
@@ -109,14 +113,14 @@ class FabrikControllerCron extends JControllerLegacy
 	{
 		if (!isset($this->viewName))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			$input = $app->input;
 			$item = FabTable::getInstance('Cron', 'FabrikTable');
 			$item->load($input->getInt('id'));
 			$this->viewName = $item->plugin;
 			$this->addViewPath(JPATH_SITE . '/plugins/fabrik_cron/' . $this->viewName . '/views');
 			$this->addModelPath(JPATH_SITE . '/plugins/fabrik_cron/' . $this->viewName . '/models');
-			JModelLegacy::addIncludePath(JPATH_SITE . '/plugins/fabrik_cron/' . $this->viewName . '/models');
+			BaseDatabaseModel::addIncludePath(JPATH_SITE . '/plugins/fabrik_cron/' . $this->viewName . '/models');
 		}
 
 		return $this->viewName;

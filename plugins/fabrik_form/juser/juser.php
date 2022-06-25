@@ -11,6 +11,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\User\User;
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 // Require the abstract plugin class
@@ -23,7 +33,7 @@ require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
  * @subpackage  Fabrik.form.juser
  * @since       3.0
  */
-class PlgFabrik_FormJUser extends plgFabrik_Form
+class PlgFabrik_FormUser extends plgFabrik_Form
 {
 	/**
 	 * Name field
@@ -156,7 +166,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 						$count++;
 					}
 
-					$this->app->enqueueMessage(JText::sprintf('PLG_FABRIK_FORM_JUSER_MSG_SYNC_OK', $count, $tableName));
+					$this->app->enqueueMessage(Text::sprintf('PLG_FABRIK_FORM_JUSER_MSG_SYNC_OK', $count, $tableName));
 				} catch (Exception $e)
 				{
 					$this->app->enqueueMessage(FText::_('PLG_FABRIK_FORM_JUSER_MSG_SYNC_ERROR'));
@@ -178,7 +188,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 				$formModel->data[$this->passwordfield . '_raw'] = '';
 			}
 
-			$userId = $loadCurrentUser ? JFactory::getUser()->id : null;
+			$userId = $loadCurrentUser ? Factory::getUser()->id : null;
 
 			// $$$$ hugh - testing 'sync on edit'
 			if ($params->get('juser_sync_on_edit', 0) == 1)
@@ -199,8 +209,8 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 				if ($userId > 0)
 				{
-					// See https://github.com/Fabrik/fabrik/issues/1026 - don't use JFactory as this loads in session stored user
-					$user = new JUser($userId);
+					// See https://github.com/Fabrik/fabrik/issues/1026 - don't use Factory as this loads in session stored user
+					$user = new User($userId);
 
 					if ($user->get('id') == $userId)
 					{
@@ -246,7 +256,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 	/**
 	 * Run when a list is emptied/truncated
-	 * Delete's all JUsers found in the list, except Admins
+	 * Delete's all Users found in the list, except Admins
 	 *
 	 * @throws Exception
 	 *
@@ -268,7 +278,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 			foreach ($userIds as $userId)
 			{
-				$user = new JUser((int) $userId);
+				$user = new User((int) $userId);
 
 				$isRoot = $user->authorise('core.admin');
 
@@ -311,7 +321,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 						{
 							if (!empty($row->$userIdField))
 							{
-								$user = new JUser((int) $row->$userIdField);
+								$user = new User((int) $row->$userIdField);
 
 								// Bail out now and return false, or just carry on?
 								if (!$user->delete())
@@ -382,7 +392,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 			return true;
 		}
 
-		$usersConfig    = JComponentHelper::getParams('com_users');
+		$usersConfig    = ComponentHelper::getParams('com_users');
 		$userActivation = $usersConfig->get('useractivation');
 		$sendpassword   = $usersConfig->get('sendpassword', 1);
 
@@ -396,7 +406,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 		$data = $formModel->formData;
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
 		$originalId = 0;
 
 		if ($params->get('juser_field_userid') != '')
@@ -437,8 +447,8 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 			$this->useridfield = '';
 		}
 
-		// Create a new JUser object
-		$user = new JUser($originalId);
+		// Create a new User object
+		$user = new User($originalId);
 
 		// Are we dealing with a new user which we need to create?
 		$isNew = ($user->get('id') < 1);
@@ -559,7 +569,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 			return false;
 		}
 
-		// Lets save the JUser object
+		// Lets save the User object
 		if (!$user->save())
 		{
 			$this->app->enqueueMessage(FText::_('CANNOT SAVE THE USER INFORMATION'), 'message');
@@ -588,7 +598,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 				$data['fromname'] = $this->config->get('fromname');
 				$data['mailfrom'] = $this->config->get('mailfrom');
 				$data['sitename'] = $this->config->get('sitename');
-				$data['siteurl']  = JUri::base();
+				$data['siteurl']  = Uri::base();
 
 				$uri  = JURI::getInstance();
 				$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
@@ -598,9 +608,9 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 				if ($userActivation == 2 && !$bypassActivation && !$autoLogin)
 				{
 					// Set the link to confirm the user email.
-					$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+					$data['activate'] = $base . Route::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
 
-					$emailSubject = JText::sprintf(
+					$emailSubject = Text::sprintf(
 						'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 						$data['name'],
 						$data['sitename']
@@ -608,7 +618,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 					if ($sendpassword)
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY',
 							$data['name'],
 							$data['sitename'],
@@ -620,7 +630,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 					}
 					else
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY_NOPW',
 							$data['name'],
 							$data['sitename'],
@@ -633,9 +643,9 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 				elseif ($userActivation == 1 && !$bypassActivation && !$autoLogin)
 				{
 					// Set the link to activate the user account.
-					$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+					$data['activate'] = $base . Route::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
 
-					$emailSubject = JText::sprintf(
+					$emailSubject = Text::sprintf(
 						'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 						$data['name'],
 						$data['sitename']
@@ -643,7 +653,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 					if ($sendpassword)
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY',
 							$data['name'],
 							$data['sitename'],
@@ -655,7 +665,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 					}
 					else
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY_NOPW',
 							$data['name'],
 							$data['sitename'],
@@ -667,12 +677,12 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 				}
 				elseif ($autoLogin)
 				{
-					$emailSubject = JText::sprintf('COM_USERS_EMAIL_ACCOUNT_DETAILS', $data['name'], $data['sitename']);
+					$emailSubject = Text::sprintf('COM_USERS_EMAIL_ACCOUNT_DETAILS', $data['name'], $data['sitename']);
 					$useHtml = true;
 
 					if ($sendpassword)
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'PLG_FABRIK_FORM_JUSER_AUTO_LOGIN_BODY',
 							$data['name'],
 							$data['sitename'],
@@ -683,7 +693,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 					}
 					else
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'PLG_FABRIK_FORM_JUSER_AUTO_LOGIN_BODY',
 							$data['name'],
 							$data['sitename'],
@@ -695,7 +705,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 				}
 				elseif ($params->get('juser_bypass_accountdetails') != 1)
 				{
-					$emailSubject = JText::sprintf(
+					$emailSubject = Text::sprintf(
 						'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 						$data['name'],
 						$data['sitename']
@@ -703,7 +713,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 					if ($sendpassword)
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'COM_USERS_EMAIL_REGISTERED_BODY',
 							$data['name'],
 							$data['sitename'],
@@ -714,7 +724,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 					}
 					else
 					{
-						$emailBody = JText::sprintf(
+						$emailBody = Text::sprintf(
 							'COM_USERS_EMAIL_REGISTERED_BODY_NOPW',
 							$data['name'],
 							$data['sitename'],
@@ -797,7 +807,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 		if (count($sendEmail) > 0)
 		{
-			$now = new JDate;
+			$now = new Date;
 
 			// Build the query to add the messages
 			$q        = "INSERT INTO `#__messages` (`user_id_from`, `user_id_to`, `date_time`, `subject`, `message`)
@@ -808,7 +818,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 			{
 				$messages[] = "(" . $userId . ", " . $userId . ", '" . $now->toSql() . "', "
 					. $this->_db->q(FText::_('COM_USERS_MAIL_SEND_FAILURE_SUBJECT')) . ", "
-					. $this->_db->q(JText::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', false, $data['username'])) . ")";
+					. $this->_db->q(Text::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', false, $data['username'])) . ")";
 			}
 
 			$q .= implode(',', $messages);
@@ -819,7 +829,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 	/**
 	 * Check that username is not greater than 150 characters
 	 *
-	 * @param   JUser $user
+	 * @param   User $user
 	 * @param   array &$data
 	 *
 	 * @return array $data
@@ -831,14 +841,14 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 
 		if (strlen($username) > 150)
 		{
-			$username = JString::substr($username, 0, 150);
+			$username = StringHelper::substr($username, 0, 150);
 			$user->set('username', $username);
 		}
 
 		// Check that password is not greater than 100 characters @FIXME - 55 for j3.2
 		if (strlen($data['password']) > 100)
 		{
-			$data['password'] = JString::substr($data['password'], 0, 100);
+			$data['password'] = StringHelper::substr($data['password'], 0, 100);
 		}
 
 		return $data;
@@ -853,7 +863,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 	 */
 	protected function setActivation(&$data)
 	{
-		$usersConfig      = JComponentHelper::getParams('com_users');
+		$usersConfig      = ComponentHelper::getParams('com_users');
 		$params           = $this->getParams();
 		$bypassActivation = $params->get('juser_bypass_activation', false);
 		$autoLogin        = $params->get('juser_auto_login', false);
@@ -864,7 +874,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 		if (($userActivation == '1' || $userActivation == '2') && !$bypassActivation)
 		{
 			jimport('joomla.user.helper');
-			$data['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
+			$data['activation'] = JApplication::getHash(UserHelper::genRandomPassword());
 			$data['block']      = 1;
 		}
 
@@ -899,18 +909,18 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 	 */
 	protected function emailToAdmin($data)
 	{
-		$usersConfig = JComponentHelper::getParams('com_users');
+		$usersConfig = ComponentHelper::getParams('com_users');
 
 		// Send Notification mail to administrators
 		if (($usersConfig->get('useractivation') < 2) && ($usersConfig->get('mail_to_admin') == 1))
 		{
-			$emailSubject = JText::sprintf(
+			$emailSubject = Text::sprintf(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
 			);
 
-			$emailBodyAdmin = JText::sprintf(
+			$emailBodyAdmin = Text::sprintf(
 				'COM_USERS_EMAIL_REGISTERED_NOTIFICATION_TO_ADMIN_BODY',
 				$data['name'],
 				$data['username'],
@@ -1098,7 +1108,7 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 		{
 			$this->app->setUserState('rememberLogin', true);
 			$this->session->set($context . 'created', true);
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			return true;
 		}
@@ -1141,9 +1151,9 @@ class PlgFabrik_FormJUser extends plgFabrik_Form
 			$ok = false;
 		}
 
-		if (preg_match("#[<>\"'%;()&]#i", $post['username']) || JString::strlen(utf8_decode($post['username'])) < 2)
+		if (preg_match("#[<>\"'%;()&]#i", $post['username']) || StringHelper::strlen(utf8_decode($post['username'])) < 2)
 		{
-			$this->raiseError($formModel->errors, $this->usernamefield, JText::sprintf('VALID_AZ09', FText::_('Username'), 2));
+			$this->raiseError($formModel->errors, $this->usernamefield, Text::sprintf('VALID_AZ09', FText::_('Username'), 2));
 			$ok = false;
 		}
 

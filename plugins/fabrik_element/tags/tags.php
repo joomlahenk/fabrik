@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -85,20 +89,20 @@ class PlgFabrik_ElementTags extends PlgFabrik_ElementDatabasejoin
 			$tmp = $this->_getOptions($data, $repeatCounter, true);
 
 			// Requires chosen to work
-			JText::script('JGLOBAL_KEEP_TYPING');
-			JText::script('JGLOBAL_LOOKING_FOR');
-			JText::script('JGLOBAL_SELECT_SOME_OPTIONS');
-			JText::script('JGLOBAL_SELECT_AN_OPTION');
-			JText::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+			Text::script('JGLOBAL_KEEP_TYPING');
+			Text::script('JGLOBAL_LOOKING_FOR');
+			Text::script('JGLOBAL_SELECT_SOME_OPTIONS');
+			Text::script('JGLOBAL_SELECT_AN_OPTION');
+			Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
 
 			// Note: the Chosen js should be loaded via require statement
-			JHtml::_('stylesheet', 'jui/chosen.css', false, true);
+			HTMLHelper::_('stylesheet', 'jui/chosen.css', false, true);
 
 			$bootstrapClass = $params->get('bootstrap_class', 'span12');
 			$attr = 'multiple="multiple" class="inputbox ' . $bootstrapClass. ' small"';
-			$attr .= ' data-placeholder="' . JText::_('JGLOBAL_SELECT_SOME_OPTIONS') . '"';
+			$attr .= ' data-placeholder="' . Text::_('JGLOBAL_SELECT_SOME_OPTIONS') . '"';
 			$selected = $tmp;
-			$str[] = JHtml::_('select.genericlist', $tmp, $name, trim($attr), 'value', 'text', $selected, $id);
+			$str[] = HTMLHelper::_('select.genericlist', $tmp, $name, trim($attr), 'value', 'text', $selected, $id);
 
 			return implode("\n", $str);
 		}
@@ -390,7 +394,7 @@ class PlgFabrik_ElementTags extends PlgFabrik_ElementDatabasejoin
 				$jTagsTableName = $db->getPrefix() . 'tags';
 				if ($tagsTableName === '' || $tagsTableName === $jTagsTableName)
 				{
-					JTable::addIncludePath(COM_FABRIK_BASE . '/administrator/components/com_tags/tables');
+					Table::addIncludePath(COM_FABRIK_BASE . '/administrator/components/com_tags/tables');
 
 					$tagModel = new TagsModelTag;
 
@@ -561,7 +565,7 @@ class PlgFabrik_ElementTags extends PlgFabrik_ElementDatabasejoin
 		else
 		{
 			$url = 'index.php?option=com_' . $this->package . '&view=list&listid=' . $listId . '&limitstart' . $listId . '=0';
-			$url = JRoute::_($url);
+			$url = Route::_($url);
 		}
 		return $url;
 	}

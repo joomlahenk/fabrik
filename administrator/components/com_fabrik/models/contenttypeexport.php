@@ -18,6 +18,10 @@ require_once 'fabmodeladmin.php';
 require JPATH_COMPONENT_ADMINISTRATOR . '/models/databaseexporter.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contenttype.php';
 
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\Utilities\ArrayHelper;
 use \Joomla\Registry\Registry;
 
@@ -96,7 +100,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$listModel = ArrayHelper::getValue($config, 'listModel', JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel'));
+		$listModel = ArrayHelper::getValue($config, 'listModel', Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel'));
 
 		if (!is_a($listModel, 'FabrikAdminModelList'))
 		{
@@ -115,7 +119,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  mixed  A Form object on success, false on failure
 	 *
 	 * @since    3.3.5
 	 */
@@ -148,7 +152,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 			throw new UnexpectedValueException('no content type supplied');
 		}
 		$paths = self::addContentTypeIncludePath();
-		$path  = JPath::find($paths, $name);
+		$path  = Path::find($paths, $name);
 
 		if (!$path)
 		{
@@ -218,7 +222,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 		$contentType     = $this->doc->createElement('contenttype');
 		$tables          = FabrikContentTypHelper::iniTableXML($this->doc, $mainTable);
 
-		$label = JFile::makeSafe($formModel->getForm()->get('label'));
+		$label = File::makeSafe($formModel->getForm()->get('label'));
 		$name  = $this->doc->createElement('name', $label);
 		$contentType->appendChild($name);
 		$contentType->appendChild($this->version());
@@ -245,7 +249,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 		$xml  = $this->doc->saveXML();
 		$path = JPATH_COMPONENT_ADMINISTRATOR . '/models/content_types/' . $label . '.xml';
 
-		if (JFile::write($path, $xml))
+		if (File::write($path, $xml))
 		{
 			$form   = $formModel->getForm();
 			$params = $formModel->getParams();
@@ -491,7 +495,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 		$params  = $formModel->getParams();
 		$file    = $params->get('content_type_path');
 		$label   = 'content-type-' . $formModel->getForm()->get('label');
-		$label   = JFile::makeSafe($label);
+		$label   = File::makeSafe($label);
 		$zip     = new ZipArchive;
 		$zipFile = $this->config->get('tmp_path') . '/' . $label . '.zip';
 		$zipRes  = $zip->open($zipFile, ZipArchive::CREATE);
@@ -501,7 +505,7 @@ class FabrikAdminModelContentTypeExport extends FabModelAdmin
 			throw new Exception('unable to create ZIP');
 		}
 
-		if (!JFile::exists($file))
+		if (!File::exists($file))
 		{
 			throw new Exception('Content type file not found');
 		}

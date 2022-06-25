@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 use Fabrik\Helpers\ArrayHelper;
 use Twilio\Rest\Client;
 use Twilio\Exceptions\TwilioException;
@@ -23,7 +25,7 @@ use Twilio\Exceptions\TwilioException;
  * @since       3.0
  */
 
-class Twilio extends JObject
+class Twilio extends CMSObject
 {
 	/**
 	 * Send SMS
@@ -59,7 +61,7 @@ class Twilio extends JObject
 			}
 			catch (TwilioException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
 				return false;
 			}

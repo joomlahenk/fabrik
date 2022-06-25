@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/visualization.php';
@@ -44,7 +46,7 @@ class FabrikModelApprovals extends FabrikFEModelVisualization
 		{
 			$asfields = array();
 			$fields = array();
-			$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 			$listModel->setId($ids[$x]);
 			$item = $listModel->getTable();
 			$formModel = $listModel->getFormModel();
@@ -145,7 +147,7 @@ class FabrikModelApprovals extends FabrikFEModelVisualization
 		{
 			if ($listId == $input->getInt('listid'))
 			{
-				$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+				$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 				$listModel->setId($input->getInt('listid'));
 				$item = $listModel->getTable();
 				$db = $listModel->getDbo();

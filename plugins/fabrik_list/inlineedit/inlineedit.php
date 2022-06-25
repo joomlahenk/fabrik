@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -111,7 +113,7 @@ class PlgFabrik_ListInlineedit extends PlgFabrik_List
 
 		$params = $this->getParams();
 		$input = $this->app->input;
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($input->getInt('listid'));
 		$elements = $listModel->getElements('safecolname');
 		$pels = FabrikString::stripSpace($params->get('inline_editable_elements', ''));

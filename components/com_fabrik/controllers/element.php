@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -20,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  Fabrik
  * @since       1.5
  */
-class FabrikControllerElement extends JControllerLegacy
+class FabrikControllerElement extends BaseController
 {
 	/**
 	 * Is the view rendered from the J content plugin
@@ -50,8 +53,8 @@ class FabrikControllerElement extends JControllerLegacy
 	 */
 	public function display()
 	{
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$document = Factory::getDocument();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$viewName = $input->get('view', 'element', 'cmd');
 		$viewType = $document->getType();
@@ -77,7 +80,7 @@ class FabrikControllerElement extends JControllerLegacy
 	 */
 	public function save()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$listModel = $this->getModel('list', 'FabrikFEModel');
 		$listModel->setId($input->getInt('listid'));

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +23,7 @@ jimport('joomla.application.component.view');
  * @since       1.6
  */
 
-class FabrikViewHome extends JViewLegacy
+class FabrikViewHome extends HtmlView
 {
 	/**
 	 * Display the view

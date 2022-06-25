@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\String\StringHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -84,7 +88,7 @@ class PlgFabrik_FormSalesforce extends PlgFabrik_Form
 
 		if (empty($userName))
 		{
-			$config = JComponentHelper::getParams('com_fabrik');
+			$config = ComponentHelper::getParams('com_fabrik');
 			$userName = $config->get('fabrik_salesforce_username', '');
 			$password = $config->get('fabrik_salesforce_password', '');
 			$token = $config->get('fabrik_salesforce_token', '');
@@ -116,14 +120,14 @@ class PlgFabrik_FormSalesforce extends PlgFabrik_Form
 
 				$key = array_pop(explode('___', $key));
 
-				if (JString::strtolower($key) == JString::strtolower($name) && JString::strtolower($name) != 'id')
+				if (StringHelper::strtolower($key) == StringHelper::strtolower($name) && StringHelper::strtolower($name) != 'id')
 				{
 					$submission[$name] = $val;
 				}
 				else
 				{
 					// Check custom fields
-					if (JString::strtolower($key . '__c') == JString::strtolower($name) && JString::strtolower($name) != 'id')
+					if (StringHelper::strtolower($key . '__c') == StringHelper::strtolower($name) && StringHelper::strtolower($name) != 'id')
 					{
 						$submission[$name] = $val;
 					}
@@ -160,11 +164,11 @@ class PlgFabrik_FormSalesforce extends PlgFabrik_Form
 		{
 			if ($result->created == '' && $params->get('salesforce_allowupsert', 0))
 			{
-				$this->app->enqueueMessage(JText::sprintf(SALESFORCE_UPDATED, $updateObject));
+				$this->app->enqueueMessage(Text::sprintf(SALESFORCE_UPDATED, $updateObject));
 			}
 			else
 			{
-				$this->app->enqueueMessage(JText::sprintf(SALESFORCE_CREATED, $updateObject));
+				$this->app->enqueueMessage(Text::sprintf(SALESFORCE_CREATED, $updateObject));
 			}
 		}
 		else
@@ -185,7 +189,7 @@ class PlgFabrik_FormSalesforce extends PlgFabrik_Form
 			}
 			else
 			{
-				JError::raiseWarning(500, JText::sprintf(SALESFORCE_NOCREATE, $updateObject));
+				JError::raiseWarning(500, Text::sprintf(SALESFORCE_NOCREATE, $updateObject));
 			}
 		}
 	}

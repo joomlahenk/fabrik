@@ -12,11 +12,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
 	<div class="alert alert-info">
-		<span class="icon-puzzle"></span> <?php echo JText::_('COM_FABRIK_FIELD_CONTENT_TYPE_INTRO_LABEL'); ?>
+		<span class="icon-puzzle"></span> <?php echo Text::_('COM_FABRIK_FIELD_CONTENT_TYPE_INTRO_LABEL'); ?>
 	</div>
 	<hr />
 
@@ -34,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<input type="hidden" name="option" value="com_fabrik" />
 	<input type="hidden" name="task" value="form.doSave" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <style>
 	#contentTypeListPreview {

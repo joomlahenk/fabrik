@@ -11,6 +11,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
 use Fabrik\Helpers\Image;
 
 // Require the abstract plugin class
@@ -161,7 +162,7 @@ class PlgFabrik_ListDownload extends PlgFabrik_List
 						{
 							$thisFile = JPATH_SITE . '/' . $tmpFile;
 
-							if (JFile::exists($thisFile))
+							if (File::exists($thisFile))
 							{
 								$fileList[] = $thisFile;
 							}
@@ -258,7 +259,7 @@ class PlgFabrik_ListDownload extends PlgFabrik_List
 				{
 					foreach ($fileList as $tmpFile)
 					{
-						JFile::delete($tmpFile);
+						File::delete($tmpFile);
 					}
 				}
 
@@ -273,7 +274,7 @@ class PlgFabrik_ListDownload extends PlgFabrik_List
 						header('Content-Length: ' . filesize($zipFile));
 						header('Content-Disposition: attachment; filename="' . $zipFileBasename . '.zip"');
 						echo file_get_contents($zipFile);
-						JFile::delete($zipFile);
+						File::delete($zipFile);
 						exit;
 					}
 					else
@@ -386,7 +387,7 @@ class PlgFabrik_ListDownload extends PlgFabrik_List
 				return false;
 			}
 
-			JFile::delete($p);
+			File::delete($p);
 			$p .= '.pdf';
 
 			$url        = COM_FABRIK_LIVESITE . 'index.php?option=com_fabrik&view=details&formid=' . $formId . '&rowid=' . $rowId . '&format=pdf';
@@ -398,7 +399,7 @@ class PlgFabrik_ListDownload extends PlgFabrik_List
 
 			$pdfContent = file_get_contents($url);
 
-			JFile::write($p, $pdfContent);
+			File::write($p, $pdfContent);
 
 			$pdfFiles[] = $p;
 		}

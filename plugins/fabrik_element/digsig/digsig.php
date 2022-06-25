@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Profiler\Profiler;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.model');
@@ -95,17 +97,17 @@ class PlgFabrik_ElementDigsig extends PlgFabrik_Element
 					. 'format=raw&amp;element_id=' . $elementId . '&amp;formid=' . $formId . '&amp;rowid=' . $rowId
 					. '&amp;repeatcount=0&amp;pdf_secret=' . $pdfSecret;
 
-				$layout = new JLayoutFile('fabrik-element-digsig-details-pdf', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
+				$layout = new FileLayout('fabrik-element-digsig-details-pdf', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
 			}
 			else
 			{
-				$layout = new JLayoutFile('fabrik-element-digsig-details', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
+				$layout = new FileLayout('fabrik-element-digsig-details', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
 			}
 
 		}
 		else
 		{
-			$layout = new JLayoutFile('fabrik-element-digsig-form', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
+			$layout = new FileLayout('fabrik-element-digsig-form', $basePath, array('debug' => false, 'component' => 'com_fabrik', 'client' => 'site'));
 		}
 
 		return $layout->render($layoutData);
@@ -122,7 +124,7 @@ class PlgFabrik_ElementDigsig extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         if ($this->dataConsideredEmpty($data, 0))

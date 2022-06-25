@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -113,7 +115,7 @@ class PlgFabrik_ListOrder extends PlgFabrik_List
 	{
 		// Get list model
 		/** @var FabrikFEModelList $model */
-		$model = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$model = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$input = $this->app->input;
 		$model->setId($input->getInt('listid'));
 		$db = $model->getDb();

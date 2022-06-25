@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
 use DrewM\MailChimp\MailChimp;
 
 // Require the abstract plugin class
@@ -116,7 +118,7 @@ class PlgFabrik_FormMailchimp extends PlgFabrik_Form
 				else
 				{
 					// API failed, so don't show a checkbox
-					$this->html = JText::_('PLG_FORM_MAILCHIMP_API_FAIL');
+					$this->html = Text::_('PLG_FORM_MAILCHIMP_API_FAIL');
 
 					// if in debug, give some feedback
 					if (FabrikHelperHTML::isDebug(true))
@@ -252,7 +254,7 @@ class PlgFabrik_FormMailchimp extends PlgFabrik_Form
 		}
 		else
 		{
-			$filter = JFilterInput::getInstance();
+			$filter = InputFilter::getInstance();
 			$post = $filter->clean($_POST, 'array');
 			$subscribe = array_key_exists('fabrik_mailchimp_signup', $post);
 		}

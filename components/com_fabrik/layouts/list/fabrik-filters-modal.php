@@ -12,6 +12,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 $d = $displayData;
 
 $cols = array();
@@ -34,7 +36,7 @@ endforeach;
 
 ?>
 <div data-modal-state-container style="display:<?php echo $showClearFilters ? '' : 'none'; ?>">
-	<?php echo JText::_('COM_FABRIK_FILTERS_ACTIVE'); ?>
+	<?php echo Text::_('COM_FABRIK_FILTERS_ACTIVE'); ?>
 	<span data-modal-state-display>
 	<?php $layout = FabrikHelperHTML::getLayout('list.fabrik-filters-modal-state-label');
 

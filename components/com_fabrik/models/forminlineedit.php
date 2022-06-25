@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 require_once 'fabrikmodelform.php';
 
@@ -35,7 +39,7 @@ class FabrikFEModelFormInlineEdit extends FabModelForm
 	 */
 	public function render()
 	{
-		$this->formModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$this->formModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$input = $this->app->input;
 //		$j3 = FabrikWorker::j3();
 //		$j3 = true;
@@ -77,7 +81,7 @@ class FabrikFEModelFormInlineEdit extends FabModelForm
 			{
 				$onLoad[] = "o.select();";
 				$onLoad[] = "o.focus();";
-				$onLoad[] = "Fabrik.inlineedit_$elementId.token = '" . JSession::getFormToken() . "';";
+				$onLoad[] = "Fabrik.inlineedit_$elementId.token = '" . Session::getFormToken() . "';";
 			}
 
 			$eCounter++;
@@ -97,7 +101,7 @@ class FabrikFEModelFormInlineEdit extends FabModelForm
 	 */
 	protected function inlineEditMarkUp()
 	{
-		// @TODO JLayout this
+		// @TODO LayoutInterface this
 		$input = $this->app->input;
 		$html = array();
 		$html[] = '<div class="modal">';

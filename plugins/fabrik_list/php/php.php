@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-list.php';
 
@@ -122,7 +125,7 @@ class PlgFabrik_ListPhp extends plgFabrik_List
 		// We don't use $model, but user code may as it used to be an arg, so fetch it
 		$model = $this->getModel();
 		$params = $this->getParams();
-		$f = JFilterInput::getInstance();
+		$f = InputFilter::getInstance();
 		$file = $f->clean($params->get('table_php_file'), 'CMD');
 
 		if ($file == -1 || $file == '')
@@ -162,7 +165,7 @@ class PlgFabrik_ListPhp extends plgFabrik_List
             $model = $this->getModel();
             $model->setRenderContext($model->getId());
             $context = 'com_' . $package . '.list' . $model->getRenderContext() . '.showmsg';
-            $session = JFactory::getSession();
+            $session = Factory::getSession();
             $session->set($context, false);
         }
 

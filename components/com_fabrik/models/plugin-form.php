@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Profiler\Profiler;
 use Fabrik\Helpers\LayoutFile;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
@@ -210,7 +212,7 @@ class PlgFabrik_Form extends FabrikPlugin
 	 */
 	public function getProcessData()
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		JDEBUG ? $profiler->mark("getProcessData: start") : null;
 
 		$model = $this->getModel();
@@ -233,7 +235,7 @@ class PlgFabrik_Form extends FabrikPlugin
 	 */
 	public function getEmailData()
 	{
-		$profiler = JProfiler::getInstance('Application');
+		$profiler = Profiler::getInstance('Application');
 		JDEBUG ? $profiler->mark("getEmailData: start") : null;
 
 		/**
@@ -533,7 +535,7 @@ class PlgFabrik_Form extends FabrikPlugin
 	}
 
 	/**
-	 * Get the element's JLayout file
+	 * Get the element's LayoutInterface file
 	 * Its actually an instance of LayoutFile which inverses the ordering added include paths.
 	 * In LayoutFile the addedPath takes precedence over the default paths, which makes more sense!
 	 *

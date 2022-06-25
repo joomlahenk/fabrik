@@ -11,12 +11,17 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.file');
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
 // Load front end language file as well
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_fabrik', JPATH_BASE . '/components/com_fabrik');
 
 if (!defined('COM_FABRIK_FRONTEND'))
@@ -32,13 +37,13 @@ $origLayout = $input->get('layout');
 require_once COM_FABRIK_FRONTEND . '/views/form/view.html.php';
 $input->set('layout', $origLayout);
 
-JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 
 $formId	= (int) $params->get('formid', 1);
 $rowid = (int) $params->get('row_id', 0);
 $layout = $params->get('template', '');
-$usersConfig = JComponentHelper::getParams('com_fabrik');
+$usersConfig = ComponentHelper::getParams('com_fabrik');
 $usersConfig->set('rowid', $rowid);
 
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');

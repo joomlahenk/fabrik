@@ -12,7 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-echo JHtml::_('tabs.panel', FText::_('COM_FABRIK_PUBLISHING'), 'settings');
+use Joomla\CMS\HTML\HTMLHelper;
+
+echo HTMLHelper::_('tabs.panel', FText::_('COM_FABRIK_PUBLISHING'), 'settings');
 $panels = array(
 	array('heading' => FText::_('COM_FABRIK_ELEMENT_LABEL_PUBLISHING_DETAILS'),
 		'fieldset' => 'publishing'),
@@ -24,10 +26,10 @@ $panels = array(
 		'fieldset' => 'tips')
 );
 
-echo JHtml::_('sliders.start', 'element-sliders-publishingsettings-' . $this->item->id, array('useCookie' => 1));
+echo HTMLHelper::_('sliders.start', 'element-sliders-publishingsettings-' . $this->item->id, array('useCookie' => 1));
 
 foreach ($panels as $panel) :
-	echo JHtml::_('sliders.panel', $panel['heading'], $panel['fieldset'] . '-details');
+	echo HTMLHelper::_('sliders.panel', $panel['heading'], $panel['fieldset'] . '-details');
 			?>
 			<fieldset class="adminform">
 				<ul class="adminformlist">
@@ -41,4 +43,4 @@ foreach ($panels as $panel) :
 			</fieldset>
 <?php
 endforeach;
-echo JHtml::_('sliders.end');
+echo HTMLHelper::_('sliders.end');

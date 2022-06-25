@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/visualization.php';
@@ -38,7 +41,7 @@ class FabrikModelFusion_Gantt_Chart extends FabrikFEModelVisualization
 		}
 
 		// Add JS to page header
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript($this->srcBase . "fusion_gantt_chart/libs/FCCharts/FusionCharts.js");
 
 		$params = $this->getParams();
@@ -60,7 +63,7 @@ class FabrikModelFusion_Gantt_Chart extends FabrikFEModelVisualization
 
 		// Setting Param string
 		$listId = $params->get('fusion_gantt_chart_table');
-		$listModel = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$listModel = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$listModel->setId($listId);
 		$formModel = $listModel->getFormModel();
 		$db = $listModel->getDB();
@@ -130,8 +133,8 @@ class FabrikModelFusion_Gantt_Chart extends FabrikFEModelVisualization
 					continue;
 				}
 
-				$startDate = JFactory::getDate($d->$startRaw);
-				$endDate = isset($d->$endRaw) ? JFactory::getDate($d->$endRaw) : $startDate;
+				$startDate = Factory::getDate($d->$startRaw);
+				$endDate = isset($d->$endRaw) ? Factory::getDate($d->$endRaw) : $startDate;
 
 				$strParam = "start=" . $startDate->format('Y/m/d') . ";end=" . $endDate->format('Y/m/d') . ";";
 				$strParam .= "processId={$processId};";
@@ -169,9 +172,9 @@ class FabrikModelFusion_Gantt_Chart extends FabrikFEModelVisualization
 				}
 				else
 				{
-					if (JFactory::getDate($d->$startRaw)->toUnix() < $minDate->toUnix())
+					if (Factory::getDate($d->$startRaw)->toUnix() < $minDate->toUnix())
 					{
-						$minDate = JFactory::getDate($d->$startRaw);
+						$minDate = Factory::getDate($d->$startRaw);
 					}
 
 					if ($endDate->toUnix() > $maxDate->toUnix())

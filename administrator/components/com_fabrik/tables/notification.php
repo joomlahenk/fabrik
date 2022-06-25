@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+
 /**
  * Notification Fabrik Table
  *
@@ -18,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Fabrik
  * @since       3.0
  */
-class FabrikTableFormGroup extends JTable
+class FabrikTableFormGroup extends Table
 {
 	/**
 	 * Constructor

@@ -10,7 +10,9 @@ namespace Fabrik\Helpers\Image;
 
 defined('_JEXEC') or die('Restricted access');
 
-use \JHtml;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use \HTMLHelper;
 use \Fabrik\Helpers\StringHelper;
 use \NewMagickWand;
 
@@ -190,7 +192,7 @@ class Imageim extends Image
 		}
 
 		$source = $this->imageCreateFrom($source);
-		$app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Rotates the image
 		$rotate = imagerotate($source, $degrees, 0);

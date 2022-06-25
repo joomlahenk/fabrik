@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutInterface;
+use Joomla\CMS\Filesystem\File;
 use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.model');
@@ -217,7 +220,7 @@ class PlgFabrik_List extends FabrikPlugin
 	 */
 	public function onLoadJavascriptInstance($args)
 	{
-		JText::script('COM_FABRIK_PLEASE_SELECT_A_ROW');
+		Text::script('COM_FABRIK_PLEASE_SELECT_A_ROW');
 
 		return true;
 	}
@@ -377,7 +380,7 @@ class PlgFabrik_List extends FabrikPlugin
 		$ext = FabrikHelperHTML::isDebug() ? '.js' : '-min.js';
 		$file = 'plugins/fabrik_list/' . $p . '/' . $p . $ext;
 
-		if (JFile::exists(JPATH_SITE . '/' . $file))
+		if (File::exists(JPATH_SITE . '/' . $file))
 		{
 			return array('FbList' . ucfirst(($p)) => $file);
 		}
@@ -449,7 +452,7 @@ class PlgFabrik_List extends FabrikPlugin
 	}
 
 	/**
-	 * Get the element's JLayout file
+	 * Get the element's LayoutInterface file
 	 * Its actually an instance of LayoutFile which inverses the ordering added include paths.
 	 * In LayoutFile the addedPath takes precedence over the default paths, which makes more sense!
 	 *

@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+
 require_once 'fabmodeladmin.php';
 
 /**
@@ -31,9 +34,9 @@ class FabrikAdminModelImport extends FabModelAdmin
 	protected $text_prefix = 'COM_FABRIK_IMPORT';
 
 	/**
-	 * JTables to import
+	 * Tables to import
 	 *
-	 * @var JTables
+	 * @var Tables
 	 */
 	protected $tables = array();
 
@@ -44,7 +47,7 @@ class FabrikAdminModelImport extends FabModelAdmin
 	 * @param   string $prefix A prefix for the table class name. Optional.
 	 * @param   array  $config Configuration array for model. Optional.
 	 *
-	 * @return  JTable    A database object
+	 * @return  Table    A database object
 	 */
 	public function getTable($type = 'List', $prefix = 'FabrikTable', $config = array())
 	{
@@ -65,7 +68,7 @@ class FabrikAdminModelImport extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed    A JForm object on success, false on failure
+	 * @return  mixed    A Form object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{

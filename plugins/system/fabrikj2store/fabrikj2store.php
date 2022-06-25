@@ -9,7 +9,11 @@
  */
 defined('_JEXEC') or die();
 
-class plgSystemFabrikj2store extends JPlugin
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Utilities\ArrayHelper;
+
+class plgSystemFabrikj2store extends CMSPlugin
 {
 
 	/**
@@ -76,10 +80,10 @@ class plgSystemFabrikj2store extends JPlugin
 		}
 		if (!isset ($sets[$key]))
 		{
-			JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+			BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 
 			/** @var FabrikFEModelList $listModel */
-			$listModel = JModelLegacy::getInstance('List', 'FabrikFEModel');
+			$listModel = BaseDatabaseModel::getInstance('List', 'FabrikFEModel');
 			$listModel->setId($listId);
 			$formModel = $listModel->getFormModel();
 			$formModel->setRowId($product->product_source_id);
@@ -97,7 +101,7 @@ class plgSystemFabrikj2store extends JPlugin
 			$context            = new stdClass;
 			$context->title     = $w->parseMessageForPlaceHolder($plugInParams->get('j2store_product_name'), $row);
 			$context->published = $w->parseMessageForPlaceHolder($plugInParams->get('j2store_enabled'), $row);
-			$objectRow          = JArrayHelper::toObject($row);
+			$objectRow          = ArrayHelper::toObject($row);
 			$context->viewLink  = $listModel->viewDetailsLink($objectRow);
 			$context->editLink  = $listModel->editLink($objectRow);
 			$context->id        = $objectRow->__pk_val;

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -21,7 +23,7 @@ jimport('joomla.application.component.view');
  * @since       3.0
  */
 
-class FabrikViewNotification extends JViewLegacy
+class FabrikViewNotification extends HtmlView
 {
 	/**
 	 * Still a wip access the view of subscribed notifications with url:

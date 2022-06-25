@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
@@ -58,7 +60,7 @@ class FabrikFEModelGroup extends FabModel
 	/**
 	 * Group table
 	 *
-	 * @var JTable
+	 * @var Table
 	 */
 	protected $group = null;
 	/**
@@ -185,7 +187,7 @@ class FabrikFEModelGroup extends FabModel
 	{
 		if (is_null($this->group))
 		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+			Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 			$this->group = FabTable::getInstance('Group', 'FabrikTable');
 			$this->group->load($this->getId());
 		}
@@ -241,7 +243,7 @@ class FabrikFEModelGroup extends FabModel
 		{
 			$formIds    = $this->getFormsIamIn();
 			$formId     = empty($formIds) ? 0 : $formIds[0];
-			$this->form = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+			$this->form = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 			$this->form->setId($formId);
 			$this->form->getForm();
 			$this->form->getlistModel();
@@ -778,7 +780,7 @@ class FabrikFEModelGroup extends FabModel
 
 		if (is_null($this->joinModel))
 		{
-			$this->joinModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Join', 'FabrikFEModel');
+			$this->joinModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Join', 'FabrikFEModel');
 			$this->joinModel->setId($group->join_id);
 			$js = $this->getListModel()->getJoins();
 
@@ -1594,8 +1596,8 @@ class FabrikFEModelGroup extends FabModel
 			}
 		}
 
-		//JError::raiseWarning(E_ERROR, JText::sprintf('COM_FABRIK_JOINED_DATA_BUT_FK_NOT_PUBLISHED', $fullFk));
-		\Joomla\CMS\Factory::getApplication()->enqueueMessage(JText::sprintf('COM_FABRIK_JOINED_DATA_BUT_FK_NOT_PUBLISHED', $fullFk), 'error');
+		//JError::raiseWarning(E_ERROR, Text::sprintf('COM_FABRIK_JOINED_DATA_BUT_FK_NOT_PUBLISHED', $fullFk));
+		\Joomla\CMS\Factory::getApplication()->enqueueMessage(Text::sprintf('COM_FABRIK_JOINED_DATA_BUT_FK_NOT_PUBLISHED', $fullFk), 'error');
 
 		return false;
 	}

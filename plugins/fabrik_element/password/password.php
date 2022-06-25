@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\UserHelper;
+
 /**
  * Plugin element to render 2 fields to capture and confirm a password
  *
@@ -59,8 +62,8 @@ class PlgFabrik_ElementPassword extends PlgFabrik_Element
 	public function storeDatabaseFormat($val, $data)
 	{
 		jimport('joomla.user.helper');
-		$salt  = JUserHelper::genRandomPassword(32);
-		$crypt = JUserHelper::getCryptedPassword($val, $salt);
+		$salt  = UserHelper::genRandomPassword(32);
+		$crypt = UserHelper::getCryptedPassword($val, $salt);
 		$val   = $crypt . ':' . $salt;
 
 		return $val;
@@ -264,11 +267,11 @@ class PlgFabrik_ElementPassword extends PlgFabrik_Element
 		$opts->ajax_validation = $formParams->get('ajax_validations') === '1';
 		$opts->progressbar     = FabrikWorker::j3() ? true : false;
 
-		JText::script('PLG_ELEMENT_PASSWORD_STRONG');
-		JText::script('PLG_ELEMENT_PASSWORD_MEDIUM');
-		JText::script('PLG_ELEMENT_PASSWORD_WEAK');
-		JText::script('PLG_ELEMENT_PASSWORD_TYPE_PASSWORD');
-		JText::script('PLG_ELEMENT_PASSWORD_MORE_CHARACTERS');
+		Text::script('PLG_ELEMENT_PASSWORD_STRONG');
+		Text::script('PLG_ELEMENT_PASSWORD_MEDIUM');
+		Text::script('PLG_ELEMENT_PASSWORD_WEAK');
+		Text::script('PLG_ELEMENT_PASSWORD_TYPE_PASSWORD');
+		Text::script('PLG_ELEMENT_PASSWORD_MORE_CHARACTERS');
 
 		return array('FbPassword', $id, $opts);
 	}

@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Fabrik\Helpers\Stripe;
 use Fabrik\Helpers\Worker;
 use Fabrik\Helpers\StringHelper;
@@ -64,7 +68,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 
 		if (!Stripe::setupStripe($params, 'stripe'))
 		{
-			$this->app->enqueueMessage(JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL'));
+			$this->app->enqueueMessage(Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL'));
 
 			return false;
 		}
@@ -73,7 +77,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		$listModel  = $formModel->getListModel();
 		$input      = $this->app->input;
 		$this->data = $this->getProcessData();
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 
 		if (!$this->shouldProcess('stripe_condition', null, $params))
 		{
@@ -307,14 +311,14 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				// Too many requests made to the API too quickly
 				$logErrMsg = $e->getMessage();
 				$logErrType = 'fabrik.form.stripe.charge.err';
-				$chargeErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_RATE_LIMITED');
+				$chargeErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_RATE_LIMITED');
 			}
 			catch (\Stripe\Error\InvalidRequest $e)
 			{
 				// Invalid parameters were supplied to Stripe's API
 				$logErrMsg = $e->getMessage();
 				$logErrType = 'fabrik.form.stripe.charge.err';
-				$chargeErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
+				$chargeErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
 			}
 			catch (\Stripe\Error\Authentication $e)
 			{
@@ -322,14 +326,14 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				// (maybe you changed API keys recently)
 				$logErrMsg = $e->getMessage();
 				$logErrType = 'fabrik.form.stripe.charge.err';
-				$chargeErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_AUTHENTICATION');
+				$chargeErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_AUTHENTICATION');
 			}
 			catch (\Stripe\Error\ApiConnection $e)
 			{
 				// Network communication with Stripe failed
 				$logErrMsg = $e->getMessage();
 				$logErrType = 'fabrik.form.stripe.charge.err';
-				$chargeErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_NETWORK');
+				$chargeErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_NETWORK');
 			}
 			catch (\Stripe\Error\Base $e)
 			{
@@ -337,14 +341,14 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				// yourself an email
 				$logErrMsg = $e->getMessage();
 				$logErrType = 'fabrik.form.stripe.charge.err';
-				$chargeErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
+				$chargeErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
 			}
 			catch (Exception $e)
 			{
 				// Something else happened, completely unrelated to Stripe
 				$logErrMsg = $e->getMessage();
 				$logErrType = 'fabrik.form.stripe.charge.err';
-				$chargeErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
+				$chargeErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
 			}
 
 			if (!empty($chargeErrMsg))
@@ -453,7 +457,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		$params = $this->getParams();
 		$formModel = $this->getModel();
 		$listModel = $formModel->getListModel();
-		$userId    = JFactory::getUser()->get('id');
+		$userId    = Factory::getUser()->get('id');
 
 		if (isset($this->charge))
 		{
@@ -538,7 +542,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 
 		if (!Stripe::setupStripe($params, 'stripe'))
 		{
-			$this->app->enqueueMessage(JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL'));
+			$this->app->enqueueMessage(Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL'));
 
 			return false;
 		}
@@ -547,7 +551,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		$input      = $this->app->input;
 		$this->data = $formModel->data;
 
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 
 		$opts = new stdClass();
 
@@ -588,7 +592,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		$opts->ccOnFree = $params->get('stripe_coupons_cc_on_free', '0') === '1';
 		$opts->renderOrder = $this->renderOrder;
 
-		$this->couponMsg  = JText::_('PLG_FORM_STRIPE_COUPON_NO_COUPON_TEXT');
+		$this->couponMsg  = Text::_('PLG_FORM_STRIPE_COUPON_NO_COUPON_TEXT');
 		$currencyCode       = $params->get('stripe_currency_code', 'USD');
 		$currencyCode       = $w->parseMessageForPlaceHolder($currencyCode, $this->data);
 		$opts->currencyCode = $currencyCode;
@@ -617,7 +621,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			{
 				if (class_exists('NumberFormatter'))
 				{
-					$formatter                   = new NumberFormatter(JFactory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
+					$formatter                   = new NumberFormatter(Factory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
 					$formModel->data[$totalKey] = $formatter->formatCurrency($amount, $currencyCode);
 				}
 				else
@@ -660,7 +664,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				{
 					if (class_exists('NumberFormatter'))
 					{
-						$formatter                   = new NumberFormatter(JFactory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
+						$formatter                   = new NumberFormatter(Factory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
 						$formModel->data[$amountKey] = $formatter->formatCurrency($amount, $currencyCode);
 					}
 					else
@@ -766,7 +770,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				// Too many requests made to the API too quickly
 				$logErrMsg    = $e->getMessage();
 				$logErrType   = 'fabrik.form.stripe.customer.err';
-				$customerErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_RATE_LIMITED');
+				$customerErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_RATE_LIMITED');
 			}
 			catch (\Stripe\Error\InvalidRequest $e)
 			{
@@ -783,14 +787,14 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				// (maybe you changed API keys recently)
 				$logErrMsg    = $e->getMessage();
 				$logErrType   = 'fabrik.form.stripe.customer.err';
-				$customerErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_AUTHENTICATION');
+				$customerErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_AUTHENTICATION');
 			}
 			catch (\Stripe\Error\ApiConnection $e)
 			{
 				// Network communication with Stripe failed
 				$logErrMsg    = $e->getMessage();
 				$logErrType   = 'fabrik.form.stripe.customer.err';
-				$customerErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_NETWORK');
+				$customerErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_NETWORK');
 			}
 			catch (\Stripe\Error\Base $e)
 			{
@@ -798,14 +802,14 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				// yourself an email
 				$logErrMsg    = $e->getMessage();
 				$logErrType   = 'fabrik.form.stripe.customer.err';
-				$customerErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
+				$customerErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
 			}
 			catch (Exception $e)
 			{
 				// Something else happened, completely unrelated to Stripe
 				$logErrMsg    = $e->getMessage();
 				$logErrType   = 'fabrik.form.stripe.customer.err';
-				$customerErrMsg = JText::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
+				$customerErrMsg = Text::_('PLG_FORM_STRIPE_ERROR_INTERNAL');
 			}
 
 
@@ -847,14 +851,14 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 				);
 				$shim['fabrik/form'] = $dep;
 				//FabrikHelperHTML::script('https://checkout.stripe.com/checkout.js');
-				JText::script('PLG_FORM_STRIPE_CUSTOMERS_UPDATE_CC_UPDATED');
+				Text::script('PLG_FORM_STRIPE_CUSTOMERS_UPDATE_CC_UPDATED');
 			}
 			else
 			{
 				$opts->updateCheckout = false;
 			}
 
-			JText::script('PLG_FORM_STRIPE_CALCULATING');
+			Text::script('PLG_FORM_STRIPE_CALCULATING');
 
 			$layout     = $this->getLayout('existing-customer');
 			$layoutData = new stdClass();
@@ -864,7 +868,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			$layoutData->card = $card;
 			$layoutData->amount = $amount;
 			$layoutData->currencyCode = $currencyCode;
-			$layoutData->langTag = JFactory::getLanguage()->getTag();
+			$layoutData->langTag = Factory::getLanguage()->getTag();
 			$layoutData->item = $item;
 			$layoutData->showCoupon = $this->useCoupon();
 			$layoutData->couponMsg = $this->couponMsg;
@@ -879,7 +883,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			$layoutData->testMode     = $this->isTestMode();
 			$layoutData->amount       = $amount;
 			$layoutData->currencyCode = $currencyCode;
-			$layoutData->langTag      = JFactory::getLanguage()->getTag();
+			$layoutData->langTag      = Factory::getLanguage()->getTag();
 			$layoutData->bottomText   = FText::_($params->get('stripe_charge_bottom_text_new', 'PLG_FORM_STRIPE_CHARGE_BOTTOM_TEXT_NEW'));
 			$layoutData->bottomText   = $w->parseMessageForPlaceHolder($layoutData->bottomText, $this->data);
 			$layoutData->item         = $item;
@@ -1420,13 +1424,13 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 
 		$ret                  = new \StdClass;
 		$ret->ok              = '0';
-		$ret->msg             = JText::_('PLG_FORM_STRIPE_COUPON_ERROR');
+		$ret->msg             = Text::_('PLG_FORM_STRIPE_COUPON_ERROR');
 		$ret->discount_amount = '';
 		$ret->discount_type   = '2';
 
 		if (empty($value))
 		{
-			$ret->msg = JText::_('PLG_FORM_STRIPE_COUPON_NO_COUPON_TEXT');
+			$ret->msg = Text::_('PLG_FORM_STRIPE_COUPON_NO_COUPON_TEXT');
 		}
 		else if (!empty($couponTable))
 		{
@@ -1447,7 +1451,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			$useEndDate = !empty($endDateField);
 			$useDateRange = $useStartDate && $useEndDate;
 
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select($db->quoteName($couponField) . ' AS `coupon_code`');
 			$query->select($db->quoteName($discountField) . ' AS `discount`');
@@ -1496,7 +1500,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			}
 			catch (Exception $e)
 			{
-				$ret->msg = JText::_('PLG_FORM_STRIPE_COUPON_ERROR');
+				$ret->msg = Text::_('PLG_FORM_STRIPE_COUPON_ERROR');
 				$ret->ok  = '0';
 
 				return $ret;
@@ -1504,7 +1508,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 
 			if (empty($coupon))
 			{
-				$ret->msg = JText::_('PLG_FORM_STRIPE_COUPON_NOSUCH');
+				$ret->msg = Text::_('PLG_FORM_STRIPE_COUPON_NOSUCH');
 				$ret->ok  = '0';
 
 				return $ret;
@@ -1514,7 +1518,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			{
 				if ((int) $coupon->limit !== 0 && (int) $coupon->used >= (int) $coupon->limit)
 				{
-					$ret->msg = JText::_('PLG_FORM_STRIPE_COUPON_LIMIT_REACHED');
+					$ret->msg = Text::_('PLG_FORM_STRIPE_COUPON_LIMIT_REACHED');
 					$ret->ok  = '0';
 
 					return $ret;
@@ -1522,7 +1526,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 			}
 
 			$ret->ok              = '1';
-			$ret->msg             = JText::_('PLG_FORM_STRIPE_COUPON_OK');
+			$ret->msg             = Text::_('PLG_FORM_STRIPE_COUPON_OK');
 			$ret->discount_amount = $coupon->discount;
 
 			if ($useType)
@@ -1582,7 +1586,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		$amount      = $input->get('amount', '', 'string');
 		$formId      = $input->get('formid', '', 'string');
 		$renderOrder = $input->get('renderOrder', '', 'string');
-		$formModel   = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel   = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$params         = $formModel->getParams();
 		$params         = $this->setParams($params, $renderOrder);
@@ -1620,7 +1624,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		{
 			$currencyCode           = $params->get('stripe_currency_code', 'USD');
 			$currencyCode           = strtolower($currencyCode);
-			$formatter              = new NumberFormatter(JFactory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
+			$formatter              = new NumberFormatter(Factory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
 			$coupon->display_amount = $formatter->formatCurrency($amountUnMultiplied, $currencyCode);
 		}
 		else
@@ -1645,7 +1649,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		$couponCode  = $input->get('coupon', '', 'string');
 		$formId      = $input->get('formid', '', 'string');
 		$renderOrder = $input->get('renderOrder', '', 'string');
-		$formModel   = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel   = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$params         = $formModel->getParams();
 		$params         = $this->setParams($params, $renderOrder);
@@ -1687,7 +1691,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		}
 		else
 		{
-			$response->msg = JText::_('PLG_FORM_STRIPE_COUPON_NO_COUPON_TEXT');
+			$response->msg = Text::_('PLG_FORM_STRIPE_COUPON_NO_COUPON_TEXT');
 		}
 
 		$amountUnMultiplied = $response->stripe_amount / $costMultiplier;
@@ -1696,7 +1700,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 		if (class_exists('NumberFormatter'))
 		{
 			$currencyCode           = strtolower($currencyCode);
-			$formatter              = new NumberFormatter(JFactory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
+			$formatter              = new NumberFormatter(Factory::getLanguage()->getTag(), NumberFormatter::CURRENCY);
 			$response->display_amount = $formatter->formatCurrency($amountUnMultiplied, $currencyCode);
 		}
 		else
@@ -1712,7 +1716,7 @@ class PlgFabrik_FormStripe extends PlgFabrik_Form
 	{
 		$formId      = $this->app->input->get('formid', '', 'string');
 		$renderOrder = $this->app->input->get('renderOrder', '', 'string');
-		$formModel   = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel   = BaseDatabaseModel::getInstance('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$params      = $formModel->getParams();
 		$params      = $this->setParams($params, $renderOrder);

@@ -12,6 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormRule;
 use Joomla\Utilities\ArrayHelper;
 
 require_once 'fabmodeladmin.php';
@@ -39,7 +44,7 @@ class FabrikAdminModelVisualization extends FabModelAdmin
 	 * @param   string  $prefix  A prefix for the table class name. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  JTable	A database object
+	 * @return  Table	A database object
 	 */
 	public function getTable($type = 'Visualization', $prefix = 'FabrikTable', $config = array())
 	{
@@ -54,7 +59,7 @@ class FabrikAdminModelVisualization extends FabModelAdmin
 	 * @param   array  $data      Data for the form.
 	 * @param   bool   $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  mixed  A Form object on success, false on failure
 	 *
 	 * @since	1.6
 	 */
@@ -112,7 +117,7 @@ class FabrikAdminModelVisualization extends FabModelAdmin
 		}
 
 		$input->set('view', 'visualization');
-		JPluginHelper::importPlugin('fabrik_visualization', $plugin);
+		PluginHelper::importPlugin('fabrik_visualization', $plugin);
 
 		if ($plugin == '')
 		{
@@ -131,14 +136,14 @@ class FabrikAdminModelVisualization extends FabModelAdmin
 	/**
 	 * Method to validate the form data.
 	 *
-	 * @param   JForm   $form   The form to validate against.
+	 * @param   Form   $form   The form to validate against.
 	 * @param   array   $data   The data to validate.
 	 * @param   string  $group  The name of the field group to validate.
 	 *
 	 * @return  mixed  Array of filtered data if valid, false otherwise.
 	 *
-	 * @see     JFormRule
-	 * @see     JFilterInput
+	 * @see     FormRule
+	 * @see     InputFilter
 	 */
 	public function validate($form, $data, $group = null)
 	{

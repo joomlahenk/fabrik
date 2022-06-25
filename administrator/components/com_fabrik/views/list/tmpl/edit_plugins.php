@@ -12,8 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
-<?php echo JHtml::_('tabs.panel',FText::_('COM_FABRIK_GROUP_LABEL_PLUGINS_DETAILS'), 'list-plugins-panel');?>
+<?php echo HTMLHelper::_('tabs.panel',FText::_('COM_FABRIK_GROUP_LABEL_PLUGINS_DETAILS'), 'list-plugins-panel');?>
 
 <fieldset class="adminform">
 	<div id="plugins" class="pane-sliders"></div>

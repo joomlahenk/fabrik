@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.view');
@@ -45,7 +49,7 @@ class FabrikViewEmailform extends FabrikView
 		FabrikHelperHTML::iniRequireJS();
 		$input  = $this->app->input;
 		$model  = $this->getModel('form');
-		$filter = JFilterInput::getInstance();
+		$filter = InputFilter::getInstance();
 		$post   = $filter->clean($_POST, 'array');
 
 		if (!array_key_exists('youremail', $post))
@@ -76,7 +80,7 @@ class FabrikViewEmailform extends FabrikView
 	 */
 	public function sendMail($email)
 	{
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$input = $this->app->input;
 
 		/*
@@ -118,7 +122,7 @@ class FabrikViewEmailform extends FabrikView
 		$email           = $input->getString('email', '');
 		$yourName        = $input->getString('yourname', '');
 		$yourEmail       = $input->getString('youremail', '');
-		$subject_default = JText::sprintf('Email from', $yourName);
+		$subject_default = Text::sprintf('Email from', $yourName);
 		$subject         = $input->getString('subject', $subject_default);
 		jimport('joomla.mail.helper');
 
@@ -133,10 +137,10 @@ class FabrikViewEmailform extends FabrikView
 		$link = $input->get('referrer', '', 'string');
 
 		// Message text
-		$msg = JText::sprintf('COM_FABRIK_EMAIL_MSG', $siteName, $yourName, $yourEmail, $link);
+		$msg = Text::sprintf('COM_FABRIK_EMAIL_MSG', $siteName, $yourName, $yourEmail, $link);
 
 		// Mail function
-		$mail = JFactory::getMailer();
+		$mail = Factory::getMailer();
 
 		return $mail->sendMail($yourEmail, $yourName, $email, $subject, $msg);
 	}

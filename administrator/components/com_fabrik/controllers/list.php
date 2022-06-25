@@ -12,6 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Worker;
@@ -73,11 +77,11 @@ class FabrikAdminControllerList extends FabControllerForm
 	{
 		$input = $this->input;
 		$cid   = $input->get('cid', array(0), 'array');
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 
 		if (count($cid) > 0)
 		{
-			$viewType = JFactory::getDocument()->getType();
+			$viewType = Factory::getDocument()->getType();
 			$view     = $this->getView($this->view_item, $viewType, '');
 			$view->setModel($model, true);
 			$view->confirmCopy('confirm_copy');
@@ -96,13 +100,13 @@ class FabrikAdminControllerList extends FabControllerForm
 	public function doCopy()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$input = $this->input;
 		$model = $this->getModel();
 		$model->copy();
 		$nText = $this->text_prefix . '_N_ITEMS_COPIED';
-		$this->setMessage(JText::plural($nText, count($input->get('cid', array(), 'array'))));
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+		$this->setMessage(Text::plural($nText, count($input->get('cid', array(), 'array'))));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 
 	/**
@@ -123,11 +127,11 @@ class FabrikAdminControllerList extends FabControllerForm
 			$cid = $input->getInt('listid', $cid);
 
 			// Grab the model and set its id
-			$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+			$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 			$model->setState('list.id', $cid);
 		}
 
-		$viewType = JFactory::getDocument()->getType();
+		$viewType = Factory::getDocument()->getType();
 
 		// Use the front end renderer to show the table
 		$this->setPath('view', COM_FABRIK_FRONTEND . '/views');
@@ -140,11 +144,11 @@ class FabrikAdminControllerList extends FabControllerForm
 		JToolBarHelper::title(FText::_('COM_FABRIK_MANAGER_LISTS'), 'list');
 
 		// Build unique cache id on url, post and user id
-		$user    = JFactory::getUser();
+		$user    = Factory::getUser();
 		$uri     = JURI::getInstance();
 		$uri     = $uri->toString(array('path', 'query'));
 		$cacheId = serialize(array($uri, $input->post, $user->get('id'), get_class($view), 'display', $this->cacheId));
-		$cache   = JFactory::getCache('com_fabrik', 'view');
+		$cache   = Factory::getCache('com_fabrik', 'view');
 
 		if (!Worker::useCache($model))
 		{
@@ -166,10 +170,10 @@ class FabrikAdminControllerList extends FabControllerForm
 	 */
 	public function showLinkedElements()
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$input    = $this->input;
 		$cid      = $input->get('cid', array(0), 'array');
-		$model    = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$model    = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$model->setState('list.id', $cid[0]);
 		$formModel  = $model->getFormModel();
 		$viewType   = $document->getType();
@@ -192,9 +196,9 @@ class FabrikAdminControllerList extends FabControllerForm
 	public function order()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$input = $this->input;
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$id    = $input->getInt('listid');
 		$model->setId($id);
 		$input->set('cid', $id);
@@ -225,9 +229,9 @@ class FabrikAdminControllerList extends FabControllerForm
 	public function filter()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$input = $this->input;
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$id    = $input->get('listid');
 		$model->setId($id);
 		$input->set('cid', $id);
@@ -246,9 +250,9 @@ class FabrikAdminControllerList extends FabControllerForm
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$input  = $this->input;
-		$model  = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$model  = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$listId = $input->getInt('listid');
 		$model->setId($listId);
 		$ids        = $input->get('ids', array(), 'array');
@@ -357,8 +361,8 @@ class FabrikAdminControllerList extends FabControllerForm
 
 		if ((int) $data['id'] === 0 && ArrayHelper::getValue($data, 'db_table_name', '') === '')
 		{
-			$viewType = JFactory::getDocument()->getType();
-			$model    = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
+			$viewType = Factory::getDocument()->getType();
+			$model    = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikAdminModel');
 
 			$view = $this->getView($this->view_item, $viewType, '');
 			$view->setModel($model, true);

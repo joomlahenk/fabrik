@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
+
 /**
  * Plugin element to render series of checkboxes
  *
@@ -86,7 +89,7 @@ class PlgFabrik_ElementCheckbox extends PlgFabrik_ElementList
 		$opts->defaultVal = $this->getDefaultValue($data);
 		$opts->data       = (empty($values) && empty($labels)) ? array() : array_combine($values, $labels);
 		$opts->allowadd   = (bool) $params->get('allow_frontend_addtocheckbox', false);
-		JText::script('PLG_ELEMENT_CHECKBOX_ENTER_VALUE_LABEL');
+		Text::script('PLG_ELEMENT_CHECKBOX_ENTER_VALUE_LABEL');
 
 		return array('FbCheckBox', $id, $opts);
 	}
@@ -129,7 +132,7 @@ class PlgFabrik_ElementCheckbox extends PlgFabrik_ElementList
 
 		for ($i = 0; $i < count($labels); $i++)
 		{
-			if (JString::strtolower($labels[$i]) == JString::strtolower($value))
+			if (StringHelper::strtolower($labels[$i]) == StringHelper::strtolower($value))
 			{
 				return $values[$i];
 			}

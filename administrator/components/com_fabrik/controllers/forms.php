@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+
 require_once 'fabcontrolleradmin.php';
 
 /**
@@ -62,7 +65,7 @@ class FabrikAdminControllerForms extends FabControllerAdmin
 	public function updateDatabase()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 		$this->setRedirect('index.php?option=com_fabrik&view=forms');
 		$this->getModel()->updateDatabase();
 		$this->setMessage(FText::_('COM_FABRIK_DATABASE_UPDATED'));
@@ -78,7 +81,7 @@ class FabrikAdminControllerForms extends FabControllerAdmin
 		$input = $this->input;
 		$cid = $input->get('cid', array(0), 'array');
 		$cid = $cid[0];
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id')->from('#__fabrik_lists')->where('form_id = ' . (int) $cid);
 		$db->setQuery($query);

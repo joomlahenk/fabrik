@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controllerform');
 require_once 'fabcontrollerform.php';
 
@@ -38,13 +41,13 @@ class FabrikAdminControllerPackage extends FabControllerForm
 	 */
 	public function export()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$cid = $input->get('cid', array(), 'array');
 		$model = $this->getModel();
 		$model->export($cid);
 		$nText = $this->text_prefix . '_N_ITEMS_EXPORTED';
-		$this->setMessage(JText::plural($nText, count($cid)));
+		$this->setMessage(Text::plural($nText, count($cid)));
 		$this->setRedirect('index.php?option=com_fabrik&view=packages');
 	}
 
@@ -55,8 +58,8 @@ class FabrikAdminControllerPackage extends FabControllerForm
 	 */
 	public function view()
 	{
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$document = Factory::getDocument();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$viewType = $document->getType();
 		$this->setPath('view', COM_FABRIK_FRONTEND . '/views');
@@ -97,7 +100,7 @@ class FabrikAdminControllerPackage extends FabControllerForm
 	 */
 	public function listform()
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$this->Form = $this->get('PackageListForm');
 		$viewType = $document->getType();
 		$view = $this->getView('package', $viewType, '');

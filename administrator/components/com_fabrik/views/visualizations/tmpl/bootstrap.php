@@ -12,15 +12,19 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.tooltip');
 JHTML::_('script','system/multiselect.js',false,true);
-$user = JFactory::getUser();
+$user = Factory::getUser();
 $userId	= $user->get('id');
 $listOrder = $this->state->get('list.ordering');
 $listDirn = $this->state->get('list.direction');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=visualizations'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_fabrik&view=visualizations'); ?>" method="post" name="adminForm" id="adminForm">
 <?php if(!empty( $this->sidebar)): ?>
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
@@ -75,7 +79,7 @@ $listDirn = $this->state->get('list.direction');
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$ordering = ($listOrder == 'ordering');
-			$link = JRoute::_('index.php?option=com_fabrik&task=visualization.edit&id=' . (int) $item->id);
+			$link = Route::_('index.php?option=com_fabrik&task=visualization.edit&id=' . (int) $item->id);
 			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 			$canChange = true;
 			?>
@@ -85,11 +89,11 @@ $listDirn = $this->state->get('list.direction');
 						<?php echo $item->id; ?>
 					</td>
 					<td>
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 					</td>
 					<td>
 						<?php if ($item->checked_out) : ?>
-							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'visualizations.', $canCheckin); ?>
+							<?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'visualizations.', $canCheckin); ?>
 						<?php endif; ?>
 						<?php
 						if ($item->checked_out && ( $item->checked_out != $user->get('id'))) :
@@ -105,7 +109,7 @@ $listDirn = $this->state->get('list.direction');
 						<?php echo $item->plugin; ?>
 					</td>
 					<td class="center">
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'visualizations.', $canChange); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'visualizations.', $canChange); ?>
 					</td>
 				</tr>
 
@@ -116,6 +120,6 @@ $listDirn = $this->state->get('list.direction');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>

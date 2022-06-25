@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.view');
@@ -23,7 +27,7 @@ jimport('joomla.application.component.view');
  * @since       3.0
  */
 
-class FabrikAdminViewemailform extends JViewLegacy
+class FabrikAdminViewemailform extends HtmlView
 {
 	/**
 	 * Display
@@ -37,8 +41,8 @@ class FabrikAdminViewemailform extends JViewLegacy
 	{
 		$srcs = FabrikHelperHTML::framework();
 		FabrikHelperHTML::script($srcs);
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
-		$app = JFactory::getApplication();
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$app = Factory::getApplication();
 		$input = $app->input;
 
 		if (!$input->get('youremail', false))
@@ -63,8 +67,8 @@ class FabrikAdminViewemailform extends JViewLegacy
 
 	public function sendMail(&$email)
 	{
-		JSession::checkToken() or die('Invalid Token');
-		$app = JFactory::getApplication();
+		Session::checkToken() or die('Invalid Token');
+		$app = Factory::getApplication();
 		$input = $app->input;
 
 		/*
@@ -106,7 +110,7 @@ class FabrikAdminViewemailform extends JViewLegacy
 		$email = $input->getString('email', '');
 		$yourname = $input->getString('yourname', '');
 		$youremail = $input->getString('youremail', '');
-		$subject_default = JText::sprintf('Email from', $yourname);
+		$subject_default = Text::sprintf('Email from', $yourname);
 		$subject = $input->getString('subject', $subject_default);
 		jimport('joomla.mail.helper');
 
@@ -115,17 +119,17 @@ class FabrikAdminViewemailform extends JViewLegacy
 			$app->enqueueMessage(FText::_('PHPMAILER_INVALID_ADDRESS'));
 		}
 
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$sitename = $config->get('sitename');
 
 		// Link sent in email
 		$link = $input->get('referrer', '', 'string');
 
 		// Message text
-		$msg = JText::sprintf('COM_FABRIK_EMAIL_MSG', $sitename, $yourname, $youremail, $link);
+		$msg = Text::sprintf('COM_FABRIK_EMAIL_MSG', $sitename, $yourname, $youremail, $link);
 
 		// Mail function
-		$mail = JFactory::getMailer();
+		$mail = Factory::getMailer();
 		$res = $mail->sendMail($youremail, $yourname, $email, $subject, $msg);
 	}
 }

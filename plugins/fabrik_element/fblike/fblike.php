@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Profiler\Profiler;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
@@ -65,7 +68,7 @@ class PlgFabrik_ElementFblike extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         if ($this->app->input->get('format') === 'raw')
@@ -257,7 +260,7 @@ class PlgFabrik_ElementFblike extends PlgFabrik_Element
 		$input = $this->app->input;
 		$this->loadMeForAjax();
 		$listId = $input->getInt('listid');
-		$list = JModelLegacy::getInstance('list', 'FabrikFEModel');
+		$list = BaseDatabaseModel::getInstance('list', 'FabrikFEModel');
 		$list->setId($listId);
 		$rowId = $input->get('row_id');
 		$direction = $input->get('direction', '+');

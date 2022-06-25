@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 require_once 'fabcontrollerform.php';
@@ -37,10 +40,10 @@ class FabrikAdminControllerImport extends FabControllerForm
 	 */
 	protected function addElements($model, $headings)
 	{
-		$app         = JFactory::getApplication();
+		$app         = Factory::getApplication();
 		$dataRemoved = false;
 		$input       = $app->input;
-		$user        = JFactory::getUser();
+		$user        = Factory::getUser();
 		$c           = 0;
 
 		/** @var FabrikFEModelList $listModel */
@@ -91,7 +94,7 @@ class FabrikAdminControllerImport extends FabControllerForm
 			{
 				// Need to remove none selected element's (that don't already appear in the table structure
 				// data from the csv data
-				$session     = JFactory::getSession();
+				$session     = Factory::getSession();
 				$allHeadings = (array) $session->get('com_fabrik.csvheadings');
 				$index       = array_search($elName, $allHeadings);
 
@@ -145,8 +148,8 @@ class FabrikAdminControllerImport extends FabControllerForm
 	public function makeTableFromCSV()
 	{
 		// Called when creating new elements from csv import into existing list
-		$session = JFactory::getSession();
-		$app     = JFactory::getApplication();
+		$session = Factory::getSession();
+		$app     = Factory::getApplication();
 		$input   = $app->input;
 		$jform   = $input->get('jform', null, 'array');
 
@@ -232,13 +235,13 @@ class FabrikAdminControllerImport extends FabControllerForm
 	 *
 	 * @param   boolean $cachable  If true, the view output will be cached
 	 * @param   array   $urlparams An array of safe url parameters and their variable types, for valid values see
-	 *                             {@link JFilterInput::clean()}.
+	 *                             {@link InputFilter::clean()}.
 	 *
-	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 * @return  BaseController  A BaseController object to support chaining.
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		$viewType = JFactory::getDocument()->getType();
+		$viewType = Factory::getDocument()->getType();
 		$view     = $this->getView('import', $viewType);
 		$this->getModel('Importcsv', 'FabrikFEModel')->clearSession();
 
@@ -263,7 +266,7 @@ class FabrikAdminControllerImport extends FabControllerForm
 	{
 		/** @var FabrikFEModelImportcsv $model */
 		$model = $this->getModel('Importcsv', 'FabrikFEModel');
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 
 		if (!$model->checkUpload())
@@ -274,7 +277,7 @@ class FabrikAdminControllerImport extends FabControllerForm
 		}
 
 		$id       = $model->getListModel()->getId();
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewName = 'import';
 		$viewType = $document->getType();
 

@@ -12,6 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Version;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+
 /**
  * Fabrik Admin Plugin Model
  * Used for loading via ajax form plugins
@@ -20,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  Fabrik
  * @since       3.0.6
  */
-class FabrikAdminModelPlugin extends JModelLegacy
+class FabrikAdminModelPlugin extends BaseDatabaseModel
 {
 	/**
 	 * Render the plugins fields
@@ -29,14 +34,14 @@ class FabrikAdminModelPlugin extends JModelLegacy
 	 */
 	public function render()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 
 		/** @var FabrikFEModelPluginmanager $pluginManager */
-		$pluginManager             = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
+		$pluginManager             = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
 		$plugin                    = $pluginManager->getPlugIn($this->getState('plugin'), $this->getState('type'));
 		$feModel                   = $this->getPluginModel();
-		$plugin->getJForm()->model = $feModel;
+		$plugin->getForm()->model = $feModel;
 
 		$data = $this->getData();
 		$input->set('view', $this->getState('type'));
@@ -126,7 +131,7 @@ class FabrikAdminModelPlugin extends JModelLegacy
 		if ($type !== 'validationrule')
 		{
 			// Set the parent model e.g. form/list
-			$feModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel($type, 'FabrikFEModel');
+			$feModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel($type, 'FabrikFEModel');
 			$feModel->setId($this->getState('id'));
 		}
 
@@ -143,7 +148,7 @@ class FabrikAdminModelPlugin extends JModelLegacy
 	{
 		$data                   = $this->getData();
 		$c                      = $this->getState('c') + 1;
-//		$version                = new JVersion;
+//		$version                = new Version;
 //		$j3                     = version_compare($version->RELEASE, '3.0') >= 0 ? true : false;
 //		$j3                     = true;
 //		$class                  = $j3 ? 'form-horizontal ' : 'adminform ';
@@ -152,7 +157,7 @@ class FabrikAdminModelPlugin extends JModelLegacy
 		$str[]                  = '<div class="pane-slider content pane-down accordion-inner">';
 		$str[]                  = '<fieldset class="' . $class . 'pluginContainer" id="formAction_' . $c . '"><ul>';
 		$formName               = 'com_fabrik.' . $this->getState('type') . '-plugin';
-		$topForm                = new JForm($formName, array('control' => 'jform'));
+		$topForm                = new Form($formName, array('control' => 'jform'));
 		$topForm->repeatCounter = $c;
 		$xmlFile                = JPATH_SITE . '/administrator/components/com_fabrik/models/forms/' . $this->getState('type') . '-plugin.xml';
 		

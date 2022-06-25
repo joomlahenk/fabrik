@@ -12,6 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 require_once 'fabmodeladmin.php';
@@ -39,7 +43,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 	 * @param   string $prefix A prefix for the table class name. Optional.
 	 * @param   array  $config Configuration array for model. Optional.
 	 *
-	 * @return  JTable    A database object
+	 * @return  Table    A database object
 	 */
 	public function getTable($type = 'Group', $prefix = 'FabrikTable', $config = array())
 	{
@@ -54,7 +58,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 	 * @param   array $data     Data for the form.
 	 * @param   bool  $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed    A JForm object on success, false on failure
+	 * @return  mixed    A Form object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -122,7 +126,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 	protected function checkRepeatAndPK($data)
 	{
 		/** @var FabrikFEModelGroup $groupModel */
-		$groupModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+		$groupModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 		$groupModel->setId($data['id']);
 		$listModel     = $groupModel->getListModel();
 		$pk            = FabrikString::safeColName($listModel->getPrimaryKey());
@@ -152,7 +156,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 		{
 			$data['created_by']       = $this->user->get('id');
 			$data['created_by_alias'] = $this->user->get('username');
-			$data['created']          = JFactory::getDate()->toSql();
+			$data['created']          = Factory::getDate()->toSql();
 		}
 
 		$makeJoin   = false;
@@ -293,7 +297,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 	 */
 	private function checkFKIndex($data)
 	{
-		$groupModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+		$groupModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 		$groupModel->setId($data['id']);
 		$listModel = $groupModel->getListModel();
 		$item      = FabTable::getInstance('Group', 'FabrikTable');
@@ -333,7 +337,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 	public function makeJoinedGroup(&$data)
 	{
 		/** @var FabrikFEModelGroup $groupModel */
-		$groupModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
+		$groupModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Group', 'FabrikFEModel');
 		$groupModel->setId($data['id']);
 		$listModel          = $groupModel->getListModel();
 		$db                 = $listModel->getDb();
@@ -466,7 +470,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 		$db->setQuery($query);
 		$elementIds   = $db->loadColumn();
 		// FabrikModelElement does not exsist !! Maybe this is never used ?? Does not work in J!4
-		$elementModel = JModelLegacy::getInstance('Element', 'FabrikModel');
+		$elementModel = BaseDatabaseModel::getInstance('Element', 'FabrikModel');
 		$return       = $return && $elementModel->delete($elementIds);
 
 		return $return;
@@ -520,7 +524,7 @@ class FabrikAdminModelGroup extends FabModelAdmin
 		$query->select('id')->from('#__fabrik_elements')->where('group_id IN (' . implode(',', $pks) . ')');
 		$db->setQuery($query);
 		$elementIds   = $db->loadColumn();
-		$elementModel = JModelLegacy::getInstance('Element', 'FabrikAdminModel');
+		$elementModel = BaseDatabaseModel::getInstance('Element', 'FabrikAdminModel');
 
 		return $elementModel->delete($elementIds);
 	}

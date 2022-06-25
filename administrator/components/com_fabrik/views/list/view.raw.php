@@ -11,11 +11,13 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.view');
 
-class FabrikAdminViewList extends JViewLegacy
+class FabrikAdminViewList extends HtmlView
 {
 	/**
 	 * Display a json object representing the table data.
@@ -27,9 +29,9 @@ class FabrikAdminViewList extends JViewLegacy
 
 	public function display($tpl = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
-		$model = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
+		$model = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('List', 'FabrikFEModel');
 		$model->setId($input->getInt('listid'));
 		$this->setModel($model, true);
 		$item = $model->getTable();
@@ -79,7 +81,7 @@ class FabrikAdminViewList extends JViewLegacy
 		$d = array('id' => $item->id, 'rowid' => $rowid, 'model' => 'list', 'data' => $data,
 				'headings' => $this->headings,
 				'formid' => $model->getTable()->form_id,
-				'lastInsertedRow' => JFactory::getSession()->get('lastInsertedRow', 'test'));
+				'lastInsertedRow' => Factory::getSession()->get('lastInsertedRow', 'test'));
 		$d['nav'] = get_object_vars($nav);
 		$d['htmlnav'] = $params->get('show-table-nav', 1) ? $nav->getListFooter($model->getId(), $this->getTmpl()) : '';
 		$d['calculations'] = $model->getCalculations();
@@ -101,7 +103,7 @@ class FabrikAdminViewList extends JViewLegacy
 
 	private function getTmpl()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$input->set('hidemainmenu', true);
 		$model = $this->getModel();

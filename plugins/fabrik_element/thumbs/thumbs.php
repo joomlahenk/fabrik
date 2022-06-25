@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Version;
+use Joomla\CMS\Profiler\Profiler;
+
 jimport('joomla.application.component.model');
 
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
@@ -70,7 +75,7 @@ class PlgFabrik_ElementThumbs extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
 
         $input = $this->app->input;
@@ -403,11 +408,11 @@ class PlgFabrik_ElementThumbs extends PlgFabrik_Element
 	{
 		$cookieName = 'thumb-table_' . $listId . '_row_' . $rowId . '_ip_' . FabrikString::filteredIp();
 		jimport('joomla.utilities.utility');
-		$version = new JVersion;
+		$version = new Version;
 
 		if (version_compare($version->RELEASE, '3.1', '>'))
 		{
-			return JApplicationHelper::getHash($cookieName);
+			return ApplicationHelper::getHash($cookieName);
 		}
 		else
 		{
@@ -673,7 +678,7 @@ class PlgFabrik_ElementThumbs extends PlgFabrik_Element
 	 */
 	public function filterValueList($normal, $tableName = '', $label = '', $id = '', $incjoin = true)
 	{
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$params = $this->getParams();
 		$filter_build = $params->get('filter_build_method', 0);
 

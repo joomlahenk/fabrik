@@ -8,6 +8,9 @@
  * @license     GNU/GPL http://www.gnu.org/copyleft/gpl.html
  */
 
+use Joomla\CMS\Http\Http;
+use Joomla\CMS\Http\Response;
+use Joomla\CMS\Input\Input;
 use Joomla\Registry\Registry;
 
 /**
@@ -26,12 +29,12 @@ class FabrikOauth extends JOAuth1Client
 	 * Constructor.
 	 *
 	 * @param   Registry  $options  FabrikOauth options object.
-	 * @param   JHttp     $client   The HTTP client object.
-	 * @param   JInput    $input    The input object
+	 * @param   Http     $client   The HTTP client object.
+	 * @param   Input    $input    The input object
 	 *
 	 * @since   13.1
 	 */
-	public function __construct(Registry $options = null, JHttp $client = null, JInput $input = null)
+	public function __construct(Registry $options = null, Http $client = null, Input $input = null)
 	{
 		$this->options = isset($options) ? $options : new Registry;
 
@@ -55,7 +58,7 @@ class FabrikOauth extends JOAuth1Client
 	 * Method to validate a response.
 	 *
 	 * @param   string         $url       The request URL.
-	 * @param   JHttpResponse  $response  The response to validate.
+	 * @param   Response  $response  The response to validate.
 	 *
 	 * @return  void
 	 *

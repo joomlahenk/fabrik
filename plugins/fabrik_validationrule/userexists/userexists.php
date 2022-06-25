@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\User\UserHelper;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/validation_rule.php';
 
@@ -46,7 +48,7 @@ class PlgFabrik_ValidationruleUserExists extends PlgFabrik_Validationrule
 		// As ornot is a radio button it gets json encoded/decoded as an object
 		$orNot = $params->get('userexists_or_not', 'fail_if_exists');
 		jimport('joomla.user.helper');
-		$result = JUserHelper::getUserId($data);
+		$result = UserHelper::getUserId($data);
 
 		if ($this->user->get('guest'))
 		{

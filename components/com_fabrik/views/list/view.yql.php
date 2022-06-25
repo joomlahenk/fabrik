@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 require_once JPATH_SITE . '/components/com_fabrik/views/list/view.base.php';
 
 /**
@@ -33,7 +35,7 @@ class FabrikViewList extends FabrikViewListBase
 	{
 		$model = $this->getModel();
 		$input = $this->app->input;
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model->setId($input->getInt('listid', $usersConfig->get('listid')));
 		$model->render();
 		$table = $model->getTable();

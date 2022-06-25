@@ -12,9 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 $d           = $displayData;
 $baseContext = $d->baseContext;
-$app         = JFactory::getApplication();
+$app         = Factory::getApplication();
 
 if ($d->usePopup) :
 ?>

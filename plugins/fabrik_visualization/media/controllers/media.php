@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -30,7 +32,7 @@ class FabrikControllerVisualizationmedia extends FabrikControllerVisualization
 	public function getPlaylist()
 	{
 		$model = $this->getModel('media');
-		$conf  = JComponentHelper::getParams('com_fabrik');
+		$conf  = ComponentHelper::getParams('com_fabrik');
 		$id    = $this->input->getInt('id', $conf->get('visualizationid', $this->input->getInt('visualizationid', 0)));
 		$model->setId($id);
 		$model->getVisualization();

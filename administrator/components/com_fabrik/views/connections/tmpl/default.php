@@ -12,16 +12,20 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('bootstrap.tooltip');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('bootstrap.tooltip');
 //JHTML::_('script','system/multiselect.js',false,true);
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
-$user	= JFactory::getUser();
+$user	= Factory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=connections'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_fabrik&view=connections'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo FText::_('JSEARCH_FILTER_LABEL'); ?>:</label>
@@ -32,7 +36,7 @@ $listDirn	= $this->state->get('list.direction');
 		<div class="filter-select fltrt">
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo FText::_('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived'=>false)), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array('archived'=>false)), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 		</div>
 	</fieldset>
@@ -77,7 +81,7 @@ $listDirn	= $this->state->get('list.direction');
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$ordering	= ($listOrder == 'ordering');
-			$link = JRoute::_('index.php?option=com_fabrik&task=connection.edit&id='.(int) $item->id);
+			$link = Route::_('index.php?option=com_fabrik&task=connection.edit&id='.(int) $item->id);
 			$canChange	= true;
 			?>
 
@@ -86,7 +90,7 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo $item->id; ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
 					<?php
@@ -108,10 +112,10 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo $item->database; ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.isdefault', $item->default, $i, 'connections.', $canChange);?>
+					<?php echo HTMLHelper::_('jgrid.isdefault', $item->default, $i, 'connections.', $canChange);?>
 			</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'connections.', $canChange);?>
+					<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'connections.', $canChange);?>
 				</td>
 				<td>
 					<a href="#edit" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','connection.test')">
@@ -127,5 +131,5 @@ $listDirn	= $this->state->get('list.direction');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

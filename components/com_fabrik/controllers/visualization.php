@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
 use Fabrik\Controllers\Controller;
 use Fabrik\Helpers\Html;
 use Fabrik\Helpers\Worker;
@@ -39,15 +43,15 @@ class FabrikControllerVisualization extends Controller
 	 * Display the view
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached - NOTE not actually used to control caching!!
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link InputFilter::clean()}.
 	 *
-	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 * @return  BaseController  A BaseController object to support chaining.
 	 *
 	 * @since   12.2
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$input = $this->input;
 		$viewName = str_replace('FabrikControllerVisualization', '', get_class($this));
 
@@ -95,11 +99,11 @@ class FabrikControllerVisualization extends Controller
 		else
 		{
 			// Build unique cache id on url, post and user id
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			$uri = JURI::getInstance();
 			$uri = $uri->toString(array('path', 'query'));
 			$cacheId = serialize(array($uri, $input->post, $user->get('id'), get_class($view), 'display', $this->cacheId));
-			$cache = JFactory::getCache('com_fabrik', 'view');
+			$cache = Factory::getCache('com_fabrik', 'view');
 			$cache->get($view, 'display', $cacheId);
 			Html::addToSessionCacheIds($cacheId);
 		}
@@ -118,7 +122,7 @@ class FabrikControllerVisualization extends Controller
 		$viz->load($this->input->getInt('id'));
 		$viewName = $viz->plugin;
 		$this->addViewPath(JPATH_SITE . '/plugins/fabrik_visualization/' . $viewName . '/views');
-		JModelLegacy::addIncludePath(JPATH_SITE . '/plugins/fabrik_visualization/' . $viewName . '/models');
+		BaseDatabaseModel::addIncludePath(JPATH_SITE . '/plugins/fabrik_visualization/' . $viewName . '/models');
 
 		return $viewName;
 	}

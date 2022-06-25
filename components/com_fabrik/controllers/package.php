@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
 /**
@@ -19,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @package  Fabrik
  * @since    3.0
  */
-class FabrikControllerPackage extends JControllerLegacy
+class FabrikControllerPackage extends BaseController
 {
 	/**
 	 * Id used from content plugin when caching turned on to ensure correct element rendered
@@ -32,14 +36,14 @@ class FabrikControllerPackage extends JControllerLegacy
 	 * Display the package view
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached - NOTE not actually used to control caching!!!
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link InputFilter::clean()}.
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$document = JFactory::getDocument();
-		$app = JFactory::getApplication();
+		$document = Factory::getDocument();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$viewName = $input->get('view', 'package');
 

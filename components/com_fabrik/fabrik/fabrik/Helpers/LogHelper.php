@@ -11,15 +11,19 @@ namespace Fabrik\Helpers;
 
 defined('_JEXEC') or die;
 
-use JFactory;
-use JModelLegacy;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Factory;
+use BaseDatabaseModel;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\User;
 use Joomla\Utilities\ArrayHelper;
 use GuzzleHttp\Client;
-use JRoute;
-use JTable;
+use Route;
+use Table;
 
 /**
  * Helper for the log form plugin.  Used when needing to log changes to data outside of a
@@ -77,12 +81,12 @@ class LogHelper
 	{
 		if (!isset(self::$init))
 		{
-			self::$config  = ArrayHelper::getValue($config, 'config', JFactory::getConfig());
-			self::$user    = ArrayHelper::getValue($config, 'user', JFactory::getUser());
-			self::$app     = ArrayHelper::getValue($config, 'app', JFactory::getApplication());
-			self::$lang    = ArrayHelper::getValue($config, 'lang', JFactory::getLanguage());
-			self::$date    = ArrayHelper::getValue($config, 'date', JFactory::getDate());
-			self::$session = ArrayHelper::getValue($config, 'session', JFactory::getSession());
+			self::$config  = ArrayHelper::getValue($config, 'config', Factory::getConfig());
+			self::$user    = ArrayHelper::getValue($config, 'user', Factory::getUser());
+			self::$app     = ArrayHelper::getValue($config, 'app', Factory::getApplication());
+			self::$lang    = ArrayHelper::getValue($config, 'lang', Factory::getLanguage());
+			self::$date    = ArrayHelper::getValue($config, 'date', Factory::getDate());
+			self::$session = ArrayHelper::getValue($config, 'session', Factory::getSession());
 			self::$formModel = ArrayHelper::getValue($config, 'formModel', null);
 			self::$init    = true;
 		}
@@ -97,10 +101,10 @@ class LogHelper
 	 */
 	private static function getFormModel($formId, $rowId)
 	{
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
-		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+		BaseDatabaseModel::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 		/** @var \FabrikFEModelForm $formModel */
-		$formModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
+		$formModel = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$formModel->setRowId($rowId);
 		$formModel->origRowId = $rowId;
@@ -118,7 +122,7 @@ class LogHelper
 	 */
 	private static function getLogPlugin($formModel)
 	{
-		$pluginManager = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
+		$pluginManager = Factory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
 		$params = $formModel->getParams();
 		$logPlugin = $pluginManager->getPlugin('log', 'form');
 		$plugins = $params->get('plugins');

@@ -11,6 +11,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -114,7 +118,7 @@ class PlgFabrik_ElementTextarea extends PlgFabrik_Element
 	 */
 	public function renderListData($data, stdClass &$thisRow, $opts = array())
 	{
-        $profiler = JProfiler::getInstance('Application');
+        $profiler = Profiler::getInstance('Application');
         JDEBUG ? $profiler->mark("renderListData: {$this->element->plugin}: start: {$this->element->name}") : null;
         $params = $this->getParams();
 
@@ -365,7 +369,7 @@ class PlgFabrik_ElementTextarea extends PlgFabrik_Element
 
 		if ($wysiwyg)
 		{
-			$editor = JEditor::getInstance($this->config->get('editor'));
+			$editor = Editor::getInstance($this->config->get('editor'));
 			$buttons = (bool) $params->get('wysiwyg_extra_buttons', true);
 			$layoutData->editor = $editor->display($name, $value, $cols * 10, $rows * 15, $cols, $rows, $buttons, $id, 'com_fabrik');
 			$layout = $this->getLayout('wysiwyg');
@@ -414,7 +418,7 @@ class PlgFabrik_ElementTextarea extends PlgFabrik_Element
 			if ($params->get('textarea_limit_type', 'char') === 'char')
 			{
 				$label = FText::_('PLG_ELEMENT_TEXTAREA_CHARACTERS_LEFT');
-				$charsLeft = $params->get('textarea-maxlength') - JString::strlen($value);
+				$charsLeft = $params->get('textarea-maxlength') - StringHelper::strlen($value);
 			}
 			else
 			{
@@ -569,7 +573,7 @@ class PlgFabrik_ElementTextarea extends PlgFabrik_Element
 			return true;
 		}
 
-		if (JString::strlen($data) > (int) $params->get('textarea-maxlength'))
+		if (StringHelper::strlen($data) > (int) $params->get('textarea-maxlength'))
 		{
 			return false;
 		}
@@ -578,7 +582,7 @@ class PlgFabrik_ElementTextarea extends PlgFabrik_Element
 	}
 
 	/**
-	 * Get validation error - run through JText
+	 * Get validation error - run through Text
 	 *
 	 * @return  string
 	 */

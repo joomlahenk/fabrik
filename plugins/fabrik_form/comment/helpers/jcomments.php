@@ -11,13 +11,18 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 require_once JCOMMENTS_BASE . '/jcomments.subscription.php';
 require_once JCOMMENTS_BASE . '/jcomments.class.php';
 
 /**
  * Class JCommentsTableObjects
  */
-class JCommentsTableObjects extends JTable
+class JCommentsTableObjects extends Table
 {
 	public function __construct(&$db)
 	{
@@ -35,7 +40,7 @@ class FabrikJCommentHelper
 		$formModel     = $formPlugin->getModel();
 		$jcObjectId    = $formModel->formData['rowid'];
 		$jcObjectGroup = 'com_fabrik_' . $formModel->getId();
-		$lang          = JFactory::getLanguage();
+		$lang          = Factory::getLanguage();
 		$language      = $lang->getTag();
 
 		// Create / update thread
@@ -43,7 +48,7 @@ class FabrikJCommentHelper
 
 		// Add subscription
 		$manager = JCommentsSubscriptionManager::getInstance();
-		$user    = JFactory::getUser();
+		$user    = Factory::getUser();
 		$manager->subscribe($jcObjectId, $jcObjectGroup, $user->id, $user->email, $user->name, $language);
 
 		self::createJCommentPlugin($jcObjectGroup);
@@ -60,7 +65,7 @@ class jc_com_fabrik_1 extends JCommentsPlugin
 {
 	function getObjectInfo(\$id, \$lang)
 	{
-		\$db = JFactory::getDbo();
+		\$db = Factory::getDbo();
 		\$query = \$db->getQuery(true);
 		\$query->select('*')->from('#__jcomments_objects')
 			->where('object_id = ' . (int) \$id)
@@ -73,7 +78,7 @@ class jc_com_fabrik_1 extends JCommentsPlugin
 }";
 		$script = str_replace('com_fabrik_1', $jcObjectGroup, $script);
 		$file = JPATH_SITE . '/components/com_jcomments/plugins/' . $jcObjectGroup . '.plugin.php';
-		JFile::write($file, $script);
+		File::write($file, $script);
 	}
 
 	/**
@@ -85,7 +90,7 @@ class jc_com_fabrik_1 extends JCommentsPlugin
 	 */
 	protected static function jcObjectInfo($objectId, $objectGroup, $language)
 	{
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*')->from('#__jcomments_objects')
 			->where('object_id = ' . $db->q($objectId))
@@ -110,17 +115,17 @@ class jc_com_fabrik_1 extends JCommentsPlugin
 		$formModel = $formPlugin->getModel();
 		$formId    = $formModel->getId();
 
-		$link = JRoute::_('index.php?option=com_fabrik&amp;view=details&formid=' . $formId . '&rowid=' . $objectId . '&listid=' . $formId);
+		$link = Route::_('index.php?option=com_fabrik&amp;view=details&formid=' . $formId . '&rowid=' . $objectId . '&listid=' . $formId);
 
-		$user      = JFactory::getUser();
+		$user      = Factory::getUser();
 		$info      = self::jcObjectInfo($objectId, $objectGroup, $language);
 		$jObjectId = isset($info->id) ? $info->id : null;
-		$row       = JTable::getInstance('Objects', 'JCommentsTable');
+		$row       = Table::getInstance('Objects', 'JCommentsTable');
 		$data      = array(
 			'access' => 1,
 			'userid' => (int) $user->get('id'),
 			'expired' => 0,
-			'modified' => JFactory::getDate()->toSql(),
+			'modified' => Factory::getDate()->toSql(),
 			'title' => $title,
 			'link' => $link,
 			'category_id' => ''

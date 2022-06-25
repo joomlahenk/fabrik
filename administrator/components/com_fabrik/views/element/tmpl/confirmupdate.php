@@ -11,22 +11,24 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 
 FabrikHelperHTML::formvalidation();
 $db = FabrikWorker::getDbo(true);
 ?>
 
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	<ul style="list-style:none;font-weight:bold;color:#0055BB;background:#C3D2E5;padding:10px;margin-bottom:10px;border-top:3px solid #84A7DB;border-bottom:3px solid #84A7DB">
 	<?php if ($db->qn($this->item->name) !== $this->oldName) : ?>
 		<li style="padding-left:30px">
-			<?php echo JText::sprintf('COM_FABRIK_UPDATE_ELEMENT_NAME', $this->oldName, $db->qn($this->item->name)); ?>
+			<?php echo Text::sprintf('COM_FABRIK_UPDATE_ELEMENT_NAME', $this->oldName, $db->qn($this->item->name)); ?>
 		</li>
 	<?php endif; ?>
 	<?php if (StringHelper::strtolower($this->origDesc) !== StringHelper::strtolower($this->newDesc)) :?>
   		<li style="padding-left:30px">
-  			<?php echo JText::sprintf('COM_FABRIK_UPDATE_ELEMENT_STRUCTURE', $this->oldName, $this->origDesc, $this->newDesc); ?>
+  			<?php echo Text::sprintf('COM_FABRIK_UPDATE_ELEMENT_STRUCTURE', $this->oldName, $this->origDesc, $this->newDesc); ?>
   		</li>
  	<?php endif;?>
 	</ul>

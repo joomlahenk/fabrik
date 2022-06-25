@@ -11,7 +11,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JTable::addIncludePath(JPATH_SITE . '/plugins/fabrik_form/subscriptions/tables');
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\User\User;
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Factory;
+
+Table::addIncludePath(JPATH_SITE . '/plugins/fabrik_form/subscriptions/tables');
 
 /**
  * Subscription IPN return code
@@ -28,11 +35,11 @@ class FabrikSubscriptionsIPN
 	 */
 	public function __construct()
 	{
-		// Include the JLog class.
+		// Include the Log class.
 		jimport('joomla.log.log');
 
 		// Add the logger.
-		JLog::addLogger(array('text_file' => 'fabrik.subs.log.php'));
+		Log::addLogger(array('text_file' => 'fabrik.subs.log.php'));
 	}
 
 	/**
@@ -69,9 +76,9 @@ class FabrikSubscriptionsIPN
 	 */
 	protected function activateSubscription($listModel, $request, &$set_list, &$err_msg, $recurring = true)
 	{
-		$db = JFactory::getDbo();
-		$mail = JFactory::getMailer();
-		$app = JFactory::getApplication();
+		$db = Factory::getDbo();
+		$mail = Factory::getMailer();
+		$app = Factory::getApplication();
 
 		$invoice = $this->checkInvoice($request);
 		if ($invoice === false)
@@ -135,7 +142,7 @@ class FabrikSubscriptionsIPN
 		$msgbuyer = sprintf($msgbuyer, $siteName, $txn_id, $siteName);
 		$msgbuyer = html_entity_decode($msgbuyer, ENT_QUOTES);
 
-		JLog::add('fabrik.ipn.activateSubscription', JLog::INFO, $payer_email . ', ' . $msgbuyer);
+		Log::add('fabrik.ipn.activateSubscription', Log::INFO, $payer_email . ', ' . $msgbuyer);
 		$mail->sendMail($mailFrom, $fromName, $payer_email, $subject, $msgbuyer, true);
 
 		$msgseller = $type . ' success on %s. (Paypal transaction ID: %s)<br /><br />%s';
@@ -151,22 +158,22 @@ class FabrikSubscriptionsIPN
 	/**
 	 * Set the users groups based on the subscription
 	 *
-	 * @param   JTable  $sub  Subscription table
+	 * @param   Table  $sub  Subscription table
 	 *
-	 * @return  JUser  Subscription user
+	 * @return  User  Subscription user
 	 */
 
 	protected function setUserGroup($sub)
 	{
-		$subUser = JFactory::getUser($sub->userid);
+		$subUser = Factory::getUser($sub->userid);
 		$this->log('fabrik.ipn.txn_type_subscr_payment sub userid', $subUser->get('id'));
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('usergroup')->from('#__fabrik_subs_plans')->where('id = ' . $sub->plan);
 		$db->setQuery($query);
 		$gid = $db->loadResult();
 		$this->log('fabrik.ipn.txn_type_subscr_payment gid query', $db->getQuery());
-		$groups = JUserHelper::getUserGroups($subUser->id);
+		$groups = UserHelper::getUserGroups($subUser->id);
 		$subUser->groups = array_merge($groups, (array) $gid);
 		$subUser->save();
 		return $subUser;
@@ -181,8 +188,8 @@ class FabrikSubscriptionsIPN
 	 */
 	protected function expireOldSubs($userid)
 	{
-		JLog::add('fabrik.ipn.expireOldSubs.start', JLog::INFO, 'expired old subs for ' . $userid);
-		$db = JFactory::getDbo();
+		Log::add('fabrik.ipn.expireOldSubs.start', Log::INFO, 'expired old subs for ' . $userid);
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Don't load up active accounts with no eot_date!
@@ -196,7 +203,7 @@ class FabrikSubscriptionsIPN
 			// User can have up to one active subscription - if there's more we're going to expire the older ones
 			for ($i = 1; $i < count($rows); $i++)
 			{
-				$sub = JTable::getInstance('Subscription', 'FabrikTable');
+				$sub = Table::getInstance('Subscription', 'FabrikTable');
 				$subid = (int) $rows[$i]->id;
 				if ($subid !== 0)
 				{
@@ -225,7 +232,7 @@ class FabrikSubscriptionsIPN
 	public function payment_status_Pending($listModel, $request, &$set_list, &$err_msg)
 	{
 		$this->log('fabrik.ipn.payment_status_Pending', '');
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$MailFrom = $app->getCfg('mailfrom');
 		$FromName = $app->getCfg('fromname');
 		$SiteName = $app->getCfg('sitename');
@@ -241,12 +248,12 @@ class FabrikSubscriptionsIPN
 		$txn_id = $app->input->get('txn_id', 'n/a');
 		$msgbuyer = sprintf($msgbuyer, $SiteName, $txn_id, $SiteName);
 		$msgbuyer = html_entity_decode($msgbuyer, ENT_QUOTES);
-		JFactory::getMailer()->sendMail($MailFrom, $FromName, $payer_email, $subject, $msgbuyer, true);
+		Factory::getMailer()->sendMail($MailFrom, $FromName, $payer_email, $subject, $msgbuyer, true);
 
 		$msgseller = 'Payment pending on %s. (Paypal transaction ID: %s)<br /><br />%s';
 		$msgseller = sprintf($msgseller, $SiteName, $txn_id, $SiteName);
 		$msgseller = html_entity_decode($msgseller, ENT_QUOTES);
-		JFactory::getMailer()->sendMail($MailFrom, $FromName, $receiver_email, $subject, $msgseller, true);
+		Factory::getMailer()->sendMail($MailFrom, $FromName, $receiver_email, $subject, $msgseller, true);
 		return true;
 	}
 
@@ -327,13 +334,13 @@ class FabrikSubscriptionsIPN
 	 *
 	 * @param   int  $userId  User id
 	 *
-	 * @return  JUser
+	 * @return  User
 	 */
 
 	public function recalibrateUser($userId)
 	{
-		$user = JFactory::getUser($userId);
-		$db = JFactory::getDbo();
+		$user = Factory::getUser($userId);
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('usergroup')->from('#__fabrik_subs_subscriptions AS s')
 		->join('LEFT', '#__fabrik_subs_plans AS p ON s.plan = p.id')
@@ -343,7 +350,7 @@ class FabrikSubscriptionsIPN
 		$groups = $db->loadColumn();
 
 		// Get the base user group - normally 'registered' by may be set otherwise
-		$config = JComponentHelper::getParams('com_users');
+		$config = ComponentHelper::getParams('com_users');
 		$gid = $config->get('new_usertype');
 		$groups[] = $gid;
 		$groups = array_unique($groups);
@@ -551,12 +558,12 @@ class FabrikSubscriptionsIPN
 	 *
 	 * @param   string  $inv  Invoice id
 	 *
-	 * @return  JTable object
+	 * @return  Table object
 	 */
 
 	private function getSubscriptionFromInvoice($inv)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('subscr_id')->from('#__fabrik_subs_invoices')->where('id = ' . $db->quote($inv));
 		$db->setQuery($query);
@@ -565,22 +572,22 @@ class FabrikSubscriptionsIPN
 		{
 			return false;
 		}
-		$sub = JTable::getInstance('Subscription', 'FabrikTable');
+		$sub = Table::getInstance('Subscription', 'FabrikTable');
 		$sub->load($subid);
 		return $sub;
 	}
 
 	/**
-	 * Get an invoice JTable object from its invoice number
+	 * Get an invoice Table object from its invoice number
 	 *
 	 * @param   string  $inv  Invoice number
 	 *
-	 * @return JTable
+	 * @return Table
 	 */
 
 	private function getInvoice($inv)
 	{
-		$row = JTable::getInstance('Invoice', 'FabrikTable');
+		$row = Table::getInstance('Invoice', 'FabrikTable');
 		$row->load($inv);
 		return $row;
 	}
@@ -597,7 +604,7 @@ class FabrikSubscriptionsIPN
 
 	private function reportError($msg, $to = '', $data = array())
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$MailFrom = $app->getCfg('mailfrom');
 		$FromName = $app->getCfg('fromname');
 		if ($to === '')
@@ -610,10 +617,10 @@ class FabrikSubscriptionsIPN
 			$body .= "$k = $v \n";
 		}
 		$subject = 'fabrik.ipn.fabrikar_subs error';
-		JFactory::getMailer()->sendMail($MailFrom, $FromName, $to, $subject, $body);
+		Factory::getMailer()->sendMail($MailFrom, $FromName, $to, $subject, $body);
 
 		// Start logging...
-		JLog::add($body, JLog::ERROR, $subject);
+		Log::add($body, Log::ERROR, $subject);
 	}
 
 	/**
@@ -628,7 +635,7 @@ class FabrikSubscriptionsIPN
 	private function log($subject, $body)
 	{
 		// Start logging...
-		JLog::add($body, JLog::NOTICE, $subject);
+		Log::add($body, Log::NOTICE, $subject);
 	}
 
 	/**
@@ -670,9 +677,9 @@ class FabrikSubscriptionsIPN
 		// @TODO need to do this with the respect to the plan billing cycles
 
 		return;
-		$mail = JFactory::getMailer();
-		$plan = JTable::getInstance('Plan', 'FabrikTable');
-		$newPlan = JTable::getInstance('Plan', 'FabrikTable');
+		$mail = Factory::getMailer();
+		$plan = Table::getInstance('Plan', 'FabrikTable');
+		$newPlan = Table::getInstance('Plan', 'FabrikTable');
 		$plan->load((int) $sub->plan);
 		$this->log('fabrik.ipn. fallback', ' getting fallback sub plan :  ' . (int) $sub->plan . ' = ' . (int) $plan->fall_back_plan);
 		$fallback = false;
@@ -690,7 +697,7 @@ class FabrikSubscriptionsIPN
 		{
 			$gid = 18;
 		}
-		$subUser = JFactory::getUser($sub->userid);
+		$subUser = Factory::getUser($sub->userid);
 		$subUser->gid = $gid;
 		$this->log('fabrik.ipn. fallback', $subUser->get('id') . ' gid set to ' . $gid);
 		$subUser->save();
@@ -707,19 +714,19 @@ class FabrikSubscriptionsIPN
 			$minus = strtotime("-{$plan->duration} $oldLength");
 
 			$this->log('fabrik.ipn. fallback', 'expiration date = strtotime(+' . $newPlan->duration . ' ' . $newLength . ")\n minus = strtotime(-" . $plan->duration . ' ' . $oldLength . ") \n =: $expDate - $minus");
-			$expDate = JFactory::getDate()->toUnix() - ( $expDate - $minus);
+			$expDate = Factory::getDate()->toUnix() - ( $expDate - $minus);
 
-			$sub = JTable::getInstance('Subscriptions', 'Table');
+			$sub = Table::getInstance('Subscriptions', 'Table');
 			$sub->userid = $subUser->get('id');
 
 			// Paypal payment - no recurring
 			$sub->type = 1;
 			$sub->status = 'Active';
-			$sub->signup_date = JFactory::getDate()->toSQL();
+			$sub->signup_date = Factory::getDate()->toSQL();
 			$sub->plan = $newPlan->id;
 			$sub->recurring = 0;
 			$sub->lifetime = 0;
-			$sub->expiration = JFactory::getDate($expDate)->toSql();
+			$sub->expiration = Factory::getDate($expDate)->toSql();
 			$this->log('fabrik.ipn. fallback', 'new sub expiration set to ' . $sub->expiration);
 			$sub->store();
 			$msg = "<h3>new sub expiration set to $sub->expiration</h3>";

@@ -11,6 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -56,7 +59,7 @@ class PlgFabrik_Cron extends FabrikPlugin
 	{
 		if (!$this->row || $force)
 		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
+			Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 			$row = FabTable::getInstance('Cron', 'FabrikTable');
 			$row->load($this->id);
 			$this->row = $row;
@@ -98,7 +101,7 @@ class PlgFabrik_Cron extends FabrikPlugin
 		$params = $this->getParams();
 		
 		// Felixkat
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$fabrikCron = new stdClass();
 		$fabrikCron->dropData = $params->get('cron_importcsv_dropdata');
 		$fabrikCron->requireJS = $params->get('require_qs');

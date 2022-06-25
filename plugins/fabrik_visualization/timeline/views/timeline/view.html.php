@@ -11,6 +11,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -20,7 +25,7 @@ jimport('joomla.application.component.view');
  * @subpackage  Fabrik.visualization.timeline
  * @since       3.0
  */
-class FabrikViewTimeline extends JViewLegacy
+class FabrikViewTimeline extends HtmlView
 {
 	/**
 	 * Execute and display a template script.
@@ -32,12 +37,12 @@ class FabrikViewTimeline extends JViewLegacy
 
 	public function display($tpl = 'default')
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$j3    = FabrikWorker::j3();
 		$srcs  = FabrikHelperHTML::framework();
 
-		$usersConfig = JComponentHelper::getParams('com_fabrik');
+		$usersConfig = ComponentHelper::getParams('com_fabrik');
 		$model       = $this->getModel();
 		$id          = $input->getInt('id', $usersConfig->get('visualizationid', $input->getInt('visualizationid', 0)));
 		$model->setId($id);
@@ -77,8 +82,8 @@ class FabrikViewTimeline extends JViewLegacy
 		FabrikHelperHTML::iniRequireJs($model->getShim());
 		FabrikHelperHTML::script($srcs, $js);
 
-		JText::script('COM_FABRIK_ADVANCED_SEARCH');
-		JText::script('COM_FABRIK_LOADING');
+		Text::script('COM_FABRIK_ADVANCED_SEARCH');
+		Text::script('COM_FABRIK_LOADING');
 		$opts             = array('alt' => 'calendar', 'class' => 'calendarbutton', 'id' => 'timelineDatePicker_cal_img');
 		$img              = FabrikHelperHTML::image('calendar', 'form', @$this->tmpl, $opts);
 		$this->datePicker = '<input type="text" name="timelineDatePicker" id="timelineDatePicker" value="" />' . $img;

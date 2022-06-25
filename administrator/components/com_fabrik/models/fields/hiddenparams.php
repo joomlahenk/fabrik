@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Form\FormField;
+
 jimport('joomla.form.formfield');
 
 /**
@@ -21,7 +23,7 @@ jimport('joomla.form.formfield');
  * @since       1.6
  */
 
-class JFormFieldHiddenparams extends JFormField
+class FormFieldHiddenparams extends FormField
 {
 	/**
 	 * The form field type.

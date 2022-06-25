@@ -12,13 +12,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHTML::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
-JHtml::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 FabrikHelperHTML::formvalidation();
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.keepalive');
 
 ?>
 
@@ -38,7 +40,7 @@ JHtml::_('behavior.keepalive');
 		});
 	}
 </script>
-<form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php Route::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
 	<div class="width-40 fltlft">
 
@@ -74,10 +76,10 @@ $panels = array(
 
 );
 
-echo JHtml::_('sliders.start','list-sliders-'.$this->item->id, array('useCookie'=>1));
+echo HTMLHelper::_('sliders.start','list-sliders-'.$this->item->id, array('useCookie'=>1));
 
 foreach ($panels as $panel) {
-	echo JHtml::_('sliders.panel',$panel['heading'], $panel['fieldset'][0].-'details');
+	echo HTMLHelper::_('sliders.panel',$panel['heading'], $panel['fieldset'][0].-'details');
 			?>
 			<fieldset class="adminform">
 				<ul class="adminformlist">
@@ -94,19 +96,19 @@ foreach ($panels as $panel) {
 				</ul>
 			</fieldset>
 <?php }
-echo JHtml::_('sliders.end');
+echo HTMLHelper::_('sliders.end');
 ?>
 
 	</div>
 	<div class="width-60 fltrt">
-		<?php echo JHtml::_('tabs.start', 'list-tabs-'.(int) $this->item->id, array('useCookie'=>1));
+		<?php echo HTMLHelper::_('tabs.start', 'list-tabs-'.(int) $this->item->id, array('useCookie'=>1));
 		echo $this->loadTemplate('data');
 		echo $this->loadTemplate('publishing');
 		echo $this->loadTemplate('plugins');
 		echo $this->loadTemplate('rules');
-		echo JHtml::_('tabs.end'); ?>
+		echo HTMLHelper::_('tabs.end'); ?>
 	</div>
 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filesystem\File;
+
 // Require the abstract plugin class
 require_once COM_FABRIK_FRONTEND . '/models/plugin-form.php';
 
@@ -38,7 +40,7 @@ class PlgFabrik_FormAlphaUserPoints extends PlgFabrik_Form
 		$params = $this->getParams();
 		$api_AUP = JPATH_SITE . '/components/com_altauserpoints/helper.php';
 
-		if (JFile::exists($api_AUP))
+		if (File::exists($api_AUP))
 		{
 			$w = new FabrikWorker;
 			$this->data = $this->getProcessData();

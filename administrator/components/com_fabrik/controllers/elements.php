@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 
 require_once 'fabcontrolleradmin.php';
@@ -80,10 +83,10 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 	public function toggleInList()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die(FText::_('JINVALID_TOKEN'));
+		Session::checkToken() or die(FText::_('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$cid = $input->get('cid', array(), 'array');
 		$data = array('showInListView' => 1, 'hideFromListView' => 0);
@@ -119,11 +122,11 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 					$nText = $this->text_prefix . '_N_ITEMS_REMOVED_FROM_LIST_VIEW';
 				}
 
-				$this->setMessage(JText::plural($nText, count($cid)));
+				$this->setMessage(Text::plural($nText, count($cid)));
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 
 	/**
@@ -135,7 +138,7 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 	 */
 	public function delete()
 	{
-		$viewType = JFactory::getDocument()->getType();
+		$viewType = Factory::getDocument()->getType();
 		$view = $this->getView($this->view_item, $viewType);
 		$view->setLayout('confirmdelete');
 
@@ -167,8 +170,8 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 	 */
 	public function copySelectGroup()
 	{
-		JSession::checkToken() or die('Invalid Token');
-		$viewType = JFactory::getDocument()->getType();
+		Session::checkToken() or die('Invalid Token');
+		$viewType = Factory::getDocument()->getType();
 		$view = $this->getView($this->view_item, $viewType);
 		$view->setLayout('copyselectgroup');
 
@@ -191,8 +194,8 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 	 */
 	public function batch()
 	{
-		JSession::checkToken() or die('Invalid Token');
-		$app = JFactory::getApplication();
+		Session::checkToken() or die('Invalid Token');
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$model = $this->getModel('Elements');
 		$cid = $input->get('cid', array(), 'array');
@@ -229,7 +232,7 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 		}
 
 		// Close the application
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 
 	/**
@@ -239,7 +242,7 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 	 */
 	public function publish()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$input = $app->input;
 		$cid = $input->get('cid', array(), 'array');
 		$model = $this->getModel('Elements');

@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -65,7 +67,7 @@ class FabrikWebServiceSoap extends FabrikWebService
 		}
 
 		$xml = $this->client->$method($options);
-		$data = JFactory::getXML($xml->$result, false);
+		$data = Factory::getXML($xml->$result, false);
 
 		if (!is_null($startPoint))
 		{
