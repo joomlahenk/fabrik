@@ -30,6 +30,7 @@ includes/*
 language/*
 libraries/*
 !libraries/fabrik/
+libraries/fabrik/fabrik/Helpers
 !libraries/fabrik/vendor/*
 !libraries/joomla
 libraries/joomla/*

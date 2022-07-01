@@ -9,6 +9,7 @@
 
 namespace Fabrik\Helpers;
 
+defined('_JEXEC') or die;
 
 use JFactory;
 use JModelLegacy;
@@ -99,7 +100,7 @@ class LogHelper
 		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_fabrik/tables');
 		JModelLegacy::addIncludePath(COM_FABRIK_FRONTEND . '/models', 'FabrikFEModel');
 		/** @var \FabrikFEModelForm $formModel */
-		$formModel = JModelLegacy::getInstance('Form', 'FabrikFEModel');
+		$formModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Form', 'FabrikFEModel');
 		$formModel->setId($formId);
 		$formModel->setRowId($rowId);
 		$formModel->origRowId = $rowId;
@@ -117,7 +118,7 @@ class LogHelper
 	 */
 	private static function getLogPlugin($formModel)
 	{
-		$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
+		$pluginManager = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
 		$params = $formModel->getParams();
 		$logPlugin = $pluginManager->getPlugin('log', 'form');
 		$plugins = $params->get('plugins');

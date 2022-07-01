@@ -470,10 +470,11 @@ class Pagination extends \JPagination
 	 */
 	public function get($property, $default = null)
 	{
-		$version = new JVersion;
 
-		if ($version->RELEASE > 2.5)
-		{
+//		$version = new JVersion;
+
+//		if ($version->RELEASE > 2.5)
+//		{
 			if (strpos($property, '.'))
 			{
 				$prop     = explode('.', $property);
@@ -487,15 +488,16 @@ class Pagination extends \JPagination
 			}
 
 			return $default;
-		}
-		elseif (isset($this->$property))
-		{
-			return $this->$property;
-		}
-		else
-		{
-			return $default;
-		}
+
+//		}
+//		elseif (isset($this->$property))
+//		{
+//			return $this->$property;
+//		}
+//		else
+//		{
+//			return $default;
+//		}
 	}
 
 	/**

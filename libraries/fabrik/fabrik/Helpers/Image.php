@@ -11,6 +11,7 @@
 namespace Fabrik\Helpers;
 
 // No direct access
+defined('_JEXEC') or die;
 
 use \RuntimeException;
 use \JHtml;

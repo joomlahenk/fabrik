@@ -2,9 +2,9 @@
  * @version: 1.0
  * @author: @geoffreymcgill
  * @date: 2015-11-25
- * @copyright: Copyright (c) 2008-2019, Object.NET, Inc. (https://object.net). All rights reserved.
+ * @copyright: Copyright (c) 2008-2015, Object.NET, Inc. (http://object.net). All rights reserved.
  * @license: See LICENSE and https://github.com/datejs/Datejs/blob/master/LICENSE
- * @website: https://datejs.com
+ * @website: http://datejs.com/
  */
  
 (function () {
@@ -171,7 +171,8 @@
             };
         },
         all: function () { 
-            return _.each(_.optional(arguments));
+            var px = arguments, _ = _; 
+            return _.each(_.optional(px)); 
         },
 
         // delimited operators
@@ -925,10 +926,8 @@
         "yyyy-MM-ddTHH:mmZ",
         "yyyy-MM-ddTHH:mmz",
         "yyyy-MM-ddTHH:mm",
-        "yyyy-MM-dd",
         "ddd, MMM dd, yyyy H:mm:ss tt",
         "ddd MMM d yyyy HH:mm:ss zzz",
-        "MMM dd",
         "MMddyyyy",
         "ddMMyyyy",
         "Mddyyyy",
@@ -938,7 +937,6 @@
         "yyyy",
         "Mdyy",
         "dMyy",
-        "ddd",
         "d"
     ]);
 

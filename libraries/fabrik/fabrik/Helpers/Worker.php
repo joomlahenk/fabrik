@@ -1774,7 +1774,7 @@ class Worker
 	 * if it doesn't already exist.
 	 *
 	 * @param   bool  $loadJoomlaDb Force (if true) the loading of the main J database,
-	 *                              needed in admin to connect to J db whilst still using fab db drivers "{package}"
+	 *                              needed in admin to connect to J db whilst still using fab db drivers "fabrik"
 	 *                              replacement text
 	 *
 	 * @param   mixed $cnnId        If null then loads the fabrik default connection, if an int then loads the
@@ -1785,7 +1785,6 @@ class Worker
 	public static function getDbo($loadJoomlaDb = false, $cnnId = null)
 	{
 		$sig = (int) $loadJoomlaDb . '.' . $cnnId;
-
 		if (!self::$database)
 		{
 			self::$database = array();
@@ -1799,7 +1798,7 @@ class Worker
 
 			if (!$loadJoomlaDb)
 			{
-				$cnModel  = JModelLegacy::getInstance('Connection', 'FabrikFEModel');
+				$cnModel  = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 				$cn       = $cnModel->getConnection($cnnId);
 				$host     = $cn->host;
 				$user     = $cn->user;
@@ -1818,12 +1817,13 @@ class Worker
 			$driver   = $conf->get('dbtype');
 
 			// Test for swapping db table names
-			$driver .= '_fab';
+			//$driver .= '_fab';
 			$options = array('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database,
 				'prefix' => $dbPrefix);
 
-			$version              = new JVersion;
-			self::$database[$sig] = $version->RELEASE > 2.5 ? JDatabaseDriver::getInstance($options) : JDatabase::getInstance($options);
+//			$version              = new JVersion;
+//			self::$database[$sig] = $version->RELEASE > 2.5 ? JDatabaseDriver::getInstance($options) : JDatabase::getInstance($options);
+			self::$database[$sig] = JDatabaseDriver::getInstance($options);
 
 			Worker::bigSelects(self::$database[$sig]);
 
@@ -1904,7 +1904,7 @@ class Worker
 
 		if (!array_key_exists($connId, self::$connection))
 		{
-			$connectionModel = JModelLegacy::getInstance('connection', 'FabrikFEModel');
+			$connectionModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Connection', 'FabrikFEModel');
 			$connectionModel->setId($connId);
 
 			if ($connId === -1)
@@ -1932,7 +1932,7 @@ class Worker
 	{
 		if (!self::$pluginManager)
 		{
-			self::$pluginManager = JModelLegacy::getInstance('Pluginmanager', 'FabrikFEModel');
+			self::$pluginManager = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Pluginmanager', 'FabrikFEModel');
 		}
 
 		return self::$pluginManager;
@@ -2448,7 +2448,7 @@ class Worker
 
 		$app = JFactory::getApplication();
 
-		if (!$app->isAdmin())
+		if (!$app->isClient('administrator'))
 		{
 			// Attempt to get Itemid from possible list menu item.
 			if (!is_null($listId))
@@ -2523,7 +2523,7 @@ class Worker
 
             $val = $input->get($name, $val, 'string');
 
-            if (!$app->isAdmin())
+            if (!$app->isClient('administrator'))
             {
                 if (!$mambot)
                 {
@@ -2555,7 +2555,7 @@ class Worker
         }
         else
         {
-            if (!$app->isAdmin())
+            if (!$app->isClient('administrator'))
             {
                 $menus = $app->getMenu();
                 $menu  = $menus->getActive();
@@ -2670,6 +2670,8 @@ class Worker
 	 */
 	public static function canPdf($puke = true)
 	{
+// Only use Mpdf as dompdf is no longer installed joomla libraries
+/*
 		$config = \JComponentHelper::getParams('com_fabrik');
 
 		if ($config->get('fabrik_pdf_lib', 'dompdf') === 'dompdf')
@@ -2678,8 +2680,9 @@ class Worker
 		}
 		else
 		{
+*/
 			$file = COM_FABRIK_LIBRARY . '/vendor/mpdf/mpdf/composer.json';
-		}
+//		}
 
 		if (!JFile::exists($file))
 		{
@@ -2830,17 +2833,19 @@ class Worker
 	 *
 	 * @return  bool
 	 */
+/*
 	public static function j3()
 	{
 		$app     = JFactory::getApplication();
-		$version = new JVersion;
+//		$version = new JVersion;
 
 		// Only use template test for testing in 2.5 with my temp J bootstrap template.
 		$tpl = $app->getTemplate();
 
-		return ($tpl === 'bootstrap' || $tpl === 'fabrik4' || $version->RELEASE > 2.5);
+//		return ($tpl === 'bootstrap' || $tpl === 'fabrik4' || $version->RELEASE > 2.5);
+		return ($tpl === 'bootstrap' || $tpl === 'fabrik4' || true);
 	}
-
+*/
 	/**
 	 * Are we in a form process task
 	 *
@@ -2852,7 +2857,7 @@ class Worker
 	{
 		$app = JFactory::getApplication();
 
-		return $app->input->get('task') == 'form.process' || ($app->isAdmin() && $app->input->get('task') == 'process');
+		return $app->input->get('task') == 'form.process' || ($app->isClient('administrator') && $app->input->get('task') == 'process');
 	}
 
 	/**

@@ -8,6 +8,8 @@
 
 namespace Fabrik\Controllers;
 
+defined('_JEXEC') or die;
+
 use \Joomla\Utilities\ArrayHelper;
 use \JFactory;
 

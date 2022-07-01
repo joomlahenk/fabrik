@@ -8,6 +8,8 @@
 
 namespace Fabrik\Helpers\Image;
 
+defined('_JEXEC') or die;
+
 use Fabrik\Helpers\ArrayHelper;
 use Fabrik\Helpers\StringHelper;
 use \JFactory;

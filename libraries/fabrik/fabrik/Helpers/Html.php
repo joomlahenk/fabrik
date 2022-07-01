@@ -362,7 +362,8 @@ EOD;
 		$input                 = $app->input;
 		$layout                = self::getLayout('form.fabrik-email-form');
 		$displayData           = new stdClass;
-		$displayData->j3       = Worker::j3();
+//		$displayData->j3       = Worker::j3();
+		$displayData->j3       = true;
 		$displayData->package  = $app->getUserState('com_fabrik.package', 'fabrik');
 		$displayData->referrer = $input->get('referrer', '', 'string');
 		$document              = JFactory::getDocument();
@@ -381,17 +382,20 @@ EOD;
 	{
 		$config   = JFactory::getConfig();
 		$document = JFactory::getDocument();
-		$j3       = Worker::j3();
+//		$j3       = Worker::j3();
+//		$j3       = true;
 		$document->setTitle($config->get('sitename'));
 
-		if (!$j3)
-		{
+//		if (!$j3)
+//		{
+/*
 			?>
 			<a href='javascript:window.close();'> <span class="small"><?php echo Text::_('COM_FABRIK_CLOSE_WINDOW'); ?>
 </span>
 			</a>
 			<?php
-		}
+*/
+//		}
 	}
 
 	/**
@@ -440,7 +444,7 @@ EOD;
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 		$table   = $formModel->getTable();
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$url = 'index.php?option=com_' . $package . '&task=details.view&tmpl=component&formid=' . $form->id . '&listid=' . $table->id
 				. '&rowid=' . $formModel->getRowId(). '&iframe=1&print=1';
@@ -506,7 +510,7 @@ EOD;
 		$input   = $app->input;
 		$package = $app->getUserState('com_fabrik.package', 'fabrik');
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$url = 'index.php?option=com_fabrik&task=emailform.display&tmpl=component&formid=' . $formModel->get('id') . '&rowid='
 				. $formModel->getRowId();
@@ -556,7 +560,7 @@ EOD;
 	{
 		$db    = Worker::getDbo(true);
 		$query = $db->getQuery(true);
-		$query->select('id, label')->from('#__{package}_lists')->where('published = 1')->order('label');
+		$query->select('id, label')->from('#__fabrik_lists')->where('published = 1')->order('label');
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -987,41 +991,47 @@ EOD;
 		if (!self::$framework)
 		{
 			$app     = JFactory::getApplication();
-			$version = new JVersion;
+//			$version = new JVersion;
 			Html::modalJLayouts();
 			$liveSiteSrc = array();
 			$liveSiteReq = array();
 			$fbConfig    = JComponentHelper::getParams('com_fabrik');
 
 			// Only use template test for testing in 2.5 with my temp J bootstrap template.
-			$bootstrapped = in_array($app->getTemplate(), array('bootstrap', 'fabrik4')) || $version->RELEASE > 2.5;
+//			$bootstrapped = in_array($app->getTemplate(), array('bootstrap', 'fabrik4')) || $version->RELEASE > 2.5;
+			$bootstrapped = true;
 
 			//$ext = self::isDebug() ? '.js' : '-min.js';
 			$mediaFolder = self::getMediaFolder();
 			$src         = array();
-			JHtml::_('behavior.framework', true);
+			// JHtmlBehavior::framework is deprecated. Update to jquery scripts. HOW??
+//			JHtml::_('behavior.framework', true);
+			$debug = JDEBUG;
+			JHtml::_('script', 'system/mootools-core.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+			JHtml::_('script', 'system/mootools-more.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
 
 			// Ensure bootstrap js is loaded - as J template may not load it.
-			if ($version->RELEASE > 2.5)
-			{
+//			if ($version->RELEASE > 2.5)
+//			{
 				JHtml::_('bootstrap.framework');
 				self::loadBootstrapCSS();
 				JHtml::_('script', $mediaFolder . '/lib/jquery-ui/jquery-ui.min.js');
-			}
+//			}
 
 			// Require js test - list with no cal loading ajax form with cal
-			if (version_compare(JVERSION, '3.7', '>='))
-			{
+//			if (version_compare(JVERSION, '3.7', '>='))
+//			{
 				/**
 				 * don't do this in the framework any more, as the new jdate element means we can't include the old
                  * date JS if a jdate is being used, so the old date element now calls calendar() when it needs it
                  */
 				//self::calendar();
-			}
-			else
-			{
-				JHTML::_('behavior.calendar');
-			}
+//			}
+//			else
+//			{
+			//JHtmlBehavior::calendar is deprecated as the static assets are being loaded in the relative layout.
+//				JHTML::_('behavior.calendar');
+//			}
 
 			$liveSiteReq['Chosen'] = $mediaFolder . '/chosen-loader';
 			$liveSiteReq['Fabrik'] = $mediaFolder . '/fabrik';
@@ -1215,7 +1225,8 @@ EOD;
 		self::$allRequirePaths = (object) array_merge((array) self::requirePaths(), $paths);
 		$framework    = array();
 		$deps         = array();
-		$j3           = Worker::j3();
+//		$j3           = Worker::j3();
+//		$j3           = true;
 
 		$requirejsBaseURI = self::getJSAssetBaseURI();
 
@@ -1234,10 +1245,10 @@ EOD;
 
 		$navigator = JBrowser::getInstance();
 
-		if ($navigator->getBrowser() == 'msie' && !$j3)
-		{
-			$deps[] = 'lib/flexiejs/flexie';
-		}
+//		if ($navigator->getBrowser() == 'msie' && !$j3)
+//		{
+//			$deps[] = 'lib/flexiejs/flexie';
+//		}
 
 		$deps[] = 'fab/utils';
 		$deps[] = 'jquery';
@@ -1245,13 +1256,13 @@ EOD;
 		$deps[] = 'fab/mootools-ext';
 		$deps[] = 'lib/Event.mock';
 
-		if (!$j3)
-		{
-			$deps[] = 'lib/art';
-			$deps[] = 'fab/tips';
-			$deps[] = 'fab/icons';
-			$deps[] = 'fab/icongen';
-		}
+//		if (!$j3)
+//		{
+//			$deps[] = 'lib/art';
+//			$deps[] = 'fab/tips';
+//			$deps[] = 'fab/icons';
+//			$deps[] = 'fab/icongen';
+//		}
 
 		self::addRequireJsShim($framework, 'fab/fabrik', $deps, false);
 		self::addRequireJsShim($framework, 'fab/autocomplete-bootstrap', array('fab/fabrik'), false);
@@ -1362,12 +1373,12 @@ EOD;
 				$r->fab .= '/dist';
 			}
 
-			$version = new JVersion;
+//			$version = new JVersion;
 
-			if ($version->RELEASE >= 3.2 && $version->DEV_LEVEL > 1)
-			{
+//			if ($version->RELEASE >= 3.2 && $version->DEV_LEVEL > 1)
+//			{
 				$r->punycode = 'media/system/js/punycode';
-			}
+//			}
 
 			self::$allRequirePaths = $r;
 		}
@@ -1671,11 +1682,11 @@ EOD;
 		// Need to load element for ajax popup forms in IE.
 		$needed = array();
 
-		if (!Worker::j3())
-		{
-			$needed[] = self::isDebug() ? 'fab/icongen' : 'fab/icongen-min';
-			$needed[] = self::isDebug() ? 'fab/icons' : 'fab/icons-min';
-		}
+//		if (!Worker::j3())
+//		{
+//			$needed[] = self::isDebug() ? 'fab/icongen' : 'fab/icongen-min';
+//			$needed[] = self::isDebug() ? 'fab/icons' : 'fab/icons-min';
+//		}
 
 		foreach ($needed as $need)
 		{
@@ -1822,16 +1833,18 @@ EOD;
 			}
 			else
 			{
-				if (Worker::j3())
-				{
+//				if (Worker::j3())
+//				{
 					JHTML::stylesheet('components/com_fabrik/libs/slimbox2/css/slimbox2.css');
 					self::script('components/com_fabrik/libs/slimbox2/js/slimbox2.js');
+/*
 				}
 				else
 				{
 					JHTML::stylesheet('components/com_fabrik/libs/slimbox1.64/css/slimbox.css');
 					self::script('components/com_fabrik/libs/slimbox1.64/js/slimbox.js');
 				}
+*/
 			}
 
 			self::$modal = true;
@@ -2049,11 +2062,11 @@ EOD;
 		$jsFile = 'autocomplete';
 		$className = 'AutoComplete';
 
-		if (Worker::j3())
-		{
+//		if (Worker::j3())
+//		{
 			$jsFile = $plugin === 'cascadingdropdown' ? 'autocomplete-bootstrap-cdd' : 'autocomplete-bootstrap';
 			$className = $plugin === 'cascadingdropdown' ? 'FabCddAutocomplete' : 'AutoComplete';
-		}
+//		}
 
 		$needed   = array();
 		$needed[] = 'fab/' . $jsFile;
@@ -2106,7 +2119,7 @@ EOD;
 		$package   = $app->getUserState('com_fabrik.package', 'fabrik');
 		//$json->url = COM_FABRIK_LIVESITE . 'index.php?option=com_' . $package . '&format=raw';
 		$json->url = 'index.php?option=com_' . $package . '&format=raw';
-		$json->url .= $app->isAdmin() ? '&task=plugin.pluginAjax' : '&view=plugin&task=pluginAjax';
+		$json->url .= $app->isClient('administrator') ? '&task=plugin.pluginAjax' : '&view=plugin&task=pluginAjax';
 		$json->url .= '&' . JSession::getFormToken() . '=1';
 		$json->url .= '&g=element&element_id=' . $elementId
 			. '&formid=' . $formId . '&plugin=' . $plugin . '&method=autocomplete_options&package=' . $package;
@@ -2270,7 +2283,7 @@ EOT;
 			switch ($type)
 			{
 				case 'image':
-					if ($app->isAdmin())
+					if ($app->isClient('administrator'))
 					{
 						self::$helperpaths[$type][] = JPATH_SITE . DIRECTORY_SEPARATOR . 'administrator/templates/' . $template . '/images/';
 					}
@@ -2351,7 +2364,8 @@ EOT;
 		$src = self::getImagePath($file, $type, $tmpl);
 		$forceImage = ArrayHelper::getValue($opts, 'forceImage', false) || !empty($src);
 
-		if (Worker::j3() && $forceImage !== true)
+//		if (Worker::j3() && $forceImage !== true)
+		if ($forceImage !== true)
 		{
 			unset($properties['alt']);
 			$class = ArrayHelper::getValue($properties, 'icon-class', '');
@@ -2490,10 +2504,10 @@ EOT;
 		$elementBeforeLabel = true, $optionsPerRow = 4, $classes = array(), $buttonGroup = false, $dataAttributes = array(),
 		$inputDataAttributes = array())
 	{
-		if (Worker::j3())
-		{
+//		if (Worker::j3())
+//		{
 			$elementBeforeLabel = true;
-		}
+//		}
 
 		$containerClasses = array_key_exists('container', $classes) ? implode(' ', $classes['container']) : '';
 		$dataAttributes   = implode(' ', $dataAttributes);
@@ -2517,9 +2531,10 @@ EOT;
 		}
 		else
 		{
-			if (Worker::j3())
-			{
+//			if (Worker::j3())
+//			{
 				$grid = self::bootstrapGrid($items, $optionsPerRow, 'fabrikgrid_' . $type);
+/*
 			}
 			else
 			{
@@ -2533,6 +2548,7 @@ EOT;
 
 				$grid[] = '</ul>';
 			}
+*/
 		}
 
 		return $grid;
@@ -2652,7 +2668,7 @@ EOT;
 	{
 		$app = JFactory::getApplication();
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -2663,7 +2679,7 @@ EOT;
 		else
 		{
 			JModelLegacy::addIncludePath(COM_FABRIK_BASE . 'components/com_content/models');
-			$articleModel = JModelLegacy::getInstance('Article', 'ContentModel');
+			$articleModel = JFactory::getApplication()->bootComponent('com_fabrik')->getMVCFactory()->createModel('Article', 'ContentModel');
 			$res          = $articleModel->getItem($contentTemplate);
 		}
 
@@ -3097,11 +3113,12 @@ EOT;
 		static::framework('more');
 
 		$debug   = JFactory::getConfig()->get('debug');
-		$version = new JVersion;
+//		$version = new JVersion;
 
-		if ($version->RELEASE >= 3.2 && $version->DEV_LEVEL > 1)
-		{
-			$file = $debug ? 'punycode-uncompressed' : 'punycode';
+//		if ($version->RELEASE >= 3.2 && $version->DEV_LEVEL > 1)
+//		{
+// punycode.js is not present in J!4, but does in J!3
+/*			$file = $debug ? 'punycode-uncompressed' : 'punycode';
 			$path = JURI::root() . 'media/system/js/' . $file;
 
 			$js   = array();
@@ -3115,9 +3132,10 @@ EOT;
 			$js[] = "});";
 
 			self::addToSessionHeadScripts(implode("\n", $js));
-		}
-
-		JHtml::_('script', 'system/validate.js', false, true);
+//		}
+*/
+//		JHtml::_('script', 'system/fields/validate.js', false, true);
+		JHtml::_('script', 'system/fields/validate.js', ['version' => 'auto', 'relative' => true, 'detectDebug' => $debug]);
 		static::$loaded[__METHOD__] = true;
 	}
 
