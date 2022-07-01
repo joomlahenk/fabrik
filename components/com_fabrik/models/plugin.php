@@ -178,8 +178,6 @@ class FabrikPlugin extends JPlugin
 	 */
 	public function __construct(&$subject, $config = array())
 	{
-//H		print_r('do we get here ?');exit;//yes
-//H		print_r($config);exit;//Array ( [type] => fabrik_element [name] => internalid [params] => {} [id] => 448 )
 		parent::__construct($subject, $config);
 		$this->_db     = ArrayHelper::getValue($config, 'db', JFactory::getDbo());
 		$this->config  = ArrayHelper::getValue($config, 'config', JFactory::getConfig());

@@ -162,7 +162,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 	{
 		// Initialise variables.
 //		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
+//		$dispatcher    = JFactory::getApplication()->getDispatcher();
 		$item       = $this->getTable();
 		$pks        = (array) $pks;
 
@@ -195,8 +195,8 @@ class FabrikAdminModelElement extends FabModelAdmin
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the onContentChangeState event.
-		$result = $dispatcher->triggerEvent($this->event_change_state, array($context, $pks, $value));
-//		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
+//		$result = $dispatcher->triggerEvent($this->event_change_state, array($context, $pks, $value));
+		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
 
 		if (in_array(false, $result, true))
 		{

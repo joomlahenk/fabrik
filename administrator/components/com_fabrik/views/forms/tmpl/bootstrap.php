@@ -12,6 +12,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 //JHTML::_('script', 'system/multiselect.js', false, true);
@@ -27,34 +32,11 @@ $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_fabrik&view=forms'); ?>" method="post" name="adminForm" id="adminForm">
-<?php if(!empty( $this->filterbar)): ?>
-	<div id="j-sidebar-container" class="col-md-4">
-		<?php echo $this->filterbar; ?>
-	</div>
-	<div id="j-main-container" class="col-md-12">
-<?php else : ?>
-	<div id="j-main-container">
-<?php endif;?>
-			<div id="filter-bar" class="btn-toolbar">
-				<div class="row-fluid">
-					<div class="filter-search btn-group pull-left">
-						<label class="element-invisible" for="filter_search"><?php echo FText::_('JSEARCH_FILTER_LABEL'); ?></label>
-						<input type="text" name="filter_search" placeholder="<?php echo FText::_('JSEARCH_FILTER_LABEL'); ?>" id="filter_search" value="<?php echo $this->state->get('filter.search'); ?>"
-							title="<?php echo FText::_('COM_FABRIK_SEARCH_IN_TITLE'); ?>" />&nbsp;
-					</div>
-					<div class="btn-group pull-left hidden-phone">
-						<button class="btn tip" type="submit" rel="tooltip" title="<?php echo FText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-							<i class="icon-search"></i></button>
-						<button class="btn tip" type="button" onclick="document.id('filter_search').value='';this.form.submit();" rel="tooltip" title="<?php echo FText::_('JSEARCH_FILTER_CLEAR'); ?>">
-							<i class="icon-remove"></i></button>
-					</div>
-					<div class="btn-group pull-right hidden-phone">
-						<label for="limit" class="element-invisible"><?php echo FText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
-						<?php echo $this->pagination->getLimitBox(); ?>
-					</div>
-				</div>
-			</div>
-			<div class="clearfix"></div>
+<div class="row">
+<div class="col-md-12">
+	<div id="j-main-container" class="j-main-container">
+		<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+
 			<table class="table table-striped">
 				<thead>
 				<tr>

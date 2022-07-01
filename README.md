@@ -9,7 +9,7 @@ Final version:
 
 Working in J!4.x only, does not work on <J!4.
 Package removed (did not work and was not supported anyway).
-All version hacks removed, to be reimplemented for >J!4 and <J!5; we start with the latest J!4 version.
+All version hacks (release) removed, to be reimplemented for >J!4 and <J!5; we start with the latest J!4 version.
 All unused functions removed (yes, there are some).
 Cleaner install: only install what we need. Do a real install of library files, not install and copy (this is called 'moving files').
 Visualization removed, because most does not work well and there are much better alternatives.
@@ -52,20 +52,15 @@ install fabrik.zip in a clean joomla 4.x (latest version)
 
 The build tool needs to be modified later, when all is working in J!4
 
+For now I copied my installable fabrik.zip in the fabrik_build folder
+
 Progress:
 ================
 
-2022-06-22: 
+2022-07-01: 
 Install is working, only temporary manually install mootools-core.js & mootools-more.js in media\system\js. 
 I will change this later, so they are loaded by the WebAssetManager
 
-Fabrik global config is working, could not try all setting yet.
+A new list can be created. 
+All other menu items (forms, groups, elements,...) need some updates and may not yet work as expected. 
 
-Focus is on list first. After this is working well, all other menu items will be updated (forms, groups, elements,...)
-
-Select fabrik->lists will show the lists overview. This is not completely working as I will need more lists to do the test.
-I only use this now to be able to create a new list.
-fabrik->lists->new will show the list configuration. 
-fabrik->lists->new-> enter a 'test' list ->save, then the contenttype page is loaded ok. 
-I got stuck on the save of the contenttype page, working on it.....
-There is an issue with the new EventDispatcher

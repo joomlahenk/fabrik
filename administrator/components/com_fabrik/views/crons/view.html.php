@@ -61,6 +61,8 @@ class FabrikAdminViewCrons extends JViewLegacy
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
 		$this->packageOptions = $this->get('PackageOptions');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -71,11 +73,7 @@ class FabrikAdminViewCrons extends JViewLegacy
 		FabrikAdminHelper::setViewLayout($this);
 		$this->addToolbar();
 		FabrikAdminHelper::addSubmenu($input->getWord('view', 'lists'));
-
-//		if (FabrikWorker::j3())
-//		{
-			$this->sidebar = JHtmlSidebar::render();
-//		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		FabrikHelperHTML::iniRequireJS();
 		parent::display($tpl);

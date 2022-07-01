@@ -144,7 +144,8 @@ class FabrikTableForm extends FabTable
 			// Check that $field is in the table.
 			if (!in_array($field, $fields))
 			{
-				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_CLASS_IS_MISSING_FIELD', get_class($this), $field));
+//H				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_CLASS_IS_MISSING_FIELD', get_class($this), $field));
+				$e = new \Exception(JText::sprintf('JLIB_DATABASE_ERROR_CLASS_IS_MISSING_FIELD', get_class($this), $field));
 				$this->setError($e);
 
 				return false;
@@ -160,7 +161,8 @@ class FabrikTableForm extends FabTable
 		// Check that we have a result.
 		if (empty($row))
 		{
-			$e = new JException(FText::_('JLIB_DATABASE_ERROR_EMPTY_ROW_RETURNED'));
+//H			$e = new JException(FText::_('JLIB_DATABASE_ERROR_EMPTY_ROW_RETURNED'));
+			$e = new \Exception(FText::_('JLIB_DATABASE_ERROR_EMPTY_ROW_RETURNED'));
 			$this->setError($e);
 
 			return false;
