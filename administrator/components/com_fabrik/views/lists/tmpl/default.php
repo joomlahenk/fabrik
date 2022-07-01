@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
+FabrikHelperHTML::formvalidation();
 //JHTML::_('script','system/multiselect.js',false,true);
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
 $user	= JFactory::getUser();

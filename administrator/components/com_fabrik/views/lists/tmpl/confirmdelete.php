@@ -13,6 +13,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $app = JFactory::getApplication();
+FabrikHelperHTML::formvalidation();
+
+
 ?>
 <script type="text/javascript">
 Joomla.submitform = function(task, form) {

@@ -90,9 +90,7 @@ class FabrikAdminModelList extends FabModelAdmin
 		if (!array_key_exists($sig, $this->tables))
 		{
 			$config['dbo']      = FabrikWorker::getDbo(true);
-			//H print_r($config['dbo']);exit;
 			$this->tables[$sig] = FabTable::getInstance($type, $prefix, $config);
-			//H print_r($this->tables[$sig]);exit;//endless loading, loads to whole joomla page after FabrikTableList Object
 		}
 
 		return $this->tables[$sig];
@@ -196,7 +194,7 @@ class FabrikAdminModelList extends FabModelAdmin
 	{
 		// Initialise variables.
 //		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
+//		$dispatcher    = JFactory::getApplication()->getDispatcher();
 		$table      = $this->getTable();
 		$pks        = (array) $pks;
 
@@ -229,8 +227,8 @@ class FabrikAdminModelList extends FabModelAdmin
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the onContentChangeState event.
-		$result = $dispatcher->triggerEvent($this->event_change_state, array($context, $pks, $value));
-//		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
+//		$result = $dispatcher->triggerEvent($this->event_change_state, array($context, $pks, $value));// does not work
+		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
 
 		if (in_array(false, $result, true))
 		{
@@ -650,7 +648,6 @@ class FabrikAdminModelList extends FabModelAdmin
 		$jForm = $input->get('jform', array(), 'array');
 		$date  = JFactory::getDate();
 		$row   = $this->getTable();
-		//print_r($row);exit;// FabrikTableList Object , but endless loading
 		$id = FArrayHelper::getValue($data, 'id');
 		$row->load($id);
 
@@ -723,7 +720,6 @@ class FabrikAdminModelList extends FabModelAdmin
 
 			// Save the row now
 			$row->store();
-			//print_r($contentType);exit;// only list record should be added here
 
 			// Create fabrik form
 			$this->createLinkedForm();
@@ -1623,8 +1619,6 @@ class FabrikAdminModelList extends FabModelAdmin
 	{
 		$createDate = JFactory::getDate();
 		$group      = $this->getTable('Group');
-//H		print_r($group->get('created'));exit;// ok, empty
-//H		print_r($group);exit;// endless load, but maybe correct
 		$group->bind($data);
 		$group->set('id', null);
 		$group->set('created', $createDate->toSql());
@@ -1632,8 +1626,6 @@ class FabrikAdminModelList extends FabModelAdmin
 		$group->set('created_by_alias', $this->user->get('username'));
 		$group->set('published', ArrayHelper::getValue($data, 'published', 1));
 		$opts                          = ArrayHelper::getValue($data, 'params', new stdClass);
-//H		print_r($group->get('created'));exit;// ok, correctly set
-//H		print_r($group->get('id'));exit;// ok, empty
 
 		if (is_array($opts))
 		{
@@ -1644,8 +1636,7 @@ class FabrikAdminModelList extends FabModelAdmin
 		$opts->repeat_group_show_first = 1;
 		$group->set('params', json_encode($opts));
 		$group->set('is_join', ($isJoin == true) ? 1 : 0);
-		$group->store();//H issue with store
-//H		print_r($group->get('id'));exit; //should be valid here, list, form & group created, not elements yet
+		$group->store();
 
 		// Create form group
 		$formId    = $this->getState('list.form_id');
@@ -1742,6 +1733,7 @@ class FabrikAdminModelList extends FabModelAdmin
 			$createDate = $createDate->toSql();
 			$item->set('label', $names[$pk]['listLabel']);
 			$item->set('created', $createDate);
+//H			$item->set('created_by', 0);// maybe we need to set this as well
 			$item->set('modified', $db->getNullDate());
 			$item->set('modified_by', $this->user->get('id'));
 			$item->set('hits', 0);
@@ -1992,7 +1984,7 @@ class FabrikAdminModelList extends FabModelAdmin
 	{
 		// Initialise variables.
 //		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
+//		$dispatcher    = JFactory::getApplication()->getDispatcher();
 		$pks        = (array) $pks;
 		$table      = $this->getTable();
 
@@ -2042,8 +2034,8 @@ class FabrikAdminModelList extends FabModelAdmin
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->triggerEvent($this->event_before_delete, array($context, $table));
-//					$result = JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
+//					$result = $dispatcher->triggerEvent($this->event_before_delete, array($context, $table));
+					$result = JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 
 					if (in_array(false, $result, true))
 					{
@@ -2440,14 +2432,12 @@ class FabrikAdminModelList extends FabModelAdmin
 	{
 		$pluginManager = FabrikWorker::getPluginManager();
 		$element       = $pluginManager->loadPlugIn($data['plugin'], 'element');
-//H		print_r($element);exit;// null after some time
 		$item          = $element->getDefaultProperties($data);
 		$item->id      = null;
 		$item->name    = $name;
 		$item->label   = str_replace('_', ' ', $name);
 		$item->bind($data);
 		$item->store();
-//H		print_r($element->element->id);exit;//null, because pluginManager did not return element
 		return $element;
 	}
 

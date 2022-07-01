@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 
 FabrikHelperHTML::formvalidation();
 JHTML::_('script','system/multiselect.js', ['relative' => true]);
+$wa = JFactory::getApplication()->getDocument()->getWebAssetManager();
+$wa->useScript('jquery');
 
 ?>
 <form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm"

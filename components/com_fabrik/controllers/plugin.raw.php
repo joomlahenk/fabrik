@@ -59,9 +59,9 @@ class FabrikControllerPlugin extends JControllerLegacy
 		}
 
 //		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher    = JFactory::getApplication()->getDispatcher();
-		$dispatcher->triggerEvent($method);
-//		$dispatcher = JFactory::getApplication()->triggerEvent($method);
+//		$dispatcher    = JFactory::getApplication()->getDispatcher();
+//		$dispatcher->triggerEvent($method);
+		$dispatcher = JFactory::getApplication()->triggerEvent($method);
 	}
 
 	/**

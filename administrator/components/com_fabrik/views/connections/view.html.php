@@ -60,6 +60,8 @@ class FabrikAdminViewConnections extends JViewLegacy
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -69,12 +71,7 @@ class FabrikAdminViewConnections extends JViewLegacy
 
 		FabrikAdminHelper::setViewLayout($this);
 		$this->addToolbar();
-//		FabrikAdminHelper::addSubmenu($input->getWord('view', 'lists'));
-
-//		if (FabrikWorker::j3())
-//		{
-			$this->filterbar = JHtmlSidebar::render();
-//		}
+		$this->filterbar = JHtmlSidebar::render();
 
 		FabrikHelperHTML::iniRequireJS();
 		parent::display($tpl);
