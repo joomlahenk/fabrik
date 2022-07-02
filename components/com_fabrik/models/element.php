@@ -6900,7 +6900,7 @@ class PlgFabrik_Element extends FabrikPlugin
 		}
 		else
 		{
-			echo $cache->call(array(get_class($this), 'cacheAutoCompleteOptions'), $this, $search);
+			echo $cache->get(array(get_class($this), 'cacheAutoCompleteOptions'), $this, $search);
 		}
 	}
 
