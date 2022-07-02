@@ -106,7 +106,7 @@ class FabrikAdminControllerElements extends FabControllerAdmin
 			if (!$model->addToListView($cid, $value))
 			{
 				//JError::raiseWarning(500, $model->getError());
-				\Joomla\CMS\Factory::getApplication()->enqueueMessage($model->getError(), 'error');		}
+				\Joomla\CMS\Factory::getApplication()->enqueueMessage($model->getError(), 'error');		
 			}
 			else
 			{
