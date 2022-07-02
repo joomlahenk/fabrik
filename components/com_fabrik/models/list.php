@@ -8311,7 +8311,8 @@ class FabrikFEModelList extends JModelForm
 		}
 		*/
 		$cache = FabrikWorker::getCache($this);
-		$cache->call(array(get_class($this), 'cacheDoCalculations'), $this->getId());
+		//$cache->call(array(get_class($this), 'cacheDoCalculations'), $this->getId());
+		$cache->get(array(get_class($this), 'cacheDoCalculations'), $this->getId());
 	}
 
 	/**

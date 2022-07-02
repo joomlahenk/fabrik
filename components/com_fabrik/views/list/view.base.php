@@ -484,7 +484,7 @@ class FabrikViewListBase extends FabrikView
 
 		if (!class_exists('JSite'))
 		{
-			require_once JPATH_ROOT . '/includes/application.php';
+			require_once JPATH_ROOT . '/includes/app.php';
 		}
 
 		$this->setTitle($w, $params, $model);
