@@ -216,7 +216,7 @@ class PlgFabrik_ListPivot extends PlgFabrik_List
 
 		$cache = FabrikWorker::getCache();
 		$cache->setCaching(1);
-		$res = $cache->call(array(get_class($this), 'cacheResults'), $this->model->getId());
+		$res = $cache->get(array(get_class($this), 'cacheResults'), $this->model->getId());
 
 		$this->model->set('data', $res);
 

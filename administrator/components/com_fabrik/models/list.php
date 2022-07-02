@@ -796,6 +796,8 @@ class FabrikAdminModelList extends FabModelAdmin
 				: $row->get('db_primary_key'));
 			$row->set('auto_inc', StringHelper::stristr($extra, 'auto_increment') ? true : false);
 		}
+		//trob: make strict happy 
+		$row->set('created_by',(int)$row->get('created_by') );
 
 		$row->store();
 		$this->updateJoins($data);
