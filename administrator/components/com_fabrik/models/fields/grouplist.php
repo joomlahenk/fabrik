@@ -64,7 +64,17 @@ class JFormFieldGroupList extends JFormFieldGroupedList
 
 		// Get the options.
 		$db->setQuery($query);
-		$options = $db->loadObjectList();
+		
+		try
+		{
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+		}
+		
 		$groups = array();
 
 		// Add please select
@@ -85,11 +95,11 @@ class JFormFieldGroupList extends JFormFieldGroupedList
 		}
 
 		// Check for a database error.
-		if ($db->getErrorNum())
-		{
+//		if ($db->getErrorNum())
+//		{
 //			JError::raiseWarning(500, $db->getErrorMsg());
-			\Joomla\CMS\Factory::getApplication()->enqueueMessage($db->getErrorMsg(), 'error');
-		}
+//			\Joomla\CMS\Factory::getApplication()->enqueueMessage($db->getErrorMsg(), 'error');
+//		}
 
 		return $groups;
 	}

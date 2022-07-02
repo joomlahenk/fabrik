@@ -5952,7 +5952,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	 */
 	public function beforeSave(&$row)
 	{
-		$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+		$safeHtmlFilter = JFilterInput::getInstance(array(), array(), 1, 1);
 		$post           = $safeHtmlFilter->clean($_POST, 'array');
 		$post           = $post['jform'];
 		$dbjoinEl       = (is_subclass_of($this, 'PlgFabrik_ElementDatabasejoin') || get_class($this) == 'PlgFabrik_ElementDatabasejoin');

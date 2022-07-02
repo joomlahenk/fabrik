@@ -6326,7 +6326,7 @@ class FabrikFEModelList extends JModelForm
 		}
 
 		$row->slug = str_replace(':', '-', $row->slug);
-		$row->slug = JApplication::stringURLSafe($row->slug);
+		$row->slug = JApplicationHelper::stringURLSafe($row->slug);
 
 		return $row->slug;
 	}
@@ -10142,7 +10142,7 @@ class FabrikFEModelList extends JModelForm
 			}
 			else
 			{
-				$this->ajax = $params->get('list_ajax', $input->Bool('ajax', false));
+				$this->ajax = $params->get('list_ajax', $input->getBool('ajax', false));
 			}
 		}
 
