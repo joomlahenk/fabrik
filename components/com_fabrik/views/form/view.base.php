@@ -377,7 +377,7 @@ class FabrikViewFormBase extends FabrikView
 			// If there is a menu item available AND the form is not rendered in a content plugin or module
 			if (is_object($menu) && !$this->isMambot)
 			{
-				$menuParams = is_a($menu->params, 'Registry') || is_a($menu->params, 'JRegistry') ? $menu->params : new Registry($menu->params);
+				$menuParams = is_a($menu->getParams(), 'Registry') || is_a($menu->getParams(), 'JRegistry') ? $menu->getParams() : new Registry($menu->getParams());
 				$params->set('page_heading', FText::_($menuParams->get('page_heading', '')));
 				$params->set('show_page_heading', $menuParams->get('show_page_heading', 0));
 				$params->set('pageclass_sfx', $menuParams->get('pageclass_sfx'));

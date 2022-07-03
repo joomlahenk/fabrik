@@ -784,7 +784,7 @@ class FabrikFEModelList extends JModelForm
 
 					if (is_object($menu))
 					{
-						if (!is_null($menu->params->get('rows_per_page')))
+						if (!is_null($menu->getParams()->get('rows_per_page')))
 						{
 							$context .= $menu->id . '.';
 						}
@@ -12294,7 +12294,7 @@ class FabrikFEModelList extends JModelForm
 		/* get the default rows per page, menu then table then system, whichever is first */
 		$defaultRowsPerPage = "";
 		if ($this->app->isClient('site')) {
-			$defaultRowsPerPage = $this->app->getMenu()->getActive()->params->get('rows_per_page');
+			$defaultRowsPerPage = $this->app->getMenu()->getActive()->getParams()->get('rows_per_page');
 		}
 		if (empty($defaultRowsPerPage)) {
 			$defaultRowsPerPage = $this->getTable()->rows_per_page;

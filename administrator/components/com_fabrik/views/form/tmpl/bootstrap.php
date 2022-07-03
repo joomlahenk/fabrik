@@ -67,32 +67,32 @@ JHtml::_('behavior.keepalive');
 	
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 	  <li class="nav-item" role="">
-		<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#tab-details" type="button" role="tab" aria-controls="" aria-selected="true">
+		<button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#tab-details" type="button" role="tab" aria-controls="" aria-selected="true">
 			<?php echo FText::_('COM_FABRIK_DETAILS'); ?>
 		</button>
 	  </li>
 	  <li class="nav-item" role="">
-		<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tab-buttons" type="button" role="tab" aria-controls="" aria-selected="false">
+		<button class="nav-link" id="buttons-tab" data-bs-toggle="tab" data-bs-target="#tab-buttons" type="button" role="tab" aria-controls="" aria-selected="false">
 			<?php echo FText::_('COM_FABRIK_BUTTONS')?>
 		</button>
 	  </li>
 	  <li class="nav-item" role="">
-		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#tab-process" type="button" role="tab" aria-controls="" aria-selected="false">
+		<button class="nav-link" id="process-tab" data-bs-toggle="tab" data-bs-target="#tab-process" type="button" role="tab" aria-controls="" aria-selected="false">
 			<?php echo FText::_('COM_FABRIK_FORM_PROCESSING')?>
 		</button>
 	  </li>
 	  <li class="nav-item" role="">
-		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#tab-publishing" type="button" role="tab" aria-controls="" aria-selected="false">
+		<button class="nav-link" id="publishing-tab" data-bs-toggle="tab" data-bs-target="#tab-publishing" type="button" role="tab" aria-controls="" aria-selected="false">
 			<?php echo FText::_('COM_FABRIK_GROUP_LABEL_PUBLISHING_DETAILS')?>
 		</button>
 	  </li>
 	  <li class="nav-item" role="">
-		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#tab-groups" type="button" role="tab" aria-controls="" aria-selected="false">
+		<button class="nav-link" id="groups-tab" data-bs-toggle="tab" data-bs-target="#tab-groups" type="button" role="tab" aria-controls="" aria-selected="false">
 			<?php echo FText::_('COM_FABRIK_GROUPS')?>
 		</button>
 	  </li>
 	  <li class="nav-item" role="">
-		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#tab-layout" type="button" role="tab" aria-controls="" aria-selected="false">
+		<button class="nav-link" id="layout-tab" data-bs-toggle="tab" data-bs-target="#tab-layout" type="button" role="tab" aria-controls="" aria-selected="false">
 			<?php echo FText::_('COM_FABRIK_LAYOUT')?>
 		</button>
 	  </li>

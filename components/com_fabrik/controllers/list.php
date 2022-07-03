@@ -85,7 +85,7 @@ class FabrikControllerList extends JControllerLegacy
 		$view->setModel($model, true);
 
 		// Display the view
-		$view->error = $this->getError();
+		//$view->error = $this->getError();
 
 		/**
 		 * F3 cache with raw view gives error

@@ -12,16 +12,20 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHTML::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
-JHtml::_('bootstrap.tooltip');
-// JHtmlBehavior::framework is deprecated. Update to jquery scripts. HOW??
-//JHtml::_('behavior.framework', true);
+use Joomla\CMS\HTML\HTMLHelper;
+
+$wa = JFactory::getApplication()->getDocument()->getWebAssetManager();
+$wa->useScript('jquery');
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::stylesheet('administrator/components/com_fabrik/views/fabrikadmin.css');
+HTMLHelper::_('bootstrap.tooltip');
+
 $debug = JDEBUG;
-JHtml::_('script', 'system/mootools-core.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
-JHtml::_('script', 'system/mootools-more.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+HTMLHelper::_('script', 'system/mootools-core.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
+HTMLHelper::_('script', 'system/mootools-more.js', array('version' => 'auto', 'relative' => true, 'detectDebug' => $debug));
 FabrikHelperHTML::formvalidation();
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.keepalive');
 
 JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 ?>
@@ -60,45 +64,43 @@ JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 	</div>
 <?php
 }?>
-	<div class="row-fluid" id="elementFormTable">
 
-		<div class="span2">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	  <li class="nav-item" role="">
+		<button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#tab-details" type="button" role="tab" aria-controls="" aria-selected="true">
+			<?php echo FText::_('COM_FABRIK_DETAILS'); ?>
+		</button>
+	  </li>
+	  <li class="nav-item" role="">
+		<button class="nav-link" id="publishing-tab" data-bs-toggle="tab" data-bs-target="#tab-publishing" type="button" role="tab" aria-controls="" aria-selected="false">
+			<?php echo FText::_('COM_FABRIK_GROUP_LABEL_PUBLISHING_DETAILS')?>
+		</button>
+	</li>
 
-			<ul class="nav nav-list">
-				<li class="active">
-			    	<a data-toggle="tab" href="#tab-details">
-			    		<?php echo FText::_('COM_FABRIK_DETAILS')?>
-			    	</a>
-			    </li>
-			    <li>
-			    	<a data-toggle="tab" href="#tab-publishing">
-			    		<?php echo FText::_('COM_FABRIK_PUBLISHING')?>
-			    	</a>
-			    </li>
-			    <li>
-			    	<a data-toggle="tab" href="#tab-access">
-			    		<?php echo FText::_('COM_FABRIK_GROUP_LABEL_RULES_DETAILS')?>
-			    	</a>
-			    </li>
-			    <li>
-			    	<a data-toggle="tab" href="#tab-listview">
-			    		<?php echo FText::_('COM_FABRIK_LIST_VIEW_SETTINGS')?>
-			    	</a>
-			    </li>
-			    <li>
-			    	<a data-toggle="tab" href="#tab-validations">
-			    		<?php echo FText::_('COM_FABRIK_VALIDATIONS')?>
-			    	</a>
-			    </li>
-			    <li>
-			    	<a data-toggle="tab" href="#tab-javascript">
-			    		<?php echo FText::_('COM_FABRIK_JAVASCRIPT')?>
-			    	</a>
-			    </li>
-			</ul>
-		</div>
 
-		<div class="span10 tab-content">
+	  </li>
+	  <li class="nav-item" role="">
+		<button class="nav-link" id="access-tab" data-bs-toggle="tab" data-bs-target="#tab-access" type="button" role="tab" aria-controls="" aria-selected="false">
+			<?php echo FText::_('COM_FABRIK_GROUP_LABEL_RULES_DETAILS')?>
+		</button>
+	  </li>
+	  <li class="nav-item" role="">
+		<button class="nav-link" id="listview-tab" data-bs-toggle="tab" data-bs-target="#tab-listview" type="button" role="tab" aria-controls="" aria-selected="false">
+			<?php echo FText::_('COM_FABRIK_LIST_VIEW_SETTINGS')?>
+		</button>
+	  </li>
+	  <li class="nav-item" role="">
+		<button class="nav-link" id="validations-tab" data-bs-toggle="tab" data-bs-target="#tab-validations" type="button" role="tab" aria-controls="" aria-selected="false">
+			<?php echo FText::_('COM_FABRIK_VALIDATIONS')?>
+		</button>
+		<li class="nav-item" role="">
+		<button class="nav-link" id="js-tab" data-bs-toggle="tab" data-bs-target="#tab-javascript" type="button" role="tab" aria-controls="" aria-selected="false">
+			<?php echo FText::_('COM_FABRIK_JAVASCRIPT')?>
+		</button>
+	  </li>
+	  </li>
+	</ul>
+		<div class="col-md-10 tab-content">
 			<?php
 			echo $this->loadTemplate('details');
 			echo $this->loadTemplate('publishing');
@@ -108,9 +110,9 @@ JText::script('COM_FABRIK_SUBOPTS_VALUES_ERROR');
 			echo $this->loadTemplate('javascript');
 			?>
 		</div>
-	</div>
+	
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="redirectto" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

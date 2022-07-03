@@ -89,7 +89,7 @@ class FabrikControllerDetails extends JControllerLegacy
 		// $model->getData();
 
 		// Display the view
-		$view->error = $this->getError();
+		//$view->error = $this->getError();
 
 		// $$$ hugh - added disable caching option, and no caching if not logged in (unless we can come up with a unique cacheid for guests)
 		// NOTE - can't use IP of client, as could be two users behind same NAT'ing proxy / firewall.

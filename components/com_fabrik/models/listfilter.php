@@ -654,7 +654,7 @@ class FabrikFEModelListfilter extends FabModel
 				$menuListId = ArrayHelper::getValue($menu->query, 'listid', '');
 				$thisListId = $this->listModel->getId();
 
-				if ($menuListId == $thisListId && $menu->params->get('resetfilters') == 1)
+				if ($menuListId == $thisListId && $menu->getParams()->get('resetfilters') == 1)
 				{
 					return true;
 				}

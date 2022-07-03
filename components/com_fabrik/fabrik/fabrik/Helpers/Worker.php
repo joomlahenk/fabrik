@@ -2547,7 +2547,7 @@ class Worker
 
                         if ($match)
                         {
-                            $val = $menu->params->get($name, $val);
+                            $val = $menu->getParams()->get($name, $val);
                         }
                     }
                 }
@@ -2578,7 +2578,7 @@ class Worker
 
                     if ($match)
                     {
-                        $val = $menu->params->get($name, $val);
+                        $val = $menu->getParams()->get($name, $val);
                     }
                 }
             }

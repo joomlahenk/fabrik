@@ -161,7 +161,7 @@ class FabrikControllerForm extends JControllerLegacy
 			return;
 		}
 		// Display the view
-		$view->error = $this->getError();
+		//$view->error = $this->getError();
 
 		// Redirect plugin message if coming from content plugin - reloading in same page
 		$model->applyMsgOnce();
