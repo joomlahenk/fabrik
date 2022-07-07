@@ -374,8 +374,10 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		{
 			if (!$this->isJoin())
 			{
-				JError::raiseWarning(500, 'db join: Could not find the join label for ' .
-					$this->getElement()->get('name') . ' try unlinking and saving it');
+				//JError::raiseWarning(500, 'db join: Could not find the join label for ' .
+					//$this->getElement()->get('name') . ' try unlinking and saving it');
+					throw new RuntimeException('db join: Could not find the join label for ' .
+					$this->getElement()->get('name') . ' try unlinking and saving it',500);
 			}
 
 			$label = $this->getElement()->name;
@@ -1643,24 +1645,15 @@ isClient('administrator'))
 		$params  = $this->getParams();
 		$default = (array) $defaultValue;
 
-		if (FabrikWorker::j3())
-		{
-			$layout                  = $this->getLayout('form-dropdownlist');
-			$displayData             = new stdClass;
-			$displayData->id         = $id;
-			$displayData->options    = $tmp;
-			$displayData->default    = $default;
-			$displayData->name       = $name;
-			$displayData->editable   = $this->isEditable();
-			$displayData->attributes = 'class="fabrikinput form-control inputbox input ' . $this->getAdvancedSelectClass() . ' ' . $params->get('bootstrap_class', 'input-large') . '" size="1"';
-			$html[]                  = $layout->render($displayData);
-		}
-		else
-		{
-			$advancedClass = $this->getAdvancedSelectClass();
-			$attributes    = 'class="fabrikinput inputbox input ' . $advancedClass . ' ' . $params->get('bootstrap_class', 'input-large') . '" size="1"';
-			$html[]        = JHTML::_('select.genericlist', $tmp, $name, $attributes, 'value', 'text', $default, $id);
-		}
+		$layout                  = $this->getLayout('form-dropdownlist');
+		$displayData             = new stdClass;
+		$displayData->id         = $id;
+		$displayData->options    = $tmp;
+		$displayData->default    = $default;
+		$displayData->name       = $name;
+		$displayData->editable   = $this->isEditable();
+		$displayData->attributes = 'class="fabrikinput form-control inputbox input ' . $this->getAdvancedSelectClass() . ' ' . $params->get('bootstrap_class', 'input-large') . '" size="1"';
+		$html[]                  = $layout->render($displayData);
 	}
 
 	/**
