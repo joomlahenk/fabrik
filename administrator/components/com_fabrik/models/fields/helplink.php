@@ -21,7 +21,7 @@ use Joomla\CMS\Form\FormField;
  * @since    3.0.9
  */
 
-class FormFieldHelpLink extends FormField
+class JFormFieldHelpLink extends FormField
 {
 	/**
 	 * Return blank label
