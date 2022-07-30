@@ -12,16 +12,16 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$element = $this->element;
+$element = $this->element; 
 ?>
 <?php echo $element->label;?>
 
-<div class="controls">
+<div class="controls <?php echo $element->span ?? '';?>">
 	<?php if ($this->tipLocation == 'above') : ?>
 		<span class=""><?php echo $element->tipAbove ?></span>
 	<?php endif ?>
 
-	<div class="fabrikElement">
+	<div class="fabrikElement<?php echo $element->bsClass;?>">
 		<?php echo $element->element;?>
 	</div>
 

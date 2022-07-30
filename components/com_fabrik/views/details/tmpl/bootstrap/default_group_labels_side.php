@@ -23,7 +23,7 @@ $element = $this->element;
 			<p class=""><?php echo $element->tipAbove ?></p>
 		<?php endif ?>
 
-		<div class="fabrikElement">
+		<div class="fabrikElement<?php echo $element->bsClass;?>">
 			<?php echo $element->element;?>
 		</div>
 

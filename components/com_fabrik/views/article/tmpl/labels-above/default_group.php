@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	<li <?php echo @$element->column;?> class="<?php echo $element->containerClass;?>">
 		<?php echo $element->label;?>
-		<div class="fabrikElement">
+		<div class="fabrikElement<?php echo $element->bsClass;?>">
 			<?php echo $element->element;?>
 
 		</div>

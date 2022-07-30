@@ -28,7 +28,7 @@ $group = $this->group;
 	<?php
 	endif;
 	echo $element->errorTag; ?>
-	<div class="fabrikElement">
+	<div class="fabrikElement<?php echo $element->bsClass;?>">
 		<?php echo $element->element; ?>
 	</div>
 
