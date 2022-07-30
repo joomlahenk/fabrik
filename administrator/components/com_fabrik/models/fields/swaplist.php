@@ -120,7 +120,7 @@ class JFormFieldSwapList extends ListField
 		$groups = $db->loadObjectList();
 		$style = 'style="width:50%;"';
 
-		$list = HTMLHelper::_('select.genericlist', $groups, 'jform[groups]', 'class="inputbox input-xxlarge" size="10" ' . $style, 'value', 'text', null,
+		$list = HTMLHelper::_('select.genericlist', $groups, 'jform[groups]', 'class="inputbox col-md-12" size="10" ' . $style, 'value', 'text', null,
 			$this->id . '-from');
 
 		return array($groups, $list);
@@ -145,7 +145,7 @@ class JFormFieldSwapList extends ListField
 		$currentGroups = $db->loadObjectList();
 		$style = 'style="width:50%;"';
 
-		$attribs = 'class="inputbox input-xxlarge" multiple="multiple" ' . $style . ' size="10" ';
+		$attribs = 'class="inputbox col-md-12" multiple="multiple" ' . $style . ' size="10" ';
 		$list = HTMLHelper::_('select.genericlist', $currentGroups, $this->name, $attribs, 'value', 'text', '/', $this->id);
 
 		return array($currentGroups, $list);

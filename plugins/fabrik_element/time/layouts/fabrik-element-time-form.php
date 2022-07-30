@@ -5,7 +5,7 @@ defined('JPATH_BASE') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 
 $d = $displayData;
-$attribs = 'class="input-small fabrikinput inputbox ' . $d->advancedClass . ' ' . $d->errorCss . '" ';
+$attribs = 'class="col-md-4 fabrikinput inputbox ' . $d->advancedClass . ' ' . $d->errorCss . '" ';
 ?>
 
 <div class="fabrikSubElementContainer" id="<?php echo $d->id; ?>">

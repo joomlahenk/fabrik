@@ -227,7 +227,7 @@
 			<field name="join_popupwidth"
 			       type="text"
 			       size="3"
-			       class="input-mini"
+			       class="col-md-2"
 			       default=""
 			       description="PLG_ELEMENT_DBJOIN_POPUP_WINDOW_WIDTH_DESC"
 			       label="PLG_ELEMENT_DBJOIN_POPUP_WINDOW_WIDTH_LABEL"/>
@@ -272,7 +272,7 @@
 
 			<field name="dbjoin_options_per_row"
 			       type="width"
-			       class="input-mini"
+			       class="col-md-2"
 			       default="4"
 			       description="PLG_ELEMENT_DBJOIN_OPTIONS_PER_ROW_DESC"
 			       label="PLG_ELEMENT_DBJOIN_OPTIONS_PER_ROW_LABEL"
@@ -280,7 +280,7 @@
 
 			<field name="dbjoin_multiselect_max"
 			       type="field"
-			       class="input-mini"
+			       class="col-md-2"
 			       default="0"
 			       description="PLG_ELEMENT_DBJOIN_MULTISELECT_MAX_DESC"
 			       label="PLG_ELEMENT_DBJOIN_MULTISELECT_MAX_LABEL"
@@ -288,7 +288,7 @@
 
 			<field name="dbjoin_multilist_size"
 				   type="field"
-				   class="input-mini"
+				   class="col-md-2"
 				   default="6"
 				   description="PLG_ELEMENT_DBJOIN_MULTILIST_SIZE_DESC"
 				   label="PLG_ELEMENT_DBJOIN_MULTILIST_SIZE_LABEL"
@@ -296,7 +296,7 @@
 
 			<field name="dbjoin_autocomplete_size"
 			       type="field"
-			       class="input-mini"
+			       class="col-md-2"
 			       default="20"
 			       description="PLG_ELEMENT_DBJOIN_AUTOCOMPLETE_SIZE_DESC"
 			       label="PLG_ELEMENT_DBJOIN_AUTOCOMPLETE_SIZE_LABEL"
@@ -304,14 +304,14 @@
 
 			<field name="dbjoin_autocomplete_rows"
 				   type="field"
-				   class="input-mini"
+				   class="col-md-2"
 				   default="10"
 				   description="PLG_ELEMENT_DBJOIN_AUTOCOMPLETE_ROWS_DESC"
 				   label="PLG_ELEMENT_DBJOIN_AUTOCOMPLETE_ROWS_LABEL"
 				   size="3"/>
 
 			<field name="bootstrap_class"
-			       default="input-large"
+			       default="col-md-8"
 			       type="bootstrapfieldclass"
 			       description="PLG_ELEMENT_DBJOIN_CLASS_DESC"
 			       label="PLG_ELEMENT_DBJOIN_CLASS_LABEL"/>

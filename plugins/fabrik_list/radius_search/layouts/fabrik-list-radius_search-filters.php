@@ -148,7 +148,7 @@ else :
             </div>
             <div class="<?php echo FabrikHelperHTML::getGridSpan('11'); ?>">
                 <input type="text"
-                       class="radius_search_geocomplete_field input-xlarge"
+                       class="radius_search_geocomplete_field col-md-10"
                        name="radius_search_geocomplete_field<?php echo $d->renderOrder; ?>"
                        id="radius_search_geocomplete_field<?php echo $d->renderOrder; ?>"
                        value="<?php echo $d->address; ?>" />

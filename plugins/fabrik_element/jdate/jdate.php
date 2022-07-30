@@ -301,7 +301,7 @@ class PlgFabrik_ElementJdate extends PlgFabrik_ElementList
 			$name .= '[date]';
 		}
 
-		$class          = 'fabrikinput inputbox input ' . $params->get('bootstrap_class', 'input-medium');
+		$class          = 'fabrikinput inputbox input ' . $params->get('bootstrap_class', 'col-md-6');
 		$element->width = (int) $element->width < 0 ? 1 : (int) $element->width;
 		$calOpts        = array('class' => $class, 'size' => $element->width, 'maxlength' => '19');
 
@@ -347,7 +347,7 @@ class PlgFabrik_ElementJdate extends PlgFabrik_ElementList
 	{
 		$params     = $this->getParams();
 		$timeFormat = $params->get('jdate_time_format', 'H:i');
-		$class      = 'inputbox fabrikinput timeField input ' . $params->get('bootstrap_time_class', 'input-mini');
+		$class      = 'inputbox fabrikinput timeField input ' . $params->get('bootstrap_time_class', 'col-md-2');
 		$readOnly   = $params->get('jdate_allow_typing_in_field', true) == false ? ' readonly="readonly" ' : '';
 
 		$str[] = '<div class="input-append">';

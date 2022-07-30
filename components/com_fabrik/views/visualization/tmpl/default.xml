@@ -21,7 +21,7 @@
 
 			<field name="viz_extra_query_string"
 				   type="text"
-				   class="input-xlarge"
+				   class="col-md-10"
 				   size="40"
 				   label="COM_FABRIK_FIELD_EXTRA_QUERY_STRING_LABEL"
 				   description="COM_FABRIK_FIELD_EXTRA_QUERY_STRING_DESC"

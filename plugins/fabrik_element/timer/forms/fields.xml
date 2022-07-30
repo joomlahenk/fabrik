@@ -9,7 +9,7 @@
 				
 			<field name="timer_width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="9"
 				label="PLG_ELEMENT_TIMER_WIDTH_LABEL"
 				size="3" />

@@ -31,7 +31,7 @@
 				url="PLG_ELEMENT_SLIDER_HELP_SERVER" />
 
 			<field name="slider_width"
-				class="input-mini"
+				class="col-md-2"
 				default="250"
 				label="PLG_ELEMENT_SLIDER_WIDTH_LABEL"
 				size="3"
@@ -39,7 +39,7 @@
 
 			<field name="slider-steps"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="100"
 				description="PLG_ELEMENT_SLIDER_STEPS_DESC"
 				label="PLG_ELEMENT_SLIDER_STEPS_LABEL"/>

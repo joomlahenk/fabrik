@@ -241,8 +241,8 @@ class FabrikFEModelAdvancedSearch extends FabModel
 				$input->set($lineElName, array('value' => $value));
 				$filter = $elementModel->getFilter($counter, false);
 				$input->set($lineElName, $orig);
-				$key = HTMLHelper::_('select.genericlist', $fieldNames, $prefix . 'key][]', 'class="inputbox key input-small" size="1" ', 'value', 'text', $key);
-				$jsSel = HTMLHelper::_('select.genericlist', $statements, $prefix . 'condition][]', 'class="inputbox input-small" size="1" ', 'value', 'text', $jsSel);
+				$key = HTMLHelper::_('select.genericlist', $fieldNames, $prefix . 'key][]', 'class="inputbox key col-md-4" size="1" ', 'value', 'text', $key);
+				$jsSel = HTMLHelper::_('select.genericlist', $statements, $prefix . 'condition][]', 'class="inputbox col-md-4" size="1" ', 'value', 'text', $jsSel);
 				$rows[] = array('join' => $join, 'element' => $key, 'condition' => $jsSel, 'filter' => $filter, 'type' => $type,
 					'grouped' => $grouped);
 				$counter++;

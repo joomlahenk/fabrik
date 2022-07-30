@@ -87,14 +87,14 @@
 
 			<field name="redirect_content_popup_width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FORM_REDIRECT_CONTENT_POPUP_WIDTH_DESC"
 				label="PLG_FORM_REDIRECT_CONTENT_POPUP_WIDTH_LABEL"
 				repeat="true"
 				size="5"/>
 
 			<field name="redirect_content_popup_height"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FORM_REDIRECT_CONTENT_POPUP_HEIGHT_DESC"
 				label="PLG_FORM_REDIRECT_CONTENT_POPUP_HEIGHT_LABEL"
 				repeat="true"
@@ -103,14 +103,14 @@
 
 			<field name="redirect_content_popup_x_offset"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FORM_REDIRECT_CONTENT_POPUP_X_OFFSET_DESC"
 				label="PLG_FORM_REDIRECT_CONTENT_POPUP_X_OFFSET_LABEL"
 				repeat="true"
 				size="5"/>
 
 			<field name="redirect_content_popup_y_offset"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FORM_REDIRECT_CONTENT_POPUP_Y_OFFSET_DESC"
 				label="PLG_FORM_REDIRECT_CONTENT_POPUP_Y_OFFSET_LABEL"
 				repeat="true"
@@ -119,7 +119,7 @@
 
 			<field name="redirect_content_popup_title"
 				type="text"
-				class="input-xxlarge"
+				class="col-md-12"
 				description="PLG_FORM_REDIRECT_CONTENT_POPUP_TITLE_DESC"
 				label="PLG_FORM_REDIRECT_CONTENT_POPUP_TITLE_LABEL"
 				repeat="true"

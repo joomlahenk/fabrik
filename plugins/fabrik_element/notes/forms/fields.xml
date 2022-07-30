@@ -91,7 +91,7 @@
 			<field name="notes_order_dir"
 				type="list"
 				description="PLG_ELEMENT_NOTES_ORDER_DIR_DESC"
-				class="input-small"
+				class="col-md-4"
 				label="PLG_ELEMENT_NOTES_ORDER_DIR_LABEL">
 					<option value="ASC">ASC</option>
 					<option value="DESC">DESC</option>

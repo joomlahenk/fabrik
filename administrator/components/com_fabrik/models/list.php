@@ -261,7 +261,7 @@ class FabrikAdminModelList extends FabModelAdmin
 		$aConditions   = array();
 		$aConditions[] = HTMLHelper::_('select.option', 'AND');
 		$aConditions[] = HTMLHelper::_('select.option', 'OR');
-//		$attribs       = 'class="inputbox input-small" size="1"';
+//		$attribs       = 'class="inputbox col-md-4" size="1"';
 		$attribs       = 'class="form-select"';
 		$dd            = str_replace("\n", "", HTMLHelper::_('select.genericlist', $aConditions, $name, $attribs, 'value', 'text', ''));
 
@@ -329,7 +329,7 @@ class FabrikAdminModelList extends FabModelAdmin
 				break;
 		}
 
-//		$dd = str_replace("\n", "", HTMLHelper::_('select.genericlist', $aConditions, $name, 'class="inputbox input-medium"  size="1" ', 'value', 'text', ''));
+//		$dd = str_replace("\n", "", HTMLHelper::_('select.genericlist', $aConditions, $name, 'class="inputbox col-md-6"  size="1" ', 'value', 'text', ''));
 		$dd = str_replace("\n", "", HTMLHelper::_('select.genericlist', $aConditions, $name, 'class="form-select" ', 'value', 'text', ''));
 
 		if ($addSlashes)
@@ -417,14 +417,14 @@ class FabrikAdminModelList extends FabModelAdmin
 		$filterOpts               = new stdClass;
 		$filterOpts->filterJoinDd = $this->getFilterJoinDd(false, 'jform[params][filter-join][]');
 		$filterOpts->filterCondDd = $this->getFilterConditionDd(false, 'jform[params][filter-conditions][]', 2);
-		$filterOpts->filterAccess = HTMLHelper::_('access.level', 'jform[params][filter-access][]', $item->access, 'class="input-medium"', false);
+		$filterOpts->filterAccess = HTMLHelper::_('access.level', 'jform[params][filter-access][]', $item->access, 'class="col-md-6"', false);
 		$filterOpts->filterAccess = str_replace(array("\n", "\r"), '', $filterOpts->filterAccess);
 //		$filterOpts->j3           = FabrikWorker::j3();
 		$filterOpts->j3           = true;
 		$filterOpts               = json_encode($filterOpts);
 
 		$formModel    = $this->getFormModel();
-//		$attribs      = 'class="inputbox input-medium" size="1"';
+//		$attribs      = 'class="inputbox col-md-6" size="1"';
 		$attribs      = 'class="form-select"';
 		$filterfields = $formModel->getElementList('jform[params][filter-fields][]', '', false, false, true, 'name', $attribs);
 		$filterfields = addslashes(str_replace(array("\n", "\r"), '', $filterfields));

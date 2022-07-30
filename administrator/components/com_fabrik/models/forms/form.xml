@@ -7,7 +7,7 @@
 		       type="text"
 		       default="0"
 		       readonly="true"
-		       class="readonly input-mini"
+		       class="readonly col-md-2"
 		       label="COM_FABRIK_ID_LABEL"
 		       description="COM_FABRIK_FIELD_FORM_ID_DESC"/>
 
@@ -31,7 +31,7 @@
 		<field name="error"
 		       type="text"
 		       size="40"
-		       class="input-xxlarge"
+		       class="col-md-12"
 		       label="COM_FABRIK_FIELD_ERROR_MSG_LABEL"
 		       description="COM_FABRIK_FIELD_ERROR_MSG_DESC"/>
 
@@ -60,14 +60,14 @@
 
 		<field name="created"
 		       type="calendar"
-		       class="input-medium"
+		       class="col-md-6"
 		       label="JGLOBAL_FIELD_CREATED_LABEL"
 		       description="JGLOBAL_FIELD_CREATED_DESC"
 		/>
 
 		<field name="publish_up"
 		       type="calendar"
-		       class="input-medium"
+		       class="col-md-6"
 		       label="JGLOBAL_FIELD_PUBLISH_UP_LABEL"
 		       description="JGLOBAL_FIELD_PUBLISH_UP_DESC"
 			   translateformat="true"
@@ -78,7 +78,7 @@
 
 		<field name="publish_down"
 		       type="calendar"
-		       class="input-medium"
+		       class="col-md-6"
 		       label="JGLOBAL_FIELD_PUBLISH_DOWN_LABEL"
 		       description="JGLOBAL_FIELD_PUBLISH_DOWN_DESC"
 			   translateformat="true"

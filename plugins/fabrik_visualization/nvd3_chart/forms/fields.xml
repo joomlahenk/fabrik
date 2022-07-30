@@ -118,13 +118,13 @@
 
 			<field name="width"
 			       default="350"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_FABRIK_VIZ_NVD3_WIDTH_LABEL"
 			       description="PLG_FABRIK_VIZ_NVD3_WIDTH_DESC"/>
 
 			<field name="height"
 			       default="350"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_FABRIK_VIZ_NVD3_HEIGHT_LABEL"
 			       description="PLG_FABRIK_VIZ_NVD3_HEIGHT_DESC"/>
 
@@ -153,7 +153,7 @@
 			<field name="rotate_labels"
 			       type="text"
 			       default="45"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_FABRIK_VIZ_NV3D_ROTATE_LABELS_LABEL"
 			       description="PLG_FABRIK_VIZ_NV3D_ROTATE_LABELS_DESC"/>
 

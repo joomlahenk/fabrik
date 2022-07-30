@@ -100,7 +100,7 @@
 			<field name="fusion_gantt_chart_width"
 				type="text"
 				default="300"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_VISUALIZATION_GANNT_WIDTH_DESC"
 				label="PLG_VISUALIZATION_GANNT_WIDTH_LABEL"
 				size="5" />
@@ -108,7 +108,7 @@
 			<field name="fusion_gantt_chart_height"
 				type="text"
 				default="200"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_VISUALIZATION_GANNT_HEIGHT_DESC"
 				label="PLG_VISUALIZATION_GANNT_HEIGHT_LABEL"
 				size="5" />

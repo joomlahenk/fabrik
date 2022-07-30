@@ -152,7 +152,7 @@
 				type="text"
 				size="2"
 				default="20"
-				class="input-mini"
+				class="col-md-2"
 				description="COM_FABRIK_FIELD_FILTER_LENGTH_DESC"
 				label="COM_FABRIK_FIELD_FILTER_LENGTH_LABEL" />
 
@@ -215,7 +215,7 @@
 
 			<field name="filter_class"
 				type="bootstrapfieldclass"
-				default="input-medium"
+				default="col-md-6"
 				description="COM_FABRIK_FIELD_FILTER_CLASS_DESC"
 				label="COM_FABRIK_FIELD_FILTER_CLASS_LABEL" />
 
@@ -477,7 +477,7 @@
 					type="field"
 					default="0"
 					description="COM_FABRIK_FIELD_AVERAGE_ROUND_DESC"
-					class="input-mini"
+					class="col-md-2"
 					size="2"
 					label="COM_FABRIK_FIELD_AVERAGE_ROUND_LABEL" />
 

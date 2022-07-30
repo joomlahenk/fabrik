@@ -27,7 +27,7 @@
 				
 			<field name="radius_unit"
 				type="list"
-				class="input-small"				
+				class="col-md-4"				
 				default="km"
 				label="PLG_LIST_RADIUS_SEARCH_RADIUS_UNIT_LABEL"
 				repeat="true">
@@ -37,7 +37,7 @@
 			
 			<field name="radius_max"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="100"
 				label="PLG_LIST_RADIUS_SEARCH_MAX_LABEL"
 				repeat="true"
@@ -84,7 +84,7 @@
 
 			<field name="window_offset_y"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default=""
 				label="PLG_LIST_RADIUS_SEARCH_OFFSET_Y_LABEL"
 				description="PLG_LIST_RADIUS_SEARCH_OFFSET_Y_DESC"

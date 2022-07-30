@@ -41,7 +41,7 @@
 						<option value="1">JYES</option>
 				</field>
 
-				<field name="limit" type="text" class="input-mini" default="0" description="MOD_FABRIK_LIST_LIMIT_DESC" label="MOD_FABRIK_LIST_LIMIT_LABEL" size="4"/>
+				<field name="limit" type="text" class="col-md-2" default="0" description="MOD_FABRIK_LIST_LIMIT_DESC" label="MOD_FABRIK_LIST_LIMIT_LABEL" size="4"/>
 
 				<field name="show_nav" type="list" default="" description="MOD_FABRIK_LIST_SHOW_LIST_NAV_DESC" label="MOD_FABRIK_LIST_SHOW_LIST_NAV_LABEL">
 						<option value="">JGLOBAL_USE_GLOBAL</option>

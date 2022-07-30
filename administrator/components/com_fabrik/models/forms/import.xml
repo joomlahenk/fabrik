@@ -52,7 +52,7 @@
 		
 		<field name="field_delimiter"
 			type="text"
-			class="input-mini"
+			class="col-md-2"
 			size="2"
 			default=","
 			description="COM_FABRIK_FIELD_CSV_IMPORT_FIELD_DELIMITER_DESC"
@@ -66,7 +66,7 @@
 			
 		<field name="text_delimiter"
 			type="text"
-			class="input-mini"
+			class="col-md-2"
 			default="&quot;"
 			description="COM_FABRIK_FIELD_CSV_IMPORT_TEXT_DELIMITER_DESC"
 			label="COM_FABRIK_FIELD_CSV_IMPORT_TEXT_DELIMITER_LABEL"

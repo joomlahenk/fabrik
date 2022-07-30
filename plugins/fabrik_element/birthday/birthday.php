@@ -256,7 +256,7 @@ class PlgFabrik_ElementBirthday extends PlgFabrik_Element
 			$errorCSS = (isset($this->_elementError) && $this->_elementError != '') ? ' elementErrorHighlight' : '';
 			$advancedClass = $this->getAdvancedSelectClass();
 
-			$attributes = 'class="input-small fabrikinput inputbox ' . $advancedClass . ' ' . $errorCSS . '"';
+			$attributes = 'class="col-md-4 fabrikinput inputbox ' . $advancedClass . ' ' . $errorCSS . '"';
 
 			$layout = $this->getLayout('form');
 			$layoutData = new stdClass;

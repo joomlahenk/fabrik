@@ -47,14 +47,14 @@
 			<field name="birthday_yearstart"
 			       type="text"
 			       default="100"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_BIRTHDAY_YEARLIST_START_DESC"
 			       label="PLG_ELEMENT_BIRTHDAY_YEARLIST_START_LABEL"
 			       size="4"/>
 
 			<field name="birthday_forward"
 			       default="0"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_BIRTHDAY_YEARLIST_FORWARD_DESC"
 			       label="PLG_ELEMENT_BIRTHDAY_YEARLIST_FORWARD_LABEL"
 			       type="text"

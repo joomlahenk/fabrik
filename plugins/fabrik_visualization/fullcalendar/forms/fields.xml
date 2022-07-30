@@ -43,7 +43,7 @@
 				
 			<field name="colour"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_VISUALIZATION_FULLCALENDAR_COLOR_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_COLOR_LABEL" />
 				
@@ -184,7 +184,7 @@
 						
 			<field name="yoffset"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="0"
 				description="PLG_VISUALIZATION_FULLCALENDAR_Y_OFFSET_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_Y_OFFSET_LABEL"
@@ -192,7 +192,7 @@
 				
 			<field name="first_week_day"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="0"
 				description="PLG_VISUALIZATION_FULLCALENDAR_FIRST_WEEK_DAY_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_FIRST_WEEK_DAY_LABEL" />
@@ -219,21 +219,21 @@
 
 			<field name="time_format"
 				type="text"
-				class="input-small"
+				class="col-md-4"
 				default="H(:mm)"
 				description="PLG_VISUALIZATION_FULLCALENDAR_TIME_FORMAT_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_TIME_FORMAT_LABEL" />
 
 			<field name="minimum_duration"
 				type="text"
-				class="input-small"
+				class="col-md-4"
 				default="00:30:00"
 				description="PLG_VISUALIZATION_FULLCALENDAR_MINIMUM_DURATION_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_MINIMUM_DURATION_LABEL" />
 
 			<field name="startdate_hour_offset"
 			       type="text"
-			       class="input-small"
+			       class="col-md-4"
 			       default="0"
 			       description="PLG_VISUALIZATION_FULLCALENDAR_STARTDATE_HOUR_OFFSET_DESC"
 			       label="PLG_VISUALIZATION_FULLCALENDAR_STARTDATE_HOUR_OFFSET_LABEL" />
@@ -276,7 +276,7 @@
 		
 			<field name="fullcalendar-weekday-width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="90"
 				description="PLG_VISUALIZATION_FULLCALENDAR_WEEK_DAY_WIDTH_LABEL"
 				label="PLG_VISUALIZATION_FULLCALENDAR_WEEK_DAY_WIDTH_LABEL"
@@ -285,13 +285,13 @@
 			<field name="fullcalendar-weekday-height"
 				type="text"
 				size="3"
-				class="input-mini"
+				class="col-md-2"
 				default="10"
 				description="PLG_VISUALIZATION_FULLCALENDAR_WEEK_DAY_HEIGHT_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_WEEK_DAY_HEIGHT_LABEL" />
 				
 			<field name="open-hour"
-				class="input-mini"
+				class="col-md-2"
 				default="00:00:00"
 				description="PLG_VISUALIZATION_FULLCALENDAR_OPEN_HOUR_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_OPEN_HOUR_LABEL"
@@ -300,7 +300,7 @@
 					
 			<field name="close-hour"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="24:00:00"
 				description="PLG_VISUALIZATION_FULLCALENDAR_CLOSE_HOUR_DESC"
 				label="PLG_VISUALIZATION_FULLCALENDAR_CLOSE_HOUR_LABEL"

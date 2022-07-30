@@ -35,21 +35,21 @@
 			<field name="time_hourlabel"
 				type="text"
 				default=""
-				class="input-small"
+				class="col-md-4"
 				description="PLG_ELEMENT_TIME_HOUR_LABEL_DESC"
 				label="PLG_ELEMENT_TIME_HOUR_LABEL" />
 
 			<field name="time_minlabel"
 				type="text"
 				default=""
-				class="input-small"
+				class="col-md-4"
 				description="PLG_ELEMENT_TIME_MIN_LABEL_DESC"
 				label="PLG_ELEMENT_TIME_MIN_LABEL" />
 
 			<field name="time_seclabel"
 				type="text"
 				default=""
-				class="input-small"
+				class="col-md-4"
 				description="PLG_ELEMENT_TIME_SEC_LABEL_DESC"
 				label="PLG_ELEMENT_TIME_SEC_LABEL" />
 
@@ -89,7 +89,7 @@
 		<field name="time_separatorlabel"
 			type="text"
 			default=":"
-			class="input-mini"
+			class="col-md-2"
 			description="PLG_ELEMENT_TIME_SEPARATOR_LABEL_DESC"
 			label="PLG_ELEMENT_TIME_SEPARATOR_LABEL" />
 

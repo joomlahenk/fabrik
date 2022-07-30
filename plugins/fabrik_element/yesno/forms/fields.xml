@@ -63,7 +63,7 @@
 				type="field"
 				default="4"
 				size="1"
-				class="input-mini"
+				class="col-md-2"
 				label="PLG_ELEMENT_YESNO_OPTIONS_PER_ROW"/>
 				
 			<field name="toggle_others"

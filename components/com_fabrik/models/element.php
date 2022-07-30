@@ -3496,7 +3496,7 @@ class PlgFabrik_Element extends FabrikPlugin
 	{
 		$params         = $this->getParams();
 		$classes        = array('inputbox fabrik_filter');
-		$bootstrapClass = $params->get('filter_class', 'input-small');
+		$bootstrapClass = $params->get('filter_class', 'col-md-4');
 		$classes[]      = $bootstrapClass;
 		$classes[]      = $params->get('filter_responsive_class', '');
 
@@ -8296,29 +8296,18 @@ class PlgFabrik_Element extends FabrikPlugin
 	/* Convert the older BS2 & BS3 column classes to BS5 */
 	protected function getBsClass() {
 		$classList = [
-			'input-mini' 	=> 'col-2',
-			'input-small' 	=> 'col-4',
-			'input-medium' 	=> 'col-6',
-			'input-large' 	=> 'col-8',
-			'input-xlarge' 	=> 'col-10',
-			'input-xxlarge' => 'col-12',
-			'col-md-1'		=> 'col-1',
-			'col-md-2'		=> 'col-2',
-			'col-md-3'		=> 'col-3',
-			'col-md-4'		=> 'col-4',
-			'col-md-5'		=> 'col-5',
-			'col-md-6'		=> 'col-6',
-			'col-md-7'		=> 'col-7',
-			'col-md-8'		=> 'col-8',
-			'col-md-9'		=> 'col-9',
-			'col-md-10'		=> 'col-10',
-			'col-md-11'		=> 'col-11',
-			'col-md-12'		=> 'col-12',
+			'input-mini' 	=> 'col-md-2',
+			'input-small' 	=> 'col-md-4',
+			'input-medium' 	=> 'col-md-6',
+			'input-large' 	=> 'col-md-8',
+			'input-xlarge' 	=> 'col-md-10',
+			'input-xxlarge' => 'col-md-12',
 		];
 		$bsClass = $this->getParams()->get('bootstrap_class');
 		if (array_key_exists($bsClass, $classList)) {
 			$bsClass = $classList[$bsClass];
 		}
-		return ' '.$bsClass;
+		if (strlen($bsClass) > 0) $bsClass = ' '.$bsClass;
+		return $bsClass;
 	}
 }

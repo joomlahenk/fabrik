@@ -17,13 +17,13 @@
 
 			<field name="width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				label="PLG_ELEMENT_CALC_WIDTH_LABEL"
 				size="3"/>
 
 			<field name="height"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				label="PLG_ELEMENT_CALC_HEIGHT_LABEL"
 				size="3"/>
 

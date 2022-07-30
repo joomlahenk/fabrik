@@ -106,7 +106,7 @@ class PlgFabrik_ListRadius_search extends PlgFabrik_List
 		}
 
 		$selectName = 'radius_search_distance' . $this->renderOrder . '[]';
-		$select = HTMLHelper::_('select.genericlist', $options, $selectName, 'class="input-small"', 'value', 'text', $default);
+		$select = HTMLHelper::_('select.genericlist', $options, $selectName, 'class="col-md-4"', 'value', 'text', $default);
 
 		return $select;
 	}

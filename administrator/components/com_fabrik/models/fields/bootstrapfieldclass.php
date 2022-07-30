@@ -36,13 +36,6 @@ class JFormFieldBootstrapfieldclass extends ListField
 	protected function getOptions()
 	{
 		$sizes = array();
-		$sizes[] = HTMLHelper::_('select.option', 'input-mini');
-		$sizes[] = HTMLHelper::_('select.option', 'input-small');
-		$sizes[] = HTMLHelper::_('select.option', 'input-medium');
-		$sizes[] = HTMLHelper::_('select.option', 'input-large');
-		$sizes[] = HTMLHelper::_('select.option', 'input-xlarge');
-		$sizes[] = HTMLHelper::_('select.option', 'input-xxlarge');
-		$sizes[] = HTMLHelper::_('select.option', 'input-block-level');
 		$sizes[] = HTMLHelper::_('select.option', 'col-md-1');
 		$sizes[] = HTMLHelper::_('select.option', 'col-md-2');
 		$sizes[] = HTMLHelper::_('select.option', 'col-md-3');

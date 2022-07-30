@@ -23,7 +23,7 @@
 
 			<field name="cron_importcsv_maxfiles"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="1"
 				description="PLG_CRON_IMPORTCSV_MAXFILES_DESC"
 				label="PLG_CRON_IMPORTCSV_MAXFILES_LABEL"
@@ -31,7 +31,7 @@
 
 			<field name="cron_importcsv_field_delimiter"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default=","
 				description="PLG_CRON_IMPORTCSV_FIELD_DELIMITER_DESC"
 				label="PLG_CRON_IMPORTCSV_FIELD_DELIMITER_LABEL"
@@ -39,7 +39,7 @@
 
 			<field name="cron_importcsv_text_delimiter"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="&quot;"
 				description="PLG_CRON_IMPORTCSV_TEXT_DELIMITER_DESC"
 				label="PLG_CRON_IMPORTCSV_TEXT_DELIMITER_LABEL"

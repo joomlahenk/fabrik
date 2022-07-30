@@ -9,7 +9,7 @@
 
 			<field name="width"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       default="60"
 			       label="Width"
 			       size="3"/>
@@ -71,14 +71,14 @@
 				<option value="big">660x525</option>
 			</field>
 
-			<field class="input-mini"
+			<field class="col-md-2"
 			       description="ORWIDTHPLAYERDESC"
 			       label="ORWIDTHPLAYER"
 			       name="or_width_player"
 			       size="3"
 			       type="text"/>
 
-			<field class="input-mini"
+			<field class="col-md-2"
 			       description="ORHEIGHTPLAYERDESC"
 			       label="ORHEIGHTPLAYER"
 			       name="or_height_player"

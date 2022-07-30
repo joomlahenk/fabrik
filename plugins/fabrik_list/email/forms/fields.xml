@@ -167,7 +167,7 @@
 			
 			<field name="email_subject"
 				type="text"
-				class="input-xxlarge"
+				class="col-md-12"
 				description="PLG_LIST_EMAIL_SUBJECT_DESC"
 				label="PLG_LIST_EMAIL_SUBJECT_LABEL"
 				repeat="true"

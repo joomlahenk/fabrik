@@ -11,7 +11,7 @@
 				label="COM_FABRIK_SUBOPTIONS"/>
 
 			<field name="ck_options_per_row"
-				class="input-mini"
+				class="col-md-2"
 				default="4"
 				label="PLG_ELEMENT_CHECKBOX_OPTIONS_PER_ROW_LABEL"
 				size="2"
@@ -82,7 +82,7 @@
 
 			<field name="options_split_str"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default=""
 				description="PLG_ELEMENT_CHECKBOX_SEPARATOR_DESC"
 				label="PLG_ELEMENT_CHECKBOX_SEPARATOR_LABEL"

@@ -185,7 +185,7 @@ define(['jquery', 'fab/element'], function (jQuery, FbElement) {
 
 		createColourSlideHTML: function (element, colour, label, value) {
 
-			var sliderField = new Element('input.input-mini input ' + colour + 'SliderField', {
+			var sliderField = new Element('input.col-md-2 input ' + colour + 'SliderField', {
 				'type' : 'text',
 				'id'   : element + colour + 'redField',
 				'size' : '3',

@@ -78,7 +78,7 @@
 			</field>
 
 			<field default="0"
-				   class="input-mini"
+				   class="col-md-2"
 				   description="PLG_ELEMENT_RATING_FLOAT_DESCRIPTION"
 				   label="PLG_ELEMENT_RATING_FLOAT_LABEL"
 				   name="rating_float"

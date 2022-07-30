@@ -28,9 +28,9 @@
 		</fieldset>
 
 		<fieldset name="rest" label="COM_FABRIK_OPTIONS">
-			<field description="PLG_VISUALIZATION_MEDIA_WIDTH_DESC" label="PLG_VISUALIZATION_MEDIA_WIDTH_LABEL" name="media_width" class="input-mini" size="5" type="text"/>
+			<field description="PLG_VISUALIZATION_MEDIA_WIDTH_DESC" label="PLG_VISUALIZATION_MEDIA_WIDTH_LABEL" name="media_width" class="col-md-2" size="5" type="text"/>
 				
-			<field description="PLG_VISUALIZATION_MEDIA_HEIGHT_DESC" label="PLG_VISUALIZATION_MEDIA_HEIGHT_LABEL" name="media_height" class="input-mini" size="5" type="text"/>
+			<field description="PLG_VISUALIZATION_MEDIA_HEIGHT_DESC" label="PLG_VISUALIZATION_MEDIA_HEIGHT_LABEL" name="media_height" class="col-md-2" size="5" type="text"/>
 
 		</fieldset>
 	</fields>

@@ -59,7 +59,7 @@
 			<field default="400"
 				   description="PLG_VISUALIZATION_SLIDESHOW_WIDTH_DESC"
 				   label="PLG_VISUALIZATION_SLIDESHOW_WIDTH_LABEL"
-				   class="input-mini"
+				   class="col-md-2"
 				   name="slideshow_viz_width"
 				   size="4"
 				   type="text"/>
@@ -67,7 +67,7 @@
 			<field default="300"
 				   description="PLG_VISUALIZATION_SLIDESHOW_HEIGHT_DESC"
 				   label="PLG_VISUALIZATION_SLIDESHOW_HEIGHT_LABEL"
-				   class="input-mini"
+				   class="col-md-2"
 				   name="slideshow_viz_height"
 				   size="4"
 				   type="text"/>
@@ -75,7 +75,7 @@
 			<field default="400"
 				   description="PLG_VISUALIZATION_SLIDESHOW_LOADER_WIDTH_DESC"
 				   label="PLG_VISUALIZATION_SLIDESHOW_LOADER_WIDTH_LABEL"
-				   class="input-mini"
+				   class="col-md-2"
 				   name="slideshow_viz_loader_width"
 				   size="4"
 				   type="text"/>
@@ -83,7 +83,7 @@
 			<field default="300"
 				   description="PLG_VISUALIZATION_SLIDESHOW_LOADER_HEIGHT_DESC"
 				   label="PLG_VISUALIZATION_SLIDESHOW_LOADER_HEIGHT_LABEL"
-				   class="input-mini"
+				   class="col-md-2"
 				   name="slideshow_viz_loader_height"
 				   size="4"
 				   type="text"/>
@@ -91,7 +91,7 @@
 			<field default="5000"
 				   description="PLG_VISUALIZATION_SLIDESHOW_DELAY_DESC"
 				   label="PLG_VISUALIZATION_SLIDESHOW_DELAY_LABEL"
-				   class="input-mini"
+				   class="col-md-2"
 				   name="slideshow_viz_delay"
 				   size="6"
 				   type="text"/>
@@ -99,7 +99,7 @@
 			<field default="2000"
 				   description="PLG_VISUALIZATION_SLIDESHOW_DURATION_DESC"
 				   label="PLG_VISUALIZATION_SLIDESHOW_DURATION_LABEL"
-				   class="input-mini"
+				   class="col-md-2"
 				   name="slideshow_viz_duration"
 				   size="6"
 				   type="text"/>

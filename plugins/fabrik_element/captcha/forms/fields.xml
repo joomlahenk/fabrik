@@ -43,7 +43,7 @@
 
 			<field name="captcha-font-size"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="30"
 				description=""
 				label="PLG_ELEMENT_CAPTCHA_FONT_SIZE_LABEL"
@@ -51,7 +51,7 @@
 
 			<field name="captcha-angle"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="0"
 				description=""
 				label="PLG_ELEMENT_CAPTCHA_ANGLE_LABEL"
@@ -59,21 +59,21 @@
 
 			<field name="captcha-padding"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="10"
 				description=""
 				label="PLG_ELEMENT_CAPTCHA_PADDING_LABEL"
 				size="3" />
 
 			<!-- <field default="120" description="" label="PLG_ELEMENT_CAPTCHA_WIDTH_LABEL"
-				name="captcha-width" size="3" class="input-mini" type="text"/> -->
+				name="captcha-width" size="3" class="col-md-2" type="text"/> -->
 
 			<!-- <field default="40" description="" label="PLG_ELEMENT_CAPTCHA_HEIGHT_LABEL"
-				name="captcha-height" size="3" class="input-mini" type="text"/> -->
+				name="captcha-height" size="3" class="col-md-2" type="text"/> -->
 
 			<field name="captcha-chars"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="6"
 				description=""
 				label="PLG_ELEMENT_CAPTCHA_NUMBER_OF_CHARS_LABEL"

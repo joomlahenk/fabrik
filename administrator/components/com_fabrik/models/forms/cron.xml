@@ -6,7 +6,7 @@
 
 		<field name="id"
 			type="text"
-			class="input-mini readonly"
+			class="col-md-2 readonly"
 			default="0"
 			description="JGLOBAL_FIELD_ID_DESC"
 			label="JGLOBAL_FIELD_ID_LABEL"
@@ -19,7 +19,7 @@
 
 		<field name="lastrun"
 			type="calendar"
-			class="input-medium"
+			class="col-md-6"
 			label="COM_FABRIK_CRON_FIELD_LAST_RUN_LABEL"
 			   format="%Y-%m-%d %H:%M:%S"
 			   size="22"
@@ -52,7 +52,7 @@
 			<field name="frequency"
 				type="text"
 				default="5"
-				class="input-mini"
+				class="col-md-2"
 				description="COM_FABRIK_CRON_FIELD_EVERY_DESC"
 				label="COM_FABRIK_CRON_FIELD_EVERY_LABEL"
 				required="true"
@@ -61,7 +61,7 @@
 			<field name="unit"
 				type="list"
 				default="minute"
-				class="input-small"
+				class="col-md-4"
 				description="COM_FABRIK_CRON_FIELD_UNIT_DESC"
 				label="COM_FABRIK_CRON_FIELD_UNIT_LABEL" >
 					<option value="second">COM_FABRIK_CRON_SECOND</option>

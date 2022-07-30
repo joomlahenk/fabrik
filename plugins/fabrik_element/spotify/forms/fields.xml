@@ -9,14 +9,14 @@
 			<field name="width"
 				type="text"
 				default="300"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_SPOTIFY_WIDTH_DESC"
 				label="PLG_ELEMENT_SPOTIFY_WIDTH_LABEL" />
 			
 			<field name="height"
 				type="text"
 				default="380"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_SPOTIFY_HEIGHT_DESC"
 				label="PLG_ELEMENT_SPOTIFY_HEIGHT_LABEL" />
 			

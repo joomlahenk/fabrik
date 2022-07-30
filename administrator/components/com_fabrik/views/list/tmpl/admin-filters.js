@@ -122,7 +122,7 @@ define(['jquery'], function (jQuery) {
                 }
                 joinDd = new Element('select', {
                     'id'   : 'paramsfilter-join',
-                    'class': 'inputbox input-small',
+                    'class': 'inputbox col-md-4',
                     'name' : 'jform[params][filter-join][]'
                 }).adopt(
                     [and, or]);
@@ -201,7 +201,7 @@ define(['jquery'], function (jQuery) {
             ];
 
             var tdType = new Element('td')
-                .adopt(this._makeSel('inputbox elementtype input-small', 'jform[params][filter-eval][]', evalopts, evaluate, false));
+                .adopt(this._makeSel('inputbox elementtype col-md-4', 'jform[params][filter-eval][]', evalopts, evaluate, false));
 
             var checked = (selJoin !== '' || selFilter !== '' || selCondition !== '' || selValue !== '') ? true : false;
             var delId = this.el.id + "-del-" + this.counter;

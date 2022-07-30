@@ -8,7 +8,7 @@
 
 			<field name="width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="20"
 				label="PLG_ELEMENT_LINK_WIDTH_LABEL" />
@@ -91,7 +91,7 @@
 
 			<field name="maxlength"
 				type="maxlength"
-				class="input-mini"
+				class="col-md-2"
 				default="255"
 				label="PLG_ELEMENT_LINK_MAX_LENGTH"
 				size="3"/>

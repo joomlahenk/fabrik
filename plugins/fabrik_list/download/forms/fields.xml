@@ -51,7 +51,7 @@
 				  
 			<field name="download_width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FABRIK_LIST_DOWNLOAD_WIDTH_DESC"
 				label="PLG_FABRIK_LIST_DOWNLOAD_WIDTH_LABEL"
 				repeat="true"
@@ -59,7 +59,7 @@
 				  
 			<field name="download_height"
 				type="text" 
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FABRIK_LIST_DOWNLOAD_HEIGHT_DESC"
 				label="PLG_FABRIK_LIST_DOWNLOAD_HEIGHT_LABEL"
 				repeat="true"

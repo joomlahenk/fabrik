@@ -6,7 +6,7 @@
 
 			<field name="id"
 			       type="text"
-			       class="readonly input-mini"
+			       class="readonly col-md-2"
 			       default="0"
 			       label="COM_FABRIK_ID_LABEL"
 			       description="COM_FABRIK_FIELD_GROUP_ID_DESC"
@@ -135,14 +135,14 @@
 
 			<field name="repeat_max"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       size="2"
 			       description="COM_FABRIK_REPEAT_GROUP_MAX_DESC"
 			       label="COM_FABRIK_REPEAT_GROUP_MAX_LABEL"/>
 
 			<field name="repeat_min"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="COM_FABRIK_REPEAT_GROUP_MIN_LABEL"
 			       description="COM_FABRIK_REPEAT_GROUP_MIN_DESC"
 			       size="2"/>
@@ -233,7 +233,7 @@
 
 			<field name="group_columns"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       default="1"
 			       description="COM_FABRIK_COLUMNS_DESC"
 			       label="COM_FABRIK_COLUMNS_LABEL"

@@ -22,7 +22,7 @@
 
 			<field name="dropdown_multisize"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="3"
 				description="PLG_ELEMENT_DROPDOWN_MULTISIZE_DESC"
 				label="PLG_ELEMENT_DROPDOWN_MULTISIZE_LABEL"
@@ -107,7 +107,7 @@
 			
 			<field name="bootstrap_class"
 				type="bootstrapfieldclass"
-				default="input-medium"
+				default="col-md-6"
 				label="PLG_ELEMENT_BOOTSTRAP_CLASS_LABEL"
 				description="PLG_ELEMENT_BOOTSTRAP_CLASS_DESC" />
 

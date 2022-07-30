@@ -8,7 +8,7 @@
 
 			<field name="jsperiod_period"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="100"
 				description="PLG_ELEMENT_JSPERIODICAL_TIME_DESC"
 				label="PLG_ELEMENT_JSPERIODICAL_TIME_LABEL"

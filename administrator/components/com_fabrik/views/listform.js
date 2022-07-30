@@ -228,7 +228,7 @@ define(['jquery'], function (jQuery) {
             var ii = new Element('input', {
                 'readonly': 'readonly',
                 'size'    : '2',
-                'class'   : 'disabled readonly input-mini',
+                'class'   : 'disabled readonly col-md-2',
                 'name'    : 'jform[params][join_id][]',
                 'value'   : joinId
             });
@@ -253,24 +253,24 @@ define(['jquery'], function (jQuery) {
 
             joinType = new Element('select', {
                 'name' : 'jform[params][join_type][]',
-                'class': 'inputbox input-mini'
+                'class': 'inputbox col-md-2'
             }).adopt(this._buildOptions(this.options.joinOpts, joinType));
             var joinFrom = new Element('select', {
                 'name' : 'jform[params][join_from_table][]',
-                'class': 'inputbox join_from input-medium'
+                'class': 'inputbox join_from col-md-6'
             }).adopt(this._buildOptions(this.options.activetableOpts, joinFromTable));
             groupId = new Element('input', {'type': 'hidden', 'name': 'group_id[]', 'value': groupId});
             var tableJoin = new Element('select', {
                 'name' : 'jform[params][table_join][]',
-                'class': 'inputbox join_to input-medium'
+                'class': 'inputbox join_to col-md-6'
             }).adopt(this._buildOptions(this.options.tableOpts, joinToTable));
             var tableKey = new Element('select', {
                 'name' : 'jform[params][table_key][]',
-                'class': 'table_key inputbox input-medium'
+                'class': 'table_key inputbox col-md-6'
             }).adopt(this._buildOptions(joinFromFields, thisKey));
             joinKey = new Element('select', {
                 'name' : 'jform[params][table_join_key][]',
-                'class': 'table_join_key inputbox input-medium'
+                'class': 'table_join_key inputbox col-md-6'
             }).adopt(this._buildOptions(joinToFields, joinKey));
             var repeatRadio =
                 "<fieldset class=\"radio\">" +

@@ -194,7 +194,7 @@
 			<field
 				name="fb_gm_icon_letter"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_VISUALIZATION_GOOGLEMAP_ICON_LETTER_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_ICON_LETTER_LABEL"
 				size="1" />
@@ -212,7 +212,7 @@
 				name="fb_gm_polyline_width"
 				type="text"
 				size="3"
-				class="input-mini"
+				class="col-md-2"
 				default="10"
 				description="PLG_VISUALIZATION_GOOGLEMAP_POLYLINE_WIDTH_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_POLYLINE_WIDTH_LABEL" />
@@ -220,7 +220,7 @@
 			<field
 				name="fb_gm_polyline_colour"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				default="#CCFFFF"
 				description="PLG_VISUALIZATION_GOOGLEMAP_POLYLINE_COLOUR_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_POLYLINE_COLOUR_LABEL" />
@@ -238,7 +238,7 @@
 
 			<field
 				name="fb_gm_polygon_fillOpacity"
-				class="input-mini"
+				class="col-md-2"
 				type="text"
 				default="0.35"
 				description="PLG_VISUALIZATION_GOOGLEMAP_POLYGON_FILLOPACITY_DESC"
@@ -248,7 +248,7 @@
 			<field
 				name="fb_gm_polygon_fillColor"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				default="#CCFFFF"
 				description="PLG_VISUALIZATION_GOOGLEMAP_POLYGON_FILLCOLOUR_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_POLYGON_FILLCOLOUR_LABEL" />
@@ -274,7 +274,7 @@
 			<field
 				name="fb_gm_radius_default"
 				type="field"
-				class="input-mini"
+				class="col-md-2"
 				default="50"
 				size="5"
 				label="PLG_VISUALIZATION_GOOGLEMAP_RADIUS_DEFAULT_LABEL"
@@ -283,7 +283,7 @@
 			<field
 				name="fb_gm_radius_fill_color"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				default="#CCFFFF"
 				size="8"
 				label="PLG_VISUALIZATION_GOOGLEMAP_RADIUS_FILL_COLOR_LABEL"
@@ -422,7 +422,7 @@
 			<field
 				name="fb_gm_zoomlevel"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="4"
 				description="PLG_VISUALIZATION_GOOGLEMAP_ZOOMLEVEL_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_ZOOMLEVEL_LABEL" />
@@ -484,7 +484,7 @@
 				name="fb_gm_default_lat"
 				type="text"
 				size="3"
-				class="input-mini"
+				class="col-md-2"
 				default="0.0"
 				label="PLG_VISUALIZATION_GOOGLEMAP_DEFAULT_LAT_LABEL"
 				description="PLG_VISUALIZATION_GOOGLEMAP_DEFAULT_LAT_DESC" />
@@ -493,7 +493,7 @@
 				name="fb_gm_default_lon"
 				size="3"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="0.0"
 				label="PLG_VISUALIZATION_GOOGLEMAP_DEFAULT_LON_LABEL"
 				description="PLG_VISUALIZATION_GOOGLEMAP_DEFAULT_LON_DESC" />
@@ -502,7 +502,7 @@
 				name="fb_gm_mapwidth"
 				type="text"
 				size="3"
-				class="input-mini"
+				class="col-md-2"
 				default="600"
 				label="PLG_VISUALIZATION_GOOGLEMAP_WIDTH_LABEL"
 				description="PLG_VISUALIZATION_GOOGLEMAP_WIDTH_DESC" />
@@ -511,7 +511,7 @@
 				name="fb_gm_mapheight"
 				size="3"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="300"
 				label="PLG_VISUALIZATION_GOOGLEMAP_HEIGHT_LABEL" />
 
@@ -687,7 +687,7 @@
 				type="text" />
 
 			<field
-				class="input-mini"
+				class="col-md-2"
 				default="5"
 				description="PLG_VISUALIZATION_GOOGLEMAP_CLUSTER_ICON_INCREMENT_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_CLUSTER_ICON_INCREMENT_LABEL"
@@ -704,7 +704,7 @@
 			<field
 				name="fb_gm_markermax"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_VISUALIZATION_GOOGLEMAP_MARKER_MAX_DESC"
 				label="PLG_VISUALIZATION_GOOGLEMAP_MARKER_MAX_LABEL" />
 
@@ -800,7 +800,7 @@
 				label="PLG_VISUALIZATION_GOOGLEMAP_OVERLAYS_URL_LABEL"
 				name="fb_gm_overlay_urls"
 				size="100"
-				class="input-xxlarge"
+				class="col-md-12"
 				type="text" />
 
 			<field

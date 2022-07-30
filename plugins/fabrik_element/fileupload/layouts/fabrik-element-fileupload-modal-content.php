@@ -17,13 +17,13 @@ $d = $displayData;
 				<div class="fabrikslider-line" style="width: 100px;float:left;">
 					<div class="knob"></div>
 				</div><br />
-				<input type="number" name="zoom-val" value="" size="3" class="input-mini">
+				<input type="number" name="zoom-val" value="" size="3" class="col-md-2">
 			</div>
 			<div class="rotate col-md-5"><?php echo Text::_('PLG_ELEMENT_FILEUPLOAD_ROTATE'); ?>:
 				<div class="fabrikslider-line" style="width: 100px;float:left;">
 					<div class="knob"></div>
 				</div><br />
-				<input type="number" name="rotate-val" value="" size="3" class="input-mini">
+				<input type="number" name="rotate-val" value="" size="3" class="col-md-2">
 			</div>
 		</div>
 	<?php endif; ?>

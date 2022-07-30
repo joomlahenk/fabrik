@@ -44,7 +44,7 @@
 			
 			<field name="limit_length"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_FORM_LIMIT_LENGTH_DESC"
 				label="PLG_FORM_LIMIT_LENGTH_LABEL"
 				repeat="true" size="3" />

@@ -32,7 +32,7 @@
 				url="PLG_ELEMENT_SLIDER_HELP_SERVER" />
 
 			<field name="digsig_form_width"
-				class="input-mini"
+				class="col-md-2"
 				default="400"
 				label="PLG_ELEMENT_DIGSIG_FORM_WIDTH_LABEL"
 				descroption="PLG_ELEMENT_DIGSIG_FORM_WIDTH_DESC"
@@ -40,7 +40,7 @@
 				type="text"/>
 
 			<field name="digsig_form_height"
-				class="input-mini"
+				class="col-md-2"
 				default="250"
 				label="PLG_ELEMENT_DIGSIG_FORM_HEIGHT_LABEL"
 				description="PLG_ELEMENT_DIGSIG_FORM_HEIGHT_DESC"
@@ -48,7 +48,7 @@
 				type="text"/>
 
 			<field name="digsig_list_width"
-				class="input-mini"
+				class="col-md-2"
 				default="200"
 				label="PLG_ELEMENT_DIGSIG_LIST_WIDTH_LABEL"
 				description="PLG_ELEMENT_DIGSIG_LIST_WIDTH_DESC"
@@ -56,7 +56,7 @@
 				type="text"/>
 
 			<field name="digsig_list_height"
-				class="input-mini"
+				class="col-md-2"
 				default="175"
 				label="PLG_ELEMENT_DIGSIG_LIST_HEIGHT_LABEL"
 				description="PLG_ELEMENT_DIGSIG_LIST_HEIGHT_DESC"
@@ -64,7 +64,7 @@
 				type="text"/>
 
 			<field name="digsig_pdf_secret"
-		       class="input-mini"
+		       class="col-md-2"
 		       default="175"
 		       label="PLG_ELEMENT_DIGSIG_PDF_SECRET_LABEL"
 		       description="PLG_ELEMENT_DIGSIG_PDF_SECRET_DESC"

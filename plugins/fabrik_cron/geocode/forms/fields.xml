@@ -147,7 +147,7 @@
 				
 			<field name="geocode_zoom_level"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="4"
 				description="PLG_CRON_GEOCODE_ZOOM_DESC"
 				label="PLG_CRON_GEOCODE_ZOOM_LABEL"
@@ -156,7 +156,7 @@
 			<field name="geocode_batch_limit"
 				type="text"
 				default=""
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_CRON_GEOCODE_BATCH_LIMIT_DESC"
 				label="PLG_CRON_GEOCODE_BATCH_LIMIT_LABEL"
 				size="4" />
@@ -164,7 +164,7 @@
 			<field name="geocode_delay"
 				type="text"
 				default=""
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_CRON_GEOCODE_DELAY_DESC"
 				label="PLG_CRON_GEOCODE_DELAY_LABEL"
 				size="4" />

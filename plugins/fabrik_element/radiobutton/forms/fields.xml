@@ -13,7 +13,7 @@
 
 			<field name="options_per_row"
 				default="4"
-				class="input-mini"
+				class="col-md-2"
 				label="PLG_ELEMENT_RADIO_OPTIONS_PER_ROW_LABEL"
 				size="2"
 				type="width"/>

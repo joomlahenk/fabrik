@@ -76,7 +76,7 @@
 
 			<field name="total_fixed"
 				   type="text"
-				   class="input-mini"
+				   class="col-md-2"
 				   default="2"
 				   label="PLG_ELEMENT_TOTAL_FIXED_LABEL"
 				   description="PLG_ELEMENT_TOTAL_FIXED_DESC"
@@ -84,7 +84,7 @@
 
 			<field name="total_start_value"
 				   type="text"
-				   class="input-mini"
+				   class="col-md-2"
 				   default="0"
 				   label="PLG_ELEMENT_TOTAL_START_VALUE_LABEL"
 				   description="PLG_ELEMENT_TOTAL_START_VALUE_DESC"

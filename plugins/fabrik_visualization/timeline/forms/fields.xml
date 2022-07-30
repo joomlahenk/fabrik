@@ -36,14 +36,14 @@
 				
 			<field name="timeline_colour"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				default="#58A0DC"
 				description="PLG_VIZ_TIMELINE_COLOUR_DESC"
 				label="PLG_VIZ_TIMELINE_COLOUR_LABEL" />
 				
 			<field name="timeline_text_color"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				default="#58A0DC"
 				description="PLG_VIZ_TIMELINE_TEXT_COLOUR_DESC"
 				label="PLG_VIZ_TIMELINE_TEXT_COLOUR_LABEL" />
@@ -73,7 +73,7 @@
 						
 						<field description="PLG_VIZ_TIMELINE_BAND_BACKGROUND_DESC" label="PLG_VIZ_TIMELINE_BAND_BACKGROUND_LABEL" name="timeline_band_background_colour" size="6" type="field"/>
 					
-						<field class="input-mini" description="PLG_VIZ_TIMELINE_BAND_WIDTH_DESC" label="PLG_VIZ_TIMELINE_BAND_WIDTH_LABEL" name="timeline_band_width" size="3" type="field"/>
+						<field class="col-md-2" description="PLG_VIZ_TIMELINE_BAND_WIDTH_DESC" label="PLG_VIZ_TIMELINE_BAND_WIDTH_LABEL" name="timeline_band_width" size="3" type="field"/>
 							
 						<field default="0" description="PLG_VIZ_TIMELINE_BAND_AS_OVERVIEW_DESC" label="PLG_VIZ_TIMELINE_BAND_AS_OVERVIEW_LABEL" name="timeline_band_as_overview" type="list">
 								<option value="0">JNO</option>
@@ -105,14 +105,14 @@
 			
 			<field name="timeline_height"
 				type="field"
-				class="input-mini"
+				class="col-md-2"
 				default="300"
 				description="PLG_VIS_TIMELINE_HEIGHT_DESC"
 				label="PLG_VIS_TIMELINE_HEIGHT_LABEL" />
 			
 			<field name="timeline_width"
 				type="field"
-				class="input-mini"
+				class="col-md-2"
 				default="700"
 				description="PLG_VIS_TIMELINE_WIDTH_DESC"
 				label="PLG_VIS_TIMELINE_WIDTH_LABEL" />	

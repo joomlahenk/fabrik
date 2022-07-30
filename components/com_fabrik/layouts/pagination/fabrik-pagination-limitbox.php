@@ -45,7 +45,7 @@ if ($d->showAllOption == true)
 
 $selected   = $d->viewAll ? '-1' : $d->limit;
 $js         = '';
-$attributes = 'class="inputbox input-mini" size="1" onchange="' . $js . '"';
+$attributes = 'class="inputbox col-md-2" size="1" onchange="' . $js . '"';
 $html       = HTMLHelper::_('select.genericlist', $limits, 'limit' . $d->id, $attributes, 'value', 'text', $selected);
 
 echo $html;

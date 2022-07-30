@@ -63,7 +63,7 @@
 
 			<field name="maxlength"
 				type="maxlength"
-				class="input-mini"
+				class="col-md-2"
 				default="255" label="PLG_ELEMENT_FIELD_MAX_LENGTH_LABEL"
 				size="3" />
 
@@ -131,7 +131,7 @@
 
 			<field name="bootstrap_class"
 				type="bootstrapfieldclass"
-				default="input-medium"
+				default="col-md-6"
 				label="PLG_ELEMENT_BOOTSTRAP_CLASS_LABEL"
 				description="PLG_ELEMENT_BOOTSTRAP_CLASS_DESC" />
 
@@ -148,14 +148,14 @@
 			<field name="integer_length"
 				type="text"
 				default="11"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_FIELD_INTEGER_LENGTH_DESC"
 				label="PLG_ELEMENT_FIELD_INTEGER_LENGTH_LABEL"/>
 
 			<field name="decimal_length"
 				type="text"
 				default="2"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_FIELD_DECIMAL_LENGTH_DESC"
 				label="PLG_ELEMENT_FIELD_DECIMAL_LENGTH_LABEL"/>
 
@@ -172,7 +172,7 @@
 
 			<field name="field_thousand_sep"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default=","
 				description="PLG_ELEMENT_FIELD_THOUSAND_SEP_DESC"
 				label="PLG_ELEMENT_FIELD_THOUSAND_SEP_LABEL"
@@ -180,7 +180,7 @@
 
 			<field name="field_decimal_sep"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="."
 				description="PLG_ELEMENT_FIELD_DECIMAL_SEP_DESC"
 				label="PLG_ELEMENT_FIELD_DECIMAL_SEP_LABEL"

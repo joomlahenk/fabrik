@@ -22,7 +22,7 @@
 
 			<field name="fb_gm_zoomlevel"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="4"
 				label="PLG_ELEMENT_GOOGLE_MAP_ZOOM_LEVEL_LABEL"
@@ -31,7 +31,7 @@
 
 			<field name="fb_gm_mapwidth"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="250"
 				label="PLG_ELEMENT_GOOGLE_MAP_WIDTH_LABEL"
@@ -40,7 +40,7 @@
 
 			<field name="fb_gm_mapheight"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="250"
 				label="PLG_ELEMENT_GOOGLE_MAP_HEIGHT_LABEL"
@@ -446,7 +446,7 @@
 
 			<field name="fb_gm_radius_default"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="50"
 				description="PLG_ELEMENT_GOOGLEMAP_RADIUS_DEFAULT_DESC"
 				label="PLG_ELEMENT_GOOGLEMAP_RADIUS_DEFAULT_LABEL"
@@ -491,7 +491,7 @@
 
 			<field name="fb_gm_table_mapwidth"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="200"
 				label="PLG_ELEMENT_GOOGLE_MAP_WIDTH_LABEL"
@@ -500,7 +500,7 @@
 
 			<field name="fb_gm_table_mapheight"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="150"
 				label="PLG_ELEMENT_GOOGLE_MAP_HEIGHT_LABEL"
@@ -509,7 +509,7 @@
 
 			<field name="fb_gm_table_zoomlevel"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				size="3"
 				default="4"
 				label="PLG_ELEMENT_GOOGLE_MAP_ZOOM_LEVEL_LABEL"
@@ -565,7 +565,7 @@
 
 			<field name="fb_gm_use_overlays_checked"
 				   type="text"
-				   class="input-mini"
+				   class="col-md-2"
 				   size="3"
 				   default=""
 				   label="PLG_ELEMENT_GOOGLE_MAP_USE_OVERLAYS_CHECKED_LABEL"
@@ -590,7 +590,7 @@
 					label="PLG_ELEMENT_GOOGLE_MAP_OVERLAYS_URL_LABEL"
 					name="fb_gm_overlay_urls"
 					size="100"
-					class="input-xxlarge"
+					class="col-md-12"
 					type="text" />
 
 			<field

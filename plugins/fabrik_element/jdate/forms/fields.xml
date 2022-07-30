@@ -48,7 +48,7 @@
 
 			<field name="bootstrap_class"
 				   type="bootstrapfieldclass"
-				   default="input-medium"
+				   default="col-md-6"
 				   label="PLG_ELEMENT_BOOTSTRAP_CLASS_LABEL"
 				   description="PLG_ELEMENT_BOOTSTRAP_CLASS_DESC" />
 
@@ -66,7 +66,7 @@
 			<field name="jdate_time_format"
 				type="text"
 				default=""
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_JDATE_TIME_FORMAT_DESC"
 				label="PLG_ELEMENT_JDATE_TIME_FORMAT_LABEL"
 				length="20"/>
@@ -93,7 +93,7 @@
 			<field name="jdate_store_as_local"
 				type="list"
 				default="0"
-				class="input-small"
+				class="col-md-4"
 				description="PLG_ELEMENT_JDATE_STORE_AS_DESC"
 				label="PLG_ELEMENT_JDATE_STORE_AS_LABEL">
 					<option value="0">PLG_ELEMENT_JDATE_UTC</option>
@@ -103,7 +103,7 @@
 			<field name="jdate_table_format"
 				type="text"
 				default="Y-m-d"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_JDATE_TABLE_FORMAT_DESC"
 				label="PLG_ELEMENT_JDATE_TABLE_DATE_FORMAT_LABEL"
 				length="20" />
@@ -111,7 +111,7 @@
 			<field name="jdate_form_format"
 				type="text"
 				default="Y-m-d"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_JDATE_FORM_DATE_FORMAT_DESC"
 				label="PLG_ELEMENT_JDATE_FORM_DATE_FORMAT_LABEL"
 				length="20" />

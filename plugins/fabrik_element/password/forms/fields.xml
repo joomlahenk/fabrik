@@ -8,7 +8,7 @@
 				
 			<field name="maxlength"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="255"
 				description=""
 				label="PLG_ELEMENT_PASSWORD_MAXLENGTH_LABEL"
@@ -36,7 +36,7 @@
 
 			<field name="bootstrap_class"
 			       type="bootstrapfieldclass"
-			       default="input-medium"
+			       default="col-md-6"
 			       label="PLG_ELEMENT_BOOTSTRAP_CLASS_LABEL"
 			       description="PLG_ELEMENT_BOOTSTRAP_CLASS_DESC" />
 

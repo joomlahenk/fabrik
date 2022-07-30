@@ -43,7 +43,7 @@
 				
 			<field name="colour"
 				type="color"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_VISUALIZATION_CALENDAR_COLOR_DESC"
 				label="PLG_VISUALIZATION_CALENDAR_COLOR_LABEL" />
 				
@@ -141,7 +141,7 @@
 						
 			<field name="yoffset"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="0"
 				description="PLG_VISUALIZATION_CALENDAR_Y_OFFSET_DESC"
 				label="PLG_VISUALIZATION_CALENDAR_Y_OFFSET_LABEL"
@@ -149,7 +149,7 @@
 				
 			<field name="first_week_day"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="0"
 				description="PLG_VISUALIZATION_CALENDAR_FIRST_WEEK_DAY_DESC"
 				label="PLG_VISUALIZATION_CALENDAR_FIRST_WEEK_DAY_LABEL" />
@@ -166,7 +166,7 @@
 
 			<field name="time_format"
 				type="text"
-				class="input-small"
+				class="col-md-4"
 				default="%X"
 				description="PLG_VISUALIAZATION_CALENDAR_TIME_FORMAT_DESC"
 				label="PLG_VISUALIAZATION_CALENDAR_TIME_FORMAT_LABEL" />
@@ -187,14 +187,14 @@
 		
 			<field name="calendar-monthday-width"
 				 type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="90"
 				description="PLG_VISUALIZATION_CALENDAR_MONTH_DAY_WIDTH_LABEL"
 				label="PLG_VISUALIZATION_CALENDAR_MONTH_DAY_WIDTH_LABEL"
 				size="3" />
 				
 			<field name="calendar-monthday-height"
-				class="input-mini"
+				class="col-md-2"
 				type="text"
 				default="80"
 				description="PLG_VISUALIZATION_CALENDAR_MONTH_DAY_HEIGHT_DESC"
@@ -227,7 +227,7 @@
 		
 			<field name="calendar-weekday-width"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="90"
 				description="PLG_VISUALIZATION_CALENDAR_WEEK_DAY_WIDTH_LABEL"
 				label="PLG_VISUALIZATION_CALENDAR_WEEK_DAY_WIDTH_LABEL"
@@ -236,13 +236,13 @@
 			<field name="calendar-weekday-height"
 				type="text"
 				size="3"
-				class="input-mini"
+				class="col-md-2"
 				default="10"
 				description="PLG_VISUALIZATION_CALENDAR_WEEK_DAY_HEIGHT_DESC"
 				label="PLG_VISUALIZATION_CALENDAR_WEEK_DAY_HEIGHT_LABEL" />
 				
 			<field name="open-hour"
-				class="input-mini"
+				class="col-md-2"
 				default="0"
 				description="PLG_VISUALIZATION_CALENDAR_OPEN_HOUR_DESC"
 				label="PLG_VISUALIZATION_CALENDAR_OPEN_HOUR_LABEL"
@@ -251,7 +251,7 @@
 					
 			<field name="close-hour"
 				type="text"
-				class="input-mini"
+				class="col-md-2"
 				default="24"
 				description="PLG_VISUALIZATION_CALENDAR_CLOSE_HOUR_DESC"
 				label="PLG_VISUALIZATION_CALENDAR_CLOSE_HOUR_LABEL"

@@ -21,7 +21,7 @@ if (!$d->timerReadOnly) :
 endif;
 ?>
 <input type="<?php echo $d->type;?>"
-	class="fabrikinput input-small inputbox text <?php echo $kls;?>"
+	class="fabrikinput col-md-4 inputbox text <?php echo $kls;?>"
 	name="<?php echo $d->name; ?>"
 	<?php echo $readOnly;?>
 	id="<?php echo $d->id; ?>" size="<?php echo $d->size; ?>"

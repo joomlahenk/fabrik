@@ -64,7 +64,7 @@ $params = $this->params;
 					return Text::_('PLG_LIST_EMAIL_TO_TABLE_NO_DATA');
 				}
 
-				$attribs = 'class="fabrikinput inputbox input-medium" multiple="multiple" size="5"';
+				$attribs = 'class="fabrikinput inputbox col-md-6" multiple="multiple" size="5"';
 				$empty   = new stdClass;
 
 				if ($this->toType == 'table_picklist')
@@ -87,7 +87,7 @@ $params = $this->params;
 				}
 				else
 				{
-					echo HTMLHelper::_('select.genericlist', $results, 'list_email_to[]', 'class="fabrikinput inputbox input-large" multiple="multiple" size="5"', 'email', 'name', '', 'list_email_to');
+					echo HTMLHelper::_('select.genericlist', $results, 'list_email_to[]', 'class="fabrikinput inputbox col-md-8" multiple="multiple" size="5"', 'email', 'name', '', 'list_email_to');
 				}
 			}
 		}

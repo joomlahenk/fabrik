@@ -45,7 +45,7 @@
 
 			<field name="bootstrap_class"
 				type="bootstrapfieldclass"
-				default="input-medium"
+				default="col-md-6"
 				label="PLG_ELEMENT_BOOTSTRAP_CLASS_LABEL"
 				description="PLG_ELEMENT_BOOTSTRAP_CLASS_DESC" />
 
@@ -73,7 +73,7 @@
 			<field name="date_time_format"
 				type="text"
 				default="H:i"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_DATE_TIME_FORMAT_DESC"
 				label="PLG_ELEMENT_DATE_TIME_FORMAT_LABEL"
 				length="20"/>
@@ -101,7 +101,7 @@
 
 			<field name="bootstrap_time_class"
 				type="bootstrapfieldclass"
-				default="input-medium"
+				default="col-md-6"
 				label="PLG_ELEMENT_DATE_BOOTSTRAP_TIME_CLASS_LABEL"
 				description="PLG_ELEMENT_DATE_BOOTSTRAP_TIME_CLASS_DESC" />
 
@@ -120,7 +120,7 @@
 			<field name="date_store_as_local"
 				type="list"
 				default="0"
-				class="input-small"
+				class="col-md-4"
 				description="PLG_ELEMENT_DATE_STORE_AS_DESC"
 				label="PLG_ELEMENT_DATE_STORE_AS_LABEL">
 					<option value="0">PLG_ELEMENT_DATE_UTC</option>
@@ -130,7 +130,7 @@
 			<field name="date_table_format"
 				type="text"
 				default="Y-m-d H:i:s"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_DATE_TABLE_FORMAT_DESC"
 				label="PLG_ELEMENT_DATE_TABLE_DATE_FORMAT_LABEL"
 				length="20" />
@@ -138,7 +138,7 @@
 			<field name="date_form_format"
 				type="text"
 				default="Y-m-d"
-				class="input-mini"
+				class="col-md-2"
 				description="PLG_ELEMENT_DATE_FORM_DATE_FORMAT_DESC"
 				label="PLG_ELEMENT_DATE_FORM_DATE_FORMAT_LABEL"
 				length="20" />

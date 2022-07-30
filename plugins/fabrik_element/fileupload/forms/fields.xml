@@ -12,7 +12,7 @@
 			<field name="ul_max_file_size"
 			       type="uploadsize"
 			       size="30"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_MAX_FILESIZE_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_MAX_FILESIZE_LABEL"/>
 
@@ -200,7 +200,7 @@
 
 			<field name="fu_main_max_width"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       default=""
 			       description="PLG_ELEMENT_FILEUPLOAD_MAX_WIDTH_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_MAX_WIDTH_LABEL"
@@ -208,7 +208,7 @@
 
 			<field name="fu_main_max_height"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       default=""
 			       description="PLG_ELEMENT_FILEUPLOAD_MAX_HEIGHT_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_MAX_HEIGHT_LABEL"
@@ -304,7 +304,7 @@
 			<field name="thumb_max_width"
 			       type="text"
 			       default="200"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_THUMB_WIDTH_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_THUMB_WIDTH_LABEL"
 			       size="3"/>
@@ -312,7 +312,7 @@
 			<field name="thumb_max_height"
 			       type="text"
 			       default="100"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_THUMB_HEIGHT_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_THUMB_HEIGHT_LABEL"
 			       size="3"/>
@@ -343,7 +343,7 @@
 
 			<field name="fileupload_crop_width"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_CROP_WIDTH_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_CROP_WIDTH_LABEL"
 			       default="200"
@@ -351,7 +351,7 @@
 
 			<field name="fileupload_crop_height"
 			       type="text"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_CROP_HEIGHT_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_CROP_HEIGHT_LABEL"
 			       default="100"
@@ -361,14 +361,14 @@
 			       type="text"
 			       default="400"
 			       size="3"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_ELEMENT_FILEUPLOAD_WIN_WIDTH_LABEL"/>
 
 			<field name="win_height"
 			       type="text"
 			       default="400"
 			       size="3"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_ELEMENT_FILEUPLOAD_WIN_HEIGHT_LABEL"/>
 
 		</fieldset>
@@ -479,7 +479,7 @@
 				<option value="1">JYES</option>
 			</field>
 
-			<field class="input-mini"
+			<field class="col-md-2"
 			       default="60"
 			       description="PLG_ELEMENT_FILEUPLOAD_AMAZON_AUTH_URL_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_AMAZON_AUTH_URL_LABEL"
@@ -525,27 +525,27 @@
 			<field name="ajax_max"
 			       type="text"
 			       default="4"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_AJAX_MAX_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_AJAX_MAX_LABEL"
 			       size="2"/>
 
 			<field default="400"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_AJAX_DROPBOX_WIDTH_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_AJAX_DROPBOX_WIDTH_LABEL"
 			       name="ajax_dropbox_width"
 			       type="text"/>
 
 			<field default="200"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_AJAX_DROPBOX_HEIGHT_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_AJAX_DROPBOX_HEIGHT_LABEL"
 			       name="ajax_dropbox_height"
 			       type="text"/>
 
 			<field default="0"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_ELEMENT_FILEUPLOAD_AJAX_CHUNK_SIZE_DESC"
 			       label="PLG_ELEMENT_FILEUPLOAD_AJAX_CHUNK_SIZE_LABEL"
 			       name="ajax_chunk_size"

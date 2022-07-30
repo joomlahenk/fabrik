@@ -29,7 +29,7 @@
 				
 			<field name="radius_lookup_unit"
 				type="list"
-				class="input-small"				
+				class="col-md-4"				
 				default="km"
 				label="PLG_LIST_RADIUS_LOOKUP_RADIUS_UNIT_LABEL"
 				repeat="true">

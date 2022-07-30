@@ -40,7 +40,7 @@
 
 			<field name="chart_colours"
 			       type="color"
-			       class="input-mini"
+			       class="col-md-2"
 			       description="PLG_VISUALIZATION_CHART_COLOUR_DESC"
 			       label="PLG_VISUALIZATION_CHART_COLOUR_LABEL"/>
 
@@ -52,7 +52,7 @@
 			       table="params_chart_table"
 			       type="element"/>
 
-			<field class="input-mini"
+			<field class="col-md-2"
 			       description="PLG_VISUALIZATION_CHART_AXIS_MEAUSREMENT_UNIT_DESC"
 			       label="PLG_VISUALIZATION_CHART_AXIS_MEAUSREMENT_UNIT_LABEL"
 			       name="x_axis_measurement_unit"
@@ -119,14 +119,14 @@
 			</field>
 
 			<field description="PLG_VISUALIZATION_CHART_WIDTH_DESC"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_VISUALIZATION_CHART_WIDTH_LABEL"
 			       name="chart_width"
 			       size="5"
 			       type="text"/>
 
 			<field description="PLG_VISUALIZATION_CHART_HEIGHT_DESC"
-			       class="input-mini"
+			       class="col-md-2"
 			       label="PLG_VISUALIZATION_CHART_HEIGHT_LABEL"
 			       name="chart_height"
 			       size="5"

@@ -18,7 +18,7 @@
 
 			<field name="action"
 				type="list"
-				class="input-medium"
+				class="col-md-6"
 				repeat="true"
 				label="COM_FABRIK_JS_EVENT"
 				description="COM_FABRIK_JS_EVENT_DESC"

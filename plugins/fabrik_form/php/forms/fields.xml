@@ -5,7 +5,7 @@
 			<field
 				name="only_process_curl"
 				type="list"
-				class="input-xxlarge"
+				class="col-md-12"
 				default=""
 				description="PLG_FORM_PHP_PROCESS_CURL_DESC"
 				label="PLG_FORM_PHP_PROCESS_CURL_LABEL"
