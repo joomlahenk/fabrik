@@ -48,6 +48,12 @@ class JFormFieldBootstrapfieldclass extends ListField
 		$sizes[] = HTMLHelper::_('select.option', 'col-md-10');
 		$sizes[] = HTMLHelper::_('select.option', 'col-md-11');
 		$sizes[] = HTMLHelper::_('select.option', 'col-md-12');
+		$sizes[] = HTMLHelper::_('select.option', 'input-mini');
+		$sizes[] = HTMLHelper::_('select.option', 'input-small');
+		$sizes[] = HTMLHelper::_('select.option', 'input-medium');
+		$sizes[] = HTMLHelper::_('select.option', 'input-large');
+		$sizes[] = HTMLHelper::_('select.option', 'input-xlarge');
+		$sizes[] = HTMLHelper::_('select.option', 'input-xxlarge');
 
 		return $sizes;
 	}
