@@ -876,8 +876,8 @@ EOD;
 		$tag      = Factory::getLanguage()->getTag();
 		$attribs  = array('title' => Text::_('JLIB_HTML_BEHAVIOR_GREEN'), 'media' => 'all');
 		HTMLHelper::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
-		HTMLHelper::_('script', 'media/com_fabrik/js/calendar.js');
-		HTMLHelper::_('script', 'media/com_fabrik/js/calendar-setup.js');
+		HTMLHelper::_('script', 'media/com_fabrik/js/dist/calendar.js');
+		HTMLHelper::_('script', 'media/com_fabrik/js/dist/calendar-setup.js');
 		$translation = static::calendartranslation();
 		if ($translation)
 		{
@@ -994,8 +994,8 @@ EOD;
 			HTMLHelper::_('script', $mediaFolder . '/lib/jquery-ui/jquery-ui.min.js');
 
 			/* Manually load mootools as it is not loaded by Joomla any more */
-			HTMLHelper::_('script', 'media/com_fabrik/js/mootools-core.js');
-			HTMLHelper::_('script', 'media/com_fabrik/js/mootools-more.js');
+			HTMLHelper::_('script', 'media/com_fabrik/js/dist/mootools-core.js');
+			HTMLHelper::_('script', 'media/com_fabrik/js/dist/mootools-more.js');
 
 
 			HTMLHelper::_('behavior.formvalidator');

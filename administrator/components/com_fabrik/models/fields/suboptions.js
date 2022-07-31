@@ -11,7 +11,6 @@ var Suboptions = new Class({
 
 	options: {
 		sub_initial_selection: [],
-		j3: false,
 		defaultMax: 0
 	},
 
@@ -62,25 +61,19 @@ var Suboptions = new Class({
 	},
 
 	watchButtons: function () {
-		if (this.options.j3) {
-			this.element.addEvent('click:relay(a[data-button="addSuboption"])', function (e) {
-				e.preventDefault();
-				this.addSubElement();
-			}.bind(this));
+		this.element.addEvent('click:relay(a[data-button="addSuboption"])', function (e) {
+			e.preventDefault();
+			this.addSubElement();
+		}.bind(this));
 
 			this.element.addEvent('click:relay(a[data-button="deleteSuboption"])', function (e, target) {
-				e.preventDefault();
-				var trs = this.element.getElements('tbody tr');
-				if (trs.length > 1) {
-					target.getParent('tr').dispose();
-				}
-			}.bind(this));
-			var x = this.element.getElements('a[data-button="addSuboption"]');
-		} else {
-			document.id('addSuboption').addEvent('click', function (e) {
-				this.addOption(e);
-			}.bind(this));
-		}
+			e.preventDefault();
+			var trs = this.element.getElements('tbody tr');
+			if (trs.length > 1) {
+				target.getParent('tr').dispose();
+			}
+		}.bind(this));
+		var x = this.element.getElements('a[data-button="addSuboption"]');
 	},
 
 	addOption: function (e) {
@@ -123,7 +116,7 @@ var Suboptions = new Class({
 
 	_valueField: function (sValue) {
 		return new Element('input', {
-			'class': 'inputbox sub_values',
+			'class': 'form-control-sm sub_values',
 			type: 'text',
 			name: this.name + '[sub_values][]',
 			id: 'sub_value_' + this.counter,
@@ -139,7 +132,7 @@ var Suboptions = new Class({
 
 	_labelField: function (sText) {
 		return new Element('input', {
-			'class': 'inputbox sub_labels',
+			'class': 'form-control-sm sub_labels',
 			type: 'text',
 			name: this.name + '[sub_labels][]',
 			id: 'sub_text_' + this.counter,
@@ -149,7 +142,7 @@ var Suboptions = new Class({
 	},
 
 	_chx: function (sValue, sCurChecked) {
-		return "<input class=\"inputbox sub_initial_selection\" type=\"checkbox\" value=\"" + sValue + "\" name='" + this.name + "[sub_initial_selection][]' id=\"sub_checked_" + this.counter + "\" " + sCurChecked + " />";
+		return "<input class=\"form-check sub_initial_selection\" type=\"checkbox\" value=\"" + sValue + "\" name='" + this.name + "[sub_initial_selection][]' id=\"sub_checked_" + this.counter + "\" " + sCurChecked + " />";
 	},
 
 	_deleteButton: function () {
@@ -157,9 +150,7 @@ var Suboptions = new Class({
 	},
 
 	addSubElement: function (sValue, sText, sCurChecked) {
-		if (this.options.j3) {
-			return this.addJ3SubElement(sValue, sText, sCurChecked);
-		}
+		return this.addJ3SubElement(sValue, sText, sCurChecked);
 		sValue = sValue ? sValue : '';
 		sText = sText ? sText : '';
 		var chx = this._chx(sValue, sCurChecked);

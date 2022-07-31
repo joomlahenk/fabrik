@@ -10,6 +10,7 @@
 				type="radio"
 				class="btn-group"
 				default="0"
+				layout="joomla.form.field.radio.switcher"
 				label="PLG_ELEMENT_CALC_HIDDEN_LABEL">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -51,6 +52,7 @@
 				type="radio"
 				class="btn-group"
 				default="0"
+				layout="joomla.form.field.radio.switcher"
 				description="PLG_ELEMENT_CALC_ON_SAVE_ONLY_DESC"
 				label="PLG_ELEMENT_CALC_ON_SAVE_ONLY_LABEL">
 					<option value="0">JNO</option>
@@ -61,6 +63,7 @@
 				type="radio"
 				class="btn-group"
 				default="0"
+				layout="joomla.form.field.radio.switcher"
 				description="PLG_ELEMENT_CALC_AJAX_DESC"
 				label="PLG_ELEMENT_CALC_AJAX_LABEL">
 					<option value="0">JNO</option>
@@ -71,6 +74,7 @@
 				   type="radio"
 				   class="btn-group"
 				   default="0"
+				layout="joomla.form.field.radio.switcher"
 				   description="PLG_ELEMENT_CALC_AJAX_OBSERVE_ALL_DESC"
 				   label="PLG_ELEMENT_CALC_AJAX_OBSERVE_ALL_LABEL">
 				<option value="0">JNO</option>
@@ -88,6 +92,7 @@
 				type="radio"
 				class="btn-group"
 				default="0"
+				layout="joomla.form.field.radio.switcher"
 				description="PLG_ELEMENT_CALC_ON_LOAD_DESC"
 				label="PLG_ELEMENT_CALC_ON_LOAD_LABEL">
 					<option value="0">JNO</option>
@@ -98,6 +103,7 @@
 				   type="radio"
 				   class="btn-group"
 				   default="0"
+				layout="joomla.form.field.radio.switcher"
 				   description="PLG_ELEMENT_CALC_ON_REPEAT_DESC"
 				   label="PLG_ELEMENT_CALC_ON_REPEAT_LABEL">
 				<option value="0">JNO</option>

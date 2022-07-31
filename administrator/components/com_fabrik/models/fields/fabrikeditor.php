@@ -17,7 +17,6 @@ use Joomla\CMS\Version;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\TextareaField;
 
-jimport('joomla.form.formfield');
 FormHelper::loadFieldClass('textarea');
 
 /**
@@ -81,13 +80,6 @@ class JFormFieldFabrikeditor extends TextareaField
 			. $columns . $rows . $class . $disabled . $onChange . $required . '>'
 			. $this->value . '</textarea>';
 
-		$version = new Version;
-/*
-		if ($version->RELEASE == 2.5)
-		{
-			return $editor;
-		}
-*/
 		FabrikHelperHTML::framework();
 		FabrikHelperHTML::iniRequireJS();
 
