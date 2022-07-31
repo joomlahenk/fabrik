@@ -312,9 +312,9 @@ class PlgFabrik_ElementDate extends PlgFabrik_ElementList
 			$name .= '[date]';
 		}
 
-		$class          = 'fabrikinput inputbox input ' . $params->get('bootstrap_class', 'col-md-4');
+		$class          = 'fabrikinput inputbox input';
 		$element->width = (int) $element->width < 0 ? 1 : (int) $element->width;
-		$calOpts        = array('class' => $class, 'size' => $element->width, 'maxlength' => '19');
+		$calOpts        = array('class' => $class, 'size' => $element->width, 'maxlength' => '19', 'style'=>'width:initial !important');
 
 		if ($params->get('date_allow_typing_in_field', true) == false)
 		{
@@ -832,9 +832,12 @@ class PlgFabrik_ElementDate extends PlgFabrik_ElementList
 			'aria'	=> ' aria-label="' . Text::_('PLG_ELEMENT_DATE_ARIA_LABEL_DATE') . '"'
 		);
 		$img        = $btnLayout->render($layoutData);
-		$html[]     = '<div class="input-append">';
-
-		$html[] = '<input type="text" name="' . $name . '" id="' . $id . '" value="' . $value . '" ' . $attribs . ' />' . $img;
+		/* Some templates render the calendar button underneath the text box, placing them into colums solves that */
+		$html[]     = '<div class="input-append row row-cols-auto align-items-start">';
+		$html[]		= 	'<div class="col">';
+		$html[] 	= 		'<input type="text" name="' . $name . '" id="' . $id . '" value="' . $value . '" ' . $attribs . ' />';
+		$html[]		=	'</div>';
+		$html[]		= '<div class="col">'. $img.'</div>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);
