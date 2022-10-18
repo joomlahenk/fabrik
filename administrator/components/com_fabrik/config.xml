@@ -459,7 +459,7 @@
 
 		<field name="use_mediabox"
 			type="list"
-			default="0" description="COM_FABRIK_MEDIA_BOX_DESC"
+			default="1" description="COM_FABRIK_MEDIA_BOX_DESC"
 			label="COM_FABRIK_MEDIA_BOX_LABEL"
 			class="radio btn-group">
 				<option value="0">COM_FABRIK_LIGHTBOX_SLIMBOX</option>
