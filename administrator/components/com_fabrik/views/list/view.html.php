@@ -139,6 +139,31 @@ class FabrikAdminViewList extends HtmlView
 		FabrikHelperHTML::iniRequireJS($shim);
 		FabrikHelperHTML::script($srcs, $this->js);
 		parent::display($tpl);
+
+		/* The following is a hack to fix an issue with the list and group admin forms losing
+		 * the sidebar menu item above the one the user clicks on before fabrik is fully loaded. 
+		 * This hack forces it to redisplay 
+		*/
+		Factory::getDocument()->addScriptDeclaration('
+			function onReady() {
+			    var details = document.getElementById("btn-details");
+			    if (typeof Fabrik !== "undefined" && details !== null) {
+			    	var buttons = ["btn-details", "btn-data", "btn-publishing", "btn-access", "btn-plugins"];
+			    	for (var idx = 0; idx < buttons.length; idx++) {
+			    		button = document.getElementById(buttons[idx]);
+			    		if (button.style.display == "none") button.style.display = "block";
+			    	}
+			    } else {
+			    	setTimeout(onReady, 100);
+			    }
+			}
+
+			if (document.readyState !== "loading") {
+			    onReady();
+			} else {
+				document.addEventListener("DOMContentLoaded", onReady());
+			}'
+		);
 	}
 
 	/**
