@@ -1760,7 +1760,7 @@ EOD;
 				return;
 			}
 
-			if ($fbConfig->get('use_mediabox', false))
+			if ($fbConfig->get('use_mediabox', 1))
 			{
 				$folder  = 'components/com_fabrik/libs/mediabox-advanced/';
 				$mbStyle = $fbConfig->get('mediabox_style', 'Dark');
