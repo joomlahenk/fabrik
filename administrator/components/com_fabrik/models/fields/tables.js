@@ -89,7 +89,7 @@ var tablesElement = new Class({
 								o.selected = 'selected';
 							}
 							if (this.loader) {
-								this.loader.hide(true);
+								this.loader.hide();
 							}
 							new Element('option', o).set('text', opt).inject(this.el);
 						}.bind(this));

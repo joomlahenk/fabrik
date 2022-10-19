@@ -134,16 +134,14 @@ Element.implement({
 	 * <div class="carousel slide mootools-noconflict'>
 	 */
 
-	hide: function (ha) {
-		if (ha === undefined) {
-			if (this.parentNode.dataset.modalContent === undefined 
-				&& this.dataset.modalContent === undefined
-				&& Fabrik.bootstrapVersion('modal') >= 3) {
-				return;
-			}
-			if (this.hasClass('mootools-noconflict')) {
-				return this;
-			}
+	hide: function () {
+		if (this.parentNode.dataset.modalContent === undefined 
+			&& this.dataset.modalContent === undefined
+			&& Fabrik.bootstrapVersion('modal') >= 3) {
+			return;
+		}
+		if (this.hasClass('mootools-noconflict')) {
+			return this;
 		}
 		mHide.apply(this, arguments);
 	},
