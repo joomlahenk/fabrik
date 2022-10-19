@@ -22,7 +22,7 @@ var FabrikContentTypeList = new Class({
     showUpdate: function (contentType) {
         Fabrik.loader.start('contentTypeListPreview', Joomla.JText._('COM_FABRIK_LOADING'));
         jQuery.ajax({
-            dataType: 'json',
+            dataType: 'text',
             url: 'index.php',
             data: {
                 option: 'com_fabrik',
@@ -30,6 +30,12 @@ var FabrikContentTypeList = new Class({
                 contentType: contentType
             }
         }).done(function (data) {
+            var html = "", realData;
+            var dataLoc = data.indexOf('{"preview');
+            if (dataLoc > 0) {
+                document.body.insertAdjacentHTML('beforeend', data.slice(0, dataLoc));
+            }
+            data = JSON.parse(data.slice(dataLoc));
             Fabrik.loader.stop('contentTypeListPreview');
             jQuery('#contentTypeListPreview').empty().html(data.preview);
             jQuery('#contentTypeListAclUi').empty().html(data.aclMap);
