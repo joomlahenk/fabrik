@@ -47,19 +47,19 @@ HTMLHelper::_('behavior.keepalive');
 	<div class="row main-card-columns">
 		<div class="col-sm-2" id="sidebar">
 			<div class="nav flex-column nav-pills">
-				<button class="nav-link active" id="btn-details" data-bs-toggle="pill" data-bs-target="#detailsX" type="button" role="tab" aria-controls="" aria-selected="true" style="display:block">
+				<button class="nav-link active" id="" data-bs-toggle="pill" data-bs-target="#detailsX" type="button" role="tab" aria-controls="" aria-selected="true">
 					<?php echo Text::_('COM_FABRIK_DETAILS')?>
 				</button>
-				<button class="nav-link" id="btn-data" data-bs-toggle="pill" data-bs-target="#data" type="button" role="tab" aria-controls="" aria-selected="false">
+				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#data" type="button" role="tab" aria-controls="" aria-selected="false">
 					<?php echo Text::_('COM_FABRIK_DATA')?>
 				</button>
-				<button class="nav-link" id="btn-publishing" data-bs-toggle="pill" data-bs-target="#publishing" type="button" role="tab" aria-controls="" aria-selected="false">
+				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#publishing" type="button" role="tab" aria-controls="" aria-selected="false">
 					<?php echo Text::_('COM_FABRIK_GROUP_LABEL_PUBLISHING_DETAILS')?>
 				</button>
-				<button class="nav-link" id="btn-access" data-bs-toggle="pill" data-bs-target="#access" type="button" role="tab" aria-controls="" aria-selected="false">
+				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#access" type="button" role="tab" aria-controls="" aria-selected="false">
 					<?php echo Text::_('COM_FABRIK_GROUP_LABEL_RULES_DETAILS')?>
 				</button>
-				<button class="nav-link" id="btn-plugins" data-bs-toggle="pill" data-bs-target="#tabplugins" type="button" role="tab" aria-controls="" aria-selected="false">
+				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#tabplugins" type="button" role="tab" aria-controls="" aria-selected="false">
 					<?php echo Text::_('COM_FABRIK_GROUP_LABEL_PLUGINS_DETAILS')?>
 				</button>
 			</div>
