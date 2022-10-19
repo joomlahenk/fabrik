@@ -19,18 +19,17 @@ use Joomla\CMS\Language\Text;
 	<div class="fabrikButtonsContainer">
 		<div class="row row-cols-auto align-items-start">
 			<?php if ($this->showAdd) :?>
-			<div class="col pe-1">
-				<button type="button" class="btn"><a class="addbutton addRecord" href="<?php echo $this->addRecordLink;?>">
-					<?php echo FabrikHelperHTML::icon('icon-plus', $this->addLabel);?>
-				</a></button>
-			<?php
-			endif;
-
-			if ($this->showToggleCols) :
-				echo $this->loadTemplate('togglecols');
-			endif;
-			?>
+				<div class="col pe-1">
+					<button type="button" class="btn"><a class="addbutton addRecord" href="<?php echo $this->addRecordLink;?>">
+						<?php echo FabrikHelperHTML::icon('icon-plus', $this->addLabel);?>
+					</a></button>
 				</div>
+			<?php endif; ?>
+				<?php if ($this->showToggleCols) :?>
+					<div>
+						<?php echo $this->loadTemplate('togglecols');?>
+					</div>
+				<?php endif; ?>
 			<div class="col px-1" style="padding-top:8px">
 				<ul class="nav nav-pills">
 				<?php
@@ -52,15 +51,14 @@ use Joomla\CMS\Language\Text;
 
 			<?php endif;
 			if (($this->showClearFilters && (($this->filterMode === 3 || $this->filterMode === 4))  || $this->bootShowFilters == false)) :
-				$clearFiltersClass = $this->gotOptionalFilters ? "clearFilters hasFilters" : "clearFilters";
-			?>
-			<div class="col px-0">
-				<button class="btn">
-					<a class="<?php echo $clearFiltersClass; ?>" href="#">
-						<?php echo FabrikHelperHTML::icon('icon-refresh', Text::_('COM_FABRIK_CLEAR'));?>
-					</a>
-				</button>
-			</div>	
+				$clearFiltersClass = $this->gotOptionalFilters ? "clearFilters hasFilters" : "clearFilters"; ?>
+				<div class="col px-0">
+					<button class="btn">
+						<a class="<?php echo $clearFiltersClass; ?>" href="#">
+							<?php echo FabrikHelperHTML::icon('icon-refresh', Text::_('COM_FABRIK_CLEAR'));?>
+						</a>
+					</button>
+				</div>	
 			<?php endif;
 			if ($this->showFilters && $this->toggleFilters) :?>
 			<div class="col px-1">
