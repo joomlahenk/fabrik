@@ -30,16 +30,16 @@ HTMLHelper::_('behavior.keepalive');
 	<div class="row main-card-columns">
 		<div class="col-sm-2" id="sidebar">
 			<div class="nav flex-column nav-pills">
-				<button class="nav-link active" id="" data-bs-toggle="pill" data-bs-target="#details-info" type="button" role="tab" aria-controls="" aria-selected="true">
+				<button class="nav-link active" id="btn-details" data-bs-toggle="pill" data-bs-target="#details-info" type="button" role="tab" aria-controls="" aria-selected="true">
 					<?php echo Text::_('COM_FABRIK_DETAILS')?>
 				</button>
-				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#details-repeat" type="button" role="tab" aria-controls="" aria-selected="true">
+				<button class="nav-link" id="btn-repeat" data-bs-toggle="pill" data-bs-target="#details-repeat" type="button" role="tab" aria-controls="" aria-selected="true">
 					<?php echo Text::_('COM_FABRIK_REPEAT')?>
 				</button>
-				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#details-layout" type="button" role="tab" aria-controls="" aria-selected="true">
+				<button class="nav-link" id="btn-layout" data-bs-toggle="pill" data-bs-target="#details-layout" type="button" role="tab" aria-controls="" aria-selected="true">
 					<?php echo Text::_('COM_FABRIK_LAYOUT')?>
 				</button>
-				<button class="nav-link" id="" data-bs-toggle="pill" data-bs-target="#details-multipage" type="button" role="tab" aria-controls="" aria-selected="true">
+				<button class="nav-link" id="btn-multipage" data-bs-toggle="pill" data-bs-target="#details-multipage" type="button" role="tab" aria-controls="" aria-selected="true">
 					<?php echo Text::_('COM_FABRIK_GROUP_MULTIPAGE')?>
 				</button>
 			</div>
