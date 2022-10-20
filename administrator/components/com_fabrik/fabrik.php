@@ -38,6 +38,13 @@ if (!defined('COM_FABRIK_FRONTEND'))
 $app = Factory::getApplication();
 $input = $app->input;
 
+if ($app->input->get('view') !== 'home') {
+	$file = 'blockuserinput';
+	$ext = FabrikHelperHTML::isDebug() ? '.js' : '-min.js';
+	$loc = FabrikHelperHTML::isDebug() ? '/media/com_fabrik/js/' : '/media/com_fabrik/js/dist/';
+	Factory::getDocument()->addScript($loc.$file.$ext);
+}
+
 // Include dependencies
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
