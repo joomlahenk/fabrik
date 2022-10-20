@@ -135,7 +135,7 @@ Element.implement({
 	 */
 
 	hide: function (ha) {
-		if (typeof ha === undefined) {
+		if (ha === undefined) {
 			if (this.parentNode.dataset.modalContent === undefined 
 				&& this.dataset.modalContent === undefined
 				&& Fabrik.bootstrapVersion('modal') >= 3) {
