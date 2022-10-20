@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 <div class="tab-pane" id="tab-listview">
 	<legend><?php echo Text::_('COM_FABRIK_LIST_VIEW_SETTINGS');?></legend>
 
-	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<ul class="nav nav-tabs" id="Fab_Elem_NavListview" role="tablist">
 		<li class="nav-item" role="">
 			<button class="nav-link active" id="" data-bs-toggle="tab" data-bs-target="#listview-details" type="button" role="tab" aria-controls="" aria-selected="true">
 				<?php echo Text::_('COM_FABRIK_ELEMENT_LABEL_LIST_SETTINGS_DETAILS'); ?>

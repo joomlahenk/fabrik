@@ -26,7 +26,7 @@ ToolBarHelper::title(Text::_('COM_FABRIK_WELCOME'), 'fabrik.png');
 			<div style="margin:0 0 25px;width:250px;"><?php echo HTMLHelper::image('media/com_fabrik/images/logo.png', 'Fabrik'); ?></div>
 		</div>
 		<div class="col-sm-12">
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<ul class="nav nav-tabs" id="Fab_Home_Nav" role="tablist">
 				<li class="nav-item" role="">
 					<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-about" type="button" role="tab" aria-controls="" aria-selected="true">
 						<?php echo Text::_('COM_FABRIK_HOME_ABOUT'); ?>

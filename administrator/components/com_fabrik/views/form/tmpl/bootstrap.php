@@ -63,7 +63,7 @@ HTMLHelper::_('behavior.keepalive');
 
 <form action="<?php JRoute::_('index.php?option=com_fabrik'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	
-	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<ul class="nav nav-tabs" id="Fab_Form_Nav" role="tablist">
 	  <li class="nav-item" role="">
 		<button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#tab-details" type="button" role="tab" aria-controls="" aria-selected="true">
 			<?php echo Text::_('COM_FABRIK_DETAILS'); ?>

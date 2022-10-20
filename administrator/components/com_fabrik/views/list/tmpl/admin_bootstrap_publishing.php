@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 ?>
 <div class="tab-pane" id="publishing">
 
-	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<ul class="nav nav-tabs" id="Fab_List_NavPublishing" role="tablist">
 	  <li class="nav-item" role="">
 		<button class="nav-link active" id="" data-bs-toggle="tab" data-bs-target="#publishing-details" type="button" role="tab" aria-controls="" aria-selected="true">
 			<?php echo Text::_('COM_FABRIK_GROUP_LABEL_PUBLISHING_DETAILS'); ?>

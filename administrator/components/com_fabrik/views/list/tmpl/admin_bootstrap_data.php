@@ -21,7 +21,7 @@ $rtlDirInv = $doc->direction === 'rtl' ? 'right' : 'left';
 ?>
 <div class="tab-pane" id="data">
 
-	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<ul class="nav nav-tabs" id="Fab_List_NavData" role="tablist">
 	  <li class="nav-item" role="">
 		<button class="nav-link active" id="" data-bs-toggle="tab" data-bs-target="#data-data" type="button" role="tab" aria-controls="" aria-selected="true">
 			<?php echo Text::_('COM_FABRIK_DATA'); ?>
