@@ -39,10 +39,9 @@ $app = Factory::getApplication();
 $input = $app->input;
 
 if ($app->input->get('view') !== 'home') {
-	$file = 'blockuserinput';
-	$ext = FabrikHelperHTML::isDebug() ? '.js' : '-min.js';
-	$loc = FabrikHelperHTML::isDebug() ? '/media/com_fabrik/js/' : '/media/com_fabrik/js/dist/';
-	Factory::getDocument()->addScript($loc.$file.$ext);
+	$file = 'blockuserinput.js';
+	$loc = FabrikHelperHTML::isDebug() ? Juri::root() . 'media/com_fabrik/js/' : Juri::root() .'media/com_fabrik/js/dist/';
+	Factory::getDocument()->addScript($loc.$file);
 }
 
 // Include dependencies
