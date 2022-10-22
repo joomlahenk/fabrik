@@ -476,7 +476,6 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 	 */
 	private function _indStoreDBFormat($val)
 	{
-		if (empty($val)) return $val;
 
 		$params       = $this->getParams();
 		$timeZone     = new \DateTimeZone($this->config->get('offset'));
@@ -588,7 +587,6 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 	 */
 	public function storeDatabaseFormat($val, $data)
 	{
-		if (empty($val)) return $val;
 
 		if (!is_array($val))
 		{
@@ -1094,22 +1092,15 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 		$nullDate      = $db->getNullDate();
 		$shortNullDate = explode(' ', $nullDate);
 		$shortNullDate = FArrayHelper::getValue($shortNullDate, 0);
-		$isNullDate    = $nullDate == $value || $shortNullDate == $value || $value == null;
+		$isNullDate    = $nullDate == $value || $shortNullDate == $value;
 
-		if (!(($formModel->isNewRecord() || $this->newGroup) && $defaultToday) && $value == '')
-		{
-			if (($value == null || $isNullDate) && !$alwaysToday)
-			{
-				return $value;
-			}
-
-			if ($alwaysToday && $formModel->isEditable())
-			{
-				$value = '';
-			}
+		if ($isNullDate) $value = null;
+		if ($formModel->isEditable() && ($alwaysToday || (($formModel->isNewRecord() || $this->newGroup) && $defaultToday))){
+			$value = 'now';
 		}
+
 		// Don't offset if null date.
-		if ($isNullDate)
+		if ($value === null)
 		{
 			return $value;
 		}
@@ -1133,8 +1124,12 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 			return $date->format('Y-m-d H:i:s');
 		}
 
-		// If value = '' don't offset it (not sure what the logic is but testing seems to indicate this to be true)
-		$local = $formModel->hasErrors() || $value == '' || $params->get('jdate_store_as_local', 0) == 1 ? false : true;
+		$local = $formModel->hasErrors();
+
+		$local = $local === true ? $local : $params->get('jdate_store_as_local', 0) == 1;
+		$local = $local === true ? $local : $value != 'now';
+		
+//		$local = $formModel->hasErrors() || $params->get('jdate_store_as_local', 0) == 1) && $value != 'now' ? false : true;
 		$value = $date->toSQL($local);
 
 		return $value;
