@@ -309,7 +309,7 @@ class FabrikAdminModelElements extends FabModelList
 	 * @return  null
 	 */
 
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'id', $direction = 'asc')
 	{
 		// Initialise variables.
 		$app = Factory::getApplication('administrator');
