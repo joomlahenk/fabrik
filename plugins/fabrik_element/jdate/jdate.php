@@ -506,7 +506,7 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 		}
 		else
 		{
-			$val = urldecode($val);
+			$val = empty($val) ? $val : urldecode($val);
 		}
 
 		if (!FabrikWorker::isDate($val))
