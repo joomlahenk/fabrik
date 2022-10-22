@@ -593,7 +593,7 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 			/* $$$ hugh - we really need to work out why some AJAX data is not getting urldecoded.
 			 * but for now ... a bandaid.
 			 */
-			empty($val) $val : urldecode($val);
+			$val = empty($val) ? $val : urldecode($val);
 		}
 
 		// @TODO: deal with failed validations
