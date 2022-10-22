@@ -527,7 +527,7 @@ class PlgFabrik_ElementDate extends PlgFabrik_ElementList
 		}
 		else
 		{
-			$val = urldecode($val);
+			$val = empty($val) ? $val : urldecode($val);
 		}
 
 		if (!FabrikWorker::isDate($val))
@@ -613,7 +613,7 @@ class PlgFabrik_ElementDate extends PlgFabrik_ElementList
 			/* $$$ hugh - we really need to work out why some AJAX data is not getting urldecoded.
 			 * but for now ... a bandaid.
 			 */
-			$val = urldecode($val);
+			$val = empty($val) ? $val : urldecode($val);
 		}
 
 		// @TODO: deal with failed validations
