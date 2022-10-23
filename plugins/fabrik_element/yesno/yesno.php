@@ -343,7 +343,7 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 	{
 		if (FabrikHelperHTML::inAjaxLoadedPage()) {
 			$min = FabrikHelperHTML::isDebug() ? '.min' : '';
-			echo "<link href='http://localhost/media/system/css/fields/switcher".$min."min.css' rel='stylesheet'>";
+			echo "<link href='media/system/css/fields/switcher".$min."min.css' rel='stylesheet'>";
 		}
 		parent::formJavascriptClass($srcs, $script, $shim);
 
