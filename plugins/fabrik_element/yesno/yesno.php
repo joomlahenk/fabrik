@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Factory;
 
 require_once JPATH_SITE . '/components/com_fabrik/models/element.php';
 require_once JPATH_SITE . '/plugins/fabrik_element/radiobutton/radiobutton.php';
@@ -305,8 +306,17 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 		$displayData->onchange = null;
 		$displayData->dataAttribute = $displayData->label = '';
 		$displayData->class = implode(' ', $this->gridClasses()['label']);
-		$displayData->disabled = false;
-		$displayData->readonly = false;
+		switch ($data['view']) {
+			case 'form':
+				$displayData->disabled = $displayData->readonly = false;
+				break;
+			case 'details':
+				$displayData->disabled = $displayData->readonly = true;
+				break;
+			default:
+				$displayData->disabled = $displayData->readonly = true;
+				Factory::getApplication()->enqueueMessage('Warning: unhandled view type ('.$data['view'].') in yes/no element');
+		}
 
 		$html = '<div class="fabrikSubElementContainer" id="'.$this->getHTMLId($repeatCounter).'">';
 		$html .= LayoutHelper::render("joomla.form.field.radio.switcher", (array)$displayData);
