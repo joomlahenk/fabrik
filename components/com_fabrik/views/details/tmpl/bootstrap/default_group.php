@@ -12,55 +12,44 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-?>
-<div class="row-striped">
-<?php
 $rowStarted = false;
+$layout          = FabrikHelperHTML::getLayout('form.fabrik-control-group');
+
 foreach ($this->elements as $element) :
 	$this->element = $element;
 	$this->element->single = $single = $element->startRow && $element->endRow;
 
-	if ($single)
-	{
-		$this->element->containerClass = str_replace('fabrikElementContainer', '', $this->element->containerClass);
-	}
+	$displayData = array(
+		'class' => $element->containerClass . ($element->hidden ? ' d-none' : ''),
+		'startRow' => $element->startRow,
+		'endRow' => $element->endRow,
+		'column' => $element->column,
+	);
 
-	$element->fullWidth = $element->span == FabrikHelperHTML::getGridSpan(12) || $element->span == '';
-	$style = $element->hidden ? 'style="display:none"' : '';
+	$labelsAbove = $element->dlabels;
 
-	if ($element->startRow) : ?>
-			<div class="row-fluid <?php echo $single ? 'fabrikElementContainer ' : ''; echo $single && $element->dataEmpty ? 'fabrikDataEmpty ' : ''; ?>" <?php echo $style?>><!-- start element row -->
-	<?php
-		$rowStarted = true;
-	endif;
-	$style = $element->hidden ? 'style="display:none"' : '';
-	$labels_above = $element->dlabels;
-
-	if ($labels_above == 1)
+	if ($labelsAbove == 1)
 	{
-		echo $this->loadTemplate('group_labels_above');
+		$displayData['row'] = $this->loadTemplate('group_labels_above');
 	}
-	elseif ($labels_above == 2)
+	elseif ($labelsAbove == 2)
 	{
-		echo $this->loadTemplate('group_labels_none');
+		$displayData['row'] = $this->loadTemplate('group_labels_none');
 	}
-	elseif ($element->span == FabrikHelperHTML::getGridSpan('12') || $element->span == '' || $labels_above == 0)
+	elseif ($labelsAbove == 0)
 	{
-		echo $this->loadTemplate('group_labels_side');
+		$displayData['row'] = $this->loadTemplate('group_labels_side');
 	}
 	else
 	{
 		// Multi columns - best to use simplified layout with labels above field
-		echo $this->loadTemplate('group_labels_above');
+		$displayData['row'] = $this->loadTemplate('group_labels_above');
 	}
-	if ($element->endRow) :?>
-		</div><!-- end row-fluid -->
-	<?php
-		$rowStarted = false;
-	endif;
+
+	echo $layout->render((object) $displayData);
 endforeach;
 // If the last element was not closing the row add an additional div
 if ($rowStarted === true) :?>
 </div><!-- end row-fluid for open row -->
 <?php endif;?>
-</div>
+
