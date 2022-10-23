@@ -54,6 +54,7 @@
 		<file group="fabrik_element" id="button" type="plugin">plg_fabrik_element_button_{version}.zip</file>
 -->
 		<file group="fabrik_form" id="email" type="plugin">plg_fabrik_form_email_{version}.zip</file>
+		<file group="fabrik_form" id="juser" type="plugin">plg_fabrik_form_juser_{version}.zip</file>
 		<file group="fabrik_form" id="php" type="plugin">plg_fabrik_form_php_{version}.zip</file>
 		<file group="fabrik_form" id="redirect" type="plugin">plg_fabrik_form_redirect_{version}.zip</file>
 <!--		
