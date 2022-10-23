@@ -4330,7 +4330,7 @@ class FabrikFEModelForm extends FabModelForm
 			return str_replace("{Add/Edit}", '', $label);
 		}
 
-		if (StringHelper::stristr($label, "{Add/Edit}"))
+		if (!empty($label) && StringHelper::stristr($label, "{Add/Edit}"))
 		{
 			$replace = $this->isNewRecord() ? Text::_('COM_FABRIK_ADD') : Text::_('COM_FABRIK_EDIT');
 			$label = str_replace("{Add/Edit}", $replace, $label);

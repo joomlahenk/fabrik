@@ -270,13 +270,15 @@ class PlgFabrik_ElementField extends PlgFabrik_Element
 			}
 			else
 			{
-				if (FabrikWorker::isEmail($value) || StringHelper::stristr($value, 'http'))
-				{
-				}
-				elseif (StringHelper::stristr($value, 'www.'))
-				{
-					$value = 'http://' . $value;
-				}
+                if (!empty($value)) {
+                    if (FabrikWorker::isEmail($value) || StringHelper::stristr($value, 'http'))
+                    {
+                    }
+                    elseif (StringHelper::stristr($value, 'www.'))
+                    {
+                        $value = 'http://' . $value;
+                    }
+                }
 
 				if ($title !== '')
 				{
