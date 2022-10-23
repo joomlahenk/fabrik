@@ -951,7 +951,7 @@ class FabrikFEModelGroup extends FabModel
 
 			$label = $input->getString('group' . $group->id . '_label', $groupTable->label);
 
-			if (StringHelper::stristr($label, "{Add/Edit}"))
+			if (!empty($label) && StringHelper::stristr($label, "{Add/Edit}"))
 			{
 				$replace = $formModel->isNewRecord() ? Text::_('COM_FABRIK_ADD') : Text::_('COM_FABRIK_EDIT');
 				$label   = str_replace("{Add/Edit}", $replace, $label);
