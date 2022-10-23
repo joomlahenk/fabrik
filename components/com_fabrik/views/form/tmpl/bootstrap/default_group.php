@@ -26,7 +26,6 @@ foreach ($this->elements as $element) :
 		$this->class .= ' help-inline text-danger';
 	endif;
 
-	$this->class .= $element->hidden ? ' d-none' : '';
 
 	$displayData = array(
 		'class' => $element->containerClass . ($element->hidden ? ' d-none' : ''),
