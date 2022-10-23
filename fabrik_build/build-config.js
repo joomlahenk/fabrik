@@ -36,6 +36,7 @@ module.exports = {
         'plg_fabrik_element_user_{version}.zip',
         'plg_fabrik_element_yesno_{version}.zip',
         'plg_fabrik_form_email_{version}.zip',
+        'plg_fabrik_form_juser_{version}.zip',
         'plg_fabrik_form_php_{version}.zip',
         'plg_fabrik_form_redirect_{version}.zip',
         'plg_fabrik_list_copy_{version}.zip',
