@@ -2669,16 +2669,16 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 		/* If the jdate element is loaded on an ajax page, we need to manually include the j! calendar  & javascript files */
 		if (FabrikHelperHTML::inAjaxLoadedPage()) {
 			$min = FabrikHelperHTML::isDebug() ? '.min' : '';
-			$jsloc = 'media/system/js/fields/';
-			$cssloc = 'media/system/css/fields/';
+			$jsloc = '/media/system/js/fields/';
+			$cssloc = '/media/system/css/fields/';
 			echo "<script src='".$jsloc."calendar-locales/date/gregorian/date-helper".$min.".js' type='text/javascript'></script>";
 			echo "<script src='".$jsloc."calendar".$min.".js' type='text/javascript'></script>";
 			echo "<link href='".$cssloc."calendar".$min.".css' rel='stylesheet'>";
 			/* We also need to add them to the shim so they are loaded before the calendar is initialized */
-			$shim[$key]->deps[] = 'media/system/js/fields/calendar.min.js';
-			$shim['media/system/js/fields/calendar.min.js'] = $globalShim;
-			$shim[$key]->deps[] = 'media/system/js/fields/calendar-locales/date/gregorian/date-helper.min.js';
-			$shim['media/system/js/fields/calendar-locales/date/gregorian/date-helper.min.js'] = $globalShim;
+			$shim[$key]->deps[] = '/media/system/js/fields/calendar.min.js';
+			$shim['/media/system/js/fields/calendar.min.js'] = $globalShim;
+			$shim[$key]->deps[] = '/media/system/js/fields/calendar-locales/date/gregorian/date-helper.min.js';
+			$shim['/media/system/js/fields/calendar-locales/date/gregorian/date-helper.min.js'] = $globalShim;
 		}
 
 		parent::formJavascriptClass($srcs, $script, $shim);
