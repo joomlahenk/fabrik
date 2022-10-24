@@ -119,6 +119,7 @@ class FabrikControllerForm extends BaseController
 			{
 				$parts = explode('=', $qsStr);
 				$input->set($parts[0], $parts[1]);
+				$_REQUEST[$parts[0]] = $parts[1];
 			}
 		}
 
