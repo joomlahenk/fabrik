@@ -341,6 +341,27 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 	}
 
 	/**
+	 * Load the switcher css when the form element is loaded by ajax
+	 *
+	 * @param   array  &$srcs  Scripts previously loaded
+	 * @param   string $script Script to load once class has loaded
+	 * @param   array  &$shim  Dependant class names to load before loading the class - put in requirejs.config shim
+	 *
+	 * @return void
+	 */
+	public function formJavascriptClass(&$srcs, $script = '', &$shim = array())
+	{
+		if (FabrikHelperHTML::inAjaxLoadedPage()) {
+			$min = FabrikHelperHTML::isDebug() ? '.min' : '';
+			echo "<link href='media/system/css/fields/switcher".$min."min.css' rel='stylesheet'>";
+		}
+		parent::formJavascriptClass($srcs, $script, $shim);
+
+		// Return false, as we need to be called on per-element (not per-plugin) basis
+		return false;
+	}
+
+	/**
 	 * Returns javascript which creates an instance of the class defined in formJavascriptClass()
 	 *
 	 * @param   int  $repeatCounter  Repeat group counter
