@@ -57,7 +57,7 @@ module.exports = {
         'plg_fabrik_form_redirect_{version}.zip',
         'plg_fabrik_list_candeleterow_{version}.zip',
         'plg_fabrik_list_caneditrow_{version}.zip',
-        'plg_fabrik_list_canviewerow_{version}.zip',
+        'plg_fabrik_list_canviewrow_{version}.zip',
         'plg_fabrik_list_copy_{version}.zip',
         'plg_fabrik_list_js_{version}.zip',
         'plg_fabrik_list_link_{version}.zip',
