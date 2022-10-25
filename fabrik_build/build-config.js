@@ -67,6 +67,7 @@ module.exports = {
         'plg_fabrik_list_update_col_{version}.zip',
         'plg_fabrik_schedule_{version}.zip',
         'plg_fabrik_system_{version}.zip',
+        'plg_fabrik_validationrule_areuniquevalues_{version}.zip',
         'plg_fabrik_validationrule_isalphanumeric_{version}.zip',
         'plg_fabrik_validationrule_isemail_{version}.zip',
         'plg_fabrik_validationrule_isgreaterorlessthan_{version}.zip',

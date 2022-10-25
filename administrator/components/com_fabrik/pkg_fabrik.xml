@@ -69,7 +69,6 @@
 -->
 		<file group="fabrik_form" id="autofill" type="plugin">plg_fabrik_form_autofill_{version}.zip</file>
 		<file group="fabrik_form" id="comment" type="plugin">plg_fabrik_form_comment_{version}.zip</file>
-		<file group="fabrik_form" id="consent" type="plugin">plg_fabrik_form_consent_{version}.zip</file>
 		<file group="fabrik_form" id="email" type="plugin">plg_fabrik_form_email_{version}.zip</file>
 		<file group="fabrik_form" id="juser" type="plugin">plg_fabrik_form_juser_{version}.zip</file>
 		<file group="fabrik_form" id="php" type="plugin">plg_fabrik_form_php_{version}.zip</file>
