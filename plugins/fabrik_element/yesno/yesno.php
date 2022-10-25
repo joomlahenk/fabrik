@@ -289,6 +289,8 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 	 */
 	public function render($data, $repeatCounter = 0)
 	{	
+		$app = Factory::getApplication();
+
 		$params = $this->getParams();
 		$params->set('options_per_row', 4);
 		$options = [];
@@ -296,6 +298,13 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 		$labels = $this->getSubOptionLabels();
 		foreach ($values as $idx => $value) {
 			$options[] = (object)['value'=>$value, 'text'=>$labels[$idx]];
+		}
+
+		if (($app->isClient('administrator') === true && $app->input->get('view') == 'details') ||
+				($app->isClient('site') === true && $data['view'] == 'details')) {
+			$value = $this->getValue($data, $repeatCounter);
+			$label = $options[$value]->text;
+			return self::getReadOnlyOutput($value, $label);
 		}
 
 		$displayData = new StdClass;
@@ -306,17 +315,7 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 		$displayData->onchange = null;
 		$displayData->dataAttribute = $displayData->label = '';
 		$displayData->class = implode(' ', $this->gridClasses()['label']);
-		switch ($data['view']) {
-			case 'form':
-				$displayData->disabled = $displayData->readonly = false;
-				break;
-			case 'details':
-				$displayData->disabled = $displayData->readonly = true;
-				break;
-			default:
-				$displayData->disabled = $displayData->readonly = true;
-				Factory::getApplication()->enqueueMessage('Warning: unhandled view type ('.$data['view'].') in yes/no element');
-		}
+		$displayData->disabled = $displayData->readonly = false;
 
 		$html = '<div class="fabrikSubElementContainer" id="'.$this->getHTMLId($repeatCounter).'">';
 		$html .= LayoutHelper::render("joomla.form.field.radio.switcher", (array)$displayData);
@@ -338,6 +337,27 @@ class PlgFabrik_ElementYesno extends PlgFabrik_ElementRadiobutton
 		$ok = $params->get('btnGroup', true);
 
 		return $ok;
+	}
+
+	/**
+	 * Load the switcher css when the form element is loaded by ajax
+	 *
+	 * @param   array  &$srcs  Scripts previously loaded
+	 * @param   string $script Script to load once class has loaded
+	 * @param   array  &$shim  Dependant class names to load before loading the class - put in requirejs.config shim
+	 *
+	 * @return void
+	 */
+	public function formJavascriptClass(&$srcs, $script = '', &$shim = array())
+	{
+		if (FabrikHelperHTML::inAjaxLoadedPage()) {
+			$min = FabrikHelperHTML::isDebug() ? '.min' : '';
+			echo "<link href='". Juri::root() ."media/system/css/fields/switcher".$min.".css' rel='stylesheet'>";
+		}
+		parent::formJavascriptClass($srcs, $script, $shim);
+
+		// Return false, as we need to be called on per-element (not per-plugin) basis
+		return false;
 	}
 
 	/**
