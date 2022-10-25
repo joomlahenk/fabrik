@@ -38,7 +38,8 @@ if (!defined('COM_FABRIK_FRONTEND'))
 $app = Factory::getApplication();
 $input = $app->input;
 
-if ($app->input->get('view') !== 'home') {
+$view = $app->input->get('view');
+if (in_array($view, ["element", "list", "form", "group"])) {
 	$file = 'blockuserinput.js';
 	$loc = FabrikHelperHTML::isDebug() ? Juri::root() . 'media/com_fabrik/js/' : Juri::root() .'media/com_fabrik/js/dist/';
 	Factory::getDocument()->addScript($loc.$file);
