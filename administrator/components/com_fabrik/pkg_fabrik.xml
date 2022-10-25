@@ -39,7 +39,7 @@
 		<file group="fabrik_element" id="colourpicker" type="plugin">plg_fabrik_element_colourpicker_{version}.zip</file>
 		<file group="fabrik_element" id="databasejoin" type="plugin">plg_fabrik_element_databasejoin_{version}.zip</file>
 		<file group="fabrik_element" id="date" type="plugin">plg_fabrik_element_date_{version}.zip</file>
-		<file group="fabrik_element" id="digisig" type="plugin">plg_fabrik_element_digisig_{version}.zip</file>
+		<file group="fabrik_element" id="digsig" type="plugin">plg_fabrik_element_digsig_{version}.zip</file>
 		<file group="fabrik_element" id="display" type="plugin">plg_fabrik_element_display_{version}.zip</file>
 		<file group="fabrik_element" id="dropdown" type="plugin">plg_fabrik_element_dropdown_{version}.zip</file>
 		<file group="fabrik_element" id="field" type="plugin">plg_fabrik_element_field_{version}.zip</file>

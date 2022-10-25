@@ -21,7 +21,7 @@ module.exports = {
         'plg_fabrik_element_colourpicker_{version}.zip',
         'plg_fabrik_element_databasejoin_{version}.zip',
         'plg_fabrik_element_date_{version}.zip',
-        'plg_fabrik_element_digisig_{version}.zip',
+        'plg_fabrik_element_digsig_{version}.zip',
         'plg_fabrik_element_display_{version}.zip',
         'plg_fabrik_element_dropdown_{version}.zip',
         'plg_fabrik_element_field_{version}.zip',
