@@ -959,6 +959,7 @@ isClient('administrator');
 				$layout                     = $this->getLayout('downloadlink');
 				$displayData                = new stdClass;
 				$displayData->canDownload   = $canDownload;
+				$displayData->openInBrowser = $params->get('fu_open_in_browser', '0') === '1';
 				$displayData->title         = $title;
 				$displayData->file          = $data;
 				$displayData->noAccessImage = COM_FABRIK_LIVESITE . 'media/com_fabrik/images/' . $params->get('fu_download_noaccess_image');
