@@ -102,7 +102,7 @@ module.exports = function (grunt) {
 							config : 'pkg.version', // arbitrary name or config for any other grunt task
 							type   : 'input', // list, checkbox, confirm, input, password
 							message: 'Fabrik version:', // Question to ask the user, function needs to return a string,
-							default: '4.0' //grunt.config('pkg.version') // default value if nothing is entered
+							default: '4.0alpha3' //grunt.config('pkg.version') // default value if nothing is entered
 						},
 						{
 							config : 'jversion',
@@ -166,6 +166,17 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('js', ['uglify','lineending']);
 
+	grunt.registerTask('updateserver', 'Building update server files', function() {
+		updateServer(grunt);
+		console.log('-- Update server files created');
+	});		
+
+	/* Only run plugins we are installing */
+	var pluginOK = function(folder, plugin) {
+	    var pluginName = 'plg_' + folder + '_' + plugin + '_{version}.zip';
+	    return buildConfig.corePackageFiles.includes(pluginName);
+	}
+
 	// Default task(s).
 	grunt.registerTask('default', ['prompt', 'fabrik']);
 
@@ -198,6 +209,7 @@ module.exports = function (grunt) {
 
 			// Copy folders ignoring any symlinked folders.
 			for (j = 0; j < files.length; j++) {
+				if (pluginOK(pluginTypes[p], files[j]) == false) continue;
 				var file = sourceFolder + '/' + files[j];
 				var stat = fs.lstatSync(file);
 				if (stat.isDirectory() && !stat.isSymbolicLink(file)) {
