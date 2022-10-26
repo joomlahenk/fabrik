@@ -56,7 +56,7 @@ NOTE:NOTE: once linked to not attempt to install Fabrik as whatever you install 
     <property name="plugins/content/fabrik" value="fabrik" />
     <property name="plugins/fabrik_cron" value="email, php" />
     <property name="plugins/fabrik_element" 
-        value="access, birthday, calc, captcha, cascadingdropdown, checkbox, colourpicker, databasejoin, date, digisig,
+        value="access, birthday, calc, captcha, cascadingdropdown, checkbox, colourpicker, databasejoin, date, digsig,
                 display, dropdown, field, fileupload, folder, googlemap, image, internalid, ip,
                 jdate, link, lockrow, password, picklist, radiobutton, sequence, slider,
                 textarea, thumbs, time, timer, timestamp, total, user, usergroup, viewlevel, yesno"/>

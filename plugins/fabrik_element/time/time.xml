@@ -7,7 +7,7 @@
 	<license>GNU/GPL http://www.gnu.org/copyleft/gpl.html</license>
 	<authorEmail>jaanus.nurmoja@gmail.com</authorEmail>
 	<authorUrl>www.facebook.com/jaanus.nurmoja</authorUrl>
-	<version>4.0alpha2</version>
+	<version>4.0alpha3</version>
 	<help url="PLG_ELEMENT_TIME_HELP_SERVER"/>
 	<description>PLG_ELEMENT_TIME_DESCRIPTION</description>
 	<files>

@@ -7,7 +7,7 @@
 	<license>GNU/GPL http://www.gnu.org/copyleft/gpl.html</license>
 	<authorEmail>info@betterweb.fr</authorEmail>
 	<authorUrl>https://www.betterweb.fr</authorUrl>
-	<version>4.0alpha2</version>
+	<version>4.0alpha3</version>
 	<help url="PLG_FORM_CONSENT_HELP_SERVER"/>
 	<description>PLG_FORM_GDPR_DESCRIPTION</description>
 	
