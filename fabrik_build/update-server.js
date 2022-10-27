@@ -9,12 +9,12 @@ var libxmljs = require('libxmljs'),
     extensions = [];
 
 
-module.exports = function (grunt) {
-    mkdirp.sync(updateDir);
+module.exports = function (grunt) { 
+    mkdirp.sync(updateDir); 
     fs.copySync('administrator/components/com_fabrik/update/fabrik4', updateDir);
-    jPlugins(grunt);
+    jPlugins(grunt); 
     console.log('-- Update Server: J Plugins created');
-    fabrikPlugins(grunt);
+    fabrikPlugins(grunt); 
     console.log('-- Update Server: Fabrik Plugins created');
     fabrikModules(grunt);
     console.log('-- Update Server: Fabrik Modules created');
@@ -345,6 +345,12 @@ var jPlugins = function (grunt) {
     }
 };
 
+/* Only run plugins we are installing */
+var pluginOK = function(folder, plugin) {
+    var pluginName = 'plg_fabrik_' + folder + '_' + plugin + '_{version}.zip';
+    return buildConfig.corePackageFiles.includes(pluginName);
+}
+
 var fabrikPlugins = function (grunt) {
     var productName = grunt.config.get('pkg.name'),
         version = grunt.config.get('pkg.version'),
@@ -359,6 +365,7 @@ var fabrikPlugins = function (grunt) {
         var files = fs.readdirSync(folder);
 
         for (j = 0; j < files.length; j++) {
+            if (pluginOK(folders[i], files[j]) == false) continue;
             var file = folder + '/' + files[j];
             var stat = fs.lstatSync(file);
             if (!stat.isSymbolicLink(file)) {
@@ -372,6 +379,8 @@ var fabrikPlugins = function (grunt) {
             console.log('----------> pluginPath: ' + pluginPath);
             plugins = fs.readdirSync(pluginPath);
             for (j = 0; j < plugins.length; j++) {
+                // only build update files for plugins we use
+                if (pluginOK(folders[i], plugins[j]) == false) continue;
 
                 var pluginDir = fs.lstatSync(pluginPath + '/' + plugins[j]);
                 if (pluginDir.isDirectory() && !pluginDir.isSymbolicLink()) {
@@ -413,7 +422,6 @@ var fabrikPlugins = function (grunt) {
                             detailsurl: grunt.config.get('updateserver') + 'update/fabrik4/plg_' + folders[i] + '_' + plugins[j] + '.xml'
                         }
                     });
-
                     writeXml(xmlFile, props, version);
                 }
             }
