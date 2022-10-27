@@ -162,7 +162,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 		if ($data['created'] == "" || $data['created'] == "0000-00-00 00:00:00") {
 			$data['created'] = null;
 		}
-		
+
 		$return = parent::save($data);
 
 		if ($return)
@@ -195,7 +195,7 @@ class FabrikAdminModelForm extends FabModelAdmin
 
 		if ($table->published == 1 && intval($table->publish_down) == 0)
 		{
-			$table->publish_down = $this->getDbo()->getNullDate();
+			$table->publish_down = null;
 		}
 	}
 
