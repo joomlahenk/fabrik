@@ -1112,7 +1112,7 @@ define(['jquery', 'fab/fabrik', 'fab/list-toggle', 'fab/list-grouped-toggler', '
                 Object.each(this.options.data, function (group) {
                     for (var i = 0; i < group.length; i++) {
                         var row = group[i];
-                        if (row && row.data.__pk_val === id) {
+                        if (row && row.data.__pk_val == id) {
                             found = row.data;
                         }
                     }
