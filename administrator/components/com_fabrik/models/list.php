@@ -693,6 +693,9 @@ class FabrikAdminModelList extends FabModelAdmin
 			$dateNow = Factory::getDate();
 			$row->set('modified', $dateNow->toSql());
 			$row->set('modified_by', $this->user->get('id'));
+			if ($data['created'] == "" || $data['created'] == "0000-00-00 00:00:00") {
+				$data['created'] = null;
+			}
 		}
 
 		if ($id == 0)

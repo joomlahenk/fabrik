@@ -159,6 +159,10 @@ class FabrikAdminModelForm extends FabModelAdmin
 
 		$tmpName = FArrayHelper::getValue($data, 'db_table_name');
 		unset($data['db_table_name']);
+		if ($data['created'] == "" || $data['created'] == "0000-00-00 00:00:00") {
+			$data['created'] = null;
+		}
+		
 		$return = parent::save($data);
 
 		if ($return)

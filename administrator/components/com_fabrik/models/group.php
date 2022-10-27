@@ -158,8 +158,9 @@ class FabrikAdminModelGroup extends FabModelAdmin
 			$data['created_by']       = $this->user->get('id');
 			$data['created_by_alias'] = $this->user->get('username');
 			$data['created']          = Factory::getDate()->toSql();
+		} elseif ($data['created'] == "" || $data['created'] == "0000-00-00 00:00:00") {
+			$data['created'] = null;
 		}
-
 		$makeJoin   = false;
 		$unMakeJoin = false;
 
