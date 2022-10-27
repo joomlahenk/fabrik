@@ -991,12 +991,12 @@ EOD;
 
 			HTMLHelper::_('bootstrap.framework');
 			self::loadBootstrapCSS();
-			HTMLHelper::_('script', $mediaFolder . '/lib/jquery-ui/jquery-ui.min.js');
+//			HTMLHelper::_('script', $mediaFolder . '/lib/jquery-ui/jquery-ui.min.js');
+			HTMLHelper::_('script', 'media/com_fabrik/js/lib/jquery-ui/jquery-ui.min.js');
 
 			/* Manually load mootools as it is not loaded by Joomla any more */
 			HTMLHelper::_('script', 'media/com_fabrik/js/dist/mootools-core.js');
 			HTMLHelper::_('script', 'media/com_fabrik/js/dist/mootools-more.js');
-
 
 			HTMLHelper::_('behavior.formvalidator');
 
