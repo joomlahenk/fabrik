@@ -783,7 +783,7 @@ class FabrikAdminModelList extends FabModelAdmin
 
 		if ($row->get('published') == 1 && intval($row->get('publish_down')) === 0)
 		{
-			$row->set('publish_down', $this->getDbo()->getNullDate());
+			$row->set('publish_down', null);
 		}
 
 		$pk = FArrayHelper::getValue($data, 'db_primary_key');

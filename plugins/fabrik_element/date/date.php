@@ -1116,20 +1116,13 @@ class PlgFabrik_ElementDate extends PlgFabrik_ElementList
 		$shortNullDate = FArrayHelper::getValue($shortNullDate, 0);
 		$isNullDate    = $nullDate == $value || $shortNullDate == $value;
 
-		if (!(($formModel->isNewRecord() || $this->newGroup) && $defaultToday) && $value == '')
-		{
-			if (($value == '' || $isNullDate) && !$alwaysToday)
-			{
-				return $value;
-			}
-
-			if ($alwaysToday && $formModel->isEditable())
-			{
-				$value = '';
-			}
+		if ($isNullDate) $value = null;
+		if ($formModel->isEditable() && ($alwaysToday || (($formModel->isNewRecord() || $this->newGroup) && $defaultToday))){
+			$value = 'now';
 		}
+
 		// Don't offset if null date.
-		if ($isNullDate)
+		if ($value === null)
 		{
 			return $value;
 		}
