@@ -8,7 +8,16 @@
  */
 
 var onFabrikReadyBody = false;
-var blockDiv = '<div id="blockDiv" style="position:absolute; left:0; right:0; height:100%; width:100%; z-index:999;"></div>';
+var blockDiv = '<div id="blockDiv" style="position:absolute; left:0; right:0; height:100%; width:100%; z-index:9999999;"></div>';
+
+function onFabrikReadyBlock(e) {
+    if (blockDiv.length == 0) return false;
+    e.stopPropagation();
+    e.preventDefault();
+    alert("Fabrik is still loading, please wait a few seconds");
+    blockDiv = '';
+    return false;
+}
 
 function onFabrikReady() {
     if (typeof Fabrik === "undefined") {
@@ -16,8 +25,10 @@ function onFabrikReady() {
             onFabrikReadyBody = document.getElementsByTagName("BODY")[0];
             onFabrikReadyBody.insertAdjacentHTML('afterbegin', blockDiv);
             $("#blockDiv").click(function(e) {
-                alert("Fabrik is still loading, please wait a few second");
-                return false;
+                return onFabrikReadyBlock(e);
+            });
+            $("#blockDiv").mousedown(function(e) {
+                return onFabrikReadyBlock(e);
             });
         }    
         setTimeout(onFabrikReady, 50);
