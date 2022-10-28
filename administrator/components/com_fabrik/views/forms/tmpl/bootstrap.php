@@ -127,22 +127,22 @@ $listDirn  = $this->state->get('list.direction');
 						</td>
 						<td>
 							<div class="btn-group">
-								<
-								<button data-bs-toggle="dropdown" class="dropdown-toggle btn btn-micro">
+								
+								<button data-bs-toggle="dropdown" class="dropdown-toggle btn btn-sm">
 									<span class="caret"></span>
 									<span class="element-invisible">Actions for: COM_FABRIK_EXPORT_CONTENT_TYPE</span>
 								</button>
 								<ul class="dropdown-menu">
 									<li>
 										<a href="javascript://" onclick="Joomla.listItemTask('cb<?php echo $i; ?>', 'form.createContentType')">
-											<span class="icon-upload"></span> <?php echo Text::_('COM_FABRIK_CONTENT_TYPE_EXPORT'); ?>
+											<span class="icon-upload text-nowrap"> <?php echo Text::_('COM_FABRIK_CONTENT_TYPE_EXPORT'); ?></span>
 										</a>
 									</li>
 									<?php
 									if ($params->get('content_type_path', '') !== '') :?>
 										<li>
 											<a href="index.php?option=com_fabrik&task=form.downloadContentType&cid=<?php echo $item->id; ?>">
-												<span class="icon-download"></span> <?php echo Text::_('COM_FABRIK_CONTENT_TYPE_DOWNLOAD'); ?>
+												<span class="icon-download text-nowrap"> <?php echo Text::_('COM_FABRIK_CONTENT_TYPE_DOWNLOAD'); ?></span>
 											</a>
 										</li>
 										<?php
