@@ -848,7 +848,7 @@ class PlgFabrik_ElementJdate extends PlgFabrik_Element //PlgFabrik_ElementList
 		$opts         = $this->getElementJSOptions($repeatCounter);
 
 		// if read only, convert back to local display time
-		if (!$this->isEditable())
+		if (!$this->isEditable() && !empty($opts->value))
 		{
 			$localDate = $this->displayDate($opts->value);
 			$opts->value = $localDate->toSql(true);
