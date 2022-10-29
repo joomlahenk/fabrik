@@ -3822,7 +3822,7 @@ class PlgFabrik_ElementDatabasejoin extends PlgFabrik_ElementList
 		$params    = $this->getParams();
 		$jKey      = $this->getLabelOrConcatVal();
 		$where     = $this->buildQueryWhere(array(), true, $params->get('join_db_name'));
-		$where     = StringHelper::stristr($where, 'order by') ? $where : '';
+		$where     = empty($where) ? '' : (StringHelper::stristr($where, 'order by') ? $where : '');
 		$dbName    = $this->getDbName();
 		/**
 		 * Use lookup alias rather than directly referencing $dbName
