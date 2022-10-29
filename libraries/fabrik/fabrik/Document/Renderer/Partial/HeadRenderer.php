@@ -245,7 +245,10 @@ class HeadRenderer extends DocumentRenderer
 				$buffer .= $tab . $tab . '/*<![CDATA[*/' . $lnEnd;
 			}
 
-			$buffer .= $content . $lnEnd;
+			$content = (array)$content;
+			foreach ($content as $value) {
+				$buffer .= $value . $lnEnd;
+			}
 
 			// See above note
 			if ($document->_mime != 'text/html')
