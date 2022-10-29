@@ -325,7 +325,7 @@ class FabrikAdminModelElement extends FabModelAdmin
 		/* J4 hack to update the bootstrap class from existing elements */
 		$item = $this->updBsClass($item);
 
-		if (is_null($plugin))
+		if (empty($plugin))
 		{
 			$plugin = $item->plugin;
 		}

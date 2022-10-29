@@ -41,6 +41,7 @@
 							type="list"
 							default="OR"
 							repeat="true"
+						    size="-9999"
 							label="">
 								<option value="AND">AND</option>
 								<option value="OR">OR</option>
@@ -58,6 +59,7 @@
 							name="filter-fields"
 							type="listfields"
 							repeat="true"
+						    size="-9999"
 							showall="0"
 							raw="true"
 							valueformat="tableelement"
@@ -70,6 +72,7 @@
 							name="filter-conditions"
 							type="list"
 							repeat="true"
+						    size="-9999"
 							label="COM_FABRIK_LIST_CONDITION_LABEL">
 								<option value="equals">EQUALS</option>
 								<option value="notequals">NOT EQUAL TO</option>
@@ -106,6 +109,7 @@
 							name="filter-eval"
 							type="list"
 							label="COM_FABRIK_TYPE"
+						    size="-9999"
 							repeat="true">
 								<option value="0">COM_FABRIK_TEXT</option>
 								<option value="1">COM_FABRIK_EVAL</option>
@@ -117,6 +121,7 @@
 							name="filter-access"
 							type="accesslevel"
 							repeat="true"
+						    size="-9999"
 							label="COM_FABRIK_LIST_FILTER_ACCESS_HEADING" />
 
 					</fieldset>

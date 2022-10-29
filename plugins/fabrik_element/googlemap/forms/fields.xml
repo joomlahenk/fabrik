@@ -57,6 +57,7 @@
 						<field name="style_feature"
 							type="list"
 							repeat=""
+						    size="-9999"
 							label="PLG_ELEMENT_GOOGLE_MAP_STYLE_FEATURE_LABEL"
 							>
 								<option value="administrative">administrative</option>
@@ -97,6 +98,7 @@
 						<field name="style_element"
 							type="list"
 							default="all"
+						    size="-9999"
 							label="PLG_ELEMENT_GOOGLE_MAP_STYLE_FEATURE_ELEMENT_LABEL">
 								<option value="all">all</option>
 								<option value="geometry">geometry</option>
@@ -111,6 +113,7 @@
 
 						<field name="style_styler_key"
 							type="list"
+						    size="-9999"
 							label="PLG_ELEMENT_GOOGLE_MAP_STYLE_STYLER_KEY_LABEL">
 								<option value="hue">hue (RGB Hex)</option>
 								<option value="lightness">lightness (a floating point value between -100 and 100)</option>

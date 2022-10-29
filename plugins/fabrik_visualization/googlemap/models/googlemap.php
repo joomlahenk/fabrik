@@ -16,6 +16,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\String\StringHelper;
 use Fabrik\Helpers\Googlemap;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.model');
 
