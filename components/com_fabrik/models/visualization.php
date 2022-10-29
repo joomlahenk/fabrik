@@ -35,6 +35,7 @@ class FabrikFEModelVisualization extends FabModel
 	protected $pluginParams = null;
 
 	protected $row = null;
+	protected $_row = null;
 
 	/** @var object params*/
 	protected $params = null;
