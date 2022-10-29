@@ -344,9 +344,9 @@ class FabrikFEModelPluginmanager extends FabModel
 			}
 		}
 
-		$class = 'plgFabrik_' . StringHelper::ucfirst($group) . StringHelper::ucfirst($className);
+		$class = 'plgFabrik_' . (!empty($group) ? StringHelper::ucfirst($group) : '') . (!empty($className) ? StringHelper::ucfirst($className) : '');
 		$conf = array();
-		$conf['name'] = StringHelper::strtolower($className);
+		$conf['name'] = !empty($className) ? StringHelper::strtolower($className) : '';
 		$conf['type'] = StringHelper::strtolower('fabrik_' . $group);
             $plugIn = null;
 
