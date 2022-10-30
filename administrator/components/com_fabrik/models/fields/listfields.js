@@ -193,7 +193,7 @@ var ListFieldsElement = new Class({
 					});
 				}.bind(this));
 				if (document.id(this.el.id + '_loader')) {
-					document.id(this.el.id + '_loader').hide();
+					document.id(this.el.id + '_loader').hide(true);
 				}
 			}.bind(this)
 		});
