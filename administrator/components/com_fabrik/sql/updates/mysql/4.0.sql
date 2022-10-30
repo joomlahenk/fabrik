@@ -47,6 +47,7 @@ ALTER TABLE `#__fabrik_elements` ALTER `checked_out` SET DEFAULT 0;
 ALTER TABLE `#__fabrik_elements` MODIFY `checked_out_time` datetime NULL DEFAULT NULL;
 ALTER TABLE `#__fabrik_elements` ALTER `width` SET DEFAULT 0;
 ALTER TABLE `#__fabrik_elements` ALTER `parent_id` SET DEFAULT 0;
+ALTER TABLE `#__fabrik_elements` ALTER `default` SET DEFAULT '';
 
 ALTER TABLE `#__fabrik_formgroup` ALTER `form_id` SET DEFAULT 0;
 ALTER TABLE `#__fabrik_formgroup` ALTER `group_id` SET DEFAULT 0;
