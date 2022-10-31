@@ -4,6 +4,8 @@ defined('JPATH_BASE') or die;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 HTMLHelper::_('bootstrap.tooltip','[data-bs-toggle="tooltip"]');
 
 $d         = $displayData;
@@ -11,9 +13,13 @@ $labelText = Text::_($d->label);
 $labelText = $labelText == '' ? '&nbsp;' : $labelText;
 $l  = $d->icons . $labelText;
 $tip = '';
+$d->style = "";
 if ($d->labelPosition == 0) {
-			$d->labelClass .= ' col-sm-2 col-form-label';
-		}
+	$d->labelClass .= ' col-sm-2 col-form-label';
+	if (Factory::getApplication()->input->getBool('ajax', false) == true) {
+		$d->style = " style='width:16.6%;'";
+	}
+}
 if ($d->tipText !== '')
 {
 	switch ($d->tipOpts->position)
@@ -58,7 +64,7 @@ if ($d->canView || $d->canUse)
 	{
 		?>
 
-		<label for="<?php echo $d->id; ?>" class="<?php echo $d->labelClass; ?>" <?php echo $tip; ?>>
+		<label for="<?php echo $d->id; ?>" class="<?php echo $d->labelClass; ?>" <?php echo $tip; echo $d->style;?>>
 <?php
 	}
 	elseif (!$d->hasLabel && !$d->hidden)
