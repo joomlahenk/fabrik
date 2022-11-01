@@ -64,40 +64,38 @@ class PlgFabrik_FormLog extends PlgFabrik_Form
 			$db    = FabrikWorker::getDbo();
 			$query = <<<EOT
 CREATE TABLE IF NOT EXISTS `#__fabrik_change_log_fields` (
-	`id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-	`parent_id` INT( 11 ) NOT NULL,
-	`user_id` INT( 11 ) NOT NULL ,
-	`time_date` DATETIME NOT NULL ,
-	`form_id` INT( 11 ) NOT NULL,
-    `list_id` INT( 11 ) NOT NULL,
-    `element_id` INT( 11 ) NOT NULL,
-	`row_id` INT( 11 ) NOT NULL,
-	`join_id` INT( 11 ),
-	`pk_id` INT( 11 ) NOT NULL,
-	`table_name` VARCHAR( 256 ) NOT NULL,
-	`field_name` VARCHAR( 256 ) NOT NULL,
-	`log_type_id` INT( 11 ) NOT NULL,
-	`orig_value` TEXT,
-	`new_value` TEXT
+    `id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `parent_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `user_id` INT( 11 ) NOT NULL DEFAULT 0 ,
+    `time_date` DATETIME NULL DEFAULT NULL ,
+    `form_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `list_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `element_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `row_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `join_id` INT( 11 ) DEFAULT 0,
+    `pk_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `table_name` VARCHAR( 256 ) NOT NULL DEFAULT '',
+    `field_name` VARCHAR( 256 ) NOT NULL DEFAULT '',
+    `log_type_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `orig_value` TEXT,
+    `new_value` TEXT
 );
-EOT;
 			$db->setQuery($query);
 			$db->execute();
 
 			$query = <<<EOT
 CREATE TABLE IF NOT EXISTS `#__fabrik_change_log` (
-     `id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-     `user_id` INT( 11 ) NOT NULL ,
-     `ip_address` CHAR( 14 ) NOT NULL ,
-     `referrer` TEXT,
-     `time_date` DATETIME NOT NULL ,
-     `form_id` INT( 11 ) NOT NULL,
-     `list_id` INT( 11 ) NOT NULL,
-     `row_id` INT( 11 ) NOT NULL,
-     `join_id` INT( 11 ),
-     `log_type_id` INT( 11 ) NOT NULL,
-      `parent_id` INT( 11 ) NOT NULL
-
+    `id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `user_id` INT( 11 ) NOT NULL DEFAULT 0 ,
+    `ip_address` CHAR( 14 ) NOT NULL DEFAULT '' ,
+    `referrer` TEXT,
+    `time_date` DATETIME NULL DEFAULT NULL ,
+    `form_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `list_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `row_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `join_id` INT( 11 ) DEFAULT 0,
+    `log_type_id` INT( 11 ) NOT NULL DEFAULT 0,
+    `parent_id` INT( 11 ) NOT NULL DEFAULT 0
 );
 EOT;
 
