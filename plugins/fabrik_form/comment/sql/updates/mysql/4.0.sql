@@ -10,7 +10,6 @@ ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER `formid` SET DEFAULT 0;
 ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER `row_id` SET DEFAULT 0;
 ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER `rating` SET DEFAULT '';
 ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER `annonymous` SET DEFAULT 0;
-ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER `notify` SET DEFAULT 0;
+ALTER TABLE IF EXISTS `#__fabrik_comments` ADD COLUMN IF NOT EXISTS `notify` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER COLUMN IF EXISTS `notify` SET DEFAULT 0;
 ALTER TABLE IF EXISTS `#__fabrik_comments` ALTER `diggs` SET DEFAULT 0;
-
-
