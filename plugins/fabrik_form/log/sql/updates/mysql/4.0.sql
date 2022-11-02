@@ -10,7 +10,6 @@ ALTER TABLE IF EXISTS `#__fabrik_change_log_fields` ALTER `pk_id` SET DEFAULT 0;
 ALTER TABLE IF EXISTS `#__fabrik_change_log_fields` ALTER `table_name` SET DEFAULT '';
 ALTER TABLE IF EXISTS `#__fabrik_change_log_fields` ALTER `field_name` SET DEFAULT '';
 ALTER TABLE IF EXISTS `#__fabrik_change_log_fields` ALTER `log_type_id` SET DEFAULT 0;
-ALTER TABLE IF EXISTS `#__fabrik_change_log_fields` ALTER `newsletter_engine` SET DEFAULT '';
 
 ALTER TABLE IF EXISTS `#__fabrik_change_log` ALTER `user_id` SET DEFAULT 0;
 ALTER TABLE IF EXISTS `#__fabrik_change_log` ALTER `ip_address` SET DEFAULT '';
