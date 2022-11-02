@@ -8664,7 +8664,7 @@ class FabrikFEModelList extends FormModel
 
 		$preSQL = $this->getParams()->get('prefilter_query') ? htmlspecialchars_decode($this->getParams()->get('prefilter_query'), ENT_QUOTES) : null;
 
-		if (trim($preSQL) != '')
+		if (!empty($preSQL) && trim($preSQL) != '')
 		{
 			$db = FabrikWorker::getDbo();
 			$w = new FabrikWorker;
