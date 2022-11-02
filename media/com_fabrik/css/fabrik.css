@@ -17,6 +17,7 @@ div.calendar {
 div.calendar table {
 	width: 100%;
 }
+div.calendar .headrow .nav {display:table-cell;}
 
 .lt-ie9 a.close {
 	background-image: url(../images/delete.png);
