@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->field->label; ?>
 	</div>
 <?php endif; ?>
-	<div>
+	<div style="width:75%">
 		<?php echo $this->field->input; ?>
 	</div>
 </div>
