@@ -8,24 +8,13 @@ foreach ([0, 25, 50, 75, 100] as $allowed) {
 		$width = $allowed;
 	}
 }
+
 if ($width == 0) $width = "auto";
-if ($d->height <= 1) :
+$height_style = $d->height > 1 ? ' style="overflow-y:auto; overflow-wrap:anywhere; height:'. ($d->height +.9)*1.5 . 'rem"' : '';
 ?>
-<input class="form-control-plaintext w-<?php echo $width;?>"
-	type="text"
-	readonly 
-	style="display:inline-block;" 
-	name="<?php echo $d->name;?>" 
-	id="<?php echo $d->id;?>" 
-	value="<?php echo $d->value;?>"
-	>
-<?php
-else : ?>
-<textarea class="form-control-plaintext w-<?php echo $width;?>" 
-	readonly name="<?php echo $d->name;?>"
-	id="<?php echo $d->id;?>" 
-	cols="<?php echo $d->cols; ?>"
-	rows="<?php echo $d->rows; ?>"
-		><?php echo $d->value;?>
-	</textarea>
-<?php endif; ?>
+
+<div class="form-control-plaintext w-<?php echo $width;?> "<?php echo $height_style;?> 
+	name="<?php echo $d->name;?>"
+	id="<?php echo $d->id;?>" >
+	<?php echo htmlspecialchars_decode($d->value);?>
+	</div>

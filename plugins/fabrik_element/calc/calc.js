@@ -144,7 +144,7 @@ define(['jquery', 'fab/element'], function (jQuery, FbElement) {
                 'data'    : data,
                 onSuccess: function (tree, elements, r, scripts) {
                     Fabrik.loader.stop(this.element.getParent());
-                    this.element.value = r;
+                    this.update(r);
                     eval(scripts);
                     if (this.options.validations) {
 
