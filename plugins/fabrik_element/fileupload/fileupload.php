@@ -318,7 +318,7 @@ class PlgFabrik_ElementFileupload extends PlgFabrik_Element
 			}
 		}
 
-		if (!is_array($imgParams))
+		if (!empty($imgParams) && !is_array($imgParams))
 		{
 			$imgParams = explode(GROUPSPLITTER, $imgParams);
 		}
