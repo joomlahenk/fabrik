@@ -1191,15 +1191,15 @@
 						       size="-9999'"
 						>
 							<option value="">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE</option>
-							<option value="hidden-tablet hidden-desktop">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE_PHONE
+							<option value="d-md-none">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE_PHONE
 							</option>
-							<option value="hidden-phone hidden-desktop">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE_TABLET
+							<option value="d-none d-md-table-cell d-lg-none">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE_TABLET
 							</option>
-							<option value="hidden-phone hidden-tablet">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE_DESKTOP
+							<option value="d-none d-lg-table-cell">COM_FABRIK_RESPONSIVE_CLASS_VISIBLE_DESKTOP
 							</option>
-							<option value="hidden-phone">COM_FABRIK_RESPONSIVE_CLASS_HIDDEN_PHONE</option>
-							<option value="hidden-tablet">COM_FABRIK_RESPONSIVE_CLASS_HIDDEN_TABLET</option>
-							<option value="hidden-desktop">COM_FABRIK_RESPONSIVE_CLASS_HIDDEN_DESKTOP</option>
+							<option value="d-none d-md-table-cell">COM_FABRIK_RESPONSIVE_CLASS_HIDDEN_PHONE</option>
+							<option value="d-table-cell d-md-none d-lg-table-cell">COM_FABRIK_RESPONSIVE_CLASS_HIDDEN_TABLET</option>
+							<option value="d-table-cell d-lg-none ">COM_FABRIK_RESPONSIVE_CLASS_HIDDEN_DESKTOP</option>
 						</field>
 					</fieldset>
 				</fields>
