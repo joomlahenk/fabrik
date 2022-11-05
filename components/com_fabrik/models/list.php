@@ -4132,18 +4132,18 @@ class FabrikFEModelList extends FormModel
 		$item = $this->getTable();
 		$db = FabrikWorker::getDbo();
 		$nullDate = $db->getNullDate();
-		$publishUp = Factory::getDate($item->publish_up);
+		$publishUp = Factory::getDate($item->publish_up ?? $nullDate);
 		$publishUp = $publishUp->toUnix();
-		$publishDown = Factory::getDate($item->publish_down);
+		$publishDown = Factory::getDate($item->publish_down ?? $nullDate);
 		$publishDown = $publishDown->toUnix();
 		$jnow = Factory::getDate();
 		$now = $jnow->toUnix();
 
 		if ($item->published == '1')
 		{
-			if ($now >= $publishUp || $item->publish_up == '' || $item->publish_up == $nullDate)
+			if ($now >= $publishUp || empty($item->publish_up) || $item->publish_up == $nullDate)
 			{
-				if ($now <= $publishDown || $item->publish_down == '' || $item->publish_down == $nullDate)
+				if ($now <= $publishDown || empty($item->publish_down) || $item->publish_down == $nullDate)
 				{
 					return true;
 				}
@@ -7009,7 +7009,7 @@ class FabrikFEModelList extends FormModel
 		}
 
 		// Responsive element classes
-		$listClasses = json_decode($params->get('list_responsive_elements'));
+		$listClasses = json_decode($params->get('list_responsive_elements', "{}"));
 
 		if (!isset($listClasses->responsive_elements))
 		{
