@@ -347,7 +347,7 @@ var jPlugins = function (grunt) {
 
 /* Only run plugins we are installing */
 var pluginOK = function(folder, plugin) {
-    var pluginName = 'plg_fabrik_' + folder + '_' + plugin + '_{version}.zip';
+    let pluginName = 'plg_fabrik_' + folder + '_' + plugin + '_{version}.zip';
     return buildConfig.corePackageFiles.includes(pluginName);
 }
 

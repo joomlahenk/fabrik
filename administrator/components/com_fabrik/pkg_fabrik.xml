@@ -2,9 +2,9 @@
 <extension type="package" version="4" method="upgrade">
 	<name>Fabrik Package</name>
 	<packagename>fabrik</packagename>
-	<version>4.0alpha3</version>
+	<version>4.0beta1</version>
 	<url>http://www.fabrikar.com</url>
-	<creationDate>October 2022</creationDate>
+	<creationDate>November 2022</creationDate>
 	<copyright>Copyright (C) 2005-2022 Media A-Team, Inc. - All rights reserved.</copyright>
 	<author>Media A-Team, Inc.</author>
 	<packager>Rob Clayburn</packager>
