@@ -11,7 +11,6 @@ foreach ([0, 25, 50, 75, 100] as $allowed) {
 
 if ($width == 0) $width = "auto";
 $height_style = $d->height > 1 ? ' style="overflow-y:auto; overflow-wrap:anywhere; height:'. ($d->height +.9)*1.5 . 'rem"' : '';
-//dump($d);
 ?>
 
 <div class="form-control-plaintext w-<?php echo $width;?> "<?php echo $height_style;?> 
