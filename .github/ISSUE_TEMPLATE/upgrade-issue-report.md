@@ -6,6 +6,7 @@ labels: F3->F4
 assignees: ''
 
 ---
+**Before reporting an issue please check that it has not already been fixed by reviewing the changelog in the Wiki or other open issues that may be pending confirmation. Thank you.**
 
 **What happend**
 
