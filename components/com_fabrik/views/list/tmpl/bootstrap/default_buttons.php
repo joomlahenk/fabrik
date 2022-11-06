@@ -26,7 +26,7 @@ use Joomla\CMS\Language\Text;
 				</div>
 			<?php endif; ?>
 				<?php if ($this->showToggleCols) :?>
-					<div>
+					<div class="col px-1" style="padding-top:8px;">
 						<?php echo $this->loadTemplate('togglecols');?>
 					</div>
 				<?php endif; ?>
