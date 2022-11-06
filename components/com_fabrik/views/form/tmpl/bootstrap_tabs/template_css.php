@@ -18,25 +18,15 @@ clear: left;
 }
 
 /* color & highlight group with validation errors */
-.fabrikErrorGroup a {
+.fabrikErrorGroup {
     background-color: rgb(242, 222, 222) !important;
   color: #b94a48;
 }
  
-.active.fabrikErrorGroup a,
-.active.fabrikErrorGroup a:hover,
-.active.fabrikErrorGroup a:focus {
-    border: 1px solid #b94a48 !important;
-    border-bottom-color: transparent !important;
-  color: #b94a48 !important;
-  background-color: rgb(255, 255, 255) !important;
+/*BS5 ajax validation: icons overriding dropdown caret*/
+.fabrikinput.form-select {
+    background-position: right 1rem center, center right 0.1rem !important;
+	 padding-right:0 !important;
 }
- 
-.fabrikErrorGroup a:hover,
-.fabrikErrorGroup a:focus {
-    background-color: rgb(222, 173, 173) !important;
-  color: #b94a48;
-}
-
 ";
 ?>
