@@ -39,7 +39,8 @@ $app = Factory::getApplication();
 $input = $app->input;
 
 $view = $app->input->get('view');
-if (in_array($view, ["element", "list", "form", "group"])) {
+$layout = $app->input->get('layout', '');
+if (in_array($view, ["element", "list", "form", "group"]) && !in_array($layout, ["confirmupdate"])) {
 	$file = 'blockuserinput.js';
 	$loc = FabrikHelperHTML::isDebug() ? Juri::root() . 'media/com_fabrik/js/' : Juri::root() .'media/com_fabrik/js/dist/';
 	Factory::getDocument()->addScript($loc.$file);
