@@ -78,7 +78,7 @@ foreach ($this->groups as $group) :
 			break;
 		}
 	}
-	$err_class = $is_err ? 'fabrikErrorGroup' : '';
+	$err_class = $is_err ? ' fabrikErrorGroup' : '';
 	$tabId = $this->form->id . '_' . (int)$this->rowid . '_' . $i;
 	// If this is multi-page then groups are consolidated until a group with a page break
 	// So we should only show a tab if: it is first tab, or if it is a page break
@@ -86,8 +86,7 @@ foreach ($this->groups as $group) :
 		$is_err = false;
 		$tab = new stdClass;
 		$tab->id = 'group' . $group->id . '_tab';
-		$tab->class = $i === 0 ? 'active ' . $err_class : $err_class;
-		$tab->class .= ' ' . $tab->id . '_tab';
+		$tab->class = $err_class;
 		$tab->css = $group->css;
 		$tab->href = 'group-tab' . $tabId;
 		$tab->label = !empty($group->title) ? $group->title : $group->name;;
