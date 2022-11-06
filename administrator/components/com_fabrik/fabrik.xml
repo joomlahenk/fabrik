@@ -2,10 +2,10 @@
 <extension client="site" method="upgrade" type="component" version="4">
 	<name>com_fabrik</name>
     <author>Henk van Klinken</author>
-    <creationDate>October 2022</creationDate>
+    <creationDate>November 2022</creationDate>
     <copyright>Copyright (C) 2005-2022 Media A-Team, Inc. - All rights reserved.</copyright>
     <license>GNU/GPL http://www.gnu.org/copyleft/gpl.html</license>
-	<version>4.0alpha3</version>
+	<version>4.0beta1</version>
 	<description>COM_FABRIK_XML_DESCRIPTION</description>
 
 	<scriptfile>com_fabrik.manifest.class.php</scriptfile>
