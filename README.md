@@ -22,4 +22,5 @@ Only real working plugins included.
 
 
 
-See the WIKI for more info.
+See the WIKI for the latest installable version (GitHub zips are not installable), testing instructions etc.  
+https://github.com/joomlahenk/fabrik/wiki/Tester-Instructions
