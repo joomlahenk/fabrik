@@ -81,7 +81,7 @@ class FabrikControllerListemail extends BaseController
 		$view->setModel($formModel);
 
 		// Display the view
-		$view->error = $this->getError();
+		// one more F4 hack $view->error = $this->getError();
 
 		return $view->display();
 	}
