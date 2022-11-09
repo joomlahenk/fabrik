@@ -32,6 +32,11 @@ class FabrikAdminControllerHome extends AdminController
 	 */
 	public function reset()
 	{
+		$user = \Joomla\CMS\Factory::getUser();
+		$is_suadmin = $user->authorise('core.admin');
+		if (!$is_suadmin) {
+			return \Joomla\CMS\Factory::getApplication()->enqueueMessage(Text::_('COM_FABRIK_HOME_RESET_NOAUTH'), 'error');
+		}
 		$model = $this->getModel('Home');
 		$model->reset();
 		$this->setRedirect('index.php?option=com_fabrik', Text::_('COM_FABRIK_HOME_FABRIK_RESET'));
