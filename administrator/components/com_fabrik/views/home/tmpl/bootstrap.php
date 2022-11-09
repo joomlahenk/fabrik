@@ -15,9 +15,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 HTMLHelper::stylesheet('media/com_fabrik/css/admin.css');
 ToolBarHelper::title(Text::_('COM_FABRIK_WELCOME'), 'fabrik.png');
+$user = Factory::getUser();
+$is_suadmin = $user->authorise('core.admin');
 ?>
 
 <div id="j-main-container">
@@ -45,13 +48,14 @@ ToolBarHelper::title(Text::_('COM_FABRIK_WELCOME'), 'fabrik.png');
 				</div>
 
 				<div class="tab-pane" id="home-tools">
-					<ul class="adminlist">
-						<li>
-							<a onclick="return confirm('<?php echo Text::_('COM_FABRIK_HOME_CONFIRM_WIPE', true);?>')" href="index.php?option=com_fabrik&task=home.reset">
-								<?php echo Text::_('COM_FABRIK_HOME_RESET_FABRIK') ?>
-							</a>
-						</li>
-					</ul>
+				<?php if ($is_suadmin):?>
+					<div class=" alert alert-danger ">
+					<?php echo Text::_('COM_FABRIK_HOME_RESET_FABRIK'); ?>
+						<h4><?php echo Text::_('COM_FABRIK_HOME_CONFIRM_WIPE', true);?><h4>
+						<a class="btn btn-danger" onclick="return confirm('<?php echo Text::_('COM_FABRIK_HOME_CONFIRM_WIPE', true);?>')" href="index.php?option=com_fabrik&task=home.reset">
+						<?php echo Text::_('COM_FABRIK_HOME_RESET_FABRIK') ?></a>
+					<div>
+				<?php endif?>
 				</div>
 			</div>
 		</div>

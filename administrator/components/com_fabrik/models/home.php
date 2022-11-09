@@ -266,6 +266,11 @@ class FabrikAdminModelHome extends FabModelAdmin
 	 */
 	public function reset()
 	{
+		$user = Factory::getUser();
+		$is_suadmin = $user->authorise('core.admin');
+		if (!$is_suadmin) {
+			return \Joomla\CMS\Factory::getApplication()->enqueueMessage(Text::_('COM_FABRIK_HOME_RESET_NOAUTH'), 'error');
+		}
 		$db     = FabrikWorker::getDbo(true);
 		$prefix = '#__fabrik_';
 //		$tables = array('cron', 'elements', 'formgroup', 'forms', 'form_sessions', 'groups', 'joins', 'jsactions', 'packages', 'lists',
