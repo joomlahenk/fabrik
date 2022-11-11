@@ -16,14 +16,14 @@ $d = $displayData;
 ?>
 
 <li role="presentation" class="dropdown">
-  <a href="#" class="dropdown-toggle groupBy" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  <a href="#" class="dropdown-toggle groupBy btn" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
     <?php echo $d->icon;?>
     <?php echo $d->label; ?>
     <b class="caret"></b>
   </a>
   <ul class="dropdown-menu">
     <?php foreach ($d->links as $link) :?>
-      <li><?php echo $link;?></li>
+      <li ><?php echo $link;?></li>
       <?php
     endforeach;?>
   </ul>

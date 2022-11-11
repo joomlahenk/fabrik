@@ -17,7 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 $d = $displayData;
 
 ?>
-<div class="col-sm-5 pe-1">
+<div class="col-auto pe-1">
 	<input
 		type="search"
 		size="20"

@@ -41,7 +41,7 @@ echo $this->table->intro;
 
 ?>
 <form class="fabrikForm form-search" action="<?php echo $this->table->action;?>" method="post" id="<?php echo $this->formid;?>" name="fabrikList">
-	<div class="container-fluid">
+	<div class="container-fluid py-3">
 		<div class="row justify-content-between">
 <?php
 if ($this->hasButtons):
