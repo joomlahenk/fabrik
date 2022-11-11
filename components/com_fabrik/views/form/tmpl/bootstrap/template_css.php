@@ -20,6 +20,10 @@ clear: left;
     color: var(--body-color);
     font-size: 1rem;
 }
-
+/*BS5 ajax validation: icons overriding dropdown caret*/
+.fabrikinput.form-select.is-invalid,.fabrikinput.form-select.is-valid {
+    background-position: right 1rem center, center right 0.1rem !important;
+	 padding-right:0 !important;
+}
 ";
 ?>
