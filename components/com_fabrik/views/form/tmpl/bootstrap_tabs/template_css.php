@@ -22,9 +22,8 @@ clear: left;
     background-color: rgb(242, 222, 222) !important;
   color: #b94a48;
 }
- 
 /*BS5 ajax validation: icons overriding dropdown caret*/
-.fabrikinput.form-select {
+.fabrikinput.form-select.is-invalid,.fabrikinput.form-select.is-valid {
     background-position: right 1rem center, center right 0.1rem !important;
 	 padding-right:0 !important;
 }
