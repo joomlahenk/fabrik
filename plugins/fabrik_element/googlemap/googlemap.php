@@ -716,7 +716,7 @@ class PlgFabrik_ElementGooglemap extends PlgFabrik_Element
 			$z = $params->get('fb_gm_zoomlevel');
 		}
 
-		$icon = urlencode($params->get('fb_gm_staticmap_icon'));
+		$icon = urlencode($params->get('fb_gm_staticmap_icon',''));
 		$o = $this->_strToCoords($v, $z);
 		$lat = trim($o->coords[0]);
 		$lon = trim($o->coords[1]);

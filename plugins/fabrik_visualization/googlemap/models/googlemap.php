@@ -309,7 +309,7 @@ class FabrikModelGooglemap extends FabrikFEModelVisualization
 	 */
 	private function getCordsFromData($d)
 	{
-		if (empty($v)) return [0,0];
+		if (empty($d)) return [0,0];
 		
 		$v = str_replace(' ', '', $d);
 		$v = trim($v);
