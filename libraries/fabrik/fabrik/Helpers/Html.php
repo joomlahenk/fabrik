@@ -535,7 +535,7 @@ EOD;
 		$conditions[] = HTMLHelper::_('select.option', 'OR', Text::_('COM_FABRIK_OR'));
 		$name         = 'fabrik___filter[list_' . $listId . '][join][]';
 
-		return HTMLHelper::_('select.genericlist', $conditions, $name, 'class="inputbox col-sm-2" size="1" ', 'value', 'text', $sel);
+		return HTMLHelper::_('select.genericlist', $conditions, $name, 'class="form-select-sm" size="1" ', 'value', 'text', $sel);
 	}
 
 	/**

@@ -77,10 +77,9 @@ class FabrikFEModelAdvancedSearch extends FabModel
 		list($fieldNames, $firstFilter) = $this->getAdvancedSearchElementList();
 		$statements = $this->getStatementsOpts();
 		$opts->elementList = HTMLHelper::_('select.genericlist', $fieldNames, 'fabrik___filter[list_' . $listRef . '][key][]',
-			'class="inputbox key" size="1" ', 'value', 'text');
+			'class="form-select-sm key" size="1" ', 'value', 'text');
 		$opts->statementList = HTMLHelper::_('select.genericlist', $statements, 'fabrik___filter[list_' . $listRef . '][condition][]',
-//			'class="inputbox" size="1" ', 'value', 'text', $defaultStatement);
-			'class="form-select" ', 'value', 'text', $defaultStatement);
+			'class="form-select-sm" ', 'value', 'text', $defaultStatement);
 		$opts->listid = $list->id;
 		$opts->listref = $listRef;
 		$opts->ajax = $model->isAjax();
@@ -241,8 +240,8 @@ class FabrikFEModelAdvancedSearch extends FabModel
 				$input->set($lineElName, array('value' => $value));
 				$filter = $elementModel->getFilter($counter, false);
 				$input->set($lineElName, $orig);
-				$key = HTMLHelper::_('select.genericlist', $fieldNames, $prefix . 'key][]', 'class="inputbox key col-sm-4" size="1" ', 'value', 'text', $key);
-				$jsSel = HTMLHelper::_('select.genericlist', $statements, $prefix . 'condition][]', 'class="inputbox col-sm-4" size="1" ', 'value', 'text', $jsSel);
+				$key = HTMLHelper::_('select.genericlist', $fieldNames, $prefix . 'key][]', 'class="form-select-sm key " size="1" ', 'value', 'text', $key);
+				$jsSel = HTMLHelper::_('select.genericlist', $statements, $prefix . 'condition][]', 'class="form-select-sm " size="1" ', 'value', 'text', $jsSel);
 				$rows[] = array('join' => $join, 'element' => $key, 'condition' => $jsSel, 'filter' => $filter, 'type' => $type,
 					'grouped' => $grouped);
 				$counter++;
@@ -253,9 +252,9 @@ class FabrikFEModelAdvancedSearch extends FabModel
 		{
 			$params = $model->getParams();
 			$join = Text::_('COM_FABRIK_WHERE') . '<input type="hidden" name="' . $prefix . 'join][]" value="WHERE" />';
-			$key = HTMLHelper::_('select.genericlist', $fieldNames, $prefix . 'key][]', 'class="inputbox key" size="1" ', 'value', 'text', '');
+			$key = HTMLHelper::_('select.genericlist', $fieldNames, $prefix . 'key][]', 'class="form-select-sm key" size="1" ', 'value', 'text', '');
 			$defaultStatement = $params->get('advanced-filter-default-statement', '<>');
-			$jsSel = HTMLHelper::_('select.genericlist', $statements, $prefix . 'condition][]', 'class="inputbox" size="1" ', 'value', 'text', $defaultStatement);
+			$jsSel = HTMLHelper::_('select.genericlist', $statements, $prefix . 'condition][]', 'class="form-select-sm" size="1" ', 'value', 'text', $defaultStatement);
 			$rows[] = array('join' => $join, 'element' => $key, 'condition' => $jsSel, 'filter' => $firstFilter, 'type' => $type,
 				'grouped' => $grouped);
 		}
