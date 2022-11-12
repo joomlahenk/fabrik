@@ -131,7 +131,7 @@ class PlgFabrik_ElementTime extends PlgFabrik_Element
 			$minvalue = FArrayHelper::getValue($value, 1);
 			$secvalue = FArrayHelper::getValue($value, 2);
 
-			$hours = array(HTMLHelper::_('select.option', '00', $params->get('time_hourlabel', Text::_('PLG_ELEMENT_TIME_SEPARATOR_HOUR'))));
+			$hours = array(HTMLHelper::_('select.option', '', $params->get('time_hourlabel', Text::_('PLG_ELEMENT_TIME_SEPARATOR_HOUR'))));
 
 			$time24h = $params->get('time_24h', '1') === '1';
 
@@ -150,7 +150,7 @@ class PlgFabrik_ElementTime extends PlgFabrik_Element
 				$hours[] = HTMLHelper::_('select.option', $v, $l);
 			}
 
-			$mins = array(HTMLHelper::_('select.option', '00', $params->get('time_minlabel', Text::_('PLG_ELEMENT_TIME_SEPARATOR_MINUTE'))));
+			$mins = array(HTMLHelper::_('select.option', '', $params->get('time_minlabel', Text::_('PLG_ELEMENT_TIME_SEPARATOR_MINUTE'))));
 			$increment = (int) $params->get('minutes_increment', 1);
 
 			// Siin oli enne $monthlabels, viisin ülespoole
@@ -161,7 +161,7 @@ class PlgFabrik_ElementTime extends PlgFabrik_Element
 				$mins[] = HTMLHelper::_('select.option', $i);
 			}
 
-			$secs = array(HTMLHelper::_('select.option', '00', $params->get('time_seclabel', Text::_('PLG_ELEMENT_TIME_SEPARATOR_SECOND'))));
+			$secs = array(HTMLHelper::_('select.option', '', $params->get('time_seclabel', Text::_('PLG_ELEMENT_TIME_SEPARATOR_SECOND'))));
 
 			for ($i = 0; $i < 60; $i++)
 			{
@@ -217,7 +217,7 @@ class PlgFabrik_ElementTime extends PlgFabrik_Element
 			$h = FArrayHelper::getValue($val, 0, '00');
 			$m = FArrayHelper::getValue($val, 1, '00');
 			$s = FArrayHelper::getValue($val, 2, '00');
-
+			if ($h=='' || $m=='' || $s=='') return null;
 			return $h . ':' . $m . ':' . $s;
 		}
 
@@ -309,7 +309,7 @@ class PlgFabrik_ElementTime extends PlgFabrik_Element
 	{
 		$data = str_replace(null, '', $data);
 
-		if (strstr($data, ','))
+		if (is_string($data) && strstr($data, ','))
 		{
 			$data = explode(',', $data);
 		}
