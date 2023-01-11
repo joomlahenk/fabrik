@@ -1,10 +1,10 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Don't post here. From now post isseus on https://fabrikar.com/forums/index.php?forums/bugs-issues-suggestions.107/
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Don't post any issues here. Issues can now be posted on https://fabrikar.com/forums/index.php?forums/bugs-issues-suggestions.107/**
+
