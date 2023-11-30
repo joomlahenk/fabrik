@@ -4898,7 +4898,7 @@ class FabrikFEModelForm extends FabModelForm
 
 						if (!is_array($this->readOnlyVals[$elName]['data']))
 						{
-							$this->readOnlyVals[$elName]['data'] = htmlspecialchars_decode($this->readOnlyVals[$elName]['data']);
+							$this->readOnlyVals[$elName]['data'] = htmlspecialchars_decode($this->readOnlyVals[$elName]['data'] ?? '');
 						}
 
 						$this->readOnlyVals[$elName]['repeatgroup'] = $groupModel->canRepeat();
