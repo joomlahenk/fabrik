@@ -2499,7 +2499,7 @@ class PlgFabrik_Element extends FabrikPlugin
 			// Placeholder to be updated by ajax code
 			// @TODO the entity decode causes problems on RO with tooltips
 			$v = $this->getROElement($data, $repeatCounter);
-			$v = html_entity_decode($v);
+			$v = html_entity_decode($v ?? '');
 			//$v = $v == '' ? '&nbsp;' : $v;
 
 			return '<div class="fabrikElementReadOnly" id="' . $htmlId . '">' . $v . '</div>';
